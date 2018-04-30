@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    tools:context=".aMainActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/bg_wood"
+        tools:ignore="ContentDescription" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btOnePlayer"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/ripple_effect_white_wood_bg"
+                android:contentDescription="@string/one_player"
+                android:padding="48dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_one_player"
+                tools:ignore="NestedWeights" />
+
+            <ImageButton
+                android:id="@+id/btTwoPlayers"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/ripple_effect_white_wood_bg"
+                android:contentDescription="@string/two_players"
+                android:padding="48dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_two_players" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btThreePlayers"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/ripple_effect_white_wood_bg"
+                android:contentDescription="@string/three_players"
+                android:padding="48dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_three_players"
+                tools:ignore="NestedWeights" />
+
+            <ImageButton
+                android:id="@+id/btFourPlayers"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/ripple_effect_white_wood_bg"
+                android:contentDescription="@string/four_players"
+                android:padding="48dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_four_players" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btFivePlayers"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/ripple_effect_white_wood_bg"
+                android:contentDescription="@string/five_players"
+                android:padding="48dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_five_players"
+                tools:ignore="NestedWeights" />
+
+            <ImageButton
+                android:id="@+id/btSixPlayers"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/ripple_effect_white_wood_bg"
+                android:contentDescription="@string/six_players"
+                android:padding="48dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_six_players" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btSevenPlayers"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/ripple_effect_white_wood_bg"
+                android:contentDescription="@string/seven_players"
+                android:padding="48dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_seven_players"
+                tools:ignore="NestedWeights" />
+
+            <ImageButton
+                android:id="@+id/btEightPlayers"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/ripple_effect_white_wood_bg"
+                android:contentDescription="@string/eight_players"
+                android:padding="48dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_eight_players" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/ibMenu"
+        style="@style/MenuButton"
+        android:contentDescription="@string/score_options" />
+
+</RelativeLayout>

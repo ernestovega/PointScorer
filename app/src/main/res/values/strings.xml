@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Point Scorer</string>
+    <string name="one_player">One player</string>
+    <string name="two_players">Two players</string>
+    <string name="three_players">Three players</string>
+    <string name="four_players">Four players</string>
+    <string name="five_players">Five players</string>
+    <string name="six_players">Six players</string>
+    <string name="seven_players">Seven players</string>
+    <string name="eight_players">Eight players</string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
+    <string name="player_options">Player options</string>
+    <string name="player_1_options">Player 1 options</string>
+    <string name="player_2_options">Player 2 options</string>
+    <string name="player_3_options">Player 3 options</string>
+    <string name="player_4_options">Player 4 options</string>
+    <string name="player_5_options">Player 5 options</string>
+    <string name="player_6_options">Player 6 options</string>
+    <string name="player_7_options">Player 7 options</string>
+    <string name="player_8_options">Player 8 options</string>
+    <string name="restart">Restart</string>
+    <string name="restart_all">Restart all</string>
+    <string name="initial_points">Initial points</string>
+    <string name="restart_all_players_points_">Restart all players points?</string>
+    <string name="error_initial_points">Please enter a valid value. Should be less than 1000.</string>
+    <string name="default_initial_points">Default initial points</string>
+    <string name="score_options">Score options</string>
+</resources>

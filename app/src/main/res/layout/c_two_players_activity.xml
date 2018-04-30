@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false"
+    tools:context=".cTwoPlayersActivity">
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/bg_wood">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="32dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/shield"
+            tools:ignore="ContentDescription" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tvPointsP1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:drawableBottom="@drawable/ic_minus"
+            android:drawableTop="@drawable/ic_plus"
+            android:fontFamily="@font/rock_on"
+            android:gravity="center"
+            android:maxLength="4"
+            android:textColor="@color/gray_text"
+            android:textSize="100sp"
+            tools:ignore="RelativeOverlap"
+            tools:text="50" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btUpP1"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/ripple_effect_green" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btDownP1"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/ripple_effect_red" />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/ibMenuP1"
+            style="@style/MenuButton"
+            android:contentDescription="@string/player_1_options" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/bg_wood">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="32dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/shield"
+            tools:ignore="ContentDescription" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tvPointsP2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:drawableBottom="@drawable/ic_minus"
+            android:drawableTop="@drawable/ic_plus"
+            android:gravity="center"
+            android:maxLength="4"
+            android:textColor="@color/gray_text"
+            android:textSize="100sp"
+            app:fontFamily="@font/rock_on"
+            tools:ignore="RelativeOverlap"
+            tools:text="50" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btUpP2"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/ripple_effect_green" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btDownP2"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/ripple_effect_red" />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/ibMenuP2"
+            style="@style/MenuButton"
+            android:contentDescription="@string/player_2_options" />
+
+    </RelativeLayout>
+
+</LinearLayout>
