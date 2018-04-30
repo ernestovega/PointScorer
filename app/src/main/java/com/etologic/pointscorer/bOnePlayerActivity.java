@@ -8,8 +8,6 @@ import android.support.v7.widget.PopupMenu;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.Locale;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -24,6 +22,7 @@ public class bOnePlayerActivity extends AppCompatActivity {
     private static final String KEY_POINTS_PLAYER = "one_player_points";
     //VIEWS
     @BindView(R.id.tvPoints) TextView tvPoints;
+    @BindView(R.id.tvPointsForAnimation) TextView tvPointsForAnimation;
     //FIELDS
     private static SharedPreferences sharedPreferences;
     private int initialPoints;
@@ -32,11 +31,12 @@ public class bOnePlayerActivity extends AppCompatActivity {
     //EVENTS
     @OnClick(R.id.btUp) void onUpClickButton() { points++; savePoints(); updatePoints(); }
     private void savePoints() { sharedPreferences.edit().putInt(KEY_POINTS_PLAYER, points).apply(); }
-    private void updatePoints() { tvPoints.setText(String.format(Locale.getDefault(), "%d", points)); }
+    private void updatePoints() {
+        tvPointsForAnimation.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPoints, tvPointsForAnimation, points));
+    }
     @OnClick(R.id.btDown) void onDownClickButton() { points--; savePoints(); updatePoints(); }
     @OnClick(R.id.ibMenu) void onMenuButtonClick(View view) {
         PopupMenu popup = new PopupMenu(this, view);
-        popup.getMenu().findItem(R.id.menu_restart_all).setVisible(false);
         popup.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.menu_restart:
@@ -46,7 +46,7 @@ public class bOnePlayerActivity extends AppCompatActivity {
                     return false;
             }
         });
-        popup.inflate(R.menu.player_menu);
+        popup.inflate(R.menu.one_player_menu);
         popup.show();
     }
     private void restartPlayerPoints() {

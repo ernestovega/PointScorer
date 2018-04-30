@@ -9,8 +9,6 @@ import android.support.v7.widget.PopupMenu;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.Locale;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -31,6 +29,10 @@ public class eFourPlayersActivity extends AppCompatActivity {
     @BindView(R.id.tvPointsP2) TextView tvPointsP2;
     @BindView(R.id.tvPointsP3) TextView tvPointsP3;
     @BindView(R.id.tvPointsP4) TextView tvPointsP4;
+    @BindView(R.id.tvPointsP1ForAnimation) TextView tvPointsP1ForAnimation;
+    @BindView(R.id.tvPointsP2ForAnimation) TextView tvPointsP2ForAnimation;
+    @BindView(R.id.tvPointsP3ForAnimation) TextView tvPointsP3ForAnimation;
+    @BindView(R.id.tvPointsP4ForAnimation) TextView tvPointsP4ForAnimation;
     //FIELDS
     private int initialPoints;
     private static SharedPreferences sharedPreferences;
@@ -46,7 +48,9 @@ public class eFourPlayersActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(key, value).apply();
     }
-    private void updatePointsP1() { tvPointsP1.setText(String.format(Locale.getDefault(), "%d", pointsP1)); }
+    private void updatePointsP1() {
+        tvPointsP1ForAnimation.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP1, tvPointsP1ForAnimation, pointsP1));
+    }
     @OnClick(R.id.btDownP1) void onP1DownButtonClick() { pointsP1--; savePoints(KEY_POINTS_P1, pointsP1); updatePointsP1(); }
     @OnClick(R.id.ibMenuP1) void onP1MenuButtonClick(View view) {
         PopupMenu popup = new PopupMenu(this, view);
@@ -80,11 +84,17 @@ public class eFourPlayersActivity extends AppCompatActivity {
                 .show();
     }
     private void restartP2Points() { pointsP2 = initialPoints; savePoints(KEY_POINTS_P2, pointsP2); updatePointsP2(); }
-    private void updatePointsP2() { tvPointsP2.setText(String.format(Locale.getDefault(), "%d", pointsP2)); }
+    private void updatePointsP2() {
+        tvPointsP2ForAnimation.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP2, tvPointsP2ForAnimation, pointsP2));
+    }
     private void restartP3Points() { pointsP3 = initialPoints; savePoints(KEY_POINTS_P3, pointsP3); updatePointsP3(); }
-    private void updatePointsP3() { tvPointsP3.setText(String.format(Locale.getDefault(), "%d", pointsP3)); }
+    private void updatePointsP3() {
+        tvPointsP3ForAnimation.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP3, tvPointsP3ForAnimation, pointsP3));
+    }
     private void restartP4Points() { pointsP4 = initialPoints; savePoints(KEY_POINTS_P4, pointsP4); updatePointsP4(); }
-    private void updatePointsP4() { tvPointsP4.setText(String.format(Locale.getDefault(), "%d", pointsP4)); }
+    private void updatePointsP4() {
+        tvPointsP4ForAnimation.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP4, tvPointsP4ForAnimation, pointsP4));
+    }
     @OnClick(R.id.btUpP2) void onP2UpButtonClick() { pointsP2++; savePoints(KEY_POINTS_P2, pointsP2); updatePointsP2(); }
     @OnClick(R.id.btDownP2) void onP2DownButtonClick() { pointsP2--; savePoints(KEY_POINTS_P2, pointsP2); updatePointsP2(); }
     @OnClick(R.id.ibMenuP2) void onP2MenuButtonClick(View view) {

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -32,18 +31,11 @@
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:drawableBottom="@drawable/ic_minus"
-                android:drawableTop="@drawable/ic_plus"
-                android:fontFamily="@font/rock_on"
-                android:gravity="center"
-                android:maxLength="4"
-                android:textColor="@color/gray_text"
-                android:textSize="48sp"
-                tools:ignore="RelativeOverlap"
-                tools:text="50" />
+                style="@style/PointsTextView8Player" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvPointsP1ForAnimation"
+                style="@style/PointsTextView8PlayerForAnimation" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -92,18 +84,11 @@
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:drawableBottom="@drawable/ic_minus"
-                android:drawableTop="@drawable/ic_plus"
-                android:gravity="center"
-                android:maxLength="4"
-                android:textColor="@color/gray_text"
-                android:textSize="48sp"
-                app:fontFamily="@font/rock_on"
-                tools:ignore="RelativeOverlap"
-                tools:text="50" />
+                style="@style/PointsTextView8Player" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvPointsP2ForAnimation"
+                style="@style/PointsTextView8PlayerForAnimation" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -153,18 +138,11 @@
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:drawableBottom="@drawable/ic_minus"
-                android:drawableTop="@drawable/ic_plus"
-                android:fontFamily="@font/rock_on"
-                android:gravity="center"
-                android:maxLength="4"
-                android:textColor="@color/gray_text"
-                android:textSize="48sp"
-                tools:ignore="RelativeOverlap"
-                tools:text="50" />
+                style="@style/PointsTextView8Player" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvPointsP3ForAnimation"
+                style="@style/PointsTextView8PlayerForAnimation" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -214,18 +192,11 @@
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:drawableBottom="@drawable/ic_minus"
-                android:drawableTop="@drawable/ic_plus"
-                android:gravity="center"
-                android:maxLength="4"
-                android:textColor="@color/gray_text"
-                android:textSize="48sp"
-                app:fontFamily="@font/rock_on"
-                tools:ignore="RelativeOverlap"
-                tools:text="999" />
+                style="@style/PointsTextView8Player" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvPointsP4ForAnimation"
+                style="@style/PointsTextView8PlayerForAnimation" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -284,18 +255,11 @@
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:drawableBottom="@drawable/ic_minus"
-                android:drawableTop="@drawable/ic_plus"
-                android:fontFamily="@font/rock_on"
-                android:gravity="center"
-                android:maxLength="4"
-                android:textColor="@color/gray_text"
-                android:textSize="48sp"
-                tools:ignore="RelativeOverlap"
-                tools:text="50" />
+                style="@style/PointsTextView8Player" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvPointsP5ForAnimation"
+                style="@style/PointsTextView8PlayerForAnimation" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -346,18 +310,11 @@
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:drawableBottom="@drawable/ic_minus"
-                android:drawableTop="@drawable/ic_plus"
-                android:fontFamily="@font/rock_on"
-                android:gravity="center"
-                android:maxLength="4"
-                android:textColor="@color/gray_text"
-                android:textSize="48sp"
-                tools:ignore="RelativeOverlap"
-                tools:text="50" />
+                style="@style/PointsTextView8Player" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvPointsP6ForAnimation"
+                style="@style/PointsTextView8PlayerForAnimation" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -408,18 +365,11 @@
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:drawableBottom="@drawable/ic_minus"
-                android:drawableTop="@drawable/ic_plus"
-                android:fontFamily="@font/rock_on"
-                android:gravity="center"
-                android:maxLength="4"
-                android:textColor="@color/gray_text"
-                android:textSize="48sp"
-                tools:ignore="RelativeOverlap"
-                tools:text="50" />
+                style="@style/PointsTextView8Player" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvPointsP7ForAnimation"
+                style="@style/PointsTextView8PlayerForAnimation" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -470,18 +420,11 @@
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:drawableBottom="@drawable/ic_minus"
-                android:drawableTop="@drawable/ic_plus"
-                android:fontFamily="@font/rock_on"
-                android:gravity="center"
-                android:maxLength="4"
-                android:textColor="@color/gray_text"
-                android:textSize="48sp"
-                tools:ignore="RelativeOverlap"
-                tools:text="50" />
+                style="@style/PointsTextView8Player" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvPointsP8ForAnimation"
+                style="@style/PointsTextView8PlayerForAnimation" />
 
             <LinearLayout
                 android:layout_width="match_parent"

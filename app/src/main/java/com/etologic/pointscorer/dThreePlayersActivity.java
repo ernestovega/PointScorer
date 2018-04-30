@@ -29,6 +29,9 @@ public class dThreePlayersActivity extends AppCompatActivity {
     @BindView(R.id.tvPointsP1) TextView tvPointsP1;
     @BindView(R.id.tvPointsP2) TextView tvPointsP2;
     @BindView(R.id.tvPointsP3) TextView tvPointsP3;
+    @BindView(R.id.tvPointsP1ForAnimation) TextView tvPointsP1ForAnimation;
+    @BindView(R.id.tvPointsP2ForAnimation) TextView tvPointsP2ForAnimation;
+    @BindView(R.id.tvPointsP3ForAnimation) TextView tvPointsP3ForAnimation;
     //FIELDS
     private int initialPoints;
     private static SharedPreferences sharedPreferences;
@@ -61,9 +64,8 @@ public class dThreePlayersActivity extends AppCompatActivity {
         popup.inflate(R.menu.player_menu);
         popup.show();
     }
-    private void restartP1Points() { pointsP1 = initialPoints; savePoints(KEY_POINTS_P1, pointsP1); updatePointsP1(); }
     private void restartAllPlayersPoints() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppTheme);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog);
         builder.setMessage("Restart all players points?")
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, (dialog, which) -> {
@@ -74,10 +76,17 @@ public class dThreePlayersActivity extends AppCompatActivity {
                 .create()
                 .show();
     }
+    private void restartP1Points() {
+        tvPointsP1ForAnimation.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP1, tvPointsP1ForAnimation, pointsP1));
+    }
     private void restartP2Points() { pointsP2 = initialPoints; savePoints(KEY_POINTS_P2, pointsP2); updatePointsP2(); }
-    private void updatePointsP2() { tvPointsP2.setText(String.format(Locale.getDefault(), "%d", pointsP2)); }
+    private void updatePointsP2() {
+        tvPointsP2ForAnimation.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP2, tvPointsP2ForAnimation, pointsP2));
+    }
+    private void updatePointsP3() {
+        tvPointsP3ForAnimation.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP3, tvPointsP3ForAnimation, pointsP3));
+    }
     private void restartP3Points() { pointsP3 = initialPoints; savePoints(KEY_POINTS_P3, pointsP3); updatePointsP3(); }
-    private void updatePointsP3() { tvPointsP3.setText(String.format(Locale.getDefault(), "%d", pointsP3)); }
     @OnClick(R.id.btUpP2) void onP2UpButtonClick() { pointsP2++; savePoints(KEY_POINTS_P2, pointsP2); updatePointsP2(); }
     @OnClick(R.id.btDownP2) void onP2DownButtonClick() { pointsP2--; savePoints(KEY_POINTS_P2, pointsP2); updatePointsP2(); }
     @OnClick(R.id.ibMenuP2) void onP2MenuButtonClick(View view) {

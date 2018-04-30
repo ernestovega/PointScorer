@@ -17,4 +17,84 @@
         <item name="android:background">@drawable/ripple_effect_white</item>
     </style>
 
+    <style name="PointsTextViewForAnimation">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:maxLength">4</item>
+        <item name="android:paddingBottom">48dp</item>
+        <item name="android:textColor">@color/gray_text</item>
+        <item name="android:fontFamily">@font/rock_on</item>
+    </style>
+
+    <style name="PointsTextView" parent="PointsTextViewForAnimation">
+        <item name="android:drawableBottom">@drawable/ic_minus</item>
+        <item name="android:drawableTop">@drawable/ic_plus</item>
+    </style>
+
+    <style name="PointsTextView1Player" parent="PointsTextView">
+        <item name="android:textSize">100sp</item>
+    </style>
+
+    <style name="PointsTextView1PlayerForAnimation" parent="PointsTextViewForAnimation">
+        <item name="android:textSize">100sp</item>
+    </style>
+
+    <style name="PointsTextView2Player" parent="PointsTextView">
+        <item name="android:textSize">100sp</item>
+    </style>
+
+    <style name="PointsTextView2PlayerForAnimation" parent="PointsTextViewForAnimation">
+        <item name="android:textSize">100sp</item>
+    </style>
+
+    <style name="PointsTextView3Player" parent="PointsTextView">
+        <item name="android:textSize">64sp</item>
+    </style>
+
+    <style name="PointsTextView3PlayerForAnimation" parent="PointsTextViewForAnimation">
+        <item name="android:textSize">64sp</item>
+    </style>
+
+    <style name="PointsTextView4Player" parent="PointsTextView">
+        <item name="android:textSize">48sp</item>
+    </style>
+
+    <style name="PointsTextView4PlayerForAnimation" parent="PointsTextViewForAnimation">
+        <item name="android:textSize">48sp</item>
+    </style>
+
+    <style name="PointsTextView5Player" parent="PointsTextView">
+        <item name="android:textSize">48sp</item>
+    </style>
+
+    <style name="PointsTextView5PlayerForAnimation" parent="PointsTextViewForAnimation">
+        <item name="android:textSize">48sp</item>
+    </style>
+
+    <style name="PointsTextView6Player" parent="PointsTextView">
+        <item name="android:textSize">48sp</item>
+    </style>
+
+    <style name="PointsTextView6PlayerForAnimation" parent="PointsTextViewForAnimation">
+        <item name="android:textSize">48sp</item>
+    </style>
+
+    <style name="PointsTextView7Player" parent="PointsTextView">
+        <item name="android:textSize">48sp</item>
+    </style>
+
+    <style name="PointsTextView7PlayerForAnimation" parent="PointsTextViewForAnimation">
+        <item name="android:textSize">48sp</item>
+    </style>
+
+    <style name="PointsTextView8Player" parent="PointsTextView">
+        <item name="android:textSize">48sp</item>
+    </style>
+
+    <style name="PointsTextView8PlayerForAnimation" parent="PointsTextViewForAnimation">
+        <item name="android:textSize">48sp</item>
+    </style>
+
 </resources>

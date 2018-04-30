@@ -9,8 +9,6 @@ import android.support.v7.widget.PopupMenu;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.Locale;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -27,6 +25,8 @@ public class cTwoPlayersActivity extends AppCompatActivity {
     //VIEWS
     @BindView(R.id.tvPointsP1) TextView tvPointsP1;
     @BindView(R.id.tvPointsP2) TextView tvPointsP2;
+    @BindView(R.id.tvPointsP1ForAnimation) TextView tvPointsP1ForAnimation;
+    @BindView(R.id.tvPointsP2ForAnimation) TextView tvPointsP2ForAnimation;
     //FIELDS
     private int initialPoints;
     private static SharedPreferences sharedPreferences;
@@ -39,7 +39,9 @@ public class cTwoPlayersActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(key, value).apply();
     }
-    private void updatePointsP1() { tvPointsP1.setText(String.format(Locale.getDefault(), "%d", pointsP1)); }
+    private void updatePointsP1() {
+        tvPointsP1ForAnimation.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP1, tvPointsP1ForAnimation, pointsP1));
+    }
     @OnClick(R.id.btDownP1) void onP1DownButtonClick() { pointsP1--; savePoints(KEY_POINTS_P1, pointsP1); updatePointsP1(); }
     @OnClick(R.id.ibMenuP1) void onP1MenuButtonClick(View view) {
         PopupMenu popup = new PopupMenu(this, view);
@@ -71,7 +73,9 @@ public class cTwoPlayersActivity extends AppCompatActivity {
                 .show();
     }
     private void restartP2Points() { pointsP2 = initialPoints; savePoints(KEY_POINTS_P2, pointsP2); updatePointsP2(); }
-    private void updatePointsP2() { tvPointsP2.setText(String.format(Locale.getDefault(), "%d", pointsP2)); }
+    private void updatePointsP2() {
+        tvPointsP2ForAnimation.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP2, tvPointsP2ForAnimation, pointsP2));
+    }
     @OnClick(R.id.btUpP2) void onP2UpButtonClick() { pointsP2++; savePoints(KEY_POINTS_P2, pointsP2); updatePointsP2(); }
     @OnClick(R.id.btDownP2) void onP2DownButtonClick() { pointsP2--; savePoints(KEY_POINTS_P2, pointsP2); updatePointsP2(); }
     @OnClick(R.id.ibMenuP2) void onP2MenuButtonClick(View view) {
