@@ -6,17 +6,37 @@
     android:gravity="center"
     tools:context=".aMainActivity">
 
-    <ImageView
+    <!--<ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
         android:src="@drawable/bg_wood"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription" />-->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="128dp"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:gravity="center"
+            android:textColorHint="@android:color/black"
+            android:hint="@string/initial_points">
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="50"
+                android:gravity="center"
+                android:textColor="@android:color/black"/>
+
+        </android.support.design.widget.TextInputLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,6 +54,7 @@
                 android:contentDescription="@string/one_player"
                 android:padding="48dp"
                 android:scaleType="centerCrop"
+                android:tint="@android:color/black"
                 android:src="@drawable/ic_one_player"
                 tools:ignore="NestedWeights" />
 
@@ -43,6 +64,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:tint="@android:color/black"
                 android:background="@drawable/ripple_effect_white_wood_bg"
                 android:contentDescription="@string/two_players"
                 android:padding="48dp"
@@ -66,6 +88,7 @@
                 android:background="@drawable/ripple_effect_white_wood_bg"
                 android:contentDescription="@string/three_players"
                 android:padding="48dp"
+                android:tint="@android:color/black"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_three_players"
                 tools:ignore="NestedWeights" />
@@ -76,6 +99,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:tint="@android:color/black"
                 android:background="@drawable/ripple_effect_white_wood_bg"
                 android:contentDescription="@string/four_players"
                 android:padding="48dp"
@@ -99,6 +123,7 @@
                 android:background="@drawable/ripple_effect_white_wood_bg"
                 android:contentDescription="@string/five_players"
                 android:padding="48dp"
+                android:tint="@android:color/black"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_five_players"
                 tools:ignore="NestedWeights" />
@@ -107,6 +132,7 @@
                 android:id="@+id/btSixPlayers"
                 style="@style/Base.Widget.AppCompat.Button.Borderless"
                 android:layout_width="0dp"
+                android:tint="@android:color/black"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/ripple_effect_white_wood_bg"
@@ -127,6 +153,7 @@
                 android:id="@+id/btSevenPlayers"
                 style="@style/Base.Widget.AppCompat.Button.Borderless"
                 android:layout_width="0dp"
+                android:tint="@android:color/black"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/ripple_effect_white_wood_bg"
@@ -141,6 +168,7 @@
                 style="@style/Base.Widget.AppCompat.Button.Borderless"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:tint="@android:color/black"
                 android:layout_weight="1"
                 android:background="@drawable/ripple_effect_white_wood_bg"
                 android:contentDescription="@string/eight_players"
@@ -152,9 +180,9 @@
 
     </LinearLayout>
 
-    <ImageButton
+    <!--<ImageButton
         android:id="@+id/ibMenu"
         style="@style/MenuButton"
-        android:contentDescription="@string/score_options" />
+        android:contentDescription="@string/score_options" />-->
 
 </RelativeLayout>

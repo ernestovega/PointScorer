@@ -3,5 +3,5 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:color="@color/white_transparent"
     tools:targetApi="lollipop">
-    <item android:drawable="@drawable/bg_wood" />
+    <!--<item android:c="@drawable/bg_wood" />-->
 </ripple>
