@@ -34,7 +34,6 @@
 
         <activity
             android:name=".eFourPlayersActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity

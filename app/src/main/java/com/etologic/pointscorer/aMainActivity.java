@@ -38,7 +38,6 @@ public class aMainActivity extends AppCompatActivity {
         }
     }
     private void saveInitialPoints(int newInitialPoints) { sharedPreferences.edit().putInt(KEY_INITIAL_POINTS, newInitialPoints).apply(); }
-    private int getInitialPoints() { return sharedPreferences.getInt(KEY_INITIAL_POINTS, DEFAULT_INITIAL_POINTS); }
     @OnClick(R.id.btOnePlayer) void onOnePlayerButtonClick() { startActivity(new Intent(this, bOnePlayerActivity.class)); }
     @OnClick(R.id.btTwoPlayers) void onTwoPlayersButtonClick() { startActivity(new Intent(this, cTwoPlayersActivity.class)); }
     @OnClick(R.id.btThreePlayers) void onThreePlayersButtonClick() { startActivity(new Intent(this, dThreePlayersActivity.class)); }
@@ -54,6 +53,6 @@ public class aMainActivity extends AppCompatActivity {
         setContentView(R.layout.a_main_activity);
         ButterKnife.bind(this);
         sharedPreferences = getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
-        getInitialPoints();
+        tietInitialPoints.setText(String.valueOf(sharedPreferences.getInt(KEY_INITIAL_POINTS, DEFAULT_INITIAL_POINTS)));
     }
 }
