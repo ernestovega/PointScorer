@@ -10,8 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.view.View;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
 public class aMainActivity extends AppCompatActivity {
 
@@ -20,42 +22,20 @@ public class aMainActivity extends AppCompatActivity {
     public static final String FILE_NAME = "points_scorer_shared_prefs";
     public static final String KEY_INITIAL_POINTS = "initial_points";
 
+    //VIEWS
+    @BindView(R.id.tietMainInitialPoints) TextInputEditText tietInitialPoints;
+
     //FIELDS
     private SharedPreferences sharedPreferences;
 
     //EVENTS
-    @OnClick(R.id.ibMenu) void onMenuButtonClick(View view) {
-        PopupMenu popup = new PopupMenu(this, view);
-        popup.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.menu_initial_points:
-                    requestInitialPoints();
-                    return true;
-                default:
-                    return false;
-            }
-        });
-        popup.inflate(R.menu.main_menu);
-        popup.show();
-    }
-    private void requestInitialPoints() {
-        View initialPointsContainer = getLayoutInflater().inflate(R.layout.custom_edittext_dialog_initial_points, null);
-        TextInputEditText etInitialPoints = initialPointsContainer.findViewById(R.id.tietCustomDialogInitialpoints);
-        etInitialPoints.setText(String.valueOf(getInitialPoints()));
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog);
-        builder.setView(initialPointsContainer)
-                .setNegativeButton(android.R.string.cancel, null)
-                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
-                    String newInitialPoints = etInitialPoints.getText().toString();
-                    try {
-                        int iNewInitialPoints = Integer.valueOf(newInitialPoints);
-                        saveInitialPoints(iNewInitialPoints);
-                    } catch (NumberFormatException nfe) {
-                        etInitialPoints.setError(getString(R.string.error_initial_points));
-                    }
-                })
-                .create()
-                .show();
+    @OnTextChanged(R.id.tietMainInitialPoints) void onInitialPointsChanged(CharSequence text) {
+        try {
+            int iNewInitialPoints = Integer.valueOf(text.toString());
+            saveInitialPoints(iNewInitialPoints);
+        } catch (NumberFormatException nfe) {
+            tietInitialPoints.setError(getString(R.string.error_initial_points));
+        }
     }
     private void saveInitialPoints(int newInitialPoints) { sharedPreferences.edit().putInt(KEY_INITIAL_POINTS, newInitialPoints).apply(); }
     private int getInitialPoints() { return sharedPreferences.getInt(KEY_INITIAL_POINTS, DEFAULT_INITIAL_POINTS); }

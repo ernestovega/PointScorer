@@ -4,14 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:baselineAligned="false"
-    android:orientation="vertical"
     tools:context=".cTwoPlayersActivity">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:rotation="180"
         android:background="@drawable/bg_wood">
 
         <ImageView
@@ -34,7 +32,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
             android:orientation="vertical">
 
             <android.support.v7.widget.AppCompatButton
@@ -63,8 +60,8 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@drawable/bg_wood">
 
@@ -88,7 +85,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
             android:orientation="vertical">
 
             <android.support.v7.widget.AppCompatButton
