@@ -26,4 +26,5 @@
     <string name="error_initial_points">Please enter a valid value. Should be less than 1000.</string>
     <string name="default_initial_points">Default initial points</string>
     <string name="score_options">Score options</string>
+    <string name="player_1">Player 1</string>
 </resources>
