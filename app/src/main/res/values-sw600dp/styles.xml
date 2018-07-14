@@ -1,0 +1,36 @@
+<resources>
+
+    <style name="PointsTextView1Player" parent="PointsTextView">
+        <item name="android:textSize">200sp</item>
+        <item name="android:paddingBottom">48dp</item>
+    </style>
+
+    <style name="PointsTextView2Player" parent="PointsTextView">
+        <item name="android:textSize">160sp</item>
+    </style>
+
+    <style name="PointsTextView3Player" parent="PointsTextView">
+        <item name="android:textSize">96sp</item>
+    </style>
+
+    <style name="PointsTextView4Player" parent="PointsTextView">
+        <item name="android:textSize">96sp</item>
+    </style>
+
+    <style name="PointsTextView5Player" parent="PointsTextView">
+        <item name="android:textSize">80sp</item>
+    </style>
+
+    <style name="PointsTextView6Player" parent="PointsTextView">
+        <item name="android:textSize">80sp</item>
+    </style>
+
+    <style name="PointsTextView7Player" parent="PointsTextView">
+        <item name="android:textSize">64sp</item>
+    </style>
+
+    <style name="PointsTextView8Player" parent="PointsTextView">
+        <item name="android:textSize">64sp</item>
+    </style>
+
+</resources>

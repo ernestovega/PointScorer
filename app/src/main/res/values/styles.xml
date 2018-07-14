@@ -23,6 +23,7 @@
         <item name="android:layout_centerInParent">true</item>
         <item name="android:gravity">center</item>
         <item name="android:maxLength">4</item>
+        <item name="android:lines">1</item>
         <item name="android:textColor">@color/gray_text</item>
         <item name="android:fontFamily">@font/rock_on</item>
     </style>
@@ -33,7 +34,7 @@
     </style>
 
     <style name="PointsTextView2Player" parent="PointsTextView">
-        <item name="android:textSize">100sp</item>
+        <item name="android:textSize">80sp</item>
     </style>
 
     <style name="PointsTextView3Player" parent="PointsTextView">
