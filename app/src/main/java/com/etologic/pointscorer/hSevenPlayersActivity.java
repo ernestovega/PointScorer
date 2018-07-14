@@ -322,7 +322,6 @@ public class hSevenPlayersActivity extends AppCompatActivity {
         setContentView(R.layout.h_seven_players_activity);
         ButterKnife.bind(this);
         sharedPrefsHelper = new SharedPrefsHelper(this);
-        initShields();
         initPoints();
     }
     private void initShields() {
@@ -335,20 +334,25 @@ public class hSevenPlayersActivity extends AppCompatActivity {
         ivShieldP7.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP7, tvPointsP7ForAnimation, pointsP7));
     }
     private void initPoints() {
-        initialPoints = sharedPrefsHelper.getInitialPoints();
-        pointsP1 = sharedPrefsHelper.getSevenPlayerPointsP1();
-        pointsP2 = sharedPrefsHelper.getSevenPlayerPointsP2();
-        pointsP3 = sharedPrefsHelper.getSevenPlayerPointsP3();
-        pointsP4 = sharedPrefsHelper.getSevenPlayerPointsP4();
-        pointsP5 = sharedPrefsHelper.getSevenPlayerPointsP5();
-        pointsP6 = sharedPrefsHelper.getSevenPlayerPointsP6();
-        pointsP7 = sharedPrefsHelper.getSevenPlayerPointsP7();
-        updatePointsP1();
-        updatePointsP2();
-        updatePointsP3();
-        updatePointsP4();
-        updatePointsP5();
-        updatePointsP6();
-        updatePointsP7();
+        new Thread(() -> {
+            initialPoints = sharedPrefsHelper.getInitialPoints();
+            pointsP1 = sharedPrefsHelper.getSevenPlayerPointsP1();
+            pointsP2 = sharedPrefsHelper.getSevenPlayerPointsP2();
+            pointsP3 = sharedPrefsHelper.getSevenPlayerPointsP3();
+            pointsP4 = sharedPrefsHelper.getSevenPlayerPointsP4();
+            pointsP5 = sharedPrefsHelper.getSevenPlayerPointsP5();
+            pointsP6 = sharedPrefsHelper.getSevenPlayerPointsP6();
+            pointsP7 = sharedPrefsHelper.getSevenPlayerPointsP7();
+            runOnUiThread(() -> {
+                initShields();
+                updatePointsP1();
+                updatePointsP2();
+                updatePointsP3();
+                updatePointsP4();
+                updatePointsP5();
+                updatePointsP6();
+                updatePointsP7();
+            });
+        }).run();
     }
 }

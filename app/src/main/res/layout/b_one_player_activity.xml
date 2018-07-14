@@ -18,11 +18,12 @@
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/tvPoints"
-        style="@style/PointsTextView1Player" />
+        style="@style/PointsTextView1Player"
+        android:visibility="gone"/>
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/tvPointsForAnimation"
-        style="@style/PointsTextView1Player" />
+        style="@style/PointsTextView1Player"/>
 
     <LinearLayout
         android:layout_width="match_parent"

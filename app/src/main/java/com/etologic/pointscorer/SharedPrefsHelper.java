@@ -2,7 +2,9 @@ package com.etologic.pointscorer;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.WorkerThread;
 
+@WorkerThread
 public class SharedPrefsHelper {
     //region CONSTANTS
     private static final int DEFAULT_INITIAL_POINTS = 50;
@@ -56,49 +58,51 @@ public class SharedPrefsHelper {
     }
     //endregion
     public void resetAll() {
-        saveOnePlayerPoints(initialPoints);
+        new Thread(() -> {
+            saveOnePlayerPoints(initialPoints);
 
-        saveTwoPlayerPointsP1(initialPoints);
-        saveTwoPlayerPointsP2(initialPoints);
+            saveTwoPlayerPointsP1(initialPoints);
+            saveTwoPlayerPointsP2(initialPoints);
 
-        saveThreePlayerPointsP1(initialPoints);
-        saveThreePlayerPointsP2(initialPoints);
-        saveThreePlayerPointsP3(initialPoints);
+            saveThreePlayerPointsP1(initialPoints);
+            saveThreePlayerPointsP2(initialPoints);
+            saveThreePlayerPointsP3(initialPoints);
 
-        saveFourPlayerPointsP1(initialPoints);
-        saveFourPlayerPointsP2(initialPoints);
-        saveFourPlayerPointsP3(initialPoints);
-        saveFourPlayerPointsP4(initialPoints);
+            saveFourPlayerPointsP1(initialPoints);
+            saveFourPlayerPointsP2(initialPoints);
+            saveFourPlayerPointsP3(initialPoints);
+            saveFourPlayerPointsP4(initialPoints);
 
-        saveFivePlayerPointsP1(initialPoints);
-        saveFivePlayerPointsP2(initialPoints);
-        saveFivePlayerPointsP3(initialPoints);
-        saveFivePlayerPointsP4(initialPoints);
-        saveFivePlayerPointsP5(initialPoints);
+            saveFivePlayerPointsP1(initialPoints);
+            saveFivePlayerPointsP2(initialPoints);
+            saveFivePlayerPointsP3(initialPoints);
+            saveFivePlayerPointsP4(initialPoints);
+            saveFivePlayerPointsP5(initialPoints);
 
-        saveSixPlayerPointsP1(initialPoints);
-        saveSixPlayerPointsP2(initialPoints);
-        saveSixPlayerPointsP3(initialPoints);
-        saveSixPlayerPointsP4(initialPoints);
-        saveSixPlayerPointsP5(initialPoints);
-        saveSixPlayerPointsP6(initialPoints);
+            saveSixPlayerPointsP1(initialPoints);
+            saveSixPlayerPointsP2(initialPoints);
+            saveSixPlayerPointsP3(initialPoints);
+            saveSixPlayerPointsP4(initialPoints);
+            saveSixPlayerPointsP5(initialPoints);
+            saveSixPlayerPointsP6(initialPoints);
 
-        saveSevenPlayerPointsP1(initialPoints);
-        saveSevenPlayerPointsP2(initialPoints);
-        saveSevenPlayerPointsP3(initialPoints);
-        saveSevenPlayerPointsP4(initialPoints);
-        saveSevenPlayerPointsP5(initialPoints);
-        saveSevenPlayerPointsP6(initialPoints);
-        saveSevenPlayerPointsP7(initialPoints);
+            saveSevenPlayerPointsP1(initialPoints);
+            saveSevenPlayerPointsP2(initialPoints);
+            saveSevenPlayerPointsP3(initialPoints);
+            saveSevenPlayerPointsP4(initialPoints);
+            saveSevenPlayerPointsP5(initialPoints);
+            saveSevenPlayerPointsP6(initialPoints);
+            saveSevenPlayerPointsP7(initialPoints);
 
-        saveEightPlayerPointsP1(initialPoints);
-        saveEightPlayerPointsP2(initialPoints);
-        saveEightPlayerPointsP3(initialPoints);
-        saveEightPlayerPointsP4(initialPoints);
-        saveEightPlayerPointsP5(initialPoints);
-        saveEightPlayerPointsP6(initialPoints);
-        saveEightPlayerPointsP7(initialPoints);
-        saveEightPlayerPointsP8(initialPoints);
+            saveEightPlayerPointsP1(initialPoints);
+            saveEightPlayerPointsP2(initialPoints);
+            saveEightPlayerPointsP3(initialPoints);
+            saveEightPlayerPointsP4(initialPoints);
+            saveEightPlayerPointsP5(initialPoints);
+            saveEightPlayerPointsP6(initialPoints);
+            saveEightPlayerPointsP7(initialPoints);
+            saveEightPlayerPointsP8(initialPoints);
+        }).run();
     }
     //region METHODS INITIAL_POINTS
     public int getInitialPoints() { return sharedPrefs.getInt(KEY_INITIAL_POINTS, DEFAULT_INITIAL_POINTS); }

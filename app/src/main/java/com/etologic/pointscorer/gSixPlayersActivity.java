@@ -283,7 +283,6 @@ public class gSixPlayersActivity extends AppCompatActivity {
         setContentView(R.layout.g_six_players_activity);
         ButterKnife.bind(this);
         sharedPrefsHelper = new SharedPrefsHelper(this);
-        initShields();
         initPoints();
     }
     private void initShields() {
@@ -295,18 +294,23 @@ public class gSixPlayersActivity extends AppCompatActivity {
         ivShieldP6.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP6, tvPointsP6ForAnimation, pointsP6));
     }
     private void initPoints() {
-        initialPoints = sharedPrefsHelper.getInitialPoints();
-        pointsP1 = sharedPrefsHelper.getSixPlayerPointsP1();
-        pointsP2 = sharedPrefsHelper.getSixPlayerPointsP2();
-        pointsP3 = sharedPrefsHelper.getSixPlayerPointsP3();
-        pointsP4 = sharedPrefsHelper.getSixPlayerPointsP4();
-        pointsP5 = sharedPrefsHelper.getSixPlayerPointsP5();
-        pointsP6 = sharedPrefsHelper.getSixPlayerPointsP6();
-        updatePointsP1();
-        updatePointsP2();
-        updatePointsP3();
-        updatePointsP4();
-        updatePointsP5();
-        updatePointsP6();
+        new Thread(() -> {
+            initialPoints = sharedPrefsHelper.getInitialPoints();
+            pointsP1 = sharedPrefsHelper.getSixPlayerPointsP1();
+            pointsP2 = sharedPrefsHelper.getSixPlayerPointsP2();
+            pointsP3 = sharedPrefsHelper.getSixPlayerPointsP3();
+            pointsP4 = sharedPrefsHelper.getSixPlayerPointsP4();
+            pointsP5 = sharedPrefsHelper.getSixPlayerPointsP5();
+            pointsP6 = sharedPrefsHelper.getSixPlayerPointsP6();
+            runOnUiThread(() -> {
+                initShields();
+                updatePointsP1();
+                updatePointsP2();
+                updatePointsP3();
+                updatePointsP4();
+                updatePointsP5();
+                updatePointsP6();
+            });
+        }).run();
     }
 }

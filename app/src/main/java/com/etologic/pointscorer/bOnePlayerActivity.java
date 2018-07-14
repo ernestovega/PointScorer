@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,7 +30,7 @@ public class bOnePlayerActivity extends AppCompatActivity {
     private SharedPrefsHelper sharedPrefsHelper;
     private int initialPoints;
     private int points;
-    private Handler repeatUpdateHandler = new Handler();
+    private Handler repeatUpdateHandler = new Handler();/*https://stackoverflow.com/questions/7938516/continuously-increase-integer-value-as-the-button-is-pressed*/
     private boolean isAutoIncrement = false;
     private boolean isAutoDecrement = false;
 
@@ -85,15 +86,18 @@ public class bOnePlayerActivity extends AppCompatActivity {
         setContentView(R.layout.b_one_player_activity);
         ButterKnife.bind(this);
         sharedPrefsHelper = new SharedPrefsHelper(this);
-        initShield();
         initPoints();
     }
     private void initShield() { ivShield.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPoints, tvPointsForAnimation, points)); }
     private void initPoints() {
-        initialPoints = sharedPrefsHelper.getInitialPoints();
-        points = sharedPrefsHelper.getOnePlayerPoints();
-        updatePoints();
+        new Thread(() -> {
+            initialPoints = sharedPrefsHelper.getInitialPoints();
+            points = sharedPrefsHelper.getOnePlayerPoints();
+            runOnUiThread(() -> {
+                initShield();
+                updatePoints();
+            });
+            runOnUiThread(this::updatePoints);
+        }).run();
     }
-
-    /*https://stackoverflow.com/questions/7938516/continuously-increase-integer-value-as-the-button-is-pressed*/
 }

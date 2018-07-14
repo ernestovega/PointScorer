@@ -122,7 +122,6 @@ public class cTwoPlayersActivity extends AppCompatActivity {
         setContentView(R.layout.c_two_players_activity);
         ButterKnife.bind(this);
         sharedPrefsHelper = new SharedPrefsHelper(this);
-        initShields();
         initPoints();
     }
     private void initShields() {
@@ -130,10 +129,15 @@ public class cTwoPlayersActivity extends AppCompatActivity {
         ivShieldP2.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP2, tvPointsP2ForAnimation, pointsP2));
     }
     private void initPoints() {
-        initialPoints = sharedPrefsHelper.getInitialPoints();
-        pointsP1 = sharedPrefsHelper.getTwoPlayerPointsP1();
-        pointsP2 = sharedPrefsHelper.getTwoPlayerPointsP2();
-        updatePointsP1();
-        updatePointsP2();
+        new Thread(() -> {
+            initialPoints = sharedPrefsHelper.getInitialPoints();
+            pointsP1 = sharedPrefsHelper.getTwoPlayerPointsP1();
+            pointsP2 = sharedPrefsHelper.getTwoPlayerPointsP2();
+            runOnUiThread(() -> {
+                initShields();
+                updatePointsP1();
+                updatePointsP2();
+            });
+        }).run();
     }
 }

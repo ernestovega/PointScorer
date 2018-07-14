@@ -16,7 +16,7 @@ import butterknife.OnTextChanged;
 public class aMainActivity extends AppCompatActivity {
 
     //CONSTANTS
-    public static final int REP_DELAY = 150;
+    public static final int REP_DELAY = 100;
     //VIEWS
     @BindView(R.id.tietMainInitialPoints) TextInputEditText tietInitialPoints;
     //FIELDS
@@ -29,6 +29,7 @@ public class aMainActivity extends AppCompatActivity {
                 .setMessage("Restart all saved points?")
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                    KeyboardUtils.hideKeyboard(this, tietInitialPoints);
                     sharedPrefsHelper.resetAll();
                     Snackbar.make(tietInitialPoints, R.string.all_points_restarted, Snackbar.LENGTH_LONG).show();
                 })

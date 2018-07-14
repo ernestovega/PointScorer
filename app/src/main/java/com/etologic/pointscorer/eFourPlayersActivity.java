@@ -205,7 +205,6 @@ public class eFourPlayersActivity extends AppCompatActivity {
         setContentView(R.layout.e_four_players_activity);
         ButterKnife.bind(this);
         sharedPrefsHelper = new SharedPrefsHelper(this);
-        initShields();
         initPoints();
     }
     private void initShields() {
@@ -214,15 +213,21 @@ public class eFourPlayersActivity extends AppCompatActivity {
         ivShieldP3.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP3, tvPointsP3ForAnimation, pointsP3));
         ivShieldP4.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP4, tvPointsP4ForAnimation, pointsP4));
     }
+
     private void initPoints() {
-        initialPoints = sharedPrefsHelper.getInitialPoints();
-        pointsP1 = sharedPrefsHelper.getFourPlayerPointsP1();
-        pointsP2 = sharedPrefsHelper.getFourPlayerPointsP2();
-        pointsP3 = sharedPrefsHelper.getFourPlayerPointsP3();
-        pointsP4 = sharedPrefsHelper.getFourPlayerPointsP4();
-        updatePointsP1();
-        updatePointsP2();
-        updatePointsP3();
-        updatePointsP4();
+        new Thread(() -> {
+            initialPoints = sharedPrefsHelper.getInitialPoints();
+            pointsP1 = sharedPrefsHelper.getFourPlayerPointsP1();
+            pointsP2 = sharedPrefsHelper.getFourPlayerPointsP2();
+            pointsP3 = sharedPrefsHelper.getFourPlayerPointsP3();
+            pointsP4 = sharedPrefsHelper.getFourPlayerPointsP4();
+            runOnUiThread(() -> {
+                initShields();
+                updatePointsP1();
+                updatePointsP2();
+                updatePointsP3();
+                updatePointsP4();
+            });
+        }).run();
     }
 }

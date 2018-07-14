@@ -161,7 +161,6 @@ public class dThreePlayersActivity extends AppCompatActivity {
         setContentView(R.layout.d_three_players_activity);
         ButterKnife.bind(this);
         sharedPrefsHelper = new SharedPrefsHelper(this);
-        initShields();
         initPoints();
     }
     private void initShields() {
@@ -170,12 +169,17 @@ public class dThreePlayersActivity extends AppCompatActivity {
         ivShieldP3.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP3, tvPointsP3ForAnimation, pointsP3));
     }
     private void initPoints() {
-        initialPoints = sharedPrefsHelper.getInitialPoints();
-        pointsP1 = sharedPrefsHelper.getThreePlayerPointsP1();
-        pointsP2 = sharedPrefsHelper.getThreePlayerPointsP2();
-        pointsP3 = sharedPrefsHelper.getThreePlayerPointsP3();
-        updatePointsP1();
-        updatePointsP2();
-        updatePointsP3();
+        new Thread(() -> {
+            initialPoints = sharedPrefsHelper.getInitialPoints();
+            pointsP1 = sharedPrefsHelper.getThreePlayerPointsP1();
+            pointsP2 = sharedPrefsHelper.getThreePlayerPointsP2();
+            pointsP3 = sharedPrefsHelper.getThreePlayerPointsP3();
+            runOnUiThread(() -> {
+                initShields();
+                updatePointsP1();
+                updatePointsP2();
+                updatePointsP3();
+            });
+        }).run();
     }
 }

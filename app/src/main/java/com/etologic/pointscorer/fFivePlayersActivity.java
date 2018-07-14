@@ -244,7 +244,6 @@ public class fFivePlayersActivity extends AppCompatActivity {
         setContentView(R.layout.f_five_players_activity);
         ButterKnife.bind(this);
         sharedPrefsHelper = new SharedPrefsHelper(this);
-        initShields();
         initPoints();
     }
     private void initShields() {
@@ -254,17 +253,23 @@ public class fFivePlayersActivity extends AppCompatActivity {
         ivShieldP4.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP4, tvPointsP4ForAnimation, pointsP4));
         ivShieldP5.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP5, tvPointsP5ForAnimation, pointsP5));
     }
+
     private void initPoints() {
-        initialPoints = sharedPrefsHelper.getInitialPoints();
-        pointsP1 = sharedPrefsHelper.getFivePlayerPointsP1();
-        pointsP2 = sharedPrefsHelper.getFivePlayerPointsP2();
-        pointsP3 = sharedPrefsHelper.getFivePlayerPointsP3();
-        pointsP4 = sharedPrefsHelper.getFivePlayerPointsP4();
-        pointsP5 = sharedPrefsHelper.getFivePlayerPointsP5();
-        updatePointsP1();
-        updatePointsP2();
-        updatePointsP3();
-        updatePointsP4();
-        updatePointsP5();
+        new Thread(() -> {
+            initialPoints = sharedPrefsHelper.getInitialPoints();
+            pointsP1 = sharedPrefsHelper.getFivePlayerPointsP1();
+            pointsP2 = sharedPrefsHelper.getFivePlayerPointsP2();
+            pointsP3 = sharedPrefsHelper.getFivePlayerPointsP3();
+            pointsP4 = sharedPrefsHelper.getFivePlayerPointsP4();
+            pointsP5 = sharedPrefsHelper.getFivePlayerPointsP5();
+            runOnUiThread(() -> {
+                initShields();
+                updatePointsP1();
+                updatePointsP2();
+                updatePointsP3();
+                updatePointsP4();
+                updatePointsP5();
+            });
+        }).run();
     }
 }

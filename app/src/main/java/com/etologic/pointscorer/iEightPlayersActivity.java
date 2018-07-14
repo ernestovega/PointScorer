@@ -361,7 +361,6 @@ public class iEightPlayersActivity extends AppCompatActivity {
         setContentView(R.layout.i_eight_players_activity);
         ButterKnife.bind(this);
         sharedPrefsHelper = new SharedPrefsHelper(this);
-        initShields();
         initPoints();
     }
     private void initShields() {
@@ -374,23 +373,29 @@ public class iEightPlayersActivity extends AppCompatActivity {
         ivShieldP7.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP7, tvPointsP7ForAnimation, pointsP7));
         ivShieldP8.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP8, tvPointsP8ForAnimation, pointsP8));
     }
+
     private void initPoints() {
-        initialPoints = sharedPrefsHelper.getInitialPoints();
-        pointsP1 = sharedPrefsHelper.getEightPlayerPointsP1();
-        pointsP2 = sharedPrefsHelper.getEightPlayerPointsP2();
-        pointsP3 = sharedPrefsHelper.getEightPlayerPointsP3();
-        pointsP4 = sharedPrefsHelper.getEightPlayerPointsP4();
-        pointsP5 = sharedPrefsHelper.getEightPlayerPointsP5();
-        pointsP6 = sharedPrefsHelper.getEightPlayerPointsP6();
-        pointsP7 = sharedPrefsHelper.getEightPlayerPointsP7();
-        pointsP8 = sharedPrefsHelper.getEightPlayerPointsP8();
-        updatePointsP1();
-        updatePointsP2();
-        updatePointsP3();
-        updatePointsP4();
-        updatePointsP5();
-        updatePointsP6();
-        updatePointsP7();
-        updatePointsP8();
+        new Thread(() -> {
+            initialPoints = sharedPrefsHelper.getInitialPoints();
+            pointsP1 = sharedPrefsHelper.getEightPlayerPointsP1();
+            pointsP2 = sharedPrefsHelper.getEightPlayerPointsP2();
+            pointsP3 = sharedPrefsHelper.getEightPlayerPointsP3();
+            pointsP4 = sharedPrefsHelper.getEightPlayerPointsP4();
+            pointsP5 = sharedPrefsHelper.getEightPlayerPointsP5();
+            pointsP6 = sharedPrefsHelper.getEightPlayerPointsP6();
+            pointsP7 = sharedPrefsHelper.getEightPlayerPointsP7();
+            pointsP8 = sharedPrefsHelper.getEightPlayerPointsP8();
+            runOnUiThread(() -> {
+                initShields();
+                updatePointsP1();
+                updatePointsP2();
+                updatePointsP3();
+                updatePointsP4();
+                updatePointsP5();
+                updatePointsP6();
+                updatePointsP7();
+                updatePointsP8();
+            });
+        }).run();
     }
 }
