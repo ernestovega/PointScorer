@@ -26,7 +26,8 @@
                 android:layout_centerInParent="true"
                 android:padding="16dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/shield"
+                android:id="@+id/ivShieldP1"
+            android:src="@drawable/shield"
                 tools:ignore="ContentDescription" />
 
             <android.support.v7.widget.AppCompatTextView
@@ -35,7 +36,7 @@
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP1ForAnimation"
-                style="@style/PointsTextView4PlayerForAnimation" />
+                style="@style/PointsTextView4Player" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -79,7 +80,8 @@
                 android:layout_centerInParent="true"
                 android:padding="16dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/shield"
+                android:id="@+id/ivShieldP2"
+            android:src="@drawable/shield"
                 tools:ignore="ContentDescription" />
 
             <android.support.v7.widget.AppCompatTextView
@@ -88,7 +90,7 @@
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP2ForAnimation"
-                style="@style/PointsTextView4PlayerForAnimation" />
+                style="@style/PointsTextView4Player" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -142,7 +144,8 @@
                 android:layout_centerInParent="true"
                 android:padding="16dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/shield"
+                android:id="@+id/ivShieldP3"
+            android:src="@drawable/shield"
                 tools:ignore="ContentDescription" />
 
             <android.support.v7.widget.AppCompatTextView
@@ -151,7 +154,7 @@
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP3ForAnimation"
-                style="@style/PointsTextView4PlayerForAnimation" />
+                style="@style/PointsTextView4Player" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -196,7 +199,8 @@
                 android:layout_centerInParent="true"
                 android:padding="16dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/shield"
+                android:id="@+id/ivShieldP4"
+            android:src="@drawable/shield"
                 tools:ignore="ContentDescription" />
 
             <android.support.v7.widget.AppCompatTextView
@@ -205,7 +209,7 @@
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP4ForAnimation"
-                style="@style/PointsTextView4PlayerForAnimation" />
+                style="@style/PointsTextView4Player" />
 
             <LinearLayout
                 android:layout_width="match_parent"

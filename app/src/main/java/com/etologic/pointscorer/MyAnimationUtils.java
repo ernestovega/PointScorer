@@ -16,7 +16,7 @@ public class MyAnimationUtils {
     public static Animation getUpdatePointsAnimation(TextView tvPoints, TextView tvPointsForAnimation, int points) {
         AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1);
         alphaAnimation.setDuration(1000);
-        ScaleAnimation scaleAnimation = new ScaleAnimation(5, 1, 5, 1, RELATIVE_TO_SELF, .5f, RELATIVE_TO_SELF, .3f);
+        ScaleAnimation scaleAnimation = new ScaleAnimation(4, 1, 4, 1, RELATIVE_TO_SELF, .5f, RELATIVE_TO_SELF, .3f);
         alphaAnimation.setDuration(1000);
         AnimationSet animationSet = new AnimationSet(true);
         animationSet.addAnimation(alphaAnimation);

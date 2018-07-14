@@ -7,6 +7,7 @@
     tools:context=".bOnePlayerActivity">
 
     <ImageView
+        android:id="@+id/ivShield"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -15,35 +16,13 @@
         android:src="@drawable/shield"
         tools:ignore="ContentDescription" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="48dp"
-        android:layout_marginStart="48dp"
-        android:layout_toLeftOf="@+id/ibMenu"
-        android:layout_toStartOf="@+id/ibMenu"
-        android:backgroundTint="@android:color/white"
-        android:gravity="center"
-        android:hint="@string/player_1"
-        android:inputType="textMultiLine"
-        android:maxLines="2"
-        android:textColor="@android:color/white"
-        android:textSize="24sp"
-        android:textColorHint="@android:color/white"
-        android:textStyle="bold"
-        tools:targetApi="lollipop" />
-
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/tvPoints"
         style="@style/PointsTextView1Player" />
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/tvPointsForAnimation"
-        style="@style/PointsTextView1PlayerForAnimation" />
+        style="@style/PointsTextView1Player" />
 
     <LinearLayout
         android:layout_width="match_parent"

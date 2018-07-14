@@ -1,41 +1,67 @@
 package com.etologic.pointscorer;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
+import butterknife.OnTouch;
 
-import static com.etologic.pointscorer.aMainActivity.DEFAULT_INITIAL_POINTS;
-import static com.etologic.pointscorer.aMainActivity.FILE_NAME;
-import static com.etologic.pointscorer.aMainActivity.KEY_INITIAL_POINTS;
+import static android.view.MotionEvent.ACTION_CANCEL;
+import static android.view.MotionEvent.ACTION_UP;
+import static com.etologic.pointscorer.aMainActivity.REP_DELAY;
 
 public class bOnePlayerActivity extends AppCompatActivity {
 
-    //CONSTANTS
-    private static final String KEY_POINTS_PLAYER = "one_player_points";
     //VIEWS
+    @BindView(R.id.ivShield) ImageView ivShield;
     @BindView(R.id.tvPoints) TextView tvPoints;
     @BindView(R.id.tvPointsForAnimation) TextView tvPointsForAnimation;
     //FIELDS
-    private static SharedPreferences sharedPreferences;
+    private SharedPrefsHelper sharedPrefsHelper;
     private int initialPoints;
     private int points;
+    private Handler repeatUpdateHandler = new Handler();
+    private boolean isAutoIncrement = false;
+    private boolean isAutoDecrement = false;
+
+    //INNER CLASSES
+    class RepeatUpdater implements Runnable {
+        public void run() {
+            if (isAutoIncrement) { points++; sharedPrefsHelper.saveOnePlayerPoints(points); updatePoints(); repeatUpdateHandler.postDelayed(new RepeatUpdater(), REP_DELAY); }
+            if (isAutoDecrement) { points--; sharedPrefsHelper.saveOnePlayerPoints(points); updatePoints(); repeatUpdateHandler.postDelayed(new RepeatUpdater(), REP_DELAY); }
+        }
+    }
 
     //EVENTS
-    @OnClick(R.id.btUp) void onUpClickButton() { points++; savePoints(); updatePoints(); }
-    private void savePoints() { sharedPreferences.edit().putInt(KEY_POINTS_PLAYER, points).apply(); }
-    private void updatePoints() {
-        tvPointsForAnimation.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPoints, tvPointsForAnimation, points));
+    @OnLongClick(R.id.btUp) boolean onUpLongClickButton() {
+        isAutoIncrement = true; repeatUpdateHandler.post(new RepeatUpdater()); return false;
     }
-    @OnClick(R.id.btDown) void onDownClickButton() { points--; savePoints(); updatePoints(); }
-    @OnClick(R.id.ibMenu) void onMenuButtonClick(View view) {
+    @OnLongClick(R.id.btDown) boolean onDownLongClickButton() {
+        isAutoDecrement = true; repeatUpdateHandler.post(new RepeatUpdater()); return false;
+    }
+    @OnTouch(R.id.btUp) boolean onUpTouch(MotionEvent event) {
+        if((event.getAction() == ACTION_UP || event.getAction() == ACTION_CANCEL) && isAutoIncrement) { isAutoIncrement = false; } return false;
+    }
+    @OnTouch(R.id.btDown) boolean onDownTouch(MotionEvent event) {
+        if((event.getAction() == ACTION_UP || event.getAction() == ACTION_CANCEL) && isAutoDecrement) { isAutoDecrement = false; } return false;
+    }
+    @OnClick(R.id.btUp) void onUpClickButton() {
+        points++; sharedPrefsHelper.saveOnePlayerPoints(points); updatePoints();
+    }
+    @OnClick(R.id.btDown) void onDownClickButton() {
+        points--; sharedPrefsHelper.saveOnePlayerPoints(points); updatePoints();
+    }
+    @OnClick(R.id.ibMenu)
+    void onMenuButtonClick(View view) {
         PopupMenu popup = new PopupMenu(this, view);
         popup.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
@@ -49,24 +75,23 @@ public class bOnePlayerActivity extends AppCompatActivity {
         popup.inflate(R.menu.one_player_menu);
         popup.show();
     }
-    private void restartPlayerPoints() {
-        points = initialPoints;
-        savePoints();
-        updatePoints();
-    }
+    private void updatePoints() { tvPointsForAnimation.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPoints, tvPointsForAnimation, points)); }
+    private void restartPlayerPoints() { points = initialPoints; sharedPrefsHelper.saveOnePlayerPoints(points); updatePoints(); }
+
     //LIFECYCLE
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.b_one_player_activity);
         ButterKnife.bind(this);
+        sharedPrefsHelper = new SharedPrefsHelper(this);
+        initShield();
         initPoints();
     }
+    private void initShield() { ivShield.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPoints, tvPointsForAnimation, points)); }
     private void initPoints() {
-        sharedPreferences = getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
-        initialPoints = sharedPreferences.getInt(KEY_INITIAL_POINTS, DEFAULT_INITIAL_POINTS);
-        points = getSavedPoints();
+        initialPoints = sharedPrefsHelper.getInitialPoints();
+        points = sharedPrefsHelper.getOnePlayerPoints();
         updatePoints();
     }
-    private int getSavedPoints() { return sharedPreferences.getInt(KEY_POINTS_PLAYER, initialPoints); }
 }

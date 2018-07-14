@@ -23,8 +23,11 @@
     <string name="restart_all">Restart all</string>
     <string name="initial_points">Initial points</string>
     <string name="restart_all_players_points_">Restart all players points?</string>
-    <string name="error_initial_points">Please enter a valid value. Should be less than 1000.</string>
+    <string name="error_initial_points">Please enter a valid value. Should be less than 10.000.</string>
     <string name="default_initial_points">Default initial points</string>
     <string name="score_options">Score options</string>
     <string name="player_1">Player 1</string>
+    <string name="player">Player</string>
+    <string name="reset_all">Reset all</string>
+    <string name="all_points_restarted">All points restarted</string>
 </resources>

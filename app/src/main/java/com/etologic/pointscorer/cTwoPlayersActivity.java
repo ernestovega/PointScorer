@@ -1,48 +1,71 @@
 package com.etologic.pointscorer;
 
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
+import butterknife.OnTouch;
 
-import static com.etologic.pointscorer.aMainActivity.DEFAULT_INITIAL_POINTS;
-import static com.etologic.pointscorer.aMainActivity.FILE_NAME;
-import static com.etologic.pointscorer.aMainActivity.KEY_INITIAL_POINTS;
+import static android.view.MotionEvent.ACTION_CANCEL;
+import static android.view.MotionEvent.ACTION_UP;
+import static com.etologic.pointscorer.aMainActivity.REP_DELAY;
 
 public class cTwoPlayersActivity extends AppCompatActivity {
 
-    //CONSTANTS
-    private static final String KEY_POINTS_P1 = "two_players_p1_points";
-    private static final String KEY_POINTS_P2 = "two_players_p2_points";
     //VIEWS
+    @BindView(R.id.ivShieldP1) ImageView ivShieldP1;
+    @BindView(R.id.ivShieldP2) ImageView ivShieldP2;
     @BindView(R.id.tvPointsP1) TextView tvPointsP1;
     @BindView(R.id.tvPointsP2) TextView tvPointsP2;
     @BindView(R.id.tvPointsP1ForAnimation) TextView tvPointsP1ForAnimation;
     @BindView(R.id.tvPointsP2ForAnimation) TextView tvPointsP2ForAnimation;
     //FIELDS
+    private SharedPrefsHelper sharedPrefsHelper;
     private int initialPoints;
-    private static SharedPreferences sharedPreferences;
     private int pointsP1;
     private int pointsP2;
+    private Handler repeatUpdateHandlerP1 = new Handler();
+    private Handler repeatUpdateHandlerP2 = new Handler();
+    private boolean isAutoIncrement = false;
+    private boolean isAutoDecrement = false;
+
+    //INNER CLASSES
+    class RepeatUpdaterP1 implements Runnable {
+        public void run() {
+            if (isAutoIncrement) { pointsP1++; sharedPrefsHelper.saveTwoPlayerPointsP1(pointsP1); updatePointsP1(); repeatUpdateHandlerP1.postDelayed(new cTwoPlayersActivity.RepeatUpdaterP1(), REP_DELAY); }
+            if (isAutoDecrement) { pointsP1--; sharedPrefsHelper.saveTwoPlayerPointsP1(pointsP1); updatePointsP1(); repeatUpdateHandlerP1.postDelayed(new cTwoPlayersActivity.RepeatUpdaterP1(), REP_DELAY); }
+        }
+    }
+    class RepeatUpdaterP2 implements Runnable {
+        public void run() {
+            if (isAutoIncrement) { pointsP2++; sharedPrefsHelper.saveTwoPlayerPointsP2(pointsP2); updatePointsP2(); repeatUpdateHandlerP2.postDelayed(new cTwoPlayersActivity.RepeatUpdaterP2(), REP_DELAY); }
+            if (isAutoDecrement) { pointsP2--; sharedPrefsHelper.saveTwoPlayerPointsP2(pointsP2); updatePointsP2(); repeatUpdateHandlerP2.postDelayed(new cTwoPlayersActivity.RepeatUpdaterP2(), REP_DELAY); }
+        }
+    }
 
     //EVENTS
-    @OnClick(R.id.btUpP1) void onP1UpButtonClick() { pointsP1++; savePoints(KEY_POINTS_P1, pointsP1); updatePointsP1(); }
-    private void savePoints(String key, int value) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(key, value).apply();
-    }
-    private void updatePointsP1() {
-        tvPointsP1ForAnimation.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP1, tvPointsP1ForAnimation, pointsP1));
-    }
-    @OnClick(R.id.btDownP1) void onP1DownButtonClick() { pointsP1--; savePoints(KEY_POINTS_P1, pointsP1); updatePointsP1(); }
+    @OnLongClick(R.id.btUpP1)   boolean onUpP1LongClickButton()   { isAutoIncrement = true; repeatUpdateHandlerP1.post(new RepeatUpdaterP1()); return false; }
+    @OnLongClick(R.id.btDownP1) boolean onDownP1LongClickButton() { isAutoDecrement = true; repeatUpdateHandlerP1.post(new RepeatUpdaterP1()); return false; }
+    @OnTouch(R.id.btUpP1)   boolean onUpP1Touch(MotionEvent event)   { if((event.getAction() == ACTION_UP || event.getAction() == ACTION_CANCEL) && isAutoIncrement) { isAutoIncrement = false; } return false; }
+    @OnTouch(R.id.btDownP1) boolean onDownP1Touch(MotionEvent event) { if((event.getAction() == ACTION_UP || event.getAction() == ACTION_CANCEL) && isAutoDecrement) { isAutoDecrement = false; } return false; }
+    @OnLongClick(R.id.btUpP2)   boolean onUpP2LongClickButton()   { isAutoIncrement = true; repeatUpdateHandlerP2.post(new RepeatUpdaterP2()); return false; }
+    @OnLongClick(R.id.btDownP2) boolean onDownP2LongClickButton() { isAutoDecrement = true; repeatUpdateHandlerP2.post(new RepeatUpdaterP2()); return false; }
+    @OnTouch(R.id.btUpP2)   boolean onUpP2Touch(MotionEvent event)   { if((event.getAction() == ACTION_UP || event.getAction() == ACTION_CANCEL) && isAutoIncrement) { isAutoIncrement = false; } return false; }
+    @OnTouch(R.id.btDownP2) boolean onDownP2Touch(MotionEvent event) { if((event.getAction() == ACTION_UP || event.getAction() == ACTION_CANCEL) && isAutoDecrement) { isAutoDecrement = false; } return false; }
+    @OnClick(R.id.btUpP1) void onP1UpButtonClick() { pointsP1++; sharedPrefsHelper.saveTwoPlayerPointsP1(pointsP1); updatePointsP1(); }
+    @OnClick(R.id.btUpP2) void onP2UpButtonClick() { pointsP2++; sharedPrefsHelper.saveTwoPlayerPointsP2(pointsP2); updatePointsP2(); }
+    @OnClick(R.id.btDownP1) void onP1DownButtonClick() { pointsP1--; sharedPrefsHelper.saveTwoPlayerPointsP1(pointsP1); updatePointsP1(); }
+    @OnClick(R.id.btDownP2) void onP2DownButtonClick() { pointsP2--; sharedPrefsHelper.saveTwoPlayerPointsP2(pointsP2); updatePointsP2(); }
     @OnClick(R.id.ibMenuP1) void onP1MenuButtonClick(View view) {
         PopupMenu popup = new PopupMenu(this, view);
         popup.setOnMenuItemClickListener(item -> {
@@ -60,24 +83,6 @@ public class cTwoPlayersActivity extends AppCompatActivity {
         popup.inflate(R.menu.player_menu);
         popup.show();
     }
-    private void restartP1Points() { pointsP1 = initialPoints; savePoints(KEY_POINTS_P1, pointsP1); updatePointsP1(); }
-    private void restartAllPlayersPoints() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog);
-        builder.setMessage("Restart all players points?")
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                    restartP1Points();
-                    restartP2Points();
-                })
-                .create()
-                .show();
-    }
-    private void restartP2Points() { pointsP2 = initialPoints; savePoints(KEY_POINTS_P2, pointsP2); updatePointsP2(); }
-    private void updatePointsP2() {
-        tvPointsP2ForAnimation.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP2, tvPointsP2ForAnimation, pointsP2));
-    }
-    @OnClick(R.id.btUpP2) void onP2UpButtonClick() { pointsP2++; savePoints(KEY_POINTS_P2, pointsP2); updatePointsP2(); }
-    @OnClick(R.id.btDownP2) void onP2DownButtonClick() { pointsP2--; savePoints(KEY_POINTS_P2, pointsP2); updatePointsP2(); }
     @OnClick(R.id.ibMenuP2) void onP2MenuButtonClick(View view) {
         PopupMenu popup = new PopupMenu(this, view);
         popup.setOnMenuItemClickListener(item -> {
@@ -95,21 +100,40 @@ public class cTwoPlayersActivity extends AppCompatActivity {
         popup.inflate(R.menu.player_menu);
         popup.show();
     }
+    private void updatePointsP1() { tvPointsP1ForAnimation.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP1, tvPointsP1ForAnimation, pointsP1)); }
+    private void updatePointsP2() { tvPointsP2ForAnimation.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP2, tvPointsP2ForAnimation, pointsP2)); }
+    private void restartAllPlayersPoints() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog);
+        builder.setMessage("Restart all players points?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                    restartP1Points();
+                    restartP2Points();
+                })
+                .create()
+                .show();
+    }
+    private void restartP1Points() { pointsP1 = initialPoints; sharedPrefsHelper.saveTwoPlayerPointsP1(pointsP1); updatePointsP1(); }
+    private void restartP2Points() { pointsP2 = initialPoints; sharedPrefsHelper.saveTwoPlayerPointsP2(pointsP2); updatePointsP2(); }
     //LIFECYCLE
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.c_two_players_activity);
         ButterKnife.bind(this);
+        sharedPrefsHelper = new SharedPrefsHelper(this);
+        initShields();
         initPoints();
     }
+    private void initShields() {
+        ivShieldP1.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP1, tvPointsP1ForAnimation, pointsP1));
+        ivShieldP2.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP2, tvPointsP2ForAnimation, pointsP2));
+    }
     private void initPoints() {
-        sharedPreferences = getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
-        initialPoints = sharedPreferences.getInt(KEY_INITIAL_POINTS, DEFAULT_INITIAL_POINTS);
-        pointsP1 = getSavedPoints(KEY_POINTS_P1);
-        pointsP2 = getSavedPoints(KEY_POINTS_P2);
+        initialPoints = sharedPrefsHelper.getInitialPoints();
+        pointsP1 = sharedPrefsHelper.getTwoPlayerPointsP1();
+        pointsP2 = sharedPrefsHelper.getTwoPlayerPointsP2();
         updatePointsP1();
         updatePointsP2();
     }
-    private int getSavedPoints(String key) { return sharedPreferences.getInt(key, initialPoints); }
 }

@@ -8,28 +8,46 @@
     android:orientation="vertical"
     tools:context=".aMainActivity">
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="128dp"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:hint="@string/initial_points"
-        android:paddingEnd="16dp"
-        android:paddingStart="16dp"
-        android:paddingTop="16dp"
-        android:textColorHint="@android:color/black">
+        android:layout_gravity="center_horizontal">
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/tietMainInitialPoints"
-            android:layout_width="match_parent"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/tilMainInitialPoints"
+            android:layout_width="128dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxLength="4"
-            android:text="50"
-            android:textColor="@android:color/black" />
+            android:layout_centerInParent="true"
+            android:hint="@string/initial_points"
+            android:paddingTop="16dp"
+            android:textColorHint="@android:color/black">
 
-    </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/tietMainInitialPoints"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:digits="0123456789"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="4"
+                android:textColor="@android:color/black"
+                tools:text="9999" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/acbMainResetAll"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/tilMainInitialPoints"
+            android:layout_toRightOf="@+id/tilMainInitialPoints"
+            android:text="@string/reset_all"
+            android:textColor="@color/gray_text"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -27,6 +27,7 @@
                 android:layout_centerInParent="true"
                 android:padding="16dp"
                 android:scaleType="fitCenter"
+                android:id="@+id/ivShieldP1"
                 android:src="@drawable/shield"
                 tools:ignore="ContentDescription" />
 
@@ -36,7 +37,7 @@
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP1ForAnimation"
-                style="@style/PointsTextView6PlayerForAnimation" />
+                style="@style/PointsTextView6Player" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -80,6 +81,7 @@
                 android:layout_centerInParent="true"
                 android:padding="16dp"
                 android:scaleType="fitCenter"
+                android:id="@+id/ivShieldP2"
                 android:src="@drawable/shield"
                 tools:ignore="ContentDescription" />
 
@@ -89,7 +91,7 @@
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP2ForAnimation"
-                style="@style/PointsTextView6PlayerForAnimation" />
+                style="@style/PointsTextView6Player" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -143,6 +145,7 @@
                 android:layout_centerInParent="true"
                 android:padding="16dp"
                 android:scaleType="fitCenter"
+                android:id="@+id/ivShieldP3"
                 android:src="@drawable/shield"
                 tools:ignore="ContentDescription" />
 
@@ -152,7 +155,7 @@
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP3ForAnimation"
-                style="@style/PointsTextView6PlayerForAnimation" />
+                style="@style/PointsTextView6Player" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -197,6 +200,7 @@
                 android:layout_centerInParent="true"
                 android:padding="16dp"
                 android:scaleType="fitCenter"
+                android:id="@+id/ivShieldP4"
                 android:src="@drawable/shield"
                 tools:ignore="ContentDescription" />
 
@@ -206,7 +210,7 @@
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP4ForAnimation"
-                style="@style/PointsTextView6PlayerForAnimation" />
+                style="@style/PointsTextView6Player" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -260,6 +264,7 @@
                 android:layout_centerInParent="true"
                 android:padding="16dp"
                 android:scaleType="fitCenter"
+                android:id="@+id/ivShieldP5"
                 android:src="@drawable/shield"
                 tools:ignore="ContentDescription" />
 
@@ -269,7 +274,7 @@
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP5ForAnimation"
-                style="@style/PointsTextView6PlayerForAnimation" />
+                style="@style/PointsTextView6Player" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -315,6 +320,7 @@
                 android:layout_centerInParent="true"
                 android:padding="16dp"
                 android:scaleType="fitCenter"
+                android:id="@+id/ivShieldP6"
                 android:src="@drawable/shield"
                 tools:ignore="ContentDescription" />
 
@@ -324,7 +330,7 @@
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP6ForAnimation"
-                style="@style/PointsTextView6PlayerForAnimation" />
+                style="@style/PointsTextView6Player" />
 
             <LinearLayout
                 android:layout_width="match_parent"
