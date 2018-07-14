@@ -64,7 +64,7 @@
             android:background="@drawable/ripple_effect_white_wood_bg"
             android:contentDescription="@string/one_player"
             android:padding="48dp"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:src="@drawable/ic_one_player"
             android:tint="@android:color/black"
             tools:ignore="NestedWeights" />
@@ -78,7 +78,7 @@
             android:background="@drawable/ripple_effect_white_wood_bg"
             android:contentDescription="@string/two_players"
             android:padding="48dp"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:src="@drawable/ic_two_players"
             android:tint="@android:color/black" />
 
@@ -99,7 +99,7 @@
             android:background="@drawable/ripple_effect_white_wood_bg"
             android:contentDescription="@string/three_players"
             android:padding="48dp"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:src="@drawable/ic_three_players"
             android:tint="@android:color/black"
             tools:ignore="NestedWeights" />
@@ -113,7 +113,7 @@
             android:background="@drawable/ripple_effect_white_wood_bg"
             android:contentDescription="@string/four_players"
             android:padding="48dp"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:src="@drawable/ic_four_players"
             android:tint="@android:color/black" />
 
@@ -134,7 +134,7 @@
             android:background="@drawable/ripple_effect_white_wood_bg"
             android:contentDescription="@string/five_players"
             android:padding="48dp"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:src="@drawable/ic_five_players"
             android:tint="@android:color/black"
             tools:ignore="NestedWeights" />
@@ -148,7 +148,7 @@
             android:background="@drawable/ripple_effect_white_wood_bg"
             android:contentDescription="@string/six_players"
             android:padding="48dp"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:src="@drawable/ic_six_players"
             android:tint="@android:color/black" />
 
@@ -169,7 +169,7 @@
             android:background="@drawable/ripple_effect_white_wood_bg"
             android:contentDescription="@string/seven_players"
             android:padding="48dp"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:src="@drawable/ic_seven_players"
             android:tint="@android:color/black"
             tools:ignore="NestedWeights" />
@@ -183,7 +183,7 @@
             android:background="@drawable/ripple_effect_white_wood_bg"
             android:contentDescription="@string/eight_players"
             android:padding="48dp"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:src="@drawable/ic_eight_players"
             android:tint="@android:color/black" />
 

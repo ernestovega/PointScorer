@@ -94,4 +94,6 @@ public class bOnePlayerActivity extends AppCompatActivity {
         points = sharedPrefsHelper.getOnePlayerPoints();
         updatePoints();
     }
+
+    /*https://stackoverflow.com/questions/7938516/continuously-increase-integer-value-as-the-button-is-pressed*/
 }
