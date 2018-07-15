@@ -5,11 +5,12 @@ android {
         pointscorer_keystore {
             keyAlias 'PointsScorerKeyStore'
             keyPassword 'ac9jy34X'
-            storeFile file('C:/Users/Lid/AndroidStudioProjects/PointScorer/keystore_pointscorer.jks')
+            storeFile file('~/Projects/Android/keystore_pointscorer.jks')
             storePassword 'ac9jy34X'
         }
     }
     compileSdkVersion 27
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.etologic.pointscorer"
         minSdkVersion 16
@@ -29,7 +30,6 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
         sourceCompatibility JavaVersion.VERSION_1_8
     }
-    buildToolsVersion '27.0.3'
 }
 
 dependencies {
