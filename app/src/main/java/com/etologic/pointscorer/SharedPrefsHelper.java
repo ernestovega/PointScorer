@@ -10,6 +10,7 @@ public class SharedPrefsHelper {
     private static final int DEFAULT_INITIAL_POINTS = 100;
     private static final String FILE_NAME = "points_scorer_shared_prefs";
     private static final String KEY_INITIAL_POINTS = "initial_points";
+    private static final String KEY_INITIAL_CHECK_DONE = "initial_check_done";
     private static final String KEY_POINTS_ONE_PLAYER = "one_player_points";
     private static final String KEY_POINTS_TWO_PLAYERS_P1 = "two_players_p1_points";
     private static final String KEY_POINTS_TWO_PLAYERS_P2 = "two_players_p2_points";
@@ -57,6 +58,15 @@ public class SharedPrefsHelper {
         initialPoints = getInitialPoints();
     }
     //endregion
+    // region METHODS INITIAL_POINTS
+    void initRecordsIfProceed() {
+        if(!getInitialCheckDone()) {
+            resetAll();
+            setInitialCheckDone();
+        }
+    }
+    private boolean getInitialCheckDone() { return sharedPrefs.getBoolean(KEY_INITIAL_CHECK_DONE, false); }
+    private void setInitialCheckDone() { sharedPrefs.edit().putBoolean(KEY_INITIAL_CHECK_DONE, true).apply(); }
     public void resetAll() {
         new Thread(() -> {
             saveOnePlayerPoints(initialPoints);
@@ -104,8 +114,9 @@ public class SharedPrefsHelper {
             saveEightPlayerPointsP8(initialPoints);
         }).run();
     }
-    //region METHODS INITIAL_POINTS
-    public int getInitialPoints() { return sharedPrefs.getInt(KEY_INITIAL_POINTS, DEFAULT_INITIAL_POINTS); }
+    public int getInitialPoints() {
+        return sharedPrefs.getInt(KEY_INITIAL_POINTS, DEFAULT_INITIAL_POINTS);
+    }
     public void saveInitialPoints(int points) {
         sharedPrefs.edit().putInt(KEY_INITIAL_POINTS, points).apply();
         initialPoints = points;

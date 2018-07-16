@@ -56,6 +56,7 @@ public class aMainActivity extends AppCompatActivity {
         setContentView(R.layout.a_main_activity);
         ButterKnife.bind(this);
         sharedPrefsHelper = new SharedPrefsHelper(this);
+        sharedPrefsHelper.initRecordsIfProceed();
         tietInitialPoints.setText(String.valueOf(sharedPrefsHelper.getInitialPoints()));
     }
 }
