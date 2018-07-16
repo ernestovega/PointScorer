@@ -8,8 +8,6 @@
     <string name="six_players">Six players</string>
     <string name="seven_players">Seven players</string>
     <string name="eight_players">Eight players</string>
-    <string name="minus">-</string>
-    <string name="plus">+</string>
     <string name="player_options">Player options</string>
     <string name="player_1_options">Player 1 options</string>
     <string name="player_2_options">Player 2 options</string>
@@ -22,12 +20,8 @@
     <string name="restart">Restart</string>
     <string name="restart_all">Restart all</string>
     <string name="initial_points">Initial points</string>
-    <string name="restart_all_players_points_">Restart all players points?</string>
+    <string name="restart_all_saved_points_">Restart all saved points?</string>
     <string name="error_initial_points">Please enter a valid value. Should be less than 10.000.</string>
-    <string name="default_initial_points">Default initial points</string>
-    <string name="score_options">Score options</string>
-    <string name="player_1">Player 1</string>
-    <string name="player">Player</string>
     <string name="reset_all">Reset all</string>
     <string name="all_points_restarted">All points restarted</string>
 </resources>

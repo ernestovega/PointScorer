@@ -7,7 +7,7 @@ import android.support.annotation.WorkerThread;
 @WorkerThread
 public class SharedPrefsHelper {
     //region CONSTANTS
-    private static final int DEFAULT_INITIAL_POINTS = 50;
+    private static final int DEFAULT_INITIAL_POINTS = 100;
     private static final String FILE_NAME = "points_scorer_shared_prefs";
     private static final String KEY_INITIAL_POINTS = "initial_points";
     private static final String KEY_POINTS_ONE_PLAYER = "one_player_points";
