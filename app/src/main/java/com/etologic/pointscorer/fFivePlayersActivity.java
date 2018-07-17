@@ -219,7 +219,7 @@ public class fFivePlayersActivity extends AppCompatActivity {
     }
     private void restartAllPlayersPoints() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog);
-        builder.setMessage("Restart all players points?")
+        builder.setMessage(getString(R.string.restart_all_players_points_))
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, (dialog, which) -> {
                     restartP1Points();

@@ -6,32 +6,43 @@ import android.support.annotation.WorkerThread;
 
 @WorkerThread
 public class SharedPrefsHelper {
+
     //region CONSTANTS
     private static final int DEFAULT_INITIAL_POINTS = 100;
+
     private static final String FILE_NAME = "points_scorer_shared_prefs";
+
     private static final String KEY_INITIAL_POINTS = "initial_points";
+
     private static final String KEY_INITIAL_CHECK_DONE = "initial_check_done";
+
     private static final String KEY_POINTS_ONE_PLAYER = "one_player_points";
+
     private static final String KEY_POINTS_TWO_PLAYERS_P1 = "two_players_p1_points";
     private static final String KEY_POINTS_TWO_PLAYERS_P2 = "two_players_p2_points";
+
     private static final String KEY_POINTS_THREE_PLAYERS_P1 = "three_players_p1_points";
     private static final String KEY_POINTS_THREE_PLAYERS_P2 = "three_players_p2_points";
     private static final String KEY_POINTS_THREE_PLAYERS_P3 = "three_players_p3_points";
+
     private static final String KEY_POINTS_FOUR_PLAYERS_P1 = "four_players_p1_points";
     private static final String KEY_POINTS_FOUR_PLAYERS_P2 = "four_players_p2_points";
     private static final String KEY_POINTS_FOUR_PLAYERS_P3 = "four_players_p3_points";
     private static final String KEY_POINTS_FOUR_PLAYERS_P4 = "four_players_p4_points";
+
     private static final String KEY_POINTS_FIVE_PLAYERS_P1 = "five_players_p1_points";
     private static final String KEY_POINTS_FIVE_PLAYERS_P2 = "five_players_p2_points";
     private static final String KEY_POINTS_FIVE_PLAYERS_P3 = "five_players_p3_points";
     private static final String KEY_POINTS_FIVE_PLAYERS_P4 = "five_players_p4_points";
     private static final String KEY_POINTS_FIVE_PLAYERS_P5 = "five_players_p5_points";
+
     private static final String KEY_POINTS_SIX_PLAYERS_P1 = "six_players_p1_points";
     private static final String KEY_POINTS_SIX_PLAYERS_P2 = "six_players_p2_points";
     private static final String KEY_POINTS_SIX_PLAYERS_P3 = "six_players_p3_points";
     private static final String KEY_POINTS_SIX_PLAYERS_P4 = "six_players_p4_points";
     private static final String KEY_POINTS_SIX_PLAYERS_P5 = "six_players_p5_points";
     private static final String KEY_POINTS_SIX_PLAYERS_P6 = "six_players_p6_points";
+
     private static final String KEY_POINTS_SEVEN_PLAYERS_P1 = "seven_players_p1_points";
     private static final String KEY_POINTS_SEVEN_PLAYERS_P2 = "seven_players_p2_points";
     private static final String KEY_POINTS_SEVEN_PLAYERS_P3 = "seven_players_p3_points";
@@ -39,6 +50,7 @@ public class SharedPrefsHelper {
     private static final String KEY_POINTS_SEVEN_PLAYERS_P5 = "seven_players_p5_points";
     private static final String KEY_POINTS_SEVEN_PLAYERS_P6 = "seven_players_p6_points";
     private static final String KEY_POINTS_SEVEN_PLAYERS_P7 = "seven_players_p7_points";
+
     private static final String KEY_POINTS_EIGHT_PLAYERS_P1 = "eight_players_p1_points";
     private static final String KEY_POINTS_EIGHT_PLAYERS_P2 = "eight_players_p2_points";
     private static final String KEY_POINTS_EIGHT_PLAYERS_P3 = "eight_players_p3_points";
