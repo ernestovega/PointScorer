@@ -18,8 +18,7 @@
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/tvPoints"
-        style="@style/PointsTextView1Player"
-        android:visibility="gone"/>
+        style="@style/PointsTextView1Player"/>
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/tvPointsForAnimation"
