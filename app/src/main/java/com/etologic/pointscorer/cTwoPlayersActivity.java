@@ -67,10 +67,10 @@ public class cTwoPlayersActivity extends AppCompatActivity {
     @OnLongClick(R.id.btDownP2) boolean onDownP2LongClickButton() { isAutoDecrement = true; repeatUpdateHandlerP2.post(new RepeatUpdaterP2()); return false; }
     @OnTouch(R.id.btUpP2)   boolean onUpP2Touch(MotionEvent event)   { if((event.getAction() == ACTION_UP || event.getAction() == ACTION_CANCEL) && isAutoIncrement) { isAutoIncrement = false; } return false; }
     @OnTouch(R.id.btDownP2) boolean onDownP2Touch(MotionEvent event) { if((event.getAction() == ACTION_UP || event.getAction() == ACTION_CANCEL) && isAutoDecrement) { isAutoDecrement = false; } return false; }
-    @OnClick(R.id.btUpP1) void onP1UpButtonClick() { pointsP1++; sharedPrefsHelper.saveTwoPlayerPointsP1(pointsP1); updatePointsP1(); }
-    @OnClick(R.id.btUpP2) void onP2UpButtonClick() { pointsP2++; sharedPrefsHelper.saveTwoPlayerPointsP2(pointsP2); updatePointsP2(); }
-    @OnClick(R.id.btDownP1) void onP1DownButtonClick() { pointsP1--; sharedPrefsHelper.saveTwoPlayerPointsP1(pointsP1); updatePointsP1(); }
-    @OnClick(R.id.btDownP2) void onP2DownButtonClick() { pointsP2--; sharedPrefsHelper.saveTwoPlayerPointsP2(pointsP2); updatePointsP2(); }
+    @OnClick(R.id.btUpP1) void onP1UpButtonClick() { if(pointsP1 < 9999) pointsP1++; sharedPrefsHelper.saveTwoPlayerPointsP1(pointsP1); updatePointsP1(); }
+    @OnClick(R.id.btUpP2) void onP2UpButtonClick() { if(pointsP2 < 9999) pointsP2++; sharedPrefsHelper.saveTwoPlayerPointsP2(pointsP2); updatePointsP2(); }
+    @OnClick(R.id.btDownP1) void onP1DownButtonClick() { if(pointsP1 > -999) pointsP1--; sharedPrefsHelper.saveTwoPlayerPointsP1(pointsP1); updatePointsP1(); }
+    @OnClick(R.id.btDownP2) void onP2DownButtonClick() { if(pointsP2 > -999) pointsP2--; sharedPrefsHelper.saveTwoPlayerPointsP2(pointsP2); updatePointsP2(); }
     @OnClick(R.id.ibMenuP1) void onP1MenuButtonClick(View view) {
         PopupMenu popup = new PopupMenu(this, view);
         popup.setOnMenuItemClickListener(item -> {

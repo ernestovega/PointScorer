@@ -83,12 +83,12 @@ public class dThreePlayersActivity extends AppCompatActivity {
     @OnLongClick(R.id.btDownP3) boolean onDownP3LongClickButton() { isAutoDecrement = true; repeatUpdateHandlerP3.post(new RepeatUpdaterP3()); return false; }
     @OnTouch(R.id.btUpP3)   boolean onUpP3Touch(MotionEvent event)   { if((event.getAction() == ACTION_UP || event.getAction() == ACTION_CANCEL) && isAutoIncrement) { isAutoIncrement = false; } return false; }
     @OnTouch(R.id.btDownP3) boolean onDownP3Touch(MotionEvent event) { if((event.getAction() == ACTION_UP || event.getAction() == ACTION_CANCEL) && isAutoDecrement) { isAutoDecrement = false; } return false; }
-    @OnClick(R.id.btUpP1) void onP1UpButtonClick() { pointsP1++; sharedPrefsHelper.saveThreePlayerPointsP1(pointsP1); updatePointsP1(); }
-    @OnClick(R.id.btUpP2) void onP2UpButtonClick() { pointsP2++; sharedPrefsHelper.saveThreePlayerPointsP2(pointsP2); updatePointsP2(); }
-    @OnClick(R.id.btUpP3) void onP3UpButtonClick() { pointsP3++; sharedPrefsHelper.saveThreePlayerPointsP3(pointsP3); updatePointsP3(); }
-    @OnClick(R.id.btDownP1) void onP1DownButtonClick() { pointsP1--; sharedPrefsHelper.saveThreePlayerPointsP1(pointsP1); updatePointsP1(); }
-    @OnClick(R.id.btDownP2) void onP2DownButtonClick() { pointsP2--; sharedPrefsHelper.saveThreePlayerPointsP2(pointsP2); updatePointsP2(); }
-    @OnClick(R.id.btDownP3) void onP3DownButtonClick() { pointsP3--; sharedPrefsHelper.saveThreePlayerPointsP3(pointsP3); updatePointsP3(); }
+    @OnClick(R.id.btUpP1) void onP1UpButtonClick() { if(pointsP1 < 9999) pointsP1++; sharedPrefsHelper.saveThreePlayerPointsP1(pointsP1); updatePointsP1(); }
+    @OnClick(R.id.btUpP2) void onP2UpButtonClick() { if(pointsP2 < 9999) pointsP2++; sharedPrefsHelper.saveThreePlayerPointsP2(pointsP2); updatePointsP2(); }
+    @OnClick(R.id.btUpP3) void onP3UpButtonClick() { if(pointsP3 < 9999) pointsP3++; sharedPrefsHelper.saveThreePlayerPointsP3(pointsP3); updatePointsP3(); }
+    @OnClick(R.id.btDownP1) void onP1DownButtonClick() { if(pointsP1 > -999) pointsP1--; sharedPrefsHelper.saveThreePlayerPointsP1(pointsP1); updatePointsP1(); }
+    @OnClick(R.id.btDownP2) void onP2DownButtonClick() { if(pointsP2 > -999) pointsP2--; sharedPrefsHelper.saveThreePlayerPointsP2(pointsP2); updatePointsP2(); }
+    @OnClick(R.id.btDownP3) void onP3DownButtonClick() { if(pointsP3 > -999) pointsP3--; sharedPrefsHelper.saveThreePlayerPointsP3(pointsP3); updatePointsP3(); }
     @OnClick(R.id.ibMenuP1) void onP1MenuButtonClick(View view) {
         PopupMenu popup = new PopupMenu(this, view);
         popup.setOnMenuItemClickListener(item -> {

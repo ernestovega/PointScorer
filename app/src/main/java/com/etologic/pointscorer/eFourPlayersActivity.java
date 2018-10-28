@@ -99,14 +99,14 @@ public class eFourPlayersActivity extends AppCompatActivity {
     @OnLongClick(R.id.btDownP4) boolean onDownP4LongClickButton() { isAutoDecrement = true; repeatUpdateHandlerP4.post(new RepeatUpdaterP4()); return false; }
     @OnTouch(R.id.btUpP4)   boolean onUpP4Touch(MotionEvent event) { if((event.getAction() == ACTION_UP || event.getAction() == ACTION_CANCEL) && isAutoIncrement) { isAutoIncrement = false; } return false; }
     @OnTouch(R.id.btDownP4) boolean onDownP4Touch(MotionEvent event) { if((event.getAction() == ACTION_UP || event.getAction() == ACTION_CANCEL) && isAutoDecrement) { isAutoDecrement = false; } return false; }
-    @OnClick(R.id.btUpP1) void onP1UpButtonClick() { pointsP1++; sharedPrefsHelper.saveFourPlayerPointsP1(pointsP1); updatePointsP1(); }
-    @OnClick(R.id.btUpP2) void onP2UpButtonClick() { pointsP2++; sharedPrefsHelper.saveFourPlayerPointsP2(pointsP2); updatePointsP2(); }
-    @OnClick(R.id.btUpP3) void onP3UpButtonClick() { pointsP3++; sharedPrefsHelper.saveFourPlayerPointsP3(pointsP3); updatePointsP3(); }
-    @OnClick(R.id.btUpP4) void onP4UpButtonClick() { pointsP4++; sharedPrefsHelper.saveFourPlayerPointsP4(pointsP4); updatePointsP4(); }
-    @OnClick(R.id.btDownP1) void onP1DownButtonClick() { pointsP1--; sharedPrefsHelper.saveFourPlayerPointsP1(pointsP1); updatePointsP1(); }
-    @OnClick(R.id.btDownP2) void onP2DownButtonClick() { pointsP2--; sharedPrefsHelper.saveFourPlayerPointsP2(pointsP2); updatePointsP2(); }
-    @OnClick(R.id.btDownP3) void onP3DownButtonClick() { pointsP3--; sharedPrefsHelper.saveFourPlayerPointsP3(pointsP3); updatePointsP3(); }
-    @OnClick(R.id.btDownP4) void onP4DownButtonClick() { pointsP4--; sharedPrefsHelper.saveFourPlayerPointsP4(pointsP4); updatePointsP4(); }
+    @OnClick(R.id.btUpP1) void onP1UpButtonClick() { if(pointsP1 < 9999) pointsP1++; sharedPrefsHelper.saveFourPlayerPointsP1(pointsP1); updatePointsP1(); }
+    @OnClick(R.id.btUpP2) void onP2UpButtonClick() { if(pointsP2 < 9999) pointsP2++; sharedPrefsHelper.saveFourPlayerPointsP2(pointsP2); updatePointsP2(); }
+    @OnClick(R.id.btUpP3) void onP3UpButtonClick() { if(pointsP3 < 9999) pointsP3++; sharedPrefsHelper.saveFourPlayerPointsP3(pointsP3); updatePointsP3(); }
+    @OnClick(R.id.btUpP4) void onP4UpButtonClick() { if(pointsP4 < 9999) pointsP4++; sharedPrefsHelper.saveFourPlayerPointsP4(pointsP4); updatePointsP4(); }
+    @OnClick(R.id.btDownP1) void onP1DownButtonClick() { if(pointsP1 > -999) pointsP1--; sharedPrefsHelper.saveFourPlayerPointsP1(pointsP1); updatePointsP1(); }
+    @OnClick(R.id.btDownP2) void onP2DownButtonClick() { if(pointsP2 > -999) pointsP2--; sharedPrefsHelper.saveFourPlayerPointsP2(pointsP2); updatePointsP2(); }
+    @OnClick(R.id.btDownP3) void onP3DownButtonClick() { if(pointsP3 > -999) pointsP3--; sharedPrefsHelper.saveFourPlayerPointsP3(pointsP3); updatePointsP3(); }
+    @OnClick(R.id.btDownP4) void onP4DownButtonClick() { if(pointsP4 > -999) pointsP4--; sharedPrefsHelper.saveFourPlayerPointsP4(pointsP4); updatePointsP4(); }
     @OnClick(R.id.ibMenuP1) void onP1MenuButtonClick(View view) {
         PopupMenu popup = new PopupMenu(this, view);
         popup.setOnMenuItemClickListener(item -> {

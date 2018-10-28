@@ -131,18 +131,18 @@ public class gSixPlayersActivity extends AppCompatActivity {
     @OnLongClick(R.id.btDownP6) boolean onDownP6LongClickButton() { isAutoDecrement = true; repeatUpdateHandlerP6.post(new RepeatUpdaterP6()); return false; }
     @OnTouch(R.id.btUpP6)   boolean onUpP6Touch(MotionEvent event) { if((event.getAction() == ACTION_UP || event.getAction() == ACTION_CANCEL) && isAutoIncrement) { isAutoIncrement = false; } return false; }
     @OnTouch(R.id.btDownP6) boolean onDownP6Touch(MotionEvent event) { if((event.getAction() == ACTION_UP || event.getAction() == ACTION_CANCEL) && isAutoDecrement) { isAutoDecrement = false; } return false; }
-    @OnClick(R.id.btUpP1) void onP1UpButtonClick() { pointsP1++; sharedPrefsHelper.saveSixPlayerPointsP1(pointsP1); updatePointsP1(); }
-    @OnClick(R.id.btUpP2) void onP2UpButtonClick() { pointsP2++; sharedPrefsHelper.saveSixPlayerPointsP2(pointsP2); updatePointsP2(); }
-    @OnClick(R.id.btUpP3) void onP3UpButtonClick() { pointsP3++; sharedPrefsHelper.saveSixPlayerPointsP3(pointsP3); updatePointsP3(); }
-    @OnClick(R.id.btUpP4) void onP4UpButtonClick() { pointsP4++; sharedPrefsHelper.saveSixPlayerPointsP4(pointsP4); updatePointsP4(); }
-    @OnClick(R.id.btUpP5) void onP5UpButtonClick() { pointsP5++; sharedPrefsHelper.saveSixPlayerPointsP5(pointsP5); updatePointsP5(); }
-    @OnClick(R.id.btUpP6) void onP6UpButtonClick() { pointsP6++; sharedPrefsHelper.saveSixPlayerPointsP6(pointsP6); updatePointsP6(); }
-    @OnClick(R.id.btDownP1) void onP1DownButtonClick() { pointsP1--; sharedPrefsHelper.saveSixPlayerPointsP1(pointsP1); updatePointsP1(); }
-    @OnClick(R.id.btDownP2) void onP2DownButtonClick() { pointsP2--; sharedPrefsHelper.saveSixPlayerPointsP2(pointsP2); updatePointsP2(); }
-    @OnClick(R.id.btDownP3) void onP3DownButtonClick() { pointsP3--; sharedPrefsHelper.saveSixPlayerPointsP3(pointsP3); updatePointsP3(); }
-    @OnClick(R.id.btDownP4) void onP4DownButtonClick() { pointsP4--; sharedPrefsHelper.saveSixPlayerPointsP4(pointsP4); updatePointsP4(); }
-    @OnClick(R.id.btDownP5) void onP5DownButtonClick() { pointsP5--; sharedPrefsHelper.saveSixPlayerPointsP5(pointsP5); updatePointsP5(); }
-    @OnClick(R.id.btDownP6) void onP6DownButtonClick() { pointsP6--; sharedPrefsHelper.saveSixPlayerPointsP6(pointsP6); updatePointsP6(); }
+    @OnClick(R.id.btUpP1) void onP1UpButtonClick() { if(pointsP1 < 9999) pointsP1++; sharedPrefsHelper.saveSixPlayerPointsP1(pointsP1); updatePointsP1(); }
+    @OnClick(R.id.btUpP2) void onP2UpButtonClick() { if(pointsP2 < 9999) pointsP2++; sharedPrefsHelper.saveSixPlayerPointsP2(pointsP2); updatePointsP2(); }
+    @OnClick(R.id.btUpP3) void onP3UpButtonClick() { if(pointsP3 < 9999) pointsP3++; sharedPrefsHelper.saveSixPlayerPointsP3(pointsP3); updatePointsP3(); }
+    @OnClick(R.id.btUpP4) void onP4UpButtonClick() { if(pointsP4 < 9999) pointsP4++; sharedPrefsHelper.saveSixPlayerPointsP4(pointsP4); updatePointsP4(); }
+    @OnClick(R.id.btUpP5) void onP5UpButtonClick() { if(pointsP5 < 9999) pointsP5++; sharedPrefsHelper.saveSixPlayerPointsP5(pointsP5); updatePointsP5(); }
+    @OnClick(R.id.btUpP6) void onP6UpButtonClick() { if(pointsP6 < 9999) pointsP6++; sharedPrefsHelper.saveSixPlayerPointsP6(pointsP6); updatePointsP6(); }
+    @OnClick(R.id.btDownP1) void onP1DownButtonClick() { if(pointsP1 > -999) pointsP1--; sharedPrefsHelper.saveSixPlayerPointsP1(pointsP1); updatePointsP1(); }
+    @OnClick(R.id.btDownP2) void onP2DownButtonClick() { if(pointsP2 > -999) pointsP2--; sharedPrefsHelper.saveSixPlayerPointsP2(pointsP2); updatePointsP2(); }
+    @OnClick(R.id.btDownP3) void onP3DownButtonClick() { if(pointsP3 > -999) pointsP3--; sharedPrefsHelper.saveSixPlayerPointsP3(pointsP3); updatePointsP3(); }
+    @OnClick(R.id.btDownP4) void onP4DownButtonClick() { if(pointsP4 > -999) pointsP4--; sharedPrefsHelper.saveSixPlayerPointsP4(pointsP4); updatePointsP4(); }
+    @OnClick(R.id.btDownP5) void onP5DownButtonClick() { if(pointsP5 > -999) pointsP5--; sharedPrefsHelper.saveSixPlayerPointsP5(pointsP5); updatePointsP5(); }
+    @OnClick(R.id.btDownP6) void onP6DownButtonClick() { if(pointsP6 > -999) pointsP6--; sharedPrefsHelper.saveSixPlayerPointsP6(pointsP6); updatePointsP6(); }
     @OnClick(R.id.ibMenuP1) void onP1MenuButtonClick(View view) {
         PopupMenu popup = new PopupMenu(this, view);
         popup.setOnMenuItemClickListener(item -> {

@@ -23,11 +23,12 @@ public class DialogUtils {
         builder .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     String name = tiet.getText().toString().trim();
                     listener.onNameChanged(name);
+                    KeyboardUtils.hideKeyboard(activity, tiet);
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .setView(til)
                 .create()
                 .show();
-        KeyboardUtils.hideKeyboard(activity, tiet);
+        KeyboardUtils.showKeyboard(activity);
     }
 }

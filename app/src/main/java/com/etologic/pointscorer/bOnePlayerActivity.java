@@ -53,7 +53,7 @@ public class bOnePlayerActivity extends AppCompatActivity {
     @OnClick(R.id.btUp) void onUpClickButton() {     incrementPoints(); updatePoints(); }
     @OnClick(R.id.btDown) void onDownClickButton() { decrementPoints(); updatePoints(); }
     private void incrementPoints() { if(points < 9999) points++; }
-    private void decrementPoints() { if(points > -9999) points--; }
+    private void decrementPoints() { if(points > -999) points--; }
     @OnClick(R.id.ibMenu) void onMenuButtonClick(View view) {
         PopupMenu popup = new PopupMenu(this, view);
         popup.setOnMenuItemClickListener(item -> {
