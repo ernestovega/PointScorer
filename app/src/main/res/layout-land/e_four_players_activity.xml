@@ -21,14 +21,19 @@
             tools:ignore="NestedWeights">
 
             <ImageView
+                android:id="@+id/ivShieldP1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:padding="16dp"
                 android:scaleType="fitCenter"
-                android:id="@+id/ivShieldP1"
-            android:src="@drawable/shield"
+                android:src="@drawable/shield"
                 tools:ignore="ContentDescription" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvNameP1"
+                style="@style/NameEditText4PlayerLand"
+                android:hint="@string/player_1_name" />
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP1"
@@ -75,14 +80,19 @@
             android:background="@drawable/bg_wood">
 
             <ImageView
+                android:id="@+id/ivShieldP2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:padding="16dp"
                 android:scaleType="fitCenter"
-                android:id="@+id/ivShieldP2"
-            android:src="@drawable/shield"
+                android:src="@drawable/shield"
                 tools:ignore="ContentDescription" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvNameP2"
+                style="@style/NameEditText4PlayerLand"
+                android:hint="@string/player_2_name" />
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP2"
@@ -139,14 +149,19 @@
             tools:ignore="NestedWeights">
 
             <ImageView
+                android:id="@+id/ivShieldP3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:padding="16dp"
                 android:scaleType="fitCenter"
-                android:id="@+id/ivShieldP3"
-            android:src="@drawable/shield"
+                android:src="@drawable/shield"
                 tools:ignore="ContentDescription" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvNameP3"
+                style="@style/NameEditText4PlayerLand"
+                android:hint="@string/player_3_name" />
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP3"
@@ -162,7 +177,6 @@
                 android:orientation="vertical">
 
                 <android.support.v7.widget.AppCompatButton
-
                     android:id="@+id/btUpP3"
                     style="@style/Base.Widget.AppCompat.Button.Borderless"
                     android:layout_width="match_parent"
@@ -194,14 +208,19 @@
             android:background="@drawable/bg_wood">
 
             <ImageView
+                android:id="@+id/ivShieldP4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:padding="16dp"
                 android:scaleType="fitCenter"
-                android:id="@+id/ivShieldP4"
-            android:src="@drawable/shield"
+                android:src="@drawable/shield"
                 tools:ignore="ContentDescription" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvNameP4"
+                style="@style/NameEditText4PlayerLand"
+                android:hint="@string/player_4_name" />
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP4"

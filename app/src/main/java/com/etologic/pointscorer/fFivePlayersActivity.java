@@ -10,6 +10,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.etologic.pointscorer.utils.DialogUtils;
+import com.etologic.pointscorer.utils.MyAnimationUtils;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -23,6 +26,11 @@ import static com.etologic.pointscorer.aMainActivity.REP_DELAY;
 public class fFivePlayersActivity extends AppCompatActivity {
 
     //VIEWS
+    @BindView(R.id.tvNameP1) TextView tvNameP1;
+    @BindView(R.id.tvNameP2) TextView tvNameP2;
+    @BindView(R.id.tvNameP3) TextView tvNameP3;
+    @BindView(R.id.tvNameP4) TextView tvNameP4;
+    @BindView(R.id.tvNameP5) TextView tvNameP5;
     @BindView(R.id.ivShieldP1) ImageView ivShieldP1;
     @BindView(R.id.ivShieldP2) ImageView ivShieldP2;
     @BindView(R.id.ivShieldP3) ImageView ivShieldP3;
@@ -121,6 +129,12 @@ public class fFivePlayersActivity extends AppCompatActivity {
         PopupMenu popup = new PopupMenu(this, view);
         popup.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
+                case R.id.menu_edit_name:
+                    DialogUtils.showNameDialog(this, name -> {
+                        sharedPrefsHelper.saveFivePlayerNameP1(name);
+                        tvNameP1.setText(name);
+                    }, tvNameP1.getText());
+                    return true;
                 case R.id.menu_restart:
                     restartP1Points();
                     return true;
@@ -138,6 +152,12 @@ public class fFivePlayersActivity extends AppCompatActivity {
         PopupMenu popup = new PopupMenu(this, view);
         popup.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
+                case R.id.menu_edit_name:
+                    DialogUtils.showNameDialog(this, name -> {
+                        sharedPrefsHelper.saveFivePlayerNameP2(name);
+                        tvNameP2.setText(name);
+                    }, tvNameP2.getText());
+                    return true;
                 case R.id.menu_restart:
                     restartP2Points();
                     return true;
@@ -155,6 +175,12 @@ public class fFivePlayersActivity extends AppCompatActivity {
         PopupMenu popup = new PopupMenu(this, view);
         popup.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
+                case R.id.menu_edit_name:
+                    DialogUtils.showNameDialog(this, name -> {
+                        sharedPrefsHelper.saveFivePlayerNameP3(name);
+                        tvNameP3.setText(name);
+                    }, tvNameP3.getText());
+                    return true;
                 case R.id.menu_restart:
                     restartP3Points();
                     return true;
@@ -172,6 +198,12 @@ public class fFivePlayersActivity extends AppCompatActivity {
         PopupMenu popup = new PopupMenu(this, view);
         popup.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
+                case R.id.menu_edit_name:
+                    DialogUtils.showNameDialog(this, name -> {
+                        sharedPrefsHelper.saveFivePlayerNameP4(name);
+                        tvNameP4.setText(name);
+                    }, tvNameP4.getText());
+                    return true;
                 case R.id.menu_restart:
                     restartP4Points();
                     return true;
@@ -189,6 +221,12 @@ public class fFivePlayersActivity extends AppCompatActivity {
         PopupMenu popup = new PopupMenu(this, view);
         popup.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
+                case R.id.menu_edit_name:
+                    DialogUtils.showNameDialog(this, name -> {
+                        sharedPrefsHelper.saveFivePlayerNameP5(name);
+                        tvNameP5.setText(name);
+                    }, tvNameP5.getText());
+                    return true;
                 case R.id.menu_restart:
                     restartP5Points();
                     return true;
@@ -244,16 +282,16 @@ public class fFivePlayersActivity extends AppCompatActivity {
         setContentView(R.layout.f_five_players_activity);
         ButterKnife.bind(this);
         sharedPrefsHelper = new SharedPrefsHelper(this);
+        initNames();
         initPoints();
     }
-    private void initShields() {
-        ivShieldP1.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP1, tvPointsP1ForAnimation, pointsP1));
-        ivShieldP2.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP2, tvPointsP2ForAnimation, pointsP2));
-        ivShieldP3.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP3, tvPointsP3ForAnimation, pointsP3));
-        ivShieldP4.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP4, tvPointsP4ForAnimation, pointsP4));
-        ivShieldP5.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP5, tvPointsP5ForAnimation, pointsP5));
+    private void initNames() {
+        tvNameP1.setText(sharedPrefsHelper.getFivePlayerNameP1());
+        tvNameP2.setText(sharedPrefsHelper.getFivePlayerNameP2());
+        tvNameP3.setText(sharedPrefsHelper.getFivePlayerNameP3());
+        tvNameP4.setText(sharedPrefsHelper.getFivePlayerNameP4());
+        tvNameP5.setText(sharedPrefsHelper.getFivePlayerNameP5());
     }
-
     private void initPoints() {
         new Thread(() -> {
             initialPoints = sharedPrefsHelper.getInitialPoints();
@@ -271,5 +309,12 @@ public class fFivePlayersActivity extends AppCompatActivity {
                 updatePointsP5();
             });
         }).run();
+    }
+    private void initShields() {
+        ivShieldP1.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP1, tvPointsP1ForAnimation, pointsP1));
+        ivShieldP2.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP2, tvPointsP2ForAnimation, pointsP2));
+        ivShieldP3.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP3, tvPointsP3ForAnimation, pointsP3));
+        ivShieldP4.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP4, tvPointsP4ForAnimation, pointsP4));
+        ivShieldP5.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP5, tvPointsP5ForAnimation, pointsP5));
     }
 }

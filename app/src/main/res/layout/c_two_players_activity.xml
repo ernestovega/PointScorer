@@ -25,6 +25,11 @@
             tools:ignore="ContentDescription" />
 
         <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tvNameP1"
+            style="@style/NameEditText2Player"
+            android:hint="@string/player_1_name"/>
+
+        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tvPointsP1"
             style="@style/PointsTextView2Player" />
 
@@ -78,6 +83,11 @@
             android:scaleType="fitCenter"
             android:src="@drawable/shield"
             tools:ignore="ContentDescription" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tvNameP2"
+            style="@style/NameEditText2Player"
+            android:hint="@string/player_2_name"/>
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tvPointsP2"

@@ -6,6 +6,11 @@
     android:background="@drawable/bg_wood"
     tools:context=".bOnePlayerActivity">
 
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/etStub"
+        android:layout_width="0dp"
+        android:layout_height="0dp"/>
+
     <ImageView
         android:id="@+id/ivShield"
         android:layout_width="wrap_content"
@@ -15,6 +20,12 @@
         android:scaleType="fitCenter"
         android:src="@drawable/shield"
         tools:ignore="ContentDescription" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tvName"
+        style="@style/NameTextView1Player"
+        android:layout_marginTop="32dp"
+        android:hint="@string/player_name"/>
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/tvPoints"

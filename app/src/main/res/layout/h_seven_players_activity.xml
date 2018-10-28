@@ -32,6 +32,11 @@
                 tools:ignore="ContentDescription" />
 
             <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvNameP1"
+                style="@style/NameEditText7Player"
+                android:hint="@string/player_1_name" />
+
+            <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP1"
                 style="@style/PointsTextView7Player" />
 
@@ -85,6 +90,11 @@
                 android:src="@drawable/shield"
                 tools:ignore="ContentDescription" />
 
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvNameP2"
+                style="@style/NameEditText7Player"
+                android:hint="@string/player_2_name" />
+            
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP2"
                 style="@style/PointsTextView7Player" />
@@ -141,6 +151,11 @@
                 tools:ignore="ContentDescription" />
 
             <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvNameP3"
+                style="@style/NameEditText7Player"
+                android:hint="@string/player_3_name" />
+            
+            <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP3"
                 style="@style/PointsTextView7Player" />
 
@@ -195,6 +210,11 @@
                 android:src="@drawable/shield"
                 tools:ignore="ContentDescription" />
 
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvNameP4"
+                style="@style/NameEditText7Player"
+                android:hint="@string/player_4_name" />
+            
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP4"
                 style="@style/PointsTextView7Player" />
@@ -260,6 +280,11 @@
                 tools:ignore="ContentDescription" />
 
             <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvNameP5"
+                style="@style/NameEditText7Player"
+                android:hint="@string/player_5_name" />
+            
+            <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP5"
                 style="@style/PointsTextView7Player" />
 
@@ -316,6 +341,11 @@
                 tools:ignore="ContentDescription" />
 
             <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvNameP6"
+                style="@style/NameEditText7Player"
+                android:hint="@string/player_6_name" />
+            
+            <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP6"
                 style="@style/PointsTextView7Player" />
 
@@ -371,6 +401,11 @@
                 android:src="@drawable/shield"
                 tools:ignore="ContentDescription" />
 
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvNameP7"
+                style="@style/NameEditText7Player"
+                android:hint="@string/player_7_name" />
+            
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP7"
                 style="@style/PointsTextView7Player" />

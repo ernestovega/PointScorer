@@ -23,6 +23,13 @@
             tools:ignore="ContentDescription" />
 
         <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tvNameP1"
+            style="@style/NameEditText3Player"
+            android:layout_marginTop="24dp"
+
+            android:hint="@string/player_1_name"/>
+
+        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tvPointsP1"
             style="@style/PointsTextView3Player" />
 
@@ -77,6 +84,13 @@
             tools:ignore="ContentDescription" />
 
         <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tvNameP2"
+            style="@style/NameEditText3Player"
+            android:layout_marginTop="24dp"
+
+            android:hint="@string/player_2_name"/>
+
+        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tvPointsP2"
             style="@style/PointsTextView3Player" />
 
@@ -129,6 +143,13 @@
             android:id="@+id/ivShieldP3"
             android:src="@drawable/shield"
             tools:ignore="ContentDescription" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tvNameP3"
+            style="@style/NameEditText3Player"
+            android:layout_marginTop="24dp"
+
+            android:hint="@string/player_3_name"/>
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tvPointsP3"

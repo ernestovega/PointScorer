@@ -31,6 +31,11 @@
                 tools:ignore="ContentDescription" />
 
             <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvNameP1"
+                style="@style/NameEditText5Player"
+                android:hint="@string/player_1_name" />
+
+            <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP1"
                 style="@style/PointsTextView5Player" />
 
@@ -83,6 +88,11 @@
                 android:id="@+id/ivShieldP2"
                 android:src="@drawable/shield"
                 tools:ignore="ContentDescription" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvNameP2"
+                style="@style/NameEditText5Player"
+                android:hint="@string/player_2_name" />
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP2"
@@ -149,6 +159,11 @@
                 tools:ignore="ContentDescription" />
 
             <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvNameP3"
+                style="@style/NameEditText5Player"
+                android:hint="@string/player_3_name" />
+
+            <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP3"
                 style="@style/PointsTextView5Player" />
 
@@ -162,7 +177,6 @@
                 android:orientation="vertical">
 
                 <android.support.v7.widget.AppCompatButton
-
                     android:id="@+id/btUpP3"
                     style="@style/Base.Widget.AppCompat.Button.Borderless"
                     android:layout_width="match_parent"
@@ -202,6 +216,11 @@
                 android:id="@+id/ivShieldP4"
                 android:src="@drawable/shield"
                 tools:ignore="ContentDescription" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tvNameP4"
+                style="@style/NameEditText5Player"
+                android:hint="@string/player_4_name" />
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPointsP4"
@@ -259,6 +278,11 @@
             android:id="@+id/ivShieldP5"
             android:src="@drawable/shield"
             tools:ignore="ContentDescription" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tvNameP5"
+            style="@style/NameEditText5Player"
+            android:hint="@string/player_5_name" />
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tvPointsP5"

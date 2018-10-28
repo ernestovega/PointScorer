@@ -1,6 +1,5 @@
-package com.etologic.pointscorer;
+package com.etologic.pointscorer.utils;
 
-import android.support.annotation.NonNull;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -14,7 +13,7 @@ import static android.view.animation.Animation.RELATIVE_TO_SELF;
 
 public class MyAnimationUtils {
 
-    interface AnimationEndListener {
+    public interface AnimationEndListener {
         void animationEnded();
     }
 

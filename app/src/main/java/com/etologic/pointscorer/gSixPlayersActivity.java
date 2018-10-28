@@ -10,6 +10,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.etologic.pointscorer.utils.DialogUtils;
+import com.etologic.pointscorer.utils.MyAnimationUtils;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -23,6 +26,12 @@ import static com.etologic.pointscorer.aMainActivity.REP_DELAY;
 public class gSixPlayersActivity extends AppCompatActivity {
 
     //VIEWS
+    @BindView(R.id.tvNameP1) TextView tvNameP1;
+    @BindView(R.id.tvNameP2) TextView tvNameP2;
+    @BindView(R.id.tvNameP3) TextView tvNameP3;
+    @BindView(R.id.tvNameP4) TextView tvNameP4;
+    @BindView(R.id.tvNameP5) TextView tvNameP5;
+    @BindView(R.id.tvNameP6) TextView tvNameP6;
     @BindView(R.id.ivShieldP1) ImageView ivShieldP1;
     @BindView(R.id.ivShieldP2) ImageView ivShieldP2;
     @BindView(R.id.ivShieldP3) ImageView ivShieldP3;
@@ -138,6 +147,12 @@ public class gSixPlayersActivity extends AppCompatActivity {
         PopupMenu popup = new PopupMenu(this, view);
         popup.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
+                case R.id.menu_edit_name:
+                    DialogUtils.showNameDialog(this, name -> {
+                        sharedPrefsHelper.saveSixPlayerNameP1(name);
+                        tvNameP1.setText(name);
+                    }, tvNameP1.getText());
+                    return true;
                 case R.id.menu_restart:
                     restartP1Points();
                     return true;
@@ -155,6 +170,12 @@ public class gSixPlayersActivity extends AppCompatActivity {
         PopupMenu popup = new PopupMenu(this, view);
         popup.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
+                case R.id.menu_edit_name:
+                    DialogUtils.showNameDialog(this, name -> {
+                        sharedPrefsHelper.saveSixPlayerNameP2(name);
+                        tvNameP2.setText(name);
+                    }, tvNameP2.getText());
+                    return true;
                 case R.id.menu_restart:
                     restartP2Points();
                     return true;
@@ -172,6 +193,12 @@ public class gSixPlayersActivity extends AppCompatActivity {
         PopupMenu popup = new PopupMenu(this, view);
         popup.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
+                case R.id.menu_edit_name:
+                    DialogUtils.showNameDialog(this, name -> {
+                        sharedPrefsHelper.saveSixPlayerNameP3(name);
+                        tvNameP3.setText(name);
+                    }, tvNameP3.getText());
+                    return true;
                 case R.id.menu_restart:
                     restartP3Points();
                     return true;
@@ -189,6 +216,12 @@ public class gSixPlayersActivity extends AppCompatActivity {
         PopupMenu popup = new PopupMenu(this, view);
         popup.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
+                case R.id.menu_edit_name:
+                    DialogUtils.showNameDialog(this, name -> {
+                        sharedPrefsHelper.saveSixPlayerNameP4(name);
+                        tvNameP4.setText(name);
+                    }, tvNameP4.getText());
+                    return true;
                 case R.id.menu_restart:
                     restartP4Points();
                     return true;
@@ -206,6 +239,12 @@ public class gSixPlayersActivity extends AppCompatActivity {
         PopupMenu popup = new PopupMenu(this, view);
         popup.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
+                case R.id.menu_edit_name:
+                    DialogUtils.showNameDialog(this, name -> {
+                        sharedPrefsHelper.saveSixPlayerNameP5(name);
+                        tvNameP5.setText(name);
+                    }, tvNameP5.getText());
+                    return true;
                 case R.id.menu_restart:
                     restartP5Points();
                     return true;
@@ -223,6 +262,12 @@ public class gSixPlayersActivity extends AppCompatActivity {
         PopupMenu popup = new PopupMenu(this, view);
         popup.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
+                case R.id.menu_edit_name:
+                    DialogUtils.showNameDialog(this, name -> {
+                        sharedPrefsHelper.saveSixPlayerNameP6(name);
+                        tvNameP6.setText(name);
+                    }, tvNameP6.getText());
+                    return true;
                 case R.id.menu_restart:
                     restartP6Points();
                     return true;
@@ -277,21 +322,21 @@ public class gSixPlayersActivity extends AppCompatActivity {
     private void restartP6Points() { pointsP6 = initialPoints; sharedPrefsHelper.saveSixPlayerPointsP6(pointsP6); updatePointsP6(); }
 
     //LIFECYCLE
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.g_six_players_activity);
         ButterKnife.bind(this);
         sharedPrefsHelper = new SharedPrefsHelper(this);
+        initNames();
         initPoints();
     }
-    private void initShields() {
-        ivShieldP1.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP1, tvPointsP1ForAnimation, pointsP1));
-        ivShieldP2.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP2, tvPointsP2ForAnimation, pointsP2));
-        ivShieldP3.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP3, tvPointsP3ForAnimation, pointsP3));
-        ivShieldP4.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP4, tvPointsP4ForAnimation, pointsP4));
-        ivShieldP5.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP5, tvPointsP5ForAnimation, pointsP5));
-        ivShieldP6.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP6, tvPointsP6ForAnimation, pointsP6));
+    private void initNames() {
+        tvNameP1.setText(sharedPrefsHelper.getSixPlayerNameP1());
+        tvNameP2.setText(sharedPrefsHelper.getSixPlayerNameP2());
+        tvNameP3.setText(sharedPrefsHelper.getSixPlayerNameP3());
+        tvNameP4.setText(sharedPrefsHelper.getSixPlayerNameP4());
+        tvNameP5.setText(sharedPrefsHelper.getSixPlayerNameP5());
+        tvNameP6.setText(sharedPrefsHelper.getSixPlayerNameP6());
     }
     private void initPoints() {
         new Thread(() -> {
@@ -312,5 +357,13 @@ public class gSixPlayersActivity extends AppCompatActivity {
                 updatePointsP6();
             });
         }).run();
+    }
+    private void initShields() {
+        ivShieldP1.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP1, tvPointsP1ForAnimation, pointsP1));
+        ivShieldP2.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP2, tvPointsP2ForAnimation, pointsP2));
+        ivShieldP3.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP3, tvPointsP3ForAnimation, pointsP3));
+        ivShieldP4.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP4, tvPointsP4ForAnimation, pointsP4));
+        ivShieldP5.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP5, tvPointsP5ForAnimation, pointsP5));
+        ivShieldP6.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP6, tvPointsP6ForAnimation, pointsP6));
     }
 }

@@ -6,9 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.etologic.pointscorer.utils.DialogUtils;
+import com.etologic.pointscorer.utils.MyAnimationUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,6 +25,7 @@ import static com.etologic.pointscorer.aMainActivity.REP_DELAY;
 public class bOnePlayerActivity extends AppCompatActivity {
 
     //VIEWS
+    @BindView(R.id.tvName) TextView tvName;
     @BindView(R.id.ivShield) ImageView ivShield;
     @BindView(R.id.tvPoints) TextView tvPoints;
     @BindView(R.id.tvPointsForAnimation) TextView tvPointsForAnimation;
@@ -30,7 +33,7 @@ public class bOnePlayerActivity extends AppCompatActivity {
     private SharedPrefsHelper sharedPrefsHelper;
     private int initialPoints;
     private int points;
-    private Handler repeatUpdateHandler = new Handler();/*https://stackoverflow.com/questions/7938516/continuously-increase-integer-value-as-the-button-is-pressed*/
+    private Handler repeatUpdateHandler = new Handler();/**https://stackoverflow.com/questions/7938516/continuously-increase-integer-value-as-the-button-is-pressed*/
     private boolean isAutoIncrement = false;
     private boolean isAutoDecrement = false;
 
@@ -58,6 +61,12 @@ public class bOnePlayerActivity extends AppCompatActivity {
                 case R.id.menu_restart:
                     restartPlayerPoints();
                     return true;
+                case R.id.menu_edit_name:
+                    DialogUtils.showNameDialog(this, name -> {
+                        sharedPrefsHelper.saveOnePlayerName(name);
+                        tvName.setText(name);
+                    }, tvName.getText());
+                    return true;
                 default:
                     return false;
             }
@@ -68,19 +77,21 @@ public class bOnePlayerActivity extends AppCompatActivity {
     private void restartPlayerPoints() { points = initialPoints; updatePoints(); }
 
     //LIFECYCLE
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.b_one_player_activity);
         ButterKnife.bind(this);
         initSharedPrefs();
+        initNames();
         initPoints();
         initShield();
         updatePoints();
     }
-
     private void initSharedPrefs() {
         sharedPrefsHelper = new SharedPrefsHelper(this);
+    }
+    private void initNames() {
+        tvName.setText(sharedPrefsHelper.getOnePlayerName());
     }
     private void initPoints() {
         initialPoints = sharedPrefsHelper.getInitialPoints();

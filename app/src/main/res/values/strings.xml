@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Point Scorer</string>
+
     <string name="one_player">One player</string>
     <string name="two_players">Two players</string>
     <string name="three_players">Three players</string>
@@ -8,6 +9,17 @@
     <string name="six_players">Six players</string>
     <string name="seven_players">Seven players</string>
     <string name="eight_players">Eight players</string>
+
+    <string name="player_name">Player name</string>
+    <string name="player_1_name">Player 1</string>
+    <string name="player_2_name">Player 2</string>
+    <string name="player_3_name">Player 3</string>
+    <string name="player_4_name">Player 4</string>
+    <string name="player_5_name">Player 5</string>
+    <string name="player_6_name">Player 6</string>
+    <string name="player_7_name">Player 7</string>
+    <string name="player_8_name">Player 8</string>
+
     <string name="player_options">Player options</string>
     <string name="player_1_options">Player 1 options</string>
     <string name="player_2_options">Player 2 options</string>
@@ -17,6 +29,8 @@
     <string name="player_6_options">Player 6 options</string>
     <string name="player_7_options">Player 7 options</string>
     <string name="player_8_options">Player 8 options</string>
+
+    <string name="edit_name">Edit name</string>
     <string name="restart">Restart</string>
     <string name="restart_all">Restart all</string>
     <string name="initial_points">Initial points</string>
@@ -25,4 +39,5 @@
     <string name="reset_all">Reset all</string>
     <string name="all_points_restarted">All points restarted</string>
     <string name="restart_all_players_points_">Restart all players points?</string>
+
 </resources>

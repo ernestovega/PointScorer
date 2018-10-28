@@ -10,6 +10,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.etologic.pointscorer.utils.DialogUtils;
+import com.etologic.pointscorer.utils.MyAnimationUtils;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -23,6 +26,9 @@ import static com.etologic.pointscorer.aMainActivity.REP_DELAY;
 public class dThreePlayersActivity extends AppCompatActivity {
 
     //VIEWS
+    @BindView(R.id.tvNameP1) TextView tvNameP1;
+    @BindView(R.id.tvNameP2) TextView tvNameP2;
+    @BindView(R.id.tvNameP3) TextView tvNameP3;
     @BindView(R.id.ivShieldP1) ImageView ivShieldP1;
     @BindView(R.id.ivShieldP2) ImageView ivShieldP2;
     @BindView(R.id.ivShieldP3) ImageView ivShieldP3;
@@ -87,6 +93,12 @@ public class dThreePlayersActivity extends AppCompatActivity {
         PopupMenu popup = new PopupMenu(this, view);
         popup.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
+                case R.id.menu_edit_name:
+                    DialogUtils.showNameDialog(this, name -> {
+                        sharedPrefsHelper.saveThreePlayerNameP1(name);
+                        tvNameP1.setText(name);
+                    }, tvNameP1.getText());
+                    return true;
                 case R.id.menu_restart:
                     restartP1Points();
                     return true;
@@ -104,6 +116,12 @@ public class dThreePlayersActivity extends AppCompatActivity {
         PopupMenu popup = new PopupMenu(this, view);
         popup.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
+                case R.id.menu_edit_name:
+                    DialogUtils.showNameDialog(this, name -> {
+                        sharedPrefsHelper.saveThreePlayerNameP2(name);
+                        tvNameP2.setText(name);
+                    }, tvNameP2.getText());
+                    return true;
                 case R.id.menu_restart:
                     restartP2Points();
                     return true;
@@ -121,6 +139,12 @@ public class dThreePlayersActivity extends AppCompatActivity {
         PopupMenu popup = new PopupMenu(this, view);
         popup.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
+                case R.id.menu_edit_name:
+                    DialogUtils.showNameDialog(this, name -> {
+                        sharedPrefsHelper.saveThreePlayerNameP3(name);
+                        tvNameP3.setText(name);
+                    }, tvNameP3.getText());
+                    return true;
                 case R.id.menu_restart:
                     restartP3Points();
                     return true;
@@ -153,18 +177,18 @@ public class dThreePlayersActivity extends AppCompatActivity {
     private void restartP2Points() { pointsP2 = initialPoints; sharedPrefsHelper.saveThreePlayerPointsP2(pointsP2); updatePointsP2(); }
     private void restartP3Points() { pointsP3 = initialPoints; sharedPrefsHelper.saveThreePlayerPointsP3(pointsP3); updatePointsP3(); }
     //LIFECYCLE
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.d_three_players_activity);
         ButterKnife.bind(this);
         sharedPrefsHelper = new SharedPrefsHelper(this);
+        initNames();
         initPoints();
     }
-    private void initShields() {
-        ivShieldP1.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP1, tvPointsP1ForAnimation, pointsP1));
-        ivShieldP2.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP2, tvPointsP2ForAnimation, pointsP2));
-        ivShieldP3.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP3, tvPointsP3ForAnimation, pointsP3));
+    private void initNames() {
+        tvNameP1.setText(sharedPrefsHelper.getThreePlayerNameP1());
+        tvNameP2.setText(sharedPrefsHelper.getThreePlayerNameP2());
+        tvNameP3.setText(sharedPrefsHelper.getThreePlayerNameP3());
     }
     private void initPoints() {
         new Thread(() -> {
@@ -179,5 +203,10 @@ public class dThreePlayersActivity extends AppCompatActivity {
                 updatePointsP3();
             });
         }).run();
+    }
+    private void initShields() {
+        ivShieldP1.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP1, tvPointsP1ForAnimation, pointsP1));
+        ivShieldP2.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP2, tvPointsP2ForAnimation, pointsP2));
+        ivShieldP3.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP3, tvPointsP3ForAnimation, pointsP3));
     }
 }
