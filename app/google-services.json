@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "399935679845",
+    "firebase_url": "https://point-scorer.firebaseio.com",
+    "project_id": "point-scorer",
+    "storage_bucket": "point-scorer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:399935679845:android:0691d8b8d1983f7e",
+        "android_client_info": {
+          "package_name": "com.etologic.pointscorer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "399935679845-673ufsege4li2tr4lact14q0eiegrdam.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdFlduMQtqWbjTAwlbxOH-Kmq-CaqclQs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

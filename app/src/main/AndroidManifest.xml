@@ -2,7 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.etologic.pointscorer">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <application
+        android:name=".PointScorerApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -12,7 +16,7 @@
         android:fullBackupContent="true">
 
         <activity
-            android:name=".aMainActivity"
+            android:name=".screens.aMainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden">
@@ -23,40 +27,40 @@
         </activity>
 
         <activity
-            android:name=".bOnePlayerActivity"
+            android:name=".screens.bOnePlayerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity
-            android:name=".cTwoPlayersActivity"
+            android:name=".screens.cTwoPlayersActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity
-            android:name=".dThreePlayersActivity"
+            android:name=".screens.dThreePlayersActivity"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity
-            android:name=".eFourPlayersActivity"
+            android:name=".screens.eFourPlayersActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity
-            android:name=".fFivePlayersActivity"
+            android:name=".screens.fFivePlayersActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity
-            android:name=".gSixPlayersActivity"
+            android:name=".screens.gSixPlayersActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity
-            android:name=".hSevenPlayersActivity"
+            android:name=".screens.hSevenPlayersActivity"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity
-            android:name=".iEightPlayersActivity"
+            android:name=".screens.iEightPlayersActivity"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_wood"
-    tools:context=".bOnePlayerActivity">
+    tools:context=".screens.bOnePlayerActivity">
 
     <android.support.v7.widget.AppCompatEditText
         android:id="@+id/etStub"

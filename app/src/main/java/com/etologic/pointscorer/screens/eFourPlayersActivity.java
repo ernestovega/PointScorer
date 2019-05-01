@@ -1,4 +1,4 @@
-package com.etologic.pointscorer;
+package com.etologic.pointscorer.screens;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.etologic.pointscorer.R;
+import com.etologic.pointscorer.SharedPrefsHelper;
 import com.etologic.pointscorer.utils.DialogUtils;
 import com.etologic.pointscorer.utils.MyAnimationUtils;
 
@@ -21,7 +23,7 @@ import butterknife.OnTouch;
 
 import static android.view.MotionEvent.ACTION_CANCEL;
 import static android.view.MotionEvent.ACTION_UP;
-import static com.etologic.pointscorer.aMainActivity.REP_DELAY;
+import static com.etologic.pointscorer.screens.aMainActivity.REP_DELAY;
 
 public class eFourPlayersActivity extends AppCompatActivity {
 

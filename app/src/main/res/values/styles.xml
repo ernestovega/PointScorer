@@ -1,6 +1,6 @@
 <resources>
 
-    <!-- Base application theme. -->
+    <!-- Base pointScorerApplication theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -70,11 +70,11 @@
         <item name="android:ellipsize">end</item>
         <item name="android:maxLength">20</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textStyle">bold</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:layout_marginLeft">16dp</item>
         <item name="android:layout_marginRight">16dp</item>
         <item name="android:textColorHint">@color/white_transparent</item>
+        <item name="android:fontFamily">@font/rock_on</item>
     </style>
 
     <style name="NameTextView1Player" parent="NameEditText">
@@ -85,8 +85,12 @@
         <item name="android:textSize">24sp</item>
     </style>
 
-    <style name="NameEditText3Player" parent="NameEditText">
+    <style name="NameEditText2PlayerLand" parent="NameEditText">
         <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="NameEditText3Player" parent="NameEditText">
+        <item name="android:textSize">28sp</item>
     </style>
 
     <style name="NameEditText4Player" parent="NameEditText">

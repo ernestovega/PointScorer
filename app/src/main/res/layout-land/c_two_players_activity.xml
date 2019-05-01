@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:baselineAligned="false"
-    tools:context=".cTwoPlayersActivity">
+    tools:context=".screens.cTwoPlayersActivity">
 
     <RelativeLayout
         android:layout_width="0dp"
@@ -24,7 +24,7 @@
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tvNameP1"
-            style="@style/NameEditText2Player"
+            style="@style/NameEditText2PlayerLand"
             
             android:hint="@string/player_1_name"/>
 
@@ -84,7 +84,7 @@
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tvNameP2"
-            style="@style/NameEditText2Player"
+            style="@style/NameEditText2PlayerLand"
             android:hint="@string/player_2_name"/>
 
         <android.support.v7.widget.AppCompatTextView

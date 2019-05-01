@@ -16,7 +16,7 @@ public class DialogUtils {
 
     public static void showNameDialog(Activity activity, NameDialogListener listener, CharSequence currentName) {
         @SuppressLint("InflateParams")
-        TextInputLayout til = (TextInputLayout) activity.getLayoutInflater().inflate(R.layout.dialog_edittext, null);
+        TextInputLayout til = (TextInputLayout) activity.getLayoutInflater().inflate(R.layout._dialog_edittext, null);
         TextInputEditText tiet = til.findViewById(R.id.tietName);
         tiet.setText(currentName);
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);

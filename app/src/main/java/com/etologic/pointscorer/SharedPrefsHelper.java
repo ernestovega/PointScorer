@@ -105,13 +105,13 @@ public class SharedPrefsHelper {
     private int initialPoints;
     //endregion
     //region CONSTRUCTOR
-    SharedPrefsHelper(Context context) {
+    public SharedPrefsHelper(Context context) {
         sharedPrefs = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         initialPoints = getInitialPoints();
     }
     //endregion
     // region METHODS INITIAL_POINTS
-    void initRecordsIfProceed() {
+    public void initRecordsIfProceed() {
         if(!getInitialCheckDone()) {
             resetAll();
             setInitialCheckDone();

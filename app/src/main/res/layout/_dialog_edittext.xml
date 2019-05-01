@@ -14,7 +14,8 @@
         android:id="@+id/tietName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:lines="1"
+        android:inputType="textPersonName"
+        android:maxLines="1"
         android:maxLength="20"
         android:selectAllOnFocus="true" />
 

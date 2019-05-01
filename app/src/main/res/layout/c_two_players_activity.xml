@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:baselineAligned="false"
     android:orientation="vertical"
-    tools:context=".cTwoPlayersActivity">
+    tools:context=".screens.cTwoPlayersActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
