@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,8 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:rotation="180"
-        android:background="@drawable/bg_wood">
+        android:background="@drawable/bg_wood"
+        android:rotation="180">
 
         <ImageView
             android:id="@+id/ivShieldP1"
@@ -21,21 +22,25 @@
             android:layout_centerInParent="true"
             android:padding="32dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/shield"
+            app:srcCompat="@drawable/shield"
             tools:ignore="ContentDescription" />
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/tvNameP1"
             style="@style/NameEditText2Player"
-            android:hint="@string/player_1_name"/>
+            android:background="@android:color/transparent"
+            android:hint="@string/player_1_name" />
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/tvPointsP1"
-            style="@style/PointsTextView2Player" />
+            style="@style/PointsTextView2Player"
+            android:background="@android:color/transparent"
+            android:hint="@string/player_2_name" />
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/tvPointsP1ForAnimation"
-            style="@style/PointsTextView2Player" />
+            style="@style/PointsTextView2Player"
+            android:background="@android:color/transparent" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,7 +48,7 @@
             android:layout_marginBottom="8dp"
             android:orientation="vertical">
 
-            <android.support.v7.widget.AppCompatButton
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btUpP1"
                 style="@style/Base.Widget.AppCompat.Button.Borderless"
                 android:layout_width="match_parent"
@@ -51,7 +56,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/ripple_effect_green" />
 
-            <android.support.v7.widget.AppCompatButton
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btDownP1"
                 style="@style/Base.Widget.AppCompat.Button.Borderless"
                 android:layout_width="match_parent"
@@ -81,21 +86,24 @@
             android:layout_centerInParent="true"
             android:padding="32dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/shield"
+            app:srcCompat="@drawable/shield"
             tools:ignore="ContentDescription" />
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/tvNameP2"
             style="@style/NameEditText2Player"
-            android:hint="@string/player_2_name"/>
+            android:background="@android:color/transparent"
+            android:hint="@string/player_2_name" />
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/tvPointsP2"
-            style="@style/PointsTextView2Player" />
+            style="@style/PointsTextView2Player"
+            android:background="@android:color/transparent" />
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/tvPointsP2ForAnimation"
-            style="@style/PointsTextView2Player" />
+            style="@style/PointsTextView2Player"
+            android:background="@android:color/transparent" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -103,7 +111,7 @@
             android:layout_marginTop="8dp"
             android:orientation="vertical">
 
-            <android.support.v7.widget.AppCompatButton
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btUpP2"
                 style="@style/Base.Widget.AppCompat.Button.Borderless"
                 android:layout_width="match_parent"
@@ -111,7 +119,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/ripple_effect_green" />
 
-            <android.support.v7.widget.AppCompatButton
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btDownP2"
                 style="@style/Base.Widget.AppCompat.Button.Borderless"
                 android:layout_width="match_parent"

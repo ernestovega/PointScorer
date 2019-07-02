@@ -2,7 +2,8 @@ package com.etologic.pointscorer;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.annotation.WorkerThread;
+
+import androidx.annotation.WorkerThread;
 
 @WorkerThread
 public class SharedPrefsHelper {

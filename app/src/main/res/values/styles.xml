@@ -14,7 +14,7 @@
         <item name="android:layout_height">48dp</item>
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:src">@drawable/ic_menu</item>
-        <item name="android:background">@drawable/ripple_effect_white</item>
+        <item name="background">@drawable/ripple_effect_white</item>
     </style>
 
     <style name="PointsTextView">
@@ -25,7 +25,7 @@
         <item name="android:maxLength">4</item>
         <item name="android:lines">1</item>
         <item name="android:textColor">@color/gray_text</item>
-        <item name="android:fontFamily">@font/rock_on</item>
+        <item name="fontFamily">@font/rock_on</item>
     </style>
 
     <style name="PointsTextView1Player" parent="PointsTextView">
@@ -70,11 +70,11 @@
         <item name="android:ellipsize">end</item>
         <item name="android:maxLength">20</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:background">@android:color/transparent</item>
+        <item name="background">@android:color/transparent</item>
         <item name="android:layout_marginLeft">16dp</item>
         <item name="android:layout_marginRight">16dp</item>
         <item name="android:textColorHint">@color/white_transparent</item>
-        <item name="android:fontFamily">@font/rock_on</item>
+        <item name="fontFamily">@font/rock_on</item>
     </style>
 
     <style name="NameTextView1Player" parent="NameEditText">

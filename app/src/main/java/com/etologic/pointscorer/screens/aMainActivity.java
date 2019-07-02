@@ -1,23 +1,17 @@
 package com.etologic.pointscorer.screens;
 
-import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputEditText;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.util.AttributeSet;
-import android.view.View;
 
 import com.etologic.pointscorer.R;
 import com.etologic.pointscorer.SharedPrefsHelper;
-import com.etologic.pointscorer.utils.AnalyticsTags;
 import com.etologic.pointscorer.utils.KeyboardUtils;
-import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -31,7 +25,6 @@ public class aMainActivity extends AppCompatActivity {
     @BindView(R.id.tietMainInitialPoints) TextInputEditText tietInitialPoints;
     //FIELDS
     private SharedPrefsHelper sharedPrefsHelper;
-    private FirebaseAnalytics mFirebaseAnalytics;
 
     //EVENTS
     @OnClick(R.id.acbMainResetAll) void onResetAllButtonClick() {
@@ -45,10 +38,7 @@ public class aMainActivity extends AppCompatActivity {
                     Snackbar.make(tietInitialPoints, R.string.all_points_restarted, Snackbar.LENGTH_LONG).show();
 
                     Bundle bundle = new Bundle();
-                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, AnalyticsTags.TAG_EVENT_MAIN_RESETALLPOINTS);
                     Editable points = tietInitialPoints.getText();
-                    bundle.putString(FirebaseAnalytics.Param.VALUE, points == null ? "" : points.toString());
-                    mFirebaseAnalytics.logEvent(AnalyticsTags.TAG_EVENT_MAIN_RESETALLPOINTS, bundle);
                 })
                 .create()
                 .show();
@@ -76,22 +66,12 @@ public class aMainActivity extends AppCompatActivity {
 
         initSharedPrefs();
         initInitialPoints();
-        initAnalytics();
     }
     private void initSharedPrefs() {
-        sharedPrefsHelper = new SharedPrefsHelper(this);
+        new Thread(() -> sharedPrefsHelper = new SharedPrefsHelper(aMainActivity.this)).run();
         sharedPrefsHelper.initRecordsIfProceed();
     }
     private void initInitialPoints() {
         tietInitialPoints.setText(String.valueOf(sharedPrefsHelper.getInitialPoints()));
-    }
-    private void initAnalytics() {
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        mFirebaseAnalytics.setUserId(FirebaseInstanceId.getInstance().getId());
-        mFirebaseAnalytics.setCurrentScreen(this, AnalyticsTags.TAG_SCREEN_MAIN, null);
-    }
-    @Override protected void onResume() {
-        super.onResume();
-        mFirebaseAnalytics.logEvent(AnalyticsTags.TAG_SCREEN_MAIN, new Bundle());
     }
 }

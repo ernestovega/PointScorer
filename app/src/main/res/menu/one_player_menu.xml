@@ -3,7 +3,10 @@
     <item
         android:id="@+id/menu_edit_name"
         android:title="@string/edit_name" />
+    <!--<item-->
+        <!--android:id="@+id/menu_edit_color"-->
+        <!--android:title="@string/edit_color" />-->
     <item
         android:id="@+id/menu_restart"
-        android:title="@string/restart" />
+        android:title="@string/restart_points" />
 </menu>

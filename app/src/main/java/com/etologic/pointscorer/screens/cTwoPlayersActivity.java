@@ -1,20 +1,22 @@
 package com.etologic.pointscorer.screens;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.PopupMenu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.AppCompatEditText;
 
 import com.etologic.pointscorer.R;
 import com.etologic.pointscorer.SharedPrefsHelper;
 import com.etologic.pointscorer.utils.DialogUtils;
 import com.etologic.pointscorer.utils.MyAnimationUtils;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -28,8 +30,8 @@ import static com.etologic.pointscorer.screens.aMainActivity.REP_DELAY;
 public class cTwoPlayersActivity extends AppCompatActivity {
 
     //VIEWS
-    @BindView(R.id.tvNameP1) TextView tvNameP1;
-    @BindView(R.id.tvNameP2) TextView tvNameP2;
+    @BindView(R.id.tvNameP1) AppCompatEditText tvNameP1;
+    @BindView(R.id.tvNameP2) AppCompatEditText tvNameP2;
     @BindView(R.id.ivShieldP1) ImageView ivShieldP1;
     @BindView(R.id.ivShieldP2) ImageView ivShieldP2;
     @BindView(R.id.tvPointsP1) TextView tvPointsP1;
@@ -139,9 +141,12 @@ public class cTwoPlayersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.c_two_players_activity);
         ButterKnife.bind(this);
-        sharedPrefsHelper = new SharedPrefsHelper(this);
+        initSharedPrefs();
         initNames();
         initPoints();
+    }
+    private void initSharedPrefs() {
+        new Thread(() -> sharedPrefsHelper = new SharedPrefsHelper(cTwoPlayersActivity.this)).run();
     }
     private void initNames() {
         tvNameP1.setText(sharedPrefsHelper.getTwoPlayerNameP1());

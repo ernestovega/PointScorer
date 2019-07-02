@@ -1,10 +1,7 @@
 package com.etologic.pointscorer.screens;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.PopupMenu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,6 +12,10 @@ import com.etologic.pointscorer.SharedPrefsHelper;
 import com.etologic.pointscorer.utils.DialogUtils;
 import com.etologic.pointscorer.utils.MyAnimationUtils;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.PopupMenu;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -28,12 +29,12 @@ import static com.etologic.pointscorer.screens.aMainActivity.REP_DELAY;
 public class gSixPlayersActivity extends AppCompatActivity {
 
     //VIEWS
-    @BindView(R.id.tvNameP1) TextView tvNameP1;
-    @BindView(R.id.tvNameP2) TextView tvNameP2;
-    @BindView(R.id.tvNameP3) TextView tvNameP3;
-    @BindView(R.id.tvNameP4) TextView tvNameP4;
-    @BindView(R.id.tvNameP5) TextView tvNameP5;
-    @BindView(R.id.tvNameP6) TextView tvNameP6;
+    @BindView(R.id.tvNameP1) AppCompatEditText tvNameP1;
+    @BindView(R.id.tvNameP2) AppCompatEditText tvNameP2;
+    @BindView(R.id.tvNameP3) AppCompatEditText tvNameP3;
+    @BindView(R.id.tvNameP4) AppCompatEditText tvNameP4;
+    @BindView(R.id.tvNameP5) AppCompatEditText tvNameP5;
+    @BindView(R.id.tvNameP6) AppCompatEditText tvNameP6;
     @BindView(R.id.ivShieldP1) ImageView ivShieldP1;
     @BindView(R.id.ivShieldP2) ImageView ivShieldP2;
     @BindView(R.id.ivShieldP3) ImageView ivShieldP3;
@@ -328,9 +329,12 @@ public class gSixPlayersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.g_six_players_activity);
         ButterKnife.bind(this);
-        sharedPrefsHelper = new SharedPrefsHelper(this);
+        initSharedPrefs();
         initNames();
         initPoints();
+    }
+    private void initSharedPrefs() {
+        new Thread(() -> sharedPrefsHelper = new SharedPrefsHelper(gSixPlayersActivity.this)).run();
     }
     private void initNames() {
         tvNameP1.setText(sharedPrefsHelper.getSixPlayerNameP1());

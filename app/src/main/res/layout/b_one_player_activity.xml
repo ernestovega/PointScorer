@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_wood"
     tools:context=".screens.bOnePlayerActivity">
 
-    <android.support.v7.widget.AppCompatEditText
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/etStub"
         android:layout_width="0dp"
-        android:layout_height="0dp"/>
+        android:layout_height="0dp"
+        android:background="@android:color/transparent" />
 
     <ImageView
         android:id="@+id/ivShield"
@@ -18,29 +20,32 @@
         android:layout_centerInParent="true"
         android:padding="32dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/shield"
+        app:srcCompat="@drawable/shield"
         tools:ignore="ContentDescription" />
 
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/tvName"
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/acetName"
         style="@style/NameTextView1Player"
         android:layout_marginTop="32dp"
-        android:hint="@string/player_name"/>
+        android:background="@android:color/transparent"
+        android:hint="@string/player_name" />
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/tvPoints"
-        style="@style/PointsTextView1Player"/>
+        style="@style/PointsTextView1Player"
+        android:background="@android:color/transparent" />
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/tvPointsForAnimation"
-        style="@style/PointsTextView1Player"/>
+        style="@style/PointsTextView1Player"
+        android:background="@android:color/transparent" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btUp"
             style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:layout_width="match_parent"
@@ -48,7 +53,7 @@
             android:layout_weight="1"
             android:background="@drawable/ripple_effect_green" />
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btDown"
             style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:layout_width="match_parent"

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal">
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilMainInitialPoints"
             android:layout_width="128dp"
             android:layout_height="wrap_content"
@@ -22,7 +23,7 @@
             android:paddingTop="16dp"
             android:textColorHint="@android:color/black">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tietMainInitialPoints"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -33,9 +34,9 @@
                 android:textColor="@android:color/black"
                 tools:text="9999" />
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/acbMainResetAll"
             style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
@@ -65,8 +66,8 @@
             android:contentDescription="@string/one_player"
             android:padding="48dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_one_player"
             android:tint="@android:color/black"
+            app:srcCompat="@drawable/ic_one_player"
             tools:ignore="NestedWeights" />
 
         <ImageButton
@@ -79,8 +80,8 @@
             android:contentDescription="@string/two_players"
             android:padding="48dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_two_players"
-            android:tint="@android:color/black" />
+            android:tint="@android:color/black"
+            app:srcCompat="@drawable/ic_two_players" />
 
     </LinearLayout>
 
@@ -100,8 +101,8 @@
             android:contentDescription="@string/three_players"
             android:padding="48dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_three_players"
             android:tint="@android:color/black"
+            app:srcCompat="@drawable/ic_three_players"
             tools:ignore="NestedWeights" />
 
         <ImageButton
@@ -114,8 +115,8 @@
             android:contentDescription="@string/four_players"
             android:padding="48dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_four_players"
-            android:tint="@android:color/black" />
+            android:tint="@android:color/black"
+            app:srcCompat="@drawable/ic_four_players" />
 
     </LinearLayout>
 
@@ -135,8 +136,8 @@
             android:contentDescription="@string/five_players"
             android:padding="48dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_five_players"
             android:tint="@android:color/black"
+            app:srcCompat="@drawable/ic_five_players"
             tools:ignore="NestedWeights" />
 
         <ImageButton
@@ -149,8 +150,8 @@
             android:contentDescription="@string/six_players"
             android:padding="48dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_six_players"
-            android:tint="@android:color/black" />
+            android:tint="@android:color/black"
+            app:srcCompat="@drawable/ic_six_players" />
 
     </LinearLayout>
 
@@ -170,8 +171,8 @@
             android:contentDescription="@string/seven_players"
             android:padding="48dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_seven_players"
             android:tint="@android:color/black"
+            app:srcCompat="@drawable/ic_seven_players"
             tools:ignore="NestedWeights" />
 
         <ImageButton
@@ -184,8 +185,8 @@
             android:contentDescription="@string/eight_players"
             android:padding="48dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_eight_players"
-            android:tint="@android:color/black" />
+            android:tint="@android:color/black"
+            app:srcCompat="@drawable/ic_eight_players" />
 
     </LinearLayout>
 
