@@ -3,16 +3,16 @@
     <item
         android:id="@+id/menu_edit_name"
         android:title="@string/edit_name" />
-    <!--<item-->
-        <!--android:id="@+id/menu_edit_color"-->
-        <!--android:title="@string/edit_color" />-->
+    <item
+        android:id="@+id/menu_edit_color"
+        android:title="@string/edit_color" />
     <item
         android:id="@+id/menu_restart"
         android:title="@string/restart_points" />
     <item
         android:id="@+id/menu_restart_all"
         android:title="@string/restart_all_points" />
-    <!--<item-->
-        <!--android:id="@+id/menu_restart_all_names"-->
-        <!--android:title="@string/restart_all_names" />-->
+    <item
+        android:id="@+id/menu_restart_all_names"
+        android:title="@string/restart_all_names" />
 </menu>

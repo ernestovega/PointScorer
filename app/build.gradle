@@ -47,4 +47,6 @@ dependencies {
     implementation "com.jakewharton:butterknife:$butterknifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterknifeVersion"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    //COLOR PICKER
+    implementation "com.github.skydoves:colorpickerview:2.1.5"
 }

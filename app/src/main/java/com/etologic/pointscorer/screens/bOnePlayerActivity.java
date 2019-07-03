@@ -105,19 +105,24 @@ public class bOnePlayerActivity extends AppCompatActivity {
                         etName.setText(name);
                     }, etName.getText());
                     return true;
-//                case R.id.menu_edit_color:
-//                    DialogUtils.showColorDialog(this, color -> {
-//                        sharedPrefsHelper.saveOnePlayerColor(color);
-//                        ivShield.clearColorFilter();
-//                        ivShield.setColorFilter(color);
-//                    }, etName.getText());
-//                    return true;
+                case R.id.menu_edit_color:
+                    DialogUtils.showColorDialog(this, color -> {
+                        sharedPrefsHelper.saveOnePlayerColor(color);
+                        setTextsColor(color);
+                    });
+                    return true;
                 default:
                     return false;
             }
         });
         popup.inflate(R.menu.one_player_menu);
         popup.show();
+    }
+    private void setTextsColor(int color) {
+        etName.setTextColor(color);
+        etName.setHintTextColor(color);
+        tvPoints.setTextColor(color);
+        tvPointsForAnimation.setTextColor(color);
     }
     private void restartPlayerPoints() { points = initialPoints; updatePoints(); }
 
@@ -128,6 +133,7 @@ public class bOnePlayerActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         initSharedPrefs();
         initNames();
+        initColors();
         initPoints();
         initShield();
         updatePoints();
@@ -137,6 +143,9 @@ public class bOnePlayerActivity extends AppCompatActivity {
     }
     private void initNames() {
         etName.setText(sharedPrefsHelper.getOnePlayerName());
+    }
+    private void initColors() {
+        setTextsColor(sharedPrefsHelper.getOnePlayerColor());
     }
     private void initPoints() {
         initialPoints = sharedPrefsHelper.getInitialPoints();

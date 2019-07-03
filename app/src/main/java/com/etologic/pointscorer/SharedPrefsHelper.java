@@ -2,6 +2,7 @@ package com.etologic.pointscorer;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 
 import androidx.annotation.WorkerThread;
 
@@ -20,6 +21,7 @@ public class SharedPrefsHelper {
 
     private static final String KEY_NAME_ONE_PLAYER   = "one_player_name";
     private static final String KEY_POINTS_ONE_PLAYER = "one_player_points";
+    private static final String KEY_COLOR_ONE_PLAYER = "one_player_color";
 
     private static final String KEY_NAME_TWO_PLAYER_1 = "two_player_1_name";
     private static final String KEY_NAME_TWO_PLAYER_2 = "two_player_2_name";
@@ -180,6 +182,8 @@ public class SharedPrefsHelper {
     public void saveOnePlayerName(String name) { sharedPrefs.edit().putString(KEY_NAME_ONE_PLAYER, name).apply(); }
     public int getOnePlayerPoints() { return sharedPrefs.getInt(KEY_POINTS_ONE_PLAYER, initialPoints); }
     public void saveOnePlayerPoints(int points) { sharedPrefs.edit().putInt(KEY_POINTS_ONE_PLAYER, points).apply(); }
+    public int getOnePlayerColor() { return sharedPrefs.getInt(KEY_COLOR_ONE_PLAYER, Color.TRANSPARENT); }
+    public void saveOnePlayerColor(int color) { sharedPrefs.edit().putInt(KEY_COLOR_ONE_PLAYER, color).apply(); }
     //endregion
     //region METHODS TWO PLAYERS
     public String getTwoPlayerNameP1() { return sharedPrefs.getString(KEY_NAME_TWO_PLAYER_1, DEFAULT_PLAYER_NAME); }
