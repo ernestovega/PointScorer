@@ -334,7 +334,7 @@ public class gSixPlayersActivity extends AppCompatActivity {
         initPoints();
     }
     private void initSharedPrefs() {
-        new Thread(() -> sharedPrefsHelper = new SharedPrefsHelper(gSixPlayersActivity.this)).run();
+        new Thread(() -> sharedPrefsHelper = new SharedPrefsHelper(gSixPlayersActivity.this, playerId)).run();
     }
     private void initNames() {
         tvNameP1.setText(sharedPrefsHelper.getSixPlayerNameP1());

@@ -189,7 +189,7 @@ public class dThreePlayersActivity extends AppCompatActivity {
         initPoints();
     }
     private void initSharedPrefs() {
-        new Thread(() -> sharedPrefsHelper = new SharedPrefsHelper(dThreePlayersActivity.this)).run();
+        new Thread(() -> sharedPrefsHelper = new SharedPrefsHelper(dThreePlayersActivity.this, playerId)).run();
     }
     private void initNames() {
         tvNameP1.setText(sharedPrefsHelper.getThreePlayerNameP1());

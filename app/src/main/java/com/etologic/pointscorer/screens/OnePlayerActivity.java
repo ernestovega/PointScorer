@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
-
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,7 +25,7 @@ import static android.view.MotionEvent.ACTION_CANCEL;
 import static android.view.MotionEvent.ACTION_UP;
 import static com.etologic.pointscorer.screens.aMainActivity.REP_DELAY;
 
-public class bOnePlayerActivity extends AppCompatActivity {
+public class OnePlayerActivity extends AppCompatActivity {
 
     //VIEWS
     @BindView(R.id.acetName) AppCompatEditText etName;
@@ -139,7 +138,7 @@ public class bOnePlayerActivity extends AppCompatActivity {
         updatePoints();
     }
     private void initSharedPrefs() {
-        new Thread(() -> sharedPrefsHelper = new SharedPrefsHelper(bOnePlayerActivity.this, playerId)).run();
+        new Thread(() -> sharedPrefsHelper = new SharedPrefsHelper(OnePlayerActivity.this, playerId)).run();
     }
     private void initNames() {
         etName.setText(sharedPrefsHelper.getOnePlayerName());

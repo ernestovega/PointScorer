@@ -1,8 +1,10 @@
 package com.etologic.pointscorer.utils;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.view.LayoutInflater;
 import android.view.Window;
 import android.widget.LinearLayout;
 
@@ -13,7 +15,6 @@ import com.skydoves.colorpickerview.ColorPickerView;
 import com.skydoves.colorpickerview.listeners.ColorListener;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 public class DialogUtils {
 
@@ -25,32 +26,32 @@ public class DialogUtils {
         void onColorChanged(int color);
     }
 
-    public static void showNameDialog(AppCompatActivity activity, NameDialogListener listener, CharSequence currentName) {
+    public static void showNameDialog(LayoutInflater layoutInflater, Context context, NameDialogListener listener, CharSequence currentName) {
         @SuppressLint("InflateParams")
-        TextInputLayout til = (TextInputLayout) activity.getLayoutInflater().inflate(R.layout._dialog_edittext, null);
+        TextInputLayout til = (TextInputLayout) layoutInflater.inflate(R.layout._dialog_edittext, null);
         TextInputEditText tiet = til.findViewById(R.id.tietName);
         tiet.setText(currentName);
         tiet.requestFocus();
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
             if (tiet.getText() != null) {
                 String name = tiet.getText().toString().trim();
                 listener.onNameChanged(name);
-                KeyboardUtils.hideKeyboard(activity, tiet);
+                KeyboardUtils.hideKeyboard(context, tiet);
             }
         })
                 .setNegativeButton(android.R.string.cancel, null)
                 .setView(til)
                 .create()
                 .show();
-        KeyboardUtils.showKeyboard(activity);
+        KeyboardUtils.showKeyboard(context);
     }
 
-    public static void showColorDialog(AppCompatActivity activity, ColorDialogListener colorListener) {
+    public static void showColorDialog(LayoutInflater layoutInflater, Context context, ColorDialogListener colorListener) {
                 @SuppressLint("InflateParams")
-                LinearLayout linearLayout = (LinearLayout) activity.getLayoutInflater().inflate(R.layout._dialog_color, null);
+                LinearLayout linearLayout = (LinearLayout) layoutInflater.inflate(R.layout._dialog_color, null);
                 ColorPickerView colorPicker = linearLayout.findViewById(R.id.colorPickerView);
-                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 AlertDialog alertDialog = builder.setView(linearLayout)
                         .setPositiveButton(android.R.string.ok, null)
                         .create();

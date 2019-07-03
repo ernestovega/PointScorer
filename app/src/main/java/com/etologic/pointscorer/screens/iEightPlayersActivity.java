@@ -426,7 +426,7 @@ public class iEightPlayersActivity extends AppCompatActivity {
         initPoints();
     }
     private void initSharedPrefs() {
-        new Thread(() -> sharedPrefsHelper = new SharedPrefsHelper(iEightPlayersActivity.this)).run();
+        new Thread(() -> sharedPrefsHelper = new SharedPrefsHelper(iEightPlayersActivity.this, playerId)).run();
     }
     private void initNames() {
         tvNameP1.setText(sharedPrefsHelper.getEightPlayerNameP1());

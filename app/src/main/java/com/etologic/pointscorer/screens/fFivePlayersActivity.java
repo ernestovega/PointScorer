@@ -289,7 +289,7 @@ public class fFivePlayersActivity extends AppCompatActivity {
         initPoints();
     }
     private void initSharedPrefs() {
-        new Thread(() -> sharedPrefsHelper = new SharedPrefsHelper(fFivePlayersActivity.this)).run();
+        new Thread(() -> sharedPrefsHelper = new SharedPrefsHelper(fFivePlayersActivity.this, playerId)).run();
     }
     private void initNames() {
         tvNameP1.setText(sharedPrefsHelper.getFivePlayerNameP1());

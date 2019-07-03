@@ -85,6 +85,12 @@ public class cTwoPlayersActivity extends AppCompatActivity {
                         tvNameP1.setText(name);
                     }, tvNameP1.getText());
                     return true;
+                case R.id.menu_edit_color:
+                    DialogUtils.showColorDialog(this, color -> {
+                        sharedPrefsHelper.saveOnePlayerColor(color);
+                        setTextsColorP1(color);
+                    });
+                    return true;
                 case R.id.menu_restart:
                     restartP1Points();
                     return true;
@@ -104,9 +110,15 @@ public class cTwoPlayersActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.menu_edit_name:
                     DialogUtils.showNameDialog(this, name -> {
-                        sharedPrefsHelper.saveTwoPlayerNameP2(name);
+                        sharedPrefsHelper.saveTwoPlayerColorP1(name);
                         tvNameP2.setText(name);
                     }, tvNameP2.getText());
+                    return true;
+                case R.id.menu_edit_color:
+                    DialogUtils.showColorDialog(this, color -> {
+                        sharedPrefsHelper.saveTwoPlayerColorP2(color);
+                        setTextsColorP2(color);
+                    });
                     return true;
                 case R.id.menu_restart:
                     restartP2Points();
@@ -120,6 +132,18 @@ public class cTwoPlayersActivity extends AppCompatActivity {
         });
         popup.inflate(R.menu.player_menu);
         popup.show();
+    }
+    private void setTextsColorP1(int color) {
+        tvNameP1.setTextColor(color);
+        tvNameP1.setHintTextColor(color);
+        tvPointsP1.setTextColor(color);
+        tvPointsP1ForAnimation.setTextColor(color);
+    }
+    private void setTextsColorP2(int color) {
+        tvNameP2.setTextColor(color);
+        tvNameP2.setHintTextColor(color);
+        tvPointsP2.setTextColor(color);
+        tvPointsP2ForAnimation.setTextColor(color);
     }
     private void updatePointsP1() { tvPointsP1ForAnimation.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP1, tvPointsP1ForAnimation, pointsP1)); }
     private void updatePointsP2() { tvPointsP2ForAnimation.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsP2, tvPointsP2ForAnimation, pointsP2)); }
@@ -143,14 +167,19 @@ public class cTwoPlayersActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         initSharedPrefs();
         initNames();
+        initColors();
         initPoints();
     }
     private void initSharedPrefs() {
-        new Thread(() -> sharedPrefsHelper = new SharedPrefsHelper(cTwoPlayersActivity.this)).run();
+        new Thread(() -> sharedPrefsHelper = new SharedPrefsHelper(cTwoPlayersActivity.this, playerId)).run();
     }
     private void initNames() {
         tvNameP1.setText(sharedPrefsHelper.getTwoPlayerNameP1());
         tvNameP2.setText(sharedPrefsHelper.getTwoPlayerNameP2());
+    }
+    private void initColors() {
+        setTextsColorP1(sharedPrefsHelper.getTwoPlayerColorP1());
+        setTextsColorP2(sharedPrefsHelper.getTwoPlayerColorP2());
     }
     private void initPoints() {
         new Thread(() -> {
