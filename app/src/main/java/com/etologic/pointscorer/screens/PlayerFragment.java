@@ -1,12 +1,12 @@
 package com.etologic.pointscorer.screens;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,10 +32,14 @@ import static com.etologic.pointscorer.screens.aMainActivity.REP_DELAY;
 
 public class PlayerFragment extends Fragment {
 
+    public PlayerFragment(int playerId) {
+        super();
+        this.playerId = playerId;
+    }
     private static final int MAX_POINTS = 999;
     private static final int MIN_POINTS = 999;
     //VIEWS
-    @BindView(R.id.acetName) AppCompatEditText etName;
+    @BindView(R.id.acetName) EditText etName;
     @BindView(R.id.ivShield) ImageView ivShield;
     @BindView(R.id.tvPoints) TextView tvPoints;
     @BindView(R.id.tvPointsForAnimation) TextView tvPointsForAnimation;
@@ -50,7 +54,6 @@ public class PlayerFragment extends Fragment {
      */
     private boolean isAutoIncrement = false;
     private boolean isAutoDecrement = false;
-    private View myView = null;
 
     //INNER CLASSES
     class RepeatUpdater implements Runnable {
@@ -159,27 +162,17 @@ public class PlayerFragment extends Fragment {
             tvPointsForAnimation.setTextColor(color);
         }
     }
-    //PUBLIC
-    void setPlayerId(int playerId) {
-        this.playerId = playerId;
-        if(myView != null) {
-            initNames();
-            initColors();
-            initPoints();
-            initShield();
-            updatePoints();
-        }
-    }
+
     //LIFECYCLE
     @Nullable @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.player_fragment, container, true);
+        View view = inflater.inflate(R.layout.player_fragment, container, false);
+        initSharedPrefs();
+        return view;
     }
     @Override public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initSharedPrefs();
         ButterKnife.bind(view);
-        myView = view;
         if(playerId > 0) {
             initNames();
             initColors();
@@ -211,5 +204,8 @@ public class PlayerFragment extends Fragment {
         if(ivShield != null) {
             ivShield.startAnimation(MyAnimationUtils.getShieldAnimation());
         }
+    }
+    void setPlayerId(int i) {
+
     }
 }

@@ -22,10 +22,11 @@
         app:srcCompat="@drawable/shield"
         tools:ignore="ContentDescription" />
 
-    <androidx.appcompat.widget.AppCompatEditText
+    <EditText
         android:id="@+id/acetName"
         style="@style/NameTextView1Player"
         android:layout_marginTop="32dp"
+        android:inputType="text"
         android:background="@android:color/transparent"
         android:hint="@string/player_name" />
 
