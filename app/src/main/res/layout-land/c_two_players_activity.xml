@@ -1,135 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:baselineAligned="false"
     tools:context=".screens.cTwoPlayersActivity">
 
-    <RelativeLayout
-        android:layout_width="0dp"
+    <fragment
+        android:id="@+id/fragmentPlayer21"
+        android:name="com.etologic.pointscorer.screens.PlayerFragment"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@drawable/bg_wood">
+        android:layout_weight="1" />
 
-        <ImageView
-            android:id="@+id/ivShieldP1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:padding="32dp"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/shield"
-            tools:ignore="ContentDescription" />
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/tvNameP1"
-            style="@style/NameEditText2PlayerLand"
-            android:background="@android:color/transparent"
-
-            android:hint="@string/player_1_name" />
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/tvPointsP1"
-            style="@style/PointsTextView2Player"
-            android:background="@android:color/transparent" />
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/tvPointsP1ForAnimation"
-            style="@style/PointsTextView2Player"
-            android:background="@android:color/transparent" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btUpP1"
-                style="@style/Base.Widget.AppCompat.Button.Borderless"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@drawable/ripple_effect_green" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btDownP1"
-                style="@style/Base.Widget.AppCompat.Button.Borderless"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@drawable/ripple_effect_red" />
-
-        </LinearLayout>
-
-        <ImageButton
-            android:id="@+id/ibMenuP1"
-            style="@style/MenuButton"
-            android:contentDescription="@string/player_1_options" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="0dp"
+    <fragment
+        android:id="@+id/fragmentPlayer22"
+        android:name="com.etologic.pointscorer.screens.PlayerFragment"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@drawable/bg_wood">
-
-        <ImageView
-            android:id="@+id/ivShieldP2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:padding="32dp"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/shield"
-            tools:ignore="ContentDescription" />
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/tvNameP2"
-            style="@style/NameEditText2PlayerLand"
-            android:background="@android:color/transparent"
-            android:hint="@string/player_2_name" />
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/tvPointsP2"
-            style="@style/PointsTextView2Player"
-            android:background="@android:color/transparent" />
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/tvPointsP2ForAnimation"
-            style="@style/PointsTextView2Player"
-            android:background="@android:color/transparent" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btUpP2"
-                style="@style/Base.Widget.AppCompat.Button.Borderless"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@drawable/ripple_effect_green" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btDownP2"
-                style="@style/Base.Widget.AppCompat.Button.Borderless"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@drawable/ripple_effect_red" />
-
-        </LinearLayout>
-
-        <ImageButton
-            android:id="@+id/ibMenuP2"
-            style="@style/MenuButton"
-            android:contentDescription="@string/player_2_options" />
-
-    </RelativeLayout>
+        android:layout_weight="1" />
 
 </LinearLayout>

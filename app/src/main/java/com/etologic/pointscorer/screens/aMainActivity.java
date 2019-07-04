@@ -68,8 +68,10 @@ public class aMainActivity extends AppCompatActivity {
         initInitialPoints();
     }
     private void initSharedPrefs() {
-        new Thread(() -> sharedPrefsHelper = new SharedPrefsHelper(aMainActivity.this, playerId)).run();
-        sharedPrefsHelper.initRecordsIfProceed();
+        new Thread(() -> {
+            sharedPrefsHelper = new SharedPrefsHelper(aMainActivity.this);
+            sharedPrefsHelper.initRecordsIfProceed();
+        }).run();
     }
     private void initInitialPoints() {
         tietInitialPoints.setText(String.valueOf(sharedPrefsHelper.getInitialPoints()));

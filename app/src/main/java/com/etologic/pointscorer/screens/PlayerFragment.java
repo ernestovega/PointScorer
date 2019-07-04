@@ -1,5 +1,6 @@
 package com.etologic.pointscorer.screens;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -49,6 +50,7 @@ public class PlayerFragment extends Fragment {
      */
     private boolean isAutoIncrement = false;
     private boolean isAutoDecrement = false;
+    private View myView = null;
 
     //INNER CLASSES
     class RepeatUpdater implements Runnable {
@@ -97,14 +99,16 @@ public class PlayerFragment extends Fragment {
     }
     private void incrementPoints() { if (points < MAX_POINTS) points++; }
     private void updatePoints() {
-        tvPointsForAnimation.startAnimation(
-                MyAnimationUtils.getUpdatePointsAnimation(
-                        tvPoints,
-                        tvPointsForAnimation,
-                        points,
-                        () -> new Thread(
-                                () -> sharedPrefsHelper.savePlayerPoints(points, playerId)
+        if(tvPoints != null && tvPointsForAnimation != null) {
+            tvPointsForAnimation.startAnimation(
+                    MyAnimationUtils.getUpdatePointsAnimation(
+                            tvPoints,
+                            tvPointsForAnimation,
+                            points,
+                            () -> new Thread(
+                                    () -> sharedPrefsHelper.savePlayerPoints(points, playerId)
                             ).run()));
+        }
     }
     @OnClick(R.id.btDown) void onDownClickButton() {
         decrementPoints();
@@ -112,7 +116,7 @@ public class PlayerFragment extends Fragment {
     }
     private void decrementPoints() { if (points > MIN_POINTS) points--; }
     @OnClick(R.id.ibMenu) void onMenuButtonClick(View view) {
-        if(getContext() != null) {
+        if (getContext() != null) {
             PopupMenu popup = new PopupMenu(getContext(), view);
             popup.setOnMenuItemClickListener(item -> {
                 switch (item.getItemId()) {
@@ -120,7 +124,7 @@ public class PlayerFragment extends Fragment {
                         restartPlayerPoints();
                         return true;
                     case R.id.menu_edit_name:
-                        if(getActivity() != null) {
+                        if (getActivity() != null) {
                             DialogUtils.showNameDialog(getActivity().getLayoutInflater(), getContext(), name -> {
                                 sharedPrefsHelper.savePlayerName(name, playerId);
                                 etName.setText(name);
@@ -128,7 +132,7 @@ public class PlayerFragment extends Fragment {
                         }
                         return true;
                     case R.id.menu_edit_color:
-                        if(getActivity() != null) {
+                        if (getActivity() != null) {
                             DialogUtils.showColorDialog(getActivity().getLayoutInflater(), getContext(), color -> {
                                 sharedPrefsHelper.savePlayerColor(color, playerId);
                                 setTextsColor(color);
@@ -143,53 +147,69 @@ public class PlayerFragment extends Fragment {
             popup.show();
         }
     }
-    private void setTextsColor(int color) {
-        etName.setTextColor(color);
-        etName.setHintTextColor(color);
-        tvPoints.setTextColor(color);
-        tvPointsForAnimation.setTextColor(color);
-    }
     private void restartPlayerPoints() {
         points = initialPoints;
         updatePoints();
     }
-
-    //PUBLIC
-    public void setPlayerId(int playerId) {
-        this.playerId = playerId;
-        initSharedPrefs(playerId);
-        initNames();
-        initColors();
-        initPoints();
-        initShield();
-        updatePoints();
+    private void setTextsColor(int color) {
+        if(etName != null && tvPoints != null && tvPointsForAnimation != null) {
+            etName.setTextColor(color);
+            etName.setHintTextColor(color);
+            tvPoints.setTextColor(color);
+            tvPointsForAnimation.setTextColor(color);
+        }
     }
-
+    //PUBLIC
+    void setPlayerId(int playerId) {
+        this.playerId = playerId;
+        if(myView != null) {
+            initNames();
+            initColors();
+            initPoints();
+            initShield();
+            updatePoints();
+        }
+    }
     //LIFECYCLE
     @Nullable @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.b_one_player_activity, container, true);
-        ButterKnife.bind(view);
-        return view;
+        return inflater.inflate(R.layout.player_fragment, container, true);
     }
-    private void initSharedPrefs(int playerId) {
+    @Override public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initSharedPrefs();
+        ButterKnife.bind(view);
+        myView = view;
+        if(playerId > 0) {
+            initNames();
+            initColors();
+            initPoints();
+            initShield();
+            updatePoints();
+        }
+    }
+    private void initSharedPrefs() {
         new Thread(() -> {
             if (getContext() != null) {
-                sharedPrefsHelper = new SharedPrefsHelper(getContext(), playerId);
+                sharedPrefsHelper = new SharedPrefsHelper(getContext());
             }
         }).run();
-    }
-    private void initNames() {
-        etName.setText(sharedPrefsHelper.getPlayerName(playerId));
-    }
-    private void initColors() {
-        setTextsColor(sharedPrefsHelper.getPlayerColor(playerId));
     }
     private void initPoints() {
         initialPoints = sharedPrefsHelper.getInitialPoints();
         points = sharedPrefsHelper.getPlayerPoints(playerId);
     }
+    private void initNames() {
+        if(etName != null) {
+            etName.setText(sharedPrefsHelper.getPlayerName(playerId));
+        }
+    }
+    private void initColors() {
+        setTextsColor(sharedPrefsHelper.getPlayerColor(playerId));
+    }
     private void initShield() {
-        ivShield.startAnimation(MyAnimationUtils.getShieldAnimation());
+        if(ivShield != null) {
+            ivShield.startAnimation(MyAnimationUtils.getShieldAnimation());
+        }
     }
 }
