@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ public class hSevenPlayersActivity extends AppCompatActivity {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.h_seven_players_activity);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         PlayerFragment player71Fragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPlayer71);
         PlayerFragment player72Fragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPlayer72);
         PlayerFragment player73Fragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPlayer73);

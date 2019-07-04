@@ -3,6 +3,7 @@ package com.etologic.pointscorer.screens;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.view.WindowManager;
 
 import com.etologic.pointscorer.R;
 import com.etologic.pointscorer.SharedPrefsHelper;

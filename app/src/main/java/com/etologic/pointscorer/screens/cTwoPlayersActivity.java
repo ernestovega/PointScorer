@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,6 +33,7 @@ public class cTwoPlayersActivity extends AppCompatActivity {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.c_two_players_activity);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         PlayerFragment player21Fragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPlayer21);
         PlayerFragment player22Fragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPlayer22);
         if (player21Fragment != null) player21Fragment.setPlayerId(11);

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ public class gSixPlayersActivity extends AppCompatActivity {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.g_six_players_activity);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         PlayerFragment player61Fragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPlayer61);
         PlayerFragment player62Fragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPlayer62);
         PlayerFragment player63Fragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPlayer63);

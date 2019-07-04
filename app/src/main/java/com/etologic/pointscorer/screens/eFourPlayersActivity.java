@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ public class eFourPlayersActivity extends AppCompatActivity {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.e_four_players_activity);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         PlayerFragment player41Fragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPlayer41);
         PlayerFragment player42Fragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPlayer42);
         PlayerFragment player43Fragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPlayer43);

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ public class iEightPlayersActivity extends AppCompatActivity {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.i_eight_players_activity);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         PlayerFragment player81Fragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPlayer81);
         PlayerFragment player82Fragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPlayer82);
         PlayerFragment player83Fragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPlayer83);

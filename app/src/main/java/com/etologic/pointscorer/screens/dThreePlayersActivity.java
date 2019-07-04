@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ public class dThreePlayersActivity extends AppCompatActivity {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.d_three_players_activity);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         PlayerFragment player31Fragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPlayer31);
         PlayerFragment player32Fragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPlayer32);
         PlayerFragment player33Fragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPlayer33);
