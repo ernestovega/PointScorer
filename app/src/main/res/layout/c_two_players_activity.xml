@@ -7,19 +7,31 @@
     android:orientation="vertical"
     tools:context=".screens.cTwoPlayersActivity">
 
-    <fragment
-        android:id="@+id/fragmentPlayer21"
-        android:name="com.etologic.pointscorer.screens.PlayerFragment"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:rotation="180" />
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-    <fragment
-        android:id="@+id/fragmentPlayer22"
-        android:name="com.etologic.pointscorer.screens.PlayerFragment"
+        <fragment
+            android:id="@+id/fragmentPlayer21"
+            android:name="com.etologic.pointscorer.screens.PlayerFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:rotation="180" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <fragment
+            android:id="@+id/fragmentPlayer22"
+            android:name="com.etologic.pointscorer.screens.PlayerFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
 
 </LinearLayout>

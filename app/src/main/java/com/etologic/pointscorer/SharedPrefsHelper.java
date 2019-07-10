@@ -20,7 +20,7 @@ public class SharedPrefsHelper {
     private static final String KEY_NAME = "name_";
     private static final String KEY_POINTS = "points_";
     private static final String KEY_COLOR = "color_";
-    private static final String DEFAULT_PLAYER_NAME = "";
+    private static final String DEFAULT_PLAYER_NAME = "Player name";
 
     //FIELDS
     private final SharedPreferences sharedPrefs;

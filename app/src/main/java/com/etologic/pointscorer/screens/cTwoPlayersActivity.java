@@ -36,7 +36,7 @@ public class cTwoPlayersActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         PlayerFragment player21Fragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPlayer21);
         PlayerFragment player22Fragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPlayer22);
-        if (player21Fragment != null) player21Fragment.setPlayerId(11);
-        if (player22Fragment != null) player22Fragment.setPlayerId(11);
+        if (player21Fragment != null) player21Fragment.setPlayerId(21);
+        if (player22Fragment != null) player22Fragment.setPlayerId(22);
     }
 }

@@ -6,7 +6,6 @@ import android.view.WindowManager;
 import com.etologic.pointscorer.R;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
 
 public class bOnePlayerActivity extends AppCompatActivity {
 
@@ -15,11 +14,22 @@ public class bOnePlayerActivity extends AppCompatActivity {
         setContentView(R.layout.b_one_player_activity);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        PlayerFragment player11Fragment = new PlayerFragment(11);
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
-        fragmentTransaction.add(R.id.flPlayer11, player11Fragment);
-        fragmentTransaction.commit();
+        Bundle bundle = new Bundle();
+        bundle.putInt(PlayerFragment.KEY_PLAYER_ID, 11);
+
+        PlayerFragment player11Fragment = new PlayerFragment();
+        player11Fragment.setArguments(bundle);
+
+        addFragment(player11Fragment, R.id.flPlayer11);
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private void addFragment(PlayerFragment fragment, int frameLayout) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+                .add(frameLayout, fragment)
+                .commit();
     }
 
     @Override protected void onResume() {

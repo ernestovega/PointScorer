@@ -12,33 +12,37 @@
         android:layout_height="0dp"
         android:background="@android:color/transparent" />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivShield"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:padding="32dp"
+        android:visibility="invisible"
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/shield"
         tools:ignore="ContentDescription" />
 
-    <EditText
-        android:id="@+id/acetName"
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/etName"
         style="@style/NameTextView1Player"
         android:layout_marginTop="32dp"
         android:inputType="text"
         android:background="@android:color/transparent"
         android:hint="@string/player_name" />
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/tvPoints"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvPointsPlayer"
         style="@style/PointsTextView1Player"
-        android:background="@android:color/transparent" />
+        android:background="@android:color/transparent"
+        android:text="100"/>
 
-    <androidx.appcompat.widget.AppCompatEditText
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvPointsForAnimation"
         style="@style/PointsTextView1Player"
-        android:background="@android:color/transparent" />
+        android:visibility="invisible"
+        android:background="@android:color/transparent"
+        tools:text="100"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -63,7 +67,7 @@
 
     </LinearLayout>
 
-    <ImageButton
+    <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/ibMenu"
         style="@style/MenuButton"
         android:contentDescription="@string/player_options" />

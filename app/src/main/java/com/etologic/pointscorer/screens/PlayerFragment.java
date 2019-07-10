@@ -6,9 +6,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.view.animation.Animation;
 
 import com.etologic.pointscorer.R;
 import com.etologic.pointscorer.SharedPrefsHelper;
@@ -18,6 +16,8 @@ import com.etologic.pointscorer.utils.MyAnimationUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
@@ -25,6 +25,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 import butterknife.OnTouch;
+import butterknife.Unbinder;
 
 import static android.view.MotionEvent.ACTION_CANCEL;
 import static android.view.MotionEvent.ACTION_UP;
@@ -32,22 +33,18 @@ import static com.etologic.pointscorer.screens.aMainActivity.REP_DELAY;
 
 public class PlayerFragment extends Fragment {
 
-    public PlayerFragment(int playerId) {
-        super();
-        this.playerId = playerId;
-    }
+    //CONSTANTS
     private static final int MAX_POINTS = 999;
     private static final int MIN_POINTS = 999;
-    //VIEWS
-    @BindView(R.id.acetName) EditText etName;
-    @BindView(R.id.ivShield) ImageView ivShield;
-    @BindView(R.id.tvPoints) TextView tvPoints;
-    @BindView(R.id.tvPointsForAnimation) TextView tvPointsForAnimation;
+    static final String KEY_PLAYER_ID = "playerId";
+
     //FIELDS
+    private Unbinder unbinder;
     private int playerId;
     private SharedPrefsHelper sharedPrefsHelper;
     private int initialPoints;
     private int points;
+    private Animation updatePointsAnimation;
     private Handler repeatUpdateHandler = new Handler();
     /**
      * https://stackoverflow.com/questions/7938516/continuously-increase-integer-value-as-the-button-is-pressed
@@ -55,6 +52,59 @@ public class PlayerFragment extends Fragment {
     private boolean isAutoIncrement = false;
     private boolean isAutoDecrement = false;
 
+    //VIEWS
+    @BindView(R.id.etName) AppCompatEditText etName;
+    @BindView(R.id.ivShield) AppCompatImageView ivShield;
+    @BindView(R.id.tvPointsPlayer) AppCompatTextView tvPoints;
+    @BindView(R.id.tvPointsForAnimation) AppCompatTextView tvPointsForAnimation;
+
+    //LIFECYCLE
+    @Nullable @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.player_fragment, container, false);
+    }
+    @Override public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        unbinder = ButterKnife.bind(this, view);
+        initSharedPrefs();
+        MyAnimationUtils.AnimationEndListener animationEndListener = () -> new Thread(() -> sharedPrefsHelper.savePlayerPoints(points, playerId)).run();
+        updatePointsAnimation = MyAnimationUtils.getUpdatePointsAnimation(tvPoints, tvPointsForAnimation, points, animationEndListener);
+        playerId = getArguments() == null ? 0 : getArguments().getInt(KEY_PLAYER_ID);
+        if(playerId > 0) {
+            initName();
+            initPoints();
+            initColors();
+            initShieldAndPoints();
+        }
+    }
+    private void initSharedPrefs() {
+        new Thread(() -> {
+            if (getContext() != null) {
+                sharedPrefsHelper = new SharedPrefsHelper(getContext());
+            }
+        }).run();
+    }
+    private void initPoints() {
+        initialPoints = sharedPrefsHelper.getInitialPoints();
+        points = sharedPrefsHelper.getPlayerPoints(playerId);
+    }
+    private void initName() {
+        etName.setText(sharedPrefsHelper.getPlayerName(playerId));
+    }
+    private void initColors() {
+        setTextsColor(sharedPrefsHelper.getPlayerColor(playerId));
+    }
+    private void initShieldAndPoints() {
+//        Animation updatePointsAnimationWithoutSave = MyAnimationUtils.getUpdatePointsAnimation(tvPoints, tvPointsForAnimation, points);
+//        MyAnimationUtils.AnimationEndListener animationEndListener = new Thread(() -> tvPointsForAnimation.startAnimation(updatePointsAnimationWithoutSave))::run;
+//        Animation shieldAnimation = MyAnimationUtils.getShieldAnimation(animationEndListener);
+//        ivShield.startAnimation(shieldAnimation);
+        tvPoints.setText(String.valueOf(points));
+    }
+    @Override public void onDestroyView() {
+        unbinder.unbind();
+        super.onDestroyView();
+    }
     //INNER CLASSES
     class RepeatUpdater implements Runnable {
         public void run() {
@@ -102,16 +152,7 @@ public class PlayerFragment extends Fragment {
     }
     private void incrementPoints() { if (points < MAX_POINTS) points++; }
     private void updatePoints() {
-        if(tvPoints != null && tvPointsForAnimation != null) {
-            tvPointsForAnimation.startAnimation(
-                    MyAnimationUtils.getUpdatePointsAnimation(
-                            tvPoints,
-                            tvPointsForAnimation,
-                            points,
-                            () -> new Thread(
-                                    () -> sharedPrefsHelper.savePlayerPoints(points, playerId)
-                            ).run()));
-        }
+        tvPointsForAnimation.startAnimation(updatePointsAnimation);
     }
     @OnClick(R.id.btDown) void onDownClickButton() {
         decrementPoints();
@@ -155,57 +196,13 @@ public class PlayerFragment extends Fragment {
         updatePoints();
     }
     private void setTextsColor(int color) {
-        if(etName != null && tvPoints != null && tvPointsForAnimation != null) {
-            etName.setTextColor(color);
-            etName.setHintTextColor(color);
-            tvPoints.setTextColor(color);
-            tvPointsForAnimation.setTextColor(color);
-        }
-    }
-
-    //LIFECYCLE
-    @Nullable @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.player_fragment, container, false);
-        initSharedPrefs();
-        return view;
-    }
-    @Override public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(view);
-        if(playerId > 0) {
-            initNames();
-            initColors();
-            initPoints();
-            initShield();
-            updatePoints();
-        }
-    }
-    private void initSharedPrefs() {
-        new Thread(() -> {
-            if (getContext() != null) {
-                sharedPrefsHelper = new SharedPrefsHelper(getContext());
-            }
-        }).run();
-    }
-    private void initPoints() {
-        initialPoints = sharedPrefsHelper.getInitialPoints();
-        points = sharedPrefsHelper.getPlayerPoints(playerId);
-    }
-    private void initNames() {
-        if(etName != null) {
-            etName.setText(sharedPrefsHelper.getPlayerName(playerId));
-        }
-    }
-    private void initColors() {
-        setTextsColor(sharedPrefsHelper.getPlayerColor(playerId));
-    }
-    private void initShield() {
-        if(ivShield != null) {
-            ivShield.startAnimation(MyAnimationUtils.getShieldAnimation());
-        }
+        if(color == 0 ? defaultTextColor : color
+        etName.setTextColor(color);
+        etName.setHintTextColor(color);
+        tvPoints.setTextColor(color);
+        tvPointsForAnimation.setTextColor(color);
     }
     void setPlayerId(int i) {
-
+        playerId = i;
     }
 }
