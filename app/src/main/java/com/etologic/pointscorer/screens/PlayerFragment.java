@@ -1,5 +1,6 @@
 package com.etologic.pointscorer.screens;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
+import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -57,6 +59,7 @@ public class PlayerFragment extends Fragment {
     @BindView(R.id.ivShield) AppCompatImageView ivShield;
     @BindView(R.id.tvPointsPlayer) AppCompatTextView tvPoints;
     @BindView(R.id.tvPointsForAnimation) AppCompatTextView tvPointsForAnimation;
+    @BindColor(R.color.gray_text) int defaultTextColor;
 
     //LIFECYCLE
     @Nullable @Override
@@ -95,11 +98,11 @@ public class PlayerFragment extends Fragment {
         setTextsColor(sharedPrefsHelper.getPlayerColor(playerId));
     }
     private void initShieldAndPoints() {
-//        Animation updatePointsAnimationWithoutSave = MyAnimationUtils.getUpdatePointsAnimation(tvPoints, tvPointsForAnimation, points);
-//        MyAnimationUtils.AnimationEndListener animationEndListener = new Thread(() -> tvPointsForAnimation.startAnimation(updatePointsAnimationWithoutSave))::run;
-//        Animation shieldAnimation = MyAnimationUtils.getShieldAnimation(animationEndListener);
-//        ivShield.startAnimation(shieldAnimation);
-        tvPoints.setText(String.valueOf(points));
+//        tvPoints.setText(String.valueOf(points));
+        Animation updatePointsAnimationWithoutSave = MyAnimationUtils.getUpdatePointsAnimation(tvPoints, tvPointsForAnimation, points);
+        MyAnimationUtils.AnimationEndListener shieldAnimationEndListener = new Thread(() -> tvPointsForAnimation.startAnimation(updatePointsAnimationWithoutSave))::run;
+        Animation shieldAnimation = MyAnimationUtils.getShieldAnimation(shieldAnimationEndListener);
+        ivShield.startAnimation(shieldAnimation);
     }
     @Override public void onDestroyView() {
         unbinder.unbind();
@@ -179,7 +182,7 @@ public class PlayerFragment extends Fragment {
                         if (getActivity() != null) {
                             DialogUtils.showColorDialog(getActivity().getLayoutInflater(), getContext(), color -> {
                                 sharedPrefsHelper.savePlayerColor(color, playerId);
-                                setTextsColor(color);
+                                setTextsColor(color == 0 ? defaultTextColor : color);
                             });
                         }
                         return true;
@@ -196,7 +199,6 @@ public class PlayerFragment extends Fragment {
         updatePoints();
     }
     private void setTextsColor(int color) {
-        if(color == 0 ? defaultTextColor : color
         etName.setTextColor(color);
         etName.setHintTextColor(color);
         tvPoints.setTextColor(color);

@@ -2,11 +2,14 @@ package com.etologic.pointscorer;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.os.Build;
 
 import java.util.Locale;
 
 import androidx.annotation.WorkerThread;
+import androidx.core.content.ContextCompat;
 
 @WorkerThread
 public class SharedPrefsHelper {
@@ -24,11 +27,13 @@ public class SharedPrefsHelper {
 
     //FIELDS
     private final SharedPreferences sharedPrefs;
+    private final int defaultTextColor;
     private int initialPoints;
 
     //CONSTRUCTOR
     public SharedPrefsHelper(Context context) {
         sharedPrefs = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+        defaultTextColor = ContextCompat.getColor(context, R.color.gray_text);
         initialPoints = getInitialPoints();
     }
     public int getInitialPoints() {
@@ -69,7 +74,7 @@ public class SharedPrefsHelper {
         return sharedPrefs.getInt(KEY_POINTS + playerId, initialPoints);
     }
     public int getPlayerColor(int playerId) {
-        return sharedPrefs.getInt(KEY_COLOR + playerId, Color.TRANSPARENT);
+        return sharedPrefs.getInt(KEY_COLOR + playerId, defaultTextColor);
     }
     public String getPlayerName(int playerId) {
         return sharedPrefs.getString(KEY_NAME + playerId, DEFAULT_PLAYER_NAME);

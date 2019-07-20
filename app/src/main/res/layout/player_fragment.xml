@@ -18,7 +18,6 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:padding="32dp"
-        android:visibility="invisible"
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/shield"
         tools:ignore="ContentDescription" />
@@ -35,7 +34,7 @@
         android:id="@+id/tvPointsPlayer"
         style="@style/PointsTextView1Player"
         android:background="@android:color/transparent"
-        android:text="100"/>
+        tools:text="100"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvPointsForAnimation"
