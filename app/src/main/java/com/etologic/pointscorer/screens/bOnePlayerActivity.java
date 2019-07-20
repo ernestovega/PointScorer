@@ -15,7 +15,7 @@ public class bOnePlayerActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         Bundle bundle = new Bundle();
-        bundle.putInt(PlayerFragment.KEY_PLAYER_ID, 11);
+        bundle.putInt(PlayerFragment.KEY_PLAYER_ID, PLAYER_1_ID);
 
         PlayerFragment player11Fragment = new PlayerFragment();
         player11Fragment.setArguments(bundle);
@@ -35,4 +35,5 @@ public class bOnePlayerActivity extends AppCompatActivity {
     @Override protected void onResume() {
         super.onResume();
     }
+    public static final int PLAYER_1_ID = 11;
 }

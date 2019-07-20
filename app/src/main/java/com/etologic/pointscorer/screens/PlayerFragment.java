@@ -1,6 +1,5 @@
 package com.etologic.pointscorer.screens;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -37,7 +36,7 @@ public class PlayerFragment extends Fragment {
 
     //CONSTANTS
     private static final int MAX_POINTS = 999;
-    private static final int MIN_POINTS = 999;
+    private static final int MIN_POINTS = -999;
     static final String KEY_PLAYER_ID = "playerId";
 
     //FIELDS
@@ -46,7 +45,6 @@ public class PlayerFragment extends Fragment {
     private SharedPrefsHelper sharedPrefsHelper;
     private int initialPoints;
     private int points;
-    private Animation updatePointsAnimation;
     private Handler repeatUpdateHandler = new Handler();
     /**
      * https://stackoverflow.com/questions/7938516/continuously-increase-integer-value-as-the-button-is-pressed
@@ -70,8 +68,6 @@ public class PlayerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
         initSharedPrefs();
-        MyAnimationUtils.AnimationEndListener animationEndListener = () -> new Thread(() -> sharedPrefsHelper.savePlayerPoints(points, playerId)).run();
-        updatePointsAnimation = MyAnimationUtils.getUpdatePointsAnimation(tvPoints, tvPointsForAnimation, points, animationEndListener);
         playerId = getArguments() == null ? 0 : getArguments().getInt(KEY_PLAYER_ID);
         if(playerId > 0) {
             initName();
@@ -98,7 +94,6 @@ public class PlayerFragment extends Fragment {
         setTextsColor(sharedPrefsHelper.getPlayerColor(playerId));
     }
     private void initShieldAndPoints() {
-//        tvPoints.setText(String.valueOf(points));
         Animation updatePointsAnimationWithoutSave = MyAnimationUtils.getUpdatePointsAnimation(tvPoints, tvPointsForAnimation, points);
         MyAnimationUtils.AnimationEndListener shieldAnimationEndListener = new Thread(() -> tvPointsForAnimation.startAnimation(updatePointsAnimationWithoutSave))::run;
         Animation shieldAnimation = MyAnimationUtils.getShieldAnimation(shieldAnimationEndListener);
@@ -149,19 +144,24 @@ public class PlayerFragment extends Fragment {
         }
         return false;
     }
+
     @OnClick(R.id.btUp) void onUpClickButton() {
         incrementPoints();
         updatePoints();
-    }
-    private void incrementPoints() { if (points < MAX_POINTS) points++; }
-    private void updatePoints() {
-        tvPointsForAnimation.startAnimation(updatePointsAnimation);
     }
     @OnClick(R.id.btDown) void onDownClickButton() {
         decrementPoints();
         updatePoints();
     }
+    private void incrementPoints() { if (points < MAX_POINTS) points++; }
     private void decrementPoints() { if (points > MIN_POINTS) points--; }
+    private void updatePoints() {
+        MyAnimationUtils.AnimationEndListener animationEndListener = () -> new Thread(() -> sharedPrefsHelper.savePlayerPoints(points, playerId)).run();
+        Animation updatePointsAnimation = MyAnimationUtils.getUpdatePointsAnimation(
+                tvPoints, tvPointsForAnimation, points, animationEndListener);
+        tvPointsForAnimation.startAnimation(updatePointsAnimation);
+    }
+
     @OnClick(R.id.ibMenu) void onMenuButtonClick(View view) {
         if (getContext() != null) {
             PopupMenu popup = new PopupMenu(getContext(), view);
