@@ -109,6 +109,8 @@ public class PlayerFragment extends Fragment {
     private void initPoints() {
         initialPoints = sharedPrefsHelper.getInitialPoints();
         points = sharedPrefsHelper.getPlayerPoints(playerId);
+        tvUpCount.setTextSize(playerPointsSize*0.5f);
+        tvDownCount.setTextSize(playerPointsSize*0.5f);
         tvPoints.setTextSize(playerPointsSize);
         tvPointsForAnimation.setTextSize(playerPointsSize);
         tvPoints.setPadding(0, MySizeUtils.dp2Px(tvPoints.getContext(), playerPointsMarginTop), 0, 0);
