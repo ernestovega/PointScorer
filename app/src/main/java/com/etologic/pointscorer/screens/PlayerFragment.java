@@ -2,6 +2,7 @@ package com.etologic.pointscorer.screens;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -11,6 +12,8 @@ import android.view.animation.Animation;
 import com.etologic.pointscorer.R;
 import com.etologic.pointscorer.SharedPrefsHelper;
 import com.etologic.pointscorer.utils.MyAnimationUtils;
+
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -193,10 +196,12 @@ public class PlayerFragment extends Fragment {
                 @Override public void onColorChanged(int color) {
                     sharedPrefsHelper.savePlayerColor(color, playerId);
                     setTextsColor(color == 0 ? defaultTextColor : color);
+                    Log.d("WARNING_COLOR", String.format(Locale.ENGLISH, "PlayerFragment -> PlayerDialogListener.onColorChanged: %d", color));
                 }
                 @Override public void onNameChanged(String name) {
                     sharedPrefsHelper.savePlayerName(name, playerId);
                     etName.setText(name);
+                    Log.d("WARNING_NAME", String.format("PlayerFragment -> PlayerDialogListener.onNameChanged: %s", name));
                 }
             });
         }

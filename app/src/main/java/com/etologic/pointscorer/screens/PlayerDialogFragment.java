@@ -2,6 +2,7 @@ package com.etologic.pointscorer.screens;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,9 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.skydoves.colorpickerview.ColorPickerView;
 import com.skydoves.colorpickerview.listeners.ColorListener;
 import com.skydoves.colorpickerview.preference.ColorPickerPreferenceManager;
+import com.skydoves.colorpickerview.sliders.BrightnessSlideBar;
+
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,6 +41,7 @@ public class PlayerDialogFragment extends DialogFragment {
     @BindView(R.id.tilName) TextInputLayout tilName;
     @BindView(R.id.tietName) TextInputEditText tietName;
     @BindView(R.id.colorPickerView) ColorPickerView colorPicker;
+    @BindView(R.id.brightnessSlideBar) BrightnessSlideBar brightnessSlideBar;
     @BindColor(R.color.gray_text) int defaultColor;
     @BindString(R.string.player_name) String defaultName;
     private Unbinder viewUnbinder;
@@ -67,7 +72,7 @@ public class PlayerDialogFragment extends DialogFragment {
         }
     }
     private void initColorPicker() {
-        ColorPickerPreferenceManager.getInstance(colorPicker.getContext()).setColor("MyColorPicker", initialColor);
+        colorPicker.attachBrightnessSlider(brightnessSlideBar);
         colorPicker.setColorListener((ColorListener) (color, fromUser) -> {
             if (fromUser) {
                 tietName.setTextColor(color);
@@ -103,6 +108,7 @@ public class PlayerDialogFragment extends DialogFragment {
         dismiss();
     }
     @OnClick(R.id.btCancel) void onCancelClick() {
+        if (playerDialogListener != null) playerDialogListener.onColorChanged(initialColor);
         dismiss();
     }
 }
