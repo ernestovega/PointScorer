@@ -143,10 +143,16 @@ public class PlayerFragment extends Fragment {
             else if (isAutoDecrement)
                 decrementPoints();
             else {
-                upCount = 0;
-                downCount = 0;
-                tvUpCount.startAnimation(MyAnimationUtils.getFadeOutAnimation(() -> tvUpCount.setText("")));
-                tvDownCount.startAnimation(MyAnimationUtils.getFadeOutAnimation(() -> tvUpCount.setText("")));
+                tvUpCount.startAnimation(MyAnimationUtils.getFadeOutAnimation(() -> {
+                    tvUpCount.setText("");
+                    upCount = 0;
+                    Log.d("WARNING_COUNTER_UP", "tvUpCount.endAnimation -> upText: \"\", upCount: 0");
+                }));
+                tvDownCount.startAnimation(MyAnimationUtils.getFadeOutAnimation(() -> {
+                    tvDownCount.setText("");
+                    downCount = 0;
+                    Log.d("WARNING_COUNTER_DOWN", "tvDownCount.endAnimation -> downText: \"\", downCount: 0");
+                }));
                 return;
             }
             sharedPrefsHelper.savePlayerPoints(points, playerId);
@@ -157,13 +163,15 @@ public class PlayerFragment extends Fragment {
     //EVENTS
     @OnLongClick(R.id.btUp) boolean onUpLongClickButton() {
         isAutoIncrement = true;
-        downCount = 0;
+        upCount = 0;
+        Log.d("WARNING_COUNTER_UP", "onUpLongClickButton -> upCount: 0");
         repeatUpdateHandler.post(new RepeatUpdater());
         return false;
     }
     @OnLongClick(R.id.btDown) boolean onDownLongClickButton() {
         isAutoDecrement = true;
         downCount = 0;
+        Log.d("WARNING_COUNTER_DOWN", "onDownLongClickButton -> downCount: 0");
         repeatUpdateHandler.post(new RepeatUpdater());
         return false;
     }
@@ -182,29 +190,51 @@ public class PlayerFragment extends Fragment {
     @OnClick(R.id.btUp) void onUpClickButton() {
         incrementPoints();
         updatePoints();
-        tvUpCount.startAnimation(MyAnimationUtils.getFadeOutAnimation(() -> { tvUpCount.setText(""); upCount = 0; }));
+        tvUpCount.startAnimation(MyAnimationUtils.getFadeOutAnimation(() -> {
+            tvUpCount.setText("");
+            upCount = 0;
+            Log.d("WARNING_COUNTER_UP", "onUpClickButton -> upText: \"\", upCount: 0");
+        }));
     }
-    private void incrementPoints() { if (points < MAX_POINTS) { points++;  upCount++; }}
+    private void incrementPoints() {
+        if (points < MAX_POINTS) {
+            points++;
+            upCount++;
+            Log.d("WARNING_COUNTER_UP", String.format(Locale.ENGLISH, "incrementPoints -> upCount: %d", upCount));
+        }
+    }
     private void updatePoints() {
-        MyAnimationUtils.AnimationEndListener animationEndListener = () -> new Thread(() -> sharedPrefsHelper.savePlayerPoints(points, playerId)).run();
-        Animation updatePointsAnimation = MyAnimationUtils.getUpdatePointsAnimation(
-                tvPoints, tvPointsForAnimation, points, animationEndListener);
-
         String formattedUpCount = "";
         String formattedDownCount = "";
         if(upCount != 0) formattedUpCount = String.format(Locale.ENGLISH, "%+d", upCount);
         if(downCount != 0) formattedDownCount = String.format(Locale.ENGLISH, "%+d", downCount);
         tvUpCount.setText(formattedUpCount);
         tvDownCount.setText(formattedDownCount);
+        Log.d("WARNING_COUNTER_UP", String.format(Locale.ENGLISH, "updatePoints -> upText: %s", formattedUpCount.isEmpty() ? "\"\"" : formattedUpCount));
+        Log.d("WARNING_COUNTER_DOWN", String.format(Locale.ENGLISH, "updatePoints -> downText: %s", formattedDownCount.isEmpty() ? "\"\"" : formattedDownCount));
+
+        MyAnimationUtils.AnimationEndListener animationEndListener = () -> new Thread(() -> sharedPrefsHelper.savePlayerPoints(points, playerId)).run();
+        Animation updatePointsAnimation = MyAnimationUtils.getUpdatePointsAnimation(
+                tvPoints, tvPointsForAnimation, points, animationEndListener);
 
         tvPointsForAnimation.startAnimation(updatePointsAnimation);
     }
     @OnClick(R.id.btDown) void onDownClickButton() {
         decrementPoints();
         updatePoints();
-        tvDownCount.startAnimation(MyAnimationUtils.getFadeOutAnimation(() -> { tvDownCount.setText(""); downCount = 0; }));
+        tvDownCount.startAnimation(MyAnimationUtils.getFadeOutAnimation(() -> {
+            tvDownCount.setText("");
+            downCount = 0;
+            Log.d("WARNING_COUNTER_DOWN", "onDownClickButton -> downText: \"\", downCount: 0");
+        }));
     }
-    private void decrementPoints() { if (points > MIN_POINTS) { points--; downCount--; }}
+    private void decrementPoints() {
+        if (points > MIN_POINTS) {
+            points--;
+            downCount--;
+            Log.d("WARNING_COUNTER_DOWN", String.format(Locale.ENGLISH, "decrementPoints -> downCount: %d", downCount));
+        }
+    }
     @OnClick(R.id.ibMenu) void onMenuButtonClick(View view) {
         if (getContext() != null) {
             PopupMenu popup = new PopupMenu(getContext(), view);

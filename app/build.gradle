@@ -7,7 +7,7 @@ android {
         pointscorer_keystore {
             keyAlias 'PointsScorerKeyStore'
             keyPassword 'ac9jy34X'
-            storeFile file('~/Projects/Android/keystore_pointscorer.jks')
+            storeFile file('~/Projects/Android/keystore/keystore_pointscorer.jks')
             storePassword 'ac9jy34X'
         }
     }
