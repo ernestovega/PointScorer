@@ -1,5 +1,6 @@
 package com.etologic.pointscorer.utils;
 
+import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
+import static android.view.View.GONE;
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
 
 public class MyAnimationUtils {
@@ -61,5 +63,17 @@ public class MyAnimationUtils {
         animationSet.setDuration(500);
         animationSet.setInterpolator(new DecelerateInterpolator());
         return animationSet;
+    }
+    public static Animation getFadeOutAnimation(Runnable endAction) {
+        AlphaAnimation alphaAnimation = new AlphaAnimation(1, 0);
+        alphaAnimation.setDuration(1000);
+        alphaAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override public void onAnimationStart(Animation animation) {}
+            @Override public void onAnimationEnd(Animation animation) {
+                if(endAction != null) endAction.run();
+            }
+            @Override public void onAnimationRepeat(Animation animation) {}
+        });
+        return alphaAnimation;
     }
 }

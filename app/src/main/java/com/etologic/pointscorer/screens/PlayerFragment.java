@@ -38,13 +38,12 @@ import static com.etologic.pointscorer.screens.aMainActivity.REP_DELAY;
 public class PlayerFragment extends Fragment {
 
     //CONSTANTS
-    private static final int MAX_POINTS = 999;
+    private static final int MAX_POINTS = 9999;
     private static final int MIN_POINTS = -999;
     static final String KEY_PLAYER_ID = "key_playerId";
     static final String KEY_PLAYER_NAME_SIZE = "key_player_name_size";
     static final String KEY_PLAYER_NAME_MARGIN_TOP = "key_player_name_margin_top";
     static final String KEY_PLAYER_POINTS_SIZE = "key_player_points_size";
-    static final String KEY_PLAYER_POINTS_MARGIN_TOP = "key_player_points_margin_top";
 
     //FIELDS
     private Unbinder unbinder;
@@ -58,12 +57,15 @@ public class PlayerFragment extends Fragment {
      */
     private boolean isAutoIncrement = false;
     private boolean isAutoDecrement = false;
+    private int downCount, upCount;
 
     //VIEWS
     @BindView(R.id.etName) AppCompatEditText etName;
     @BindView(R.id.ivShield) AppCompatImageView ivShield;
     @BindView(R.id.tvPointsPlayer) AppCompatTextView tvPoints;
     @BindView(R.id.tvPointsForAnimation) AppCompatTextView tvPointsForAnimation;
+    @BindView(R.id.tvUpCount) AppCompatTextView tvUpCount;
+    @BindView(R.id.tvDownCount) AppCompatTextView tvDownCount;
     @BindColor(R.color.gray_text) int defaultTextColor;
     private int playerNameSize, playerNameMarginTop, playerPointsSize, playerPointsMarginTop;
 
@@ -94,7 +96,7 @@ public class PlayerFragment extends Fragment {
             playerNameSize = getArguments().getInt(KEY_PLAYER_NAME_SIZE);
             playerNameMarginTop = getArguments().getInt(KEY_PLAYER_NAME_MARGIN_TOP, 8);
             playerPointsSize = getArguments().getInt(KEY_PLAYER_POINTS_SIZE);
-            playerPointsMarginTop = getArguments().getInt(KEY_PLAYER_POINTS_MARGIN_TOP, 0);
+            playerPointsMarginTop = 0;
         }
     }
     private void initSharedPrefs() {
@@ -136,28 +138,32 @@ public class PlayerFragment extends Fragment {
     //INNER CLASSES
     class RepeatUpdater implements Runnable {
         public void run() {
-            if (isAutoIncrement) {
+            if (isAutoIncrement)
                 incrementPoints();
-                sharedPrefsHelper.savePlayerPoints(points, playerId);
-                updatePoints();
-                repeatUpdateHandler.postDelayed(new RepeatUpdater(), REP_DELAY);
-            }
-            if (isAutoDecrement) {
+            else if (isAutoDecrement)
                 decrementPoints();
-                sharedPrefsHelper.savePlayerPoints(points, playerId);
-                updatePoints();
-                repeatUpdateHandler.postDelayed(new RepeatUpdater(), REP_DELAY);
+            else {
+                upCount = 0;
+                downCount = 0;
+                tvUpCount.startAnimation(MyAnimationUtils.getFadeOutAnimation(() -> tvUpCount.setText("")));
+                tvDownCount.startAnimation(MyAnimationUtils.getFadeOutAnimation(() -> tvUpCount.setText("")));
+                return;
             }
+            sharedPrefsHelper.savePlayerPoints(points, playerId);
+            updatePoints();
+            repeatUpdateHandler.postDelayed(new RepeatUpdater(), REP_DELAY);
         }
     }
     //EVENTS
     @OnLongClick(R.id.btUp) boolean onUpLongClickButton() {
         isAutoIncrement = true;
+        downCount = 0;
         repeatUpdateHandler.post(new RepeatUpdater());
         return false;
     }
     @OnLongClick(R.id.btDown) boolean onDownLongClickButton() {
         isAutoDecrement = true;
+        downCount = 0;
         repeatUpdateHandler.post(new RepeatUpdater());
         return false;
     }
@@ -176,19 +182,29 @@ public class PlayerFragment extends Fragment {
     @OnClick(R.id.btUp) void onUpClickButton() {
         incrementPoints();
         updatePoints();
+        tvUpCount.startAnimation(MyAnimationUtils.getFadeOutAnimation(() -> { tvUpCount.setText(""); upCount = 0; }));
     }
-    private void incrementPoints() { if (points < MAX_POINTS) points++; }
+    private void incrementPoints() { if (points < MAX_POINTS) { points++;  upCount++; }}
     private void updatePoints() {
         MyAnimationUtils.AnimationEndListener animationEndListener = () -> new Thread(() -> sharedPrefsHelper.savePlayerPoints(points, playerId)).run();
         Animation updatePointsAnimation = MyAnimationUtils.getUpdatePointsAnimation(
                 tvPoints, tvPointsForAnimation, points, animationEndListener);
+
+        String formattedUpCount = "";
+        String formattedDownCount = "";
+        if(upCount != 0) formattedUpCount = String.format(Locale.ENGLISH, "%+d", upCount);
+        if(downCount != 0) formattedDownCount = String.format(Locale.ENGLISH, "%+d", downCount);
+        tvUpCount.setText(formattedUpCount);
+        tvDownCount.setText(formattedDownCount);
+
         tvPointsForAnimation.startAnimation(updatePointsAnimation);
     }
     @OnClick(R.id.btDown) void onDownClickButton() {
         decrementPoints();
         updatePoints();
+        tvDownCount.startAnimation(MyAnimationUtils.getFadeOutAnimation(() -> { tvDownCount.setText(""); downCount = 0; }));
     }
-    private void decrementPoints() { if (points > MIN_POINTS) points--; }
+    private void decrementPoints() { if (points > MIN_POINTS) { points--; downCount--; }}
     @OnClick(R.id.ibMenu) void onMenuButtonClick(View view) {
         if (getContext() != null) {
             PopupMenu popup = new PopupMenu(getContext(), view);

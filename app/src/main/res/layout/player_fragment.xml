@@ -65,6 +65,39 @@
 
     </LinearLayout>
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvUpCount"
+        android:inputType="text"
+        tools:text="23"
+        android:textSize="50sp"
+        android:fontFamily="@font/rock_on"
+        android:rotation="-15"
+        android:layout_below="@+id/etName"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:textColor="@color/green"
+        android:background="@android:color/transparent"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvDownCount"
+        android:inputType="text"
+        tools:text="-23"
+        android:textSize="50sp"
+        android:fontFamily="@font/rock_on"
+        android:rotation="15"
+        android:layout_margin="32dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/red"
+        android:background="@android:color/transparent"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content" />
+
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/ibMenu"
         style="@style/MenuButton"
