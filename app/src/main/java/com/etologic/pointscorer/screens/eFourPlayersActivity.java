@@ -11,6 +11,7 @@ public class eFourPlayersActivity extends BaseActivity {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.e_four_players_activity);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         int nameMarginTop = this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ? 4 : 40;
