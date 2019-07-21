@@ -14,10 +14,10 @@ public class fFivePlayersActivity extends BaseActivity {
         setContentView(R.layout.f_five_players_activity);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        initPlayer(51, R.id.flPlayer51);
-        initPlayer(52, R.id.flPlayer52);
-        initPlayer(53, R.id.flPlayer53);
-        initPlayer(54, R.id.flPlayer54);
-        initPlayer(55, R.id.flPlayer55);
+        initPlayer(51, R.id.flPlayer51, 16, 8, 48);
+        initPlayer(52, R.id.flPlayer52, 16, 8, 48);
+        initPlayer(53, R.id.flPlayer53, 16, 8, 48);
+        initPlayer(54, R.id.flPlayer54, 16, 8, 48);
+        initPlayer(55, R.id.flPlayer55, 16, 8, 48);
     }
 }

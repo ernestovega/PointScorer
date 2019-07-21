@@ -14,12 +14,12 @@ public class hSevenPlayersActivity extends BaseActivity {
         setContentView(R.layout.h_seven_players_activity);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        initPlayer(71, R.id.flPlayer71);
-        initPlayer(72, R.id.flPlayer72);
-        initPlayer(73, R.id.flPlayer73);
-        initPlayer(74, R.id.flPlayer74);
-        initPlayer(75, R.id.flPlayer75);
-        initPlayer(76, R.id.flPlayer76);
-        initPlayer(77, R.id.flPlayer77);
+        initPlayer(71, R.id.flPlayer71, 14, 8, 48);
+        initPlayer(72, R.id.flPlayer72, 14, 8, 48);
+        initPlayer(73, R.id.flPlayer73, 14, 8, 48);
+        initPlayer(74, R.id.flPlayer74, 14, 8, 48);
+        initPlayer(75, R.id.flPlayer75, 14, 8, 48);
+        initPlayer(76, R.id.flPlayer76, 14, 8, 48);
+        initPlayer(77, R.id.flPlayer77, 14, 8, 48);
     }
 }

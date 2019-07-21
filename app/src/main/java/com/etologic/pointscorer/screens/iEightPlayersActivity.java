@@ -14,13 +14,13 @@ public class iEightPlayersActivity extends BaseActivity {
         setContentView(R.layout.i_eight_players_activity);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        initPlayer(81, R.id.flPlayer81);
-        initPlayer(82, R.id.flPlayer82);
-        initPlayer(83, R.id.flPlayer83);
-        initPlayer(84, R.id.flPlayer84);
-        initPlayer(85, R.id.flPlayer85);
-        initPlayer(86, R.id.flPlayer86);
-        initPlayer(87, R.id.flPlayer87);
-        initPlayer(88, R.id.flPlayer88);
+        initPlayer(81, R.id.flPlayer81, 14, 8, 48);
+        initPlayer(82, R.id.flPlayer82, 14, 8, 48);
+        initPlayer(83, R.id.flPlayer83, 14, 8, 48);
+        initPlayer(84, R.id.flPlayer84, 14, 8, 48);
+        initPlayer(85, R.id.flPlayer85, 14, 8, 48);
+        initPlayer(86, R.id.flPlayer86, 14, 8, 48);
+        initPlayer(87, R.id.flPlayer87, 14, 8, 48);
+        initPlayer(88, R.id.flPlayer88, 14, 8, 48);
     }
 }

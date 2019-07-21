@@ -12,6 +12,6 @@ public class bOnePlayerActivity extends BaseActivity {
         setContentView(R.layout.b_one_player_activity);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        initPlayer(11, R.id.flPlayer11);
+        initPlayer(11, R.id.flPlayer11, 36, 48, 100);
     }
 }

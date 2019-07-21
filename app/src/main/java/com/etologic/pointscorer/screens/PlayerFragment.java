@@ -12,6 +12,7 @@ import android.view.animation.Animation;
 import com.etologic.pointscorer.R;
 import com.etologic.pointscorer.SharedPrefsHelper;
 import com.etologic.pointscorer.utils.MyAnimationUtils;
+import com.etologic.pointscorer.utils.MySizeUtils;
 
 import java.util.Locale;
 
@@ -39,7 +40,11 @@ public class PlayerFragment extends Fragment {
     //CONSTANTS
     private static final int MAX_POINTS = 999;
     private static final int MIN_POINTS = -999;
-    static final String KEY_PLAYER_ID = "playerId";
+    static final String KEY_PLAYER_ID = "key_playerId";
+    static final String KEY_PLAYER_NAME_SIZE = "key_player_name_size";
+    static final String KEY_PLAYER_NAME_MARGIN_TOP = "key_player_name_margin_top";
+    static final String KEY_PLAYER_POINTS_SIZE = "key_player_points_size";
+    static final String KEY_PLAYER_POINTS_MARGIN_TOP = "key_player_points_margin_top";
 
     //FIELDS
     private Unbinder unbinder;
@@ -60,6 +65,7 @@ public class PlayerFragment extends Fragment {
     @BindView(R.id.tvPointsPlayer) AppCompatTextView tvPoints;
     @BindView(R.id.tvPointsForAnimation) AppCompatTextView tvPointsForAnimation;
     @BindColor(R.color.gray_text) int defaultTextColor;
+    private int playerNameSize, playerNameMarginTop, playerPointsSize, playerPointsMarginTop;
 
     //LIFECYCLE
     @Nullable @Override
@@ -70,12 +76,25 @@ public class PlayerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
         initSharedPrefs();
-        playerId = getArguments() == null ? 0 : getArguments().getInt(KEY_PLAYER_ID);
+        initValues();
         if (playerId > 0) {
             initName();
             initPoints();
             initColors();
             initShieldAndPoints();
+        }
+    }
+    private void initValues() {
+        if (getArguments() == null) {
+            playerId = 0;
+            playerNameSize = 16;
+            playerPointsSize = 48;
+        } else {
+            playerId = getArguments().getInt(KEY_PLAYER_ID);
+            playerNameSize = getArguments().getInt(KEY_PLAYER_NAME_SIZE);
+            playerNameMarginTop = getArguments().getInt(KEY_PLAYER_NAME_MARGIN_TOP, 8);
+            playerPointsSize = getArguments().getInt(KEY_PLAYER_POINTS_SIZE);
+            playerPointsMarginTop = getArguments().getInt(KEY_PLAYER_POINTS_MARGIN_TOP, 0);
         }
     }
     private void initSharedPrefs() {
@@ -88,8 +107,14 @@ public class PlayerFragment extends Fragment {
     private void initPoints() {
         initialPoints = sharedPrefsHelper.getInitialPoints();
         points = sharedPrefsHelper.getPlayerPoints(playerId);
+        tvPoints.setTextSize(playerPointsSize);
+        tvPointsForAnimation.setTextSize(playerPointsSize);
+        tvPoints.setPadding(0, MySizeUtils.dp2Px(tvPoints.getContext(), playerPointsMarginTop), 0, 0);
+        tvPointsForAnimation.setPadding(0, MySizeUtils.dp2Px(tvPoints.getContext(), playerPointsMarginTop), 0, 0);
     }
     private void initName() {
+        etName.setPadding(0, MySizeUtils.dp2Px(tvPoints.getContext(), playerNameMarginTop), 0, 0);
+        etName.setTextSize(playerNameSize);
         etName.setText(sharedPrefsHelper.getPlayerName(playerId));
     }
     private void initColors() { setTextsColor(sharedPrefsHelper.getPlayerColor(playerId)); }
@@ -209,8 +234,5 @@ public class PlayerFragment extends Fragment {
     private void restartPlayerPoints() {
         points = initialPoints;
         updatePoints();
-    }
-    void setPlayerId(int i) {
-        playerId = i;
     }
 }

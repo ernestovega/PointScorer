@@ -25,7 +25,6 @@
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/etName"
         style="@style/NameTextView1Player"
-        android:layout_marginTop="32dp"
         android:inputType="text"
         android:background="@android:color/transparent"
         android:textColorHint="@color/white_transparent" />

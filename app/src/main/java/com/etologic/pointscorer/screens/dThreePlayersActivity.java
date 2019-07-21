@@ -14,9 +14,9 @@ public class dThreePlayersActivity extends BaseActivity {
         setContentView(R.layout.d_three_players_activity);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        initPlayer(31, R.id.flPlayer31);
-        initPlayer(32, R.id.flPlayer32);
-        initPlayer(33, R.id.flPlayer33);
+        initPlayer(31, R.id.flPlayer31, 20, 20, 64);
+        initPlayer(32, R.id.flPlayer32, 20, 20, 64);
+        initPlayer(33, R.id.flPlayer33, 20, 20, 64);
     }
 }
 
