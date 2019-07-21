@@ -2,7 +2,6 @@ package com.etologic.pointscorer.screens;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
 
 import com.etologic.pointscorer.R;
 import com.etologic.pointscorer.SharedPrefsHelper;
@@ -27,7 +26,7 @@ public class aMainActivity extends AppCompatActivity {
     private SharedPrefsHelper sharedPrefsHelper;
 
     //EVENTS
-    @OnClick(R.id.acbMainResetAll) void onResetAllButtonClick() {
+    @OnClick(R.id.acbMainResetAllPoints) void onResetAllButtonClick() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog);
         builder.setTitle(R.string.initial_points)
                 .setMessage(R.string.restart_all_saved_points_)
@@ -36,9 +35,6 @@ public class aMainActivity extends AppCompatActivity {
                     KeyboardUtils.hideKeyboard(this, tietInitialPoints);
                     sharedPrefsHelper.resetAll();
                     Snackbar.make(tietInitialPoints, R.string.all_points_restarted, Snackbar.LENGTH_LONG).show();
-
-                    Bundle bundle = new Bundle();
-                    Editable points = tietInitialPoints.getText();
                 })
                 .create()
                 .show();

@@ -2,8 +2,8 @@ package com.etologic.pointscorer;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 
+import java.lang.ref.WeakReference;
 import java.util.Locale;
 
 import androidx.annotation.WorkerThread;
@@ -22,6 +22,7 @@ public class SharedPrefsHelper {
     private static final String KEY_POINTS = "points_player_";
     private static final String KEY_COLOR = "color_player_";
     private static final String DEFAULT_PLAYER_NAME = "Player name";
+    private WeakReference<Context> weakContext;
 
     //FIELDS
     private final SharedPreferences sharedPrefs;
@@ -30,6 +31,7 @@ public class SharedPrefsHelper {
 
     //CONSTRUCTOR
     public SharedPrefsHelper(Context context) {
+        weakContext = new WeakReference<>(context);
         sharedPrefs = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         defaultTextColor = ContextCompat.getColor(context, R.color.gray_text);
         initialPoints = getInitialPoints();
@@ -56,7 +58,7 @@ public class SharedPrefsHelper {
     }
     private void resetPlayer(int playerId) {
         savePlayerPoints(initialPoints, playerId);
-        savePlayerColor(playerId, Color.WHITE);
+        savePlayerColor(ContextCompat.getColor(weakContext.get(), R.color.gray_text), playerId);
         savePlayerName("", playerId);
     }
     private void resetPlayers(int[] playerIds) {
@@ -87,6 +89,6 @@ public class SharedPrefsHelper {
         sharedPrefs.edit().putInt(key, points).apply();
     }
     public void savePlayerColor(int color, int playerId) {
-        sharedPrefs.edit().putInt(KEY_COLOR + playerId, color).apply();
+        sharedPrefs.edit().putInt(String.format(Locale.ENGLISH, "%s%d", KEY_COLOR, playerId), color).apply();
     }
 }
