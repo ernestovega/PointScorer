@@ -2,9 +2,7 @@ package com.etologic.pointscorer;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Color;
-import android.os.Build;
 
 import java.util.Locale;
 
@@ -20,9 +18,9 @@ public class SharedPrefsHelper {
     private static final int DEFAULT_INITIAL_POINTS = 100;
     private static final String KEY_INITIAL_POINTS = "initial_points";
     private static final String KEY_INITIAL_CHECK_DONE = "initial_check_done";
-    private static final String KEY_NAME = "name_";
-    private static final String KEY_POINTS = "points_";
-    private static final String KEY_COLOR = "color_";
+    private static final String KEY_NAME = "name_player_";
+    private static final String KEY_POINTS = "points_player_";
+    private static final String KEY_COLOR = "color_player_";
     private static final String DEFAULT_PLAYER_NAME = "Player name";
 
     //FIELDS
@@ -57,7 +55,7 @@ public class SharedPrefsHelper {
         }
     }
     private void resetPlayer(int playerId) {
-        savePlayerPoints(playerId, initialPoints);
+        savePlayerPoints(initialPoints, playerId);
         savePlayerColor(playerId, Color.WHITE);
         savePlayerName("", playerId);
     }
@@ -71,7 +69,8 @@ public class SharedPrefsHelper {
     }
 
     public int getPlayerPoints(int playerId) {
-        return sharedPrefs.getInt(KEY_POINTS + playerId, initialPoints);
+        String key = String.format(Locale.ENGLISH, "%s%d", KEY_POINTS, playerId);
+        return sharedPrefs.getInt(key, initialPoints);
     }
     public int getPlayerColor(int playerId) {
         return sharedPrefs.getInt(KEY_COLOR + playerId, defaultTextColor);
@@ -84,7 +83,8 @@ public class SharedPrefsHelper {
         sharedPrefs.edit().putString(KEY_NAME + playerId, name).apply();
     }
     public void savePlayerPoints(int points, int playerId) {
-        sharedPrefs.edit().putInt(KEY_POINTS + playerId, points).apply();
+        String key = String.format(Locale.ENGLISH, "%s%d", KEY_POINTS, playerId);
+        sharedPrefs.edit().putInt(key, points).apply();
     }
     public void savePlayerColor(int color, int playerId) {
         sharedPrefs.edit().putInt(KEY_COLOR + playerId, color).apply();

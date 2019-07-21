@@ -30,7 +30,7 @@
     <string name="player_7_options">Player 7 options</string>
     <string name="player_8_options">Player 8 options</string>
 
-    <string name="edit_name">Edit name</string>
+    <string name="name_and_color">Name &amp; Color</string>
     <string name="restart_points">Restart points</string>
     <string name="restart_all_points">Restart all points</string>
     <string name="restart_all_names">Restart all names</string>
@@ -41,5 +41,6 @@
     <string name="all_points_restarted">All points restarted</string>
     <string name="restart_all_players_points_">Restart all players points?</string>
     <string name="edit_color">Edit color</string>
+    <string name="close">Close</string>
 
 </resources>

@@ -68,12 +68,11 @@
         <item name="android:lines">1</item>
         <item name="android:selectAllOnFocus">true</item>
         <item name="android:ellipsize">end</item>
+        <item name="android:hint">@string/player_name</item>
         <item name="android:maxLength">20</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="background">@android:color/transparent</item>
+        <item name="android:textColor">@color/gray_text</item>
         <item name="android:layout_marginLeft">16dp</item>
         <item name="android:layout_marginRight">16dp</item>
-        <item name="android:textColorHint">@color/white_transparent</item>
         <item name="fontFamily">@font/rock_on</item>
     </style>
 

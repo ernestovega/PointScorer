@@ -10,7 +10,6 @@ import android.view.animation.Animation;
 
 import com.etologic.pointscorer.R;
 import com.etologic.pointscorer.SharedPrefsHelper;
-import com.etologic.pointscorer.utils.DialogUtils;
 import com.etologic.pointscorer.utils.MyAnimationUtils;
 
 import androidx.annotation.NonNull;
@@ -69,7 +68,7 @@ public class PlayerFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         initSharedPrefs();
         playerId = getArguments() == null ? 0 : getArguments().getInt(KEY_PLAYER_ID);
-        if(playerId > 0) {
+        if (playerId > 0) {
             initName();
             initPoints();
             initColors();
@@ -90,19 +89,22 @@ public class PlayerFragment extends Fragment {
     private void initName() {
         etName.setText(sharedPrefsHelper.getPlayerName(playerId));
     }
-    private void initColors() {
-        setTextsColor(sharedPrefsHelper.getPlayerColor(playerId));
+    private void initColors() { setTextsColor(sharedPrefsHelper.getPlayerColor(playerId)); }
+    private void setTextsColor(int color) {
+        etName.setTextColor(color);
+        etName.setHintTextColor(color);
+        tvPoints.setTextColor(color);
+        tvPointsForAnimation.setTextColor(color);
     }
     private void initShieldAndPoints() {
-        Animation updatePointsAnimationWithoutSave = MyAnimationUtils.getUpdatePointsAnimation(tvPoints, tvPointsForAnimation, points);
-        MyAnimationUtils.AnimationEndListener shieldAnimationEndListener = new Thread(() -> tvPointsForAnimation.startAnimation(updatePointsAnimationWithoutSave))::run;
-        Animation shieldAnimation = MyAnimationUtils.getShieldAnimation(shieldAnimationEndListener);
-        ivShield.startAnimation(shieldAnimation);
+        ivShield.startAnimation(MyAnimationUtils.getShieldAnimation());
+        tvPointsForAnimation.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPoints, tvPointsForAnimation, points));
     }
     @Override public void onDestroyView() {
         unbinder.unbind();
         super.onDestroyView();
     }
+
     //INNER CLASSES
     class RepeatUpdater implements Runnable {
         public void run() {
@@ -120,7 +122,6 @@ public class PlayerFragment extends Fragment {
             }
         }
     }
-
     //EVENTS
     @OnLongClick(R.id.btUp) boolean onUpLongClickButton() {
         isAutoIncrement = true;
@@ -144,47 +145,32 @@ public class PlayerFragment extends Fragment {
         }
         return false;
     }
-
     @OnClick(R.id.btUp) void onUpClickButton() {
         incrementPoints();
         updatePoints();
     }
-    @OnClick(R.id.btDown) void onDownClickButton() {
-        decrementPoints();
-        updatePoints();
-    }
     private void incrementPoints() { if (points < MAX_POINTS) points++; }
-    private void decrementPoints() { if (points > MIN_POINTS) points--; }
     private void updatePoints() {
         MyAnimationUtils.AnimationEndListener animationEndListener = () -> new Thread(() -> sharedPrefsHelper.savePlayerPoints(points, playerId)).run();
         Animation updatePointsAnimation = MyAnimationUtils.getUpdatePointsAnimation(
                 tvPoints, tvPointsForAnimation, points, animationEndListener);
         tvPointsForAnimation.startAnimation(updatePointsAnimation);
     }
-
+    @OnClick(R.id.btDown) void onDownClickButton() {
+        decrementPoints();
+        updatePoints();
+    }
+    private void decrementPoints() { if (points > MIN_POINTS) points--; }
     @OnClick(R.id.ibMenu) void onMenuButtonClick(View view) {
         if (getContext() != null) {
             PopupMenu popup = new PopupMenu(getContext(), view);
             popup.setOnMenuItemClickListener(item -> {
                 switch (item.getItemId()) {
+                    case R.id.menu_edit_player:
+                        showPlayerDialog();
+                        return true;
                     case R.id.menu_restart:
                         restartPlayerPoints();
-                        return true;
-                    case R.id.menu_edit_name:
-                        if (getActivity() != null) {
-                            DialogUtils.showNameDialog(getActivity().getLayoutInflater(), getContext(), name -> {
-                                sharedPrefsHelper.savePlayerName(name, playerId);
-                                etName.setText(name);
-                            }, etName.getText());
-                        }
-                        return true;
-                    case R.id.menu_edit_color:
-                        if (getActivity() != null) {
-                            DialogUtils.showColorDialog(getActivity().getLayoutInflater(), getContext(), color -> {
-                                sharedPrefsHelper.savePlayerColor(color, playerId);
-                                setTextsColor(color == 0 ? defaultTextColor : color);
-                            });
-                        }
                         return true;
                     default:
                         return false;
@@ -194,15 +180,30 @@ public class PlayerFragment extends Fragment {
             popup.show();
         }
     }
+    private void showPlayerDialog() {
+        if (getActivity() != null) {
+            PlayerDialogFragment playerDialogFragment = new PlayerDialogFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt(PlayerDialogFragment.KEY_INITIAL_COLOR, etName.getCurrentTextColor());
+            String name = etName.getText() == null ? sharedPrefsHelper.getPlayerName(playerId) : etName.getText().toString();
+            bundle.putString(PlayerDialogFragment.KEY_INITIAL_NAME, name);
+            playerDialogFragment.setArguments(bundle);
+            playerDialogFragment.show(getActivity().getSupportFragmentManager(), PlayerDialogFragment.TAG);
+            playerDialogFragment.setPlayerDialogListener(new PlayerDialogFragment.PlayerDialogListener() {
+                @Override public void onColorChanged(int color) {
+                    sharedPrefsHelper.savePlayerColor(color, playerId);
+                    setTextsColor(color == 0 ? defaultTextColor : color);
+                }
+                @Override public void onNameChanged(String name) {
+                    sharedPrefsHelper.savePlayerName(name, playerId);
+                    etName.setText(name);
+                }
+            });
+        }
+    }
     private void restartPlayerPoints() {
         points = initialPoints;
         updatePoints();
-    }
-    private void setTextsColor(int color) {
-        etName.setTextColor(color);
-        etName.setHintTextColor(color);
-        tvPoints.setTextColor(color);
-        tvPointsForAnimation.setTextColor(color);
     }
     void setPlayerId(int i) {
         playerId = i;

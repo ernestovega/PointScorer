@@ -46,16 +46,8 @@ public class MyAnimationUtils {
         return animationSet;
     }
 
-    public static Animation getShieldAnimation(AnimationEndListener animationEndListener) {
-        AnimationSet animationSet = getAnimationSet();
-        animationSet.setAnimationListener(new Animation.AnimationListener() {
-            @Override public void onAnimationStart(Animation animation) {}
-            @Override public void onAnimationEnd(Animation animation) {
-                if(animationEndListener != null ) animationEndListener.animationEnded();
-            }
-            @Override public void onAnimationRepeat(Animation animation) {}
-        });
-        return animationSet;
+    public static Animation getShieldAnimation() {
+        return getAnimationSet();
     }
 
     private static AnimationSet getAnimationSet() {

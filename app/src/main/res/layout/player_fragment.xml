@@ -28,7 +28,7 @@
         android:layout_marginTop="32dp"
         android:inputType="text"
         android:background="@android:color/transparent"
-        android:hint="@string/player_name" />
+        android:textColorHint="@color/white_transparent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvPointsPlayer"

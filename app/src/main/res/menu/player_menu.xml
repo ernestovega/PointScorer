@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/menu_edit_name"
-        android:title="@string/edit_name" />
+        android:id="@+id/menu_edit_player"
+        android:title="@string/name_and_color" />
     <item
         android:id="@+id/menu_edit_color"
         android:title="@string/edit_color" />
