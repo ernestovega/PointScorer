@@ -7,27 +7,20 @@ import com.etologic.pointscorer.R;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class iEightPlayersActivity extends AppCompatActivity {
+public class iEightPlayersActivity extends BaseActivity {
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.i_eight_players_activity);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        PlayerFragment player81Fragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPlayer81);
-        PlayerFragment player82Fragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPlayer82);
-        PlayerFragment player83Fragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPlayer83);
-        PlayerFragment player84Fragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPlayer84);
-        PlayerFragment player85Fragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPlayer85);
-        PlayerFragment player86Fragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPlayer86);
-        PlayerFragment player87Fragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPlayer87);
-        PlayerFragment player88Fragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPlayer88);
-        if (player81Fragment != null) player81Fragment.setPlayerId(81);
-        if (player82Fragment != null) player82Fragment.setPlayerId(82);
-        if (player83Fragment != null) player83Fragment.setPlayerId(83);
-        if (player84Fragment != null) player84Fragment.setPlayerId(84);
-        if (player85Fragment != null) player85Fragment.setPlayerId(85);
-        if (player86Fragment != null) player86Fragment.setPlayerId(86);
-        if (player87Fragment != null) player87Fragment.setPlayerId(87);
-        if (player88Fragment != null) player88Fragment.setPlayerId(88);
+
+        initPlayer(81, R.id.flPlayer81);
+        initPlayer(82, R.id.flPlayer82);
+        initPlayer(83, R.id.flPlayer83);
+        initPlayer(84, R.id.flPlayer84);
+        initPlayer(85, R.id.flPlayer85);
+        initPlayer(86, R.id.flPlayer86);
+        initPlayer(87, R.id.flPlayer87);
+        initPlayer(88, R.id.flPlayer88);
     }
 }

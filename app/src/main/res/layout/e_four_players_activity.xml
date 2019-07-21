@@ -13,17 +13,16 @@
         android:baselineAligned="false"
         android:orientation="horizontal">
 
-        <fragment
-            android:id="@+id/fragmentPlayer41"
-            android:name="com.etologic.pointscorer.screens.PlayerFragment"
+        <FrameLayout
+            android:id="@+id/flPlayer41"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:rotation="180" />
+            android:rotation="180"
+            tools:ignore="NestedWeights" />
 
-        <fragment
-            android:id="@+id/fragmentPlayer42"
-            android:name="com.etologic.pointscorer.screens.PlayerFragment"
+        <FrameLayout
+            android:id="@+id/flPlayer42"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -38,16 +37,15 @@
         android:baselineAligned="false"
         android:orientation="horizontal">
 
-        <fragment
-            android:id="@+id/fragmentPlayer43"
-            android:name="com.etologic.pointscorer.screens.PlayerFragment"
+        <FrameLayout
+            android:id="@+id/flPlayer43"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            tools:ignore="NestedWeights" />
 
-        <fragment
-            android:id="@+id/fragmentPlayer44"
-            android:name="com.etologic.pointscorer.screens.PlayerFragment"
+        <FrameLayout
+            android:id="@+id/flPlayer44"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" />

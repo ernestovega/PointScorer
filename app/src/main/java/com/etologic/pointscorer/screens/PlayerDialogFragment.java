@@ -108,7 +108,10 @@ public class PlayerDialogFragment extends DialogFragment {
         dismiss();
     }
     @OnClick(R.id.btCancel) void onCancelClick() {
-        if (playerDialogListener != null) playerDialogListener.onColorChanged(initialColor);
+        if (playerDialogListener != null) {
+            playerDialogListener.onColorChanged(initialColor);
+            playerDialogListener.onNameChanged(initialName);
+        }
         dismiss();
     }
 }

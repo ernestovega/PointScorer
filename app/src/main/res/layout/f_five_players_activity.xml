@@ -13,16 +13,15 @@
         android:baselineAligned="false"
         android:orientation="horizontal">
 
-        <fragment
-            android:id="@+id/fragmentPlayer51"
-            android:name="com.etologic.pointscorer.screens.PlayerFragment"
+        <FrameLayout
+            android:id="@+id/flPlayer51"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            tools:ignore="NestedWeights" />
 
-        <fragment
-            android:id="@+id/fragmentPlayer52"
-            android:name="com.etologic.pointscorer.screens.PlayerFragment"
+        <FrameLayout
+            android:id="@+id/flPlayer52"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" />
@@ -36,25 +35,23 @@
         android:baselineAligned="false"
         android:orientation="horizontal">
 
-        <fragment
-            android:id="@+id/fragmentPlayer53"
-            android:name="com.etologic.pointscorer.screens.PlayerFragment"
+        <FrameLayout
+            android:id="@+id/flPlayer53"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            tools:ignore="NestedWeights" />
 
-        <fragment
-            android:id="@+id/fragmentPlayer54"
-            android:name="com.etologic.pointscorer.screens.PlayerFragment"
+        <FrameLayout
+            android:id="@+id/flPlayer54"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
     </LinearLayout>
 
-    <fragment
-        android:id="@+id/fragmentPlayer55"
-        android:name="com.etologic.pointscorer.screens.PlayerFragment"
+    <FrameLayout
+        android:id="@+id/flPlayer55"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />

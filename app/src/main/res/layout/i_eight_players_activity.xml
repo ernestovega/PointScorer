@@ -13,30 +13,27 @@
         android:baselineAligned="false"
         android:orientation="horizontal">
 
-        <fragment
-            android:id="@+id/fragmentPlayer81"
-            android:name="com.etologic.pointscorer.screens.PlayerFragment"
+        <FrameLayout
+            android:id="@+id/flPlayer81"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            tools:ignore="NestedWeights" />
+
+        <FrameLayout
+            android:id="@+id/flPlayer82"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
-        <fragment
-            android:id="@+id/fragmentPlayer82"
-            android:name="com.etologic.pointscorer.screens.PlayerFragment"
+        <FrameLayout
+            android:id="@+id/flPlayer83"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
-        <fragment
-            android:id="@+id/fragmentPlayer83"
-            android:name="com.etologic.pointscorer.screens.PlayerFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <fragment
-            android:id="@+id/fragmentPlayer84"
-            android:name="com.etologic.pointscorer.screens.PlayerFragment"
+        <FrameLayout
+            android:id="@+id/flPlayer84"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" />
@@ -50,30 +47,27 @@
         android:baselineAligned="false"
         android:orientation="horizontal">
 
-        <fragment
-            android:id="@+id/fragmentPlayer85"
-            android:name="com.etologic.pointscorer.screens.PlayerFragment"
+        <FrameLayout
+            android:id="@+id/flPlayer85"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            tools:ignore="NestedWeights" />
+
+        <FrameLayout
+            android:id="@+id/flPlayer86"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
-        <fragment
-            android:id="@+id/fragmentPlayer86"
-            android:name="com.etologic.pointscorer.screens.PlayerFragment"
+        <FrameLayout
+            android:id="@+id/flPlayer87"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
-        <fragment
-            android:id="@+id/fragmentPlayer87"
-            android:name="com.etologic.pointscorer.screens.PlayerFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <fragment
-            android:id="@+id/fragmentPlayer88"
-            android:name="com.etologic.pointscorer.screens.PlayerFragment"
+        <FrameLayout
+            android:id="@+id/flPlayer88"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" />

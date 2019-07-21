@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,30 +14,27 @@
         android:baselineAligned="false"
         android:orientation="horizontal">
 
-        <fragment
-            android:id="@+id/fragmentPlayer71"
-            android:name="com.etologic.pointscorer.screens.PlayerFragment"
+        <FrameLayout
+            android:id="@+id/flPlayer71"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            tools:ignore="NestedWeights" />
+
+        <FrameLayout
+            android:id="@+id/flPlayer72"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
-        <fragment
-            android:id="@+id/fragmentPlayer72"
-            android:name="com.etologic.pointscorer.screens.PlayerFragment"
+        <FrameLayout
+            android:id="@+id/flPlayer73"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
-        <fragment
-            android:id="@+id/fragmentPlayer73"
-            android:name="com.etologic.pointscorer.screens.PlayerFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <fragment
-            android:id="@+id/fragmentPlayer74"
-            android:name="com.etologic.pointscorer.screens.PlayerFragment"
+        <FrameLayout
+            android:id="@+id/flPlayer74"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" />
@@ -52,23 +48,21 @@
         android:baselineAligned="false"
         android:orientation="horizontal">
 
-        <fragment
-            android:id="@+id/fragmentPlayer75"
-            android:name="com.etologic.pointscorer.screens.PlayerFragment"
+        <FrameLayout
+            android:id="@+id/flPlayer75"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            tools:ignore="NestedWeights" />
+
+        <FrameLayout
+            android:id="@+id/flPlayer76"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
-        <fragment
-            android:id="@+id/fragmentPlayer76"
-            android:name="com.etologic.pointscorer.screens.PlayerFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <fragment
-            android:id="@+id/fragmentPlayer77"
-            android:name="com.etologic.pointscorer.screens.PlayerFragment"
+        <FrameLayout
+            android:id="@+id/flPlayer77"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" />

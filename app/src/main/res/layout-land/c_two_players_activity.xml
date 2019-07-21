@@ -6,17 +6,15 @@
     android:baselineAligned="false"
     tools:context=".screens.cTwoPlayersActivity">
 
-    <fragment
-        android:id="@+id/fragmentPlayer21"
-        android:name="com.etologic.pointscorer.screens.PlayerFragment"
-        android:layout_width="match_parent"
+    <FrameLayout
+        android:id="@+id/flPlayer21"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1" />
 
-    <fragment
-        android:id="@+id/fragmentPlayer22"
-        android:name="com.etologic.pointscorer.screens.PlayerFragment"
-        android:layout_width="match_parent"
+    <FrameLayout
+        android:id="@+id/flPlayer22"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1" />
 

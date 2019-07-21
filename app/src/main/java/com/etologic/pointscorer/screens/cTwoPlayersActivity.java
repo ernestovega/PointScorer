@@ -5,17 +5,14 @@ import android.view.WindowManager;
 
 import com.etologic.pointscorer.R;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-public class cTwoPlayersActivity extends AppCompatActivity {
+public class cTwoPlayersActivity extends BaseActivity {
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.c_two_players_activity);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        PlayerFragment player21Fragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPlayer21);
-        PlayerFragment player22Fragment = (PlayerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentPlayer22);
-        if (player21Fragment != null) player21Fragment.setPlayerId(21);
-        if (player22Fragment != null) player22Fragment.setPlayerId(22);
+
+        initPlayer(21, R.id.flPlayer21);
+        initPlayer(22, R.id.flPlayer22);
     }
 }
