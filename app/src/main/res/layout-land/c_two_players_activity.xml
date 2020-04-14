@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:baselineAligned="false"
-    tools:context=".screens.cTwoPlayersActivity">
+    tools:context=".screens.players_activities.BTwoPlayersActivity">
 
     <FrameLayout
         android:id="@+id/flPlayer21"

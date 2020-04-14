@@ -1,22 +1,14 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
-    signingConfigs {
-        pointscorer_keystore {
-            keyAlias 'PointsScorerKeyStore'
-            keyPassword 'ac9jy34X'
-            storeFile file('~/Projects/Android/keystore/keystore_pointscorer.jks')
-            storePassword 'ac9jy34X'
-        }
-    }
-    compileSdkVersion 28
+    compileSdkVersion 29
     buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "com.etologic.pointscorer"
         minSdkVersion 16
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 7
         versionName "1.1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -26,9 +18,7 @@ android {
             minifyEnabled false
         }
         release {
-            minifyEnabled false
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//            signingConfig signingConfigs.pointscorer_keystore
+            minifyEnabled true
         }
     }
     compileOptions {
@@ -38,18 +28,11 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.core:core:1.0.2'
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'com.google.android.material:material:1.1.0-alpha08'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    //BUTTERKNIFE
-    implementation "com.jakewharton:butterknife:$butterknifeVersion"
-    annotationProcessor "com.jakewharton:butterknife-compiler:$butterknifeVersion"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.core:core:1.2.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.google.android.material:material:1.2.0-alpha06'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     //COLOR PICKER
     implementation "com.github.skydoves:colorpickerview:2.1.5"
 }
