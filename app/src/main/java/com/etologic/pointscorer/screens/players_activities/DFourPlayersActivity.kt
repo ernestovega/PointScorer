@@ -1,23 +1,36 @@
 package com.etologic.pointscorer.screens.players_activities
 
-import android.content.res.Configuration
 import android.os.Bundle
-import android.view.WindowManager.LayoutParams
+import android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
+import android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+import androidx.core.content.res.ResourcesCompat
+import com.etologic.pointscorer.R
 import com.etologic.pointscorer.screens.BaseActivity
-import com.etologic.pointscorer.R.id
-import com.etologic.pointscorer.R.layout
 
 class DFourPlayersActivity : BaseActivity() {
+    
+    companion object {
+        
+        private const val PLAYER_1_ID = 41
+        private const val PLAYER_2_ID = 42
+        private const val PLAYER_3_ID = 43
+        private const val PLAYER_4_ID = 44
+    }
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(layout.e_four_players_activity)
-        window.addFlags(LayoutParams.FLAG_FULLSCREEN)
-        window.addFlags(LayoutParams.FLAG_KEEP_SCREEN_ON)
-        val nameMarginTop =
-            if (this.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 40
-        initPlayer(41, id.flPlayer41, 16, nameMarginTop, 48)
-        initPlayer(42, id.flPlayer42, 16, nameMarginTop, 48)
-        initPlayer(43, id.flPlayer43, 16, nameMarginTop, 48)
-        initPlayer(44, id.flPlayer44, 16, nameMarginTop, 48)
+        setContentView(R.layout.e_four_players_activity)
+        
+        window.addFlags(FLAG_FULLSCREEN)
+        window.addFlags(FLAG_KEEP_SCREEN_ON)
+    
+        val nameSize = ResourcesCompat.getFloat(resources, R.dimen.nameSize4P).toInt()//16
+        val nameMarginTop = ResourcesCompat.getFloat(resources, R.dimen.nameMarginTop4P).toInt()//Portrait=40 Landscape=4
+        val pointsSize = ResourcesCompat.getFloat(resources, R.dimen.pointsSize4P).toInt()//48
+        
+        initPlayerFragment(PLAYER_1_ID, R.id.flPlayer41, nameSize, nameMarginTop, pointsSize)
+        initPlayerFragment(PLAYER_2_ID, R.id.flPlayer42, nameSize, nameMarginTop, pointsSize)
+        initPlayerFragment(PLAYER_3_ID, R.id.flPlayer43, nameSize, nameMarginTop, pointsSize)
+        initPlayerFragment(PLAYER_4_ID, R.id.flPlayer44, nameSize, nameMarginTop, pointsSize)
     }
 }

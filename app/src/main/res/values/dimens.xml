@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="nameSize1P">36</dimen>
+    <dimen name="nameSize2P">24</dimen>
+    <dimen name="nameSize3P">20</dimen>
+    <dimen name="nameSize4P">16</dimen>
+    <dimen name="nameSize5P">16</dimen>
+    <dimen name="nameSize6P">16</dimen>
+    <dimen name="nameSize7P">14</dimen>
+    <dimen name="nameSize8P">14</dimen>
+
+    <dimen name="nameMarginTop1P">48</dimen>
+    <dimen name="nameMarginTop2P">2</dimen>
+    <dimen name="nameMarginTop3P">20</dimen>
+    <dimen name="nameMarginTop4P">40</dimen>
+    <dimen name="nameMarginTop5P">8</dimen>
+    <dimen name="nameMarginTop6P">8</dimen>
+    <dimen name="nameMarginTop7P">8</dimen>
+    <dimen name="nameMarginTop8P">8</dimen>
+
+    <dimen name="pointsSize1P">100</dimen>
+    <dimen name="pointsSize2P">80</dimen>
+    <dimen name="pointsSize3P">64</dimen>
+    <dimen name="pointsSize4P">48</dimen>
+    <dimen name="pointsSize5P">48</dimen>
+    <dimen name="pointsSize6P">48</dimen>
+    <dimen name="pointsSize7P">48</dimen>
+    <dimen name="pointsSize8P">48</dimen>
+    <dimen name="colorButtonSize">24dp</dimen>
+</resources>

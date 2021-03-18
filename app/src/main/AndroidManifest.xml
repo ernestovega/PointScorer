@@ -3,7 +3,6 @@
     package="com.etologic.pointscorer">
 
     <application
-        android:name=".PointScorerApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

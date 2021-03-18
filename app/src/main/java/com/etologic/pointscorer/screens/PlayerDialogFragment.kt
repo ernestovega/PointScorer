@@ -8,18 +8,24 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.etologic.pointscorer.R.color
-import com.etologic.pointscorer.R.layout
-import com.etologic.pointscorer.utils.StringUtils
-import com.skydoves.colorpickerview.listeners.ColorListener
-import kotlinx.android.synthetic.main._dialog_name_and_color.*
+import com.etologic.pointscorer.databinding.PlayerDialogFragmentBinding
 
 class PlayerDialogFragment : DialogFragment() {
     
+    companion object {
+        
+        const val TAG = "PlayerDialogFragment"
+        const val KEY_INITIAL_COLOR = "key_initial_color"
+        const val KEY_INITIAL_NAME = "key_initial_name"
+    }
+    
     interface PlayerDialogListener {
+        
         fun onColorChanged(color: Int)
         fun onNameChanged(name: String?)
     }
     
+    private lateinit var fragmentBinding: PlayerDialogFragmentBinding
     private var initialColor: Int? = null
     private var defaultTextColor: Int? = null
     private var defaultName: String? = null
@@ -30,15 +36,15 @@ class PlayerDialogFragment : DialogFragment() {
         this.playerDialogListener = playerDialogListener
     }
     
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(layout._dialog_name_and_color, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        fragmentBinding = PlayerDialogFragmentBinding.inflate(inflater, container, false)
+        return fragmentBinding.root
     }
     
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         defaultTextColor = ContextCompat.getColor(view.context, color.gray_text)
         initValues()
-        initColorPicker()
         initName()
         initListeners()
     }
@@ -48,28 +54,25 @@ class PlayerDialogFragment : DialogFragment() {
             defaultTextColor = activity?.let { ContextCompat.getColor(it, color.gray_text) }
             initialColor = defaultTextColor?.let { arguments.getInt(KEY_INITIAL_COLOR, it) }
             val argName = arguments.getString(KEY_INITIAL_NAME, defaultName)
-            initialName = if (StringUtils.isEmpty(argName)) defaultName else argName
+            initialName = if (argName.isNullOrBlank()) defaultName else argName
         }
     }
     
-    private fun initColorPicker() {
-        colorPickerView?.attachBrightnessSlider(brightnessSlideBar)
-        colorPickerView?.setColorListener(ColorListener { color: Int, fromUser: Boolean ->
-            if (fromUser) {
-                tietName?.setTextColor(color)
-                if (playerDialogListener != null) playerDialogListener!!.onColorChanged(color)
-            }
-        })
+    private fun setColorListener(color: Int) {
+        fragmentBinding.tietName.setTextColor(color)
+        if (playerDialogListener != null) {
+            playerDialogListener!!.onColorChanged(color)
+        }
     }
     
     private fun initName() {
-        tietName?.setText(initialName)
-        initialColor?.let { tietName?.setTextColor(it) }
+        fragmentBinding.tietName.setText(initialName)
+        initialColor?.let { fragmentBinding.tietName.setTextColor(it) }
     }
     
     private fun initListeners() {
-        btOk?.setOnClickListener { dismiss() }
-        btCancel?.setOnClickListener {
+        fragmentBinding.btOk.setOnClickListener { dismiss() }
+        fragmentBinding.btCancel.setOnClickListener {
             initialColor?.let { it1 -> playerDialogListener?.onColorChanged(it1) }
             playerDialogListener?.onNameChanged(initialName)
             dismiss()
@@ -87,13 +90,7 @@ class PlayerDialogFragment : DialogFragment() {
     }
     
     override fun onDismiss(dialog: DialogInterface) {
-        if (playerDialogListener != null) playerDialogListener!!.onNameChanged(if (tietName?.text != null) tietName?.text.toString() else "")
+        playerDialogListener?.onNameChanged((fragmentBinding.tietName.text ?: "").toString())
         super.onDismiss(dialog)
-    }
-    
-    companion object {
-        const val TAG = "PlayerDialogFragment"
-        const val KEY_INITIAL_COLOR = "key_initial_color"
-        const val KEY_INITIAL_NAME = "key_initial_name"
     }
 }

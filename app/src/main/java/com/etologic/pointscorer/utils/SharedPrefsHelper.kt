@@ -1,4 +1,4 @@
-package com.etologic.pointscorer
+package com.etologic.pointscorer.utils
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -8,26 +8,41 @@ import com.etologic.pointscorer.R.color
 import java.lang.ref.WeakReference
 import java.util.*
 
-@WorkerThread
+@WorkerThread//ToDo: como va esto?
 class SharedPrefsHelper(context: Context) {
-
-    private val weakContext: WeakReference<Context>
-
-    //FIELDS
-    private val sharedPrefs: SharedPreferences
-    private val defaultTextColor: Int
+    
+    companion object {
+        private const val FILE_NAME = "points_scorer_shared_prefs"
+        private const val MAX_PLAYERS = 8
+        private const val DEFAULT_INITIAL_POINTS = 100
+        private const val KEY_INITIAL_POINTS = "initial_points"
+        private const val KEY_INITIAL_CHECK_DONE = "initial_check_done"
+        private const val KEY_NAME = "name_player_"
+        private const val KEY_POINTS = "points_player_"
+        private const val KEY_COLOR = "color_player_"
+        private const val DEFAULT_PLAYER_NAME = "Player name"
+    }
+    
+    private val weakContext: WeakReference<Context> = WeakReference(context)
+    private val sharedPrefs: SharedPreferences = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE)
+    private val defaultTextColor: Int = ContextCompat.getColor(context, color.gray_text)
     internal var initialPoints: Int
+    
+    init {
+        initialPoints = getInitialPoints()
+    }
+    
     fun getInitialPoints(): Int {
         return sharedPrefs.getInt(KEY_INITIAL_POINTS, DEFAULT_INITIAL_POINTS)
     }
 
     fun initRecordsIfProceed() {
-        Thread(Runnable {
+        Thread {
             if (!sharedPrefs.getBoolean(KEY_INITIAL_CHECK_DONE, false)) {
                 resetAll()
                 sharedPrefs.edit().putBoolean(KEY_INITIAL_CHECK_DONE, true).apply()
             }
-        }).run()
+        }.run()
     }
 
     fun resetAll() {
@@ -80,25 +95,5 @@ class SharedPrefsHelper(context: Context) {
         sharedPrefs.edit().putInt(String.format(Locale.ENGLISH, "%s%d", KEY_COLOR, playerId), color)
             .apply()
     }
-
-    companion object {
-        //CONSTANTS
-        private const val FILE_NAME = "points_scorer_shared_prefs"
-        private const val MAX_PLAYERS = 8
-        private const val DEFAULT_INITIAL_POINTS = 100
-        private const val KEY_INITIAL_POINTS = "initial_points"
-        private const val KEY_INITIAL_CHECK_DONE = "initial_check_done"
-        private const val KEY_NAME = "name_player_"
-        private const val KEY_POINTS = "points_player_"
-        private const val KEY_COLOR = "color_player_"
-        private const val DEFAULT_PLAYER_NAME = "Player name"
-    }
-
-    //CONSTRUCTOR
-    init {
-        weakContext = WeakReference(context)
-        sharedPrefs = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE)
-        defaultTextColor = ContextCompat.getColor(context, color.gray_text)
-        initialPoints = getInitialPoints()
-    }
+    
 }
