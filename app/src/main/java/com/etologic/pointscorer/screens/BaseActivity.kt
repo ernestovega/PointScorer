@@ -15,30 +15,19 @@ open class BaseActivity : AppCompatActivity() {
         nameMarginTop: Int,
         pointsSize: Int
     ) {
+        val bundle = Bundle()
+        bundle.putInt(PlayerFragment.KEY_PLAYER_ID, playerId)
+        bundle.putInt(PlayerFragment.KEY_PLAYER_NAME_SIZE, nameSize)
+        bundle.putInt(PlayerFragment.KEY_PLAYER_NAME_MARGIN_TOP, nameMarginTop)
+        bundle.putInt(PlayerFragment.KEY_PLAYER_POINTS_SIZE, pointsSize)
+        
         val fragment = PlayerFragment()
-        fragment.arguments = buildBundle(playerId, nameSize, nameMarginTop, pointsSize)
-        startFragment(frameLayout, fragment)
-    }
-    
-    private fun startFragment(frameLayout: Int, fragment: PlayerFragment) {
+        fragment.arguments = bundle
+        
         supportFragmentManager
             .beginTransaction()
             .setCustomAnimations(animator.fade_in, animator.fade_out)
             .add(frameLayout, fragment)
             .commit()
-    }
-    
-    private fun buildBundle(
-        playerId: Int,
-        nameSize: Int,
-        playerNameMarginTop: Int,
-        pointsSize: Int
-    ): Bundle {
-        val bundle = Bundle()
-        bundle.putInt(PlayerFragment.KEY_PLAYER_ID, playerId)
-        bundle.putInt(PlayerFragment.KEY_PLAYER_NAME_SIZE, nameSize)
-        bundle.putInt(PlayerFragment.KEY_PLAYER_NAME_MARGIN_TOP, playerNameMarginTop)
-        bundle.putInt(PlayerFragment.KEY_PLAYER_POINTS_SIZE, pointsSize)
-        return bundle
     }
 }

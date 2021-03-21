@@ -20,7 +20,7 @@ import com.etologic.pointscorer.utils.SharedPrefsHelper
 import java.util.*
 import java.util.Locale.ENGLISH
 
-class PlayerFragment : Fragment() {
+class PlayerFragment : Fragment(), PlayerDialogListener {
     
     companion object {
         
@@ -33,26 +33,38 @@ class PlayerFragment : Fragment() {
     }
     
     //FIELDS
-    private lateinit var fragmentBinding: PlayerFragmentBinding
+    private var _binding: PlayerFragmentBinding? = null
+    private val binding get() = _binding!!
     private var sharedPrefsHelper: SharedPrefsHelper? = null
     private var playerId = 0
     private var initialPoints = 0
     private var points = 0
     private val repeatUpdateHandler = Handler()
     private var defaultTextColor: Int? = null
-    private var playerNameSize = 0
+    private var playerNameSize = 16
     private var playerNameMarginTop = 0
-    private var playerPointsSize = 0
+    private var playerPointsSize = 48
     private var playerPointsMarginTop = 0
     private var isAutoIncrement = false /* https://stackoverflow.com/questions/7938516/continuously-increase-integer-value-as-the-button-is-pressed */
     private var isAutoDecrement = false
     private var downCount = 0
     private var upCount = 0
     
+    //EVENTS
+    override fun onColorChanged(color: Int) {
+        sharedPrefsHelper?.savePlayerColor(color, playerId)
+        (if (color == 0) defaultTextColor else color)?.let { setTextsColor(it) }
+    }
+    
+    override fun onNameChanged(name: String?) {
+        sharedPrefsHelper?.savePlayerName(name, playerId)
+        binding.etName.setText(name)
+    }
+    
     //LIFECYCLE
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        fragmentBinding = PlayerFragmentBinding.inflate(inflater, container, false)
-        return fragmentBinding.root
+        _binding = PlayerFragmentBinding.inflate(inflater, container, false)
+        return binding.root
     }
     
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,23 +81,18 @@ class PlayerFragment : Fragment() {
     }
     
     private fun initValues() {
-        defaultTextColor = activity?.let { ContextCompat.getColor(it, R.color.gray_text) }
+        defaultTextColor = ContextCompat.getColor(requireContext(), R.color.gray_text)
         arguments?.let { arguments ->
             playerId = arguments.getInt(KEY_PLAYER_ID)
             playerNameSize = arguments.getInt(KEY_PLAYER_NAME_SIZE)
             playerNameMarginTop = arguments.getInt(KEY_PLAYER_NAME_MARGIN_TOP, 8)
             playerPointsSize = arguments.getInt(KEY_PLAYER_POINTS_SIZE)
-            playerPointsMarginTop = 0
-        } ?: run {
-            playerId = 0
-            playerNameSize = 16
-            playerPointsSize = 48
         }
     }
     
     private fun initSharedPrefs() {
         Thread {
-            context?.let { sharedPrefsHelper = SharedPrefsHelper(it) }
+            sharedPrefsHelper = SharedPrefsHelper(requireContext())
         }.run()
     }
     
@@ -93,22 +100,20 @@ class PlayerFragment : Fragment() {
         sharedPrefsHelper?.let {
             initialPoints = it.initialPoints
             points = it.getPlayerPoints(playerId)
-            with(fragmentBinding) {
+            with(binding) {
                 tvUpCount.textSize = playerPointsSize * 0.5f
                 tvDownCount.textSize = playerPointsSize * 0.5f
                 tvPointsPlayer.textSize = playerPointsSize.toFloat()
                 tvPointsForAnimation.textSize = playerPointsSize.toFloat()
-                context?.let { context ->
-                    tvPointsPlayer.setPadding(0, MyConversionUtils.dpToPx(context, playerPointsMarginTop), 0, 0)
-                    tvPointsForAnimation.setPadding(0, MyConversionUtils.dpToPx(context, playerPointsMarginTop), 0, 0)
-                }
+                tvPointsPlayer.setPadding(0, MyConversionUtils.dpToPx(requireContext(), playerPointsMarginTop), 0, 0)
+                tvPointsForAnimation.setPadding(0, MyConversionUtils.dpToPx(requireContext(), playerPointsMarginTop), 0, 0)
             }
         }
     }
     
     private fun initName() {
-        with(fragmentBinding) {
-            context?.let { etName.setPadding(0, MyConversionUtils.dpToPx(it, playerNameMarginTop), 0, 0) }
+        with(binding) {
+            etName.setPadding(0, MyConversionUtils.dpToPx(requireContext(), playerNameMarginTop), 0, 0)
             etName.textSize = playerNameSize.toFloat()
             etName.setText(sharedPrefsHelper?.getPlayerName(playerId))
         }
@@ -119,7 +124,7 @@ class PlayerFragment : Fragment() {
     }
     
     private fun setTextsColor(color: Int) {
-        with(fragmentBinding) {
+        with(binding) {
             etName.setTextColor(color)
             etName.setHintTextColor(color)
             tvPointsPlayer.setTextColor(color)
@@ -128,14 +133,14 @@ class PlayerFragment : Fragment() {
     }
     
     private fun initShieldAndPoints() {
-        with(fragmentBinding) {
+        with(binding) {
             ivShield.startAnimation(MyAnimationUtils.getShieldAnimation())
             tvPointsForAnimation.startAnimation(MyAnimationUtils.getUpdatePointsAnimation(tvPointsPlayer, tvPointsForAnimation, points))
         }
     }
     
     private fun initListeners() {
-        with(fragmentBinding) {
+        with(binding) {
             btUp.setOnLongClickListener {
                 isAutoIncrement = true
                 upCount = 0
@@ -178,19 +183,17 @@ class PlayerFragment : Fragment() {
             }
             
             ibMenu.setOnClickListener { view ->
-                context?.let { context ->
-                    val popup = PopupMenu(context, view)
-                    popup.setOnMenuItemClickListener { item: MenuItem ->
-                        when (item.itemId) {
-                            R.id.menu_edit_player -> showPlayerDialog()
-                            R.id.menu_restart -> restartPlayerPoints()
-                            else -> return@setOnMenuItemClickListener false
-                        }
-                        true
+                val popup = PopupMenu(requireContext(), view)
+                popup.setOnMenuItemClickListener { item: MenuItem ->
+                    when (item.itemId) {
+                        R.id.menu_edit_player -> showPlayerDialog()
+                        R.id.menu_restart -> restartPlayerPoints()
+                        else -> return@setOnMenuItemClickListener false
                     }
-                    popup.inflate(R.menu.one_player_menu)
-                    popup.show()
+                    true
                 }
+                popup.inflate(R.menu.one_player_menu)
+                popup.show()
             }
         }
     }
@@ -216,47 +219,36 @@ class PlayerFragment : Fragment() {
         if (upCount != 0) formattedUpCount = String.format(ENGLISH, "%+d", upCount)
         if (downCount != 0) formattedDownCount = String.format(ENGLISH, "%+d", downCount)
         
-        fragmentBinding.tvUpCount.text = formattedUpCount
-        fragmentBinding.tvDownCount.text = formattedDownCount
+        binding.tvUpCount.text = formattedUpCount
+        binding.tvDownCount.text = formattedDownCount
         val animationEndListener = AnimationEndListener {
             Thread { sharedPrefsHelper?.savePlayerPoints(points, playerId) }.run()
         }
         val updatePointsAnimation = MyAnimationUtils.getUpdatePointsAnimation(
-            fragmentBinding.tvPointsPlayer,
-            fragmentBinding.tvPointsForAnimation,
+            binding.tvPointsPlayer,
+            binding.tvPointsForAnimation,
             points,
             animationEndListener
         )
-        fragmentBinding.tvPointsForAnimation.startAnimation(updatePointsAnimation)
+        binding.tvPointsForAnimation.startAnimation(updatePointsAnimation)
     }
     
     private fun showPlayerDialog() {
-        if (activity != null) {
-            val playerDialogFragment = PlayerSettingsDialogFragment()
-            val bundle = Bundle()
-            
-            bundle.putInt(PlayerSettingsDialogFragment.KEY_INITIAL_COLOR, fragmentBinding.etName.currentTextColor)
-            val name =
-                if (fragmentBinding.etName.text == null)
-                    sharedPrefsHelper?.getPlayerName(playerId)
-                else
-                    fragmentBinding.etName.text.toString()
-            bundle.putString(PlayerSettingsDialogFragment.KEY_INITIAL_NAME, name)
-            
-            playerDialogFragment.arguments = bundle
-            playerDialogFragment.show(activity!!.supportFragmentManager, PlayerSettingsDialogFragment.TAG)
-            playerDialogFragment.setPlayerDialogListener(object : PlayerDialogListener {
-                override fun onColorChanged(color: Int) {
-                    sharedPrefsHelper?.savePlayerColor(color, playerId)
-                    (if (color == 0) defaultTextColor else color)?.let { setTextsColor(it) }
-                }
-    
-                override fun onNameChanged(name: String?) {
-                    sharedPrefsHelper?.savePlayerName(name, playerId)
-                    fragmentBinding.etName.setText(name)
-                }
-            })
-        }
+        val playerDialogFragment = PlayerSettingsDialogFragment()
+        val bundle = Bundle()
+        
+        bundle.putInt(PlayerSettingsDialogFragment.KEY_INITIAL_COLOR, binding.etName.currentTextColor)
+        val name =
+            if (binding.etName.text == null)
+                sharedPrefsHelper?.getPlayerName(playerId)
+            else
+                binding.etName.text.toString()
+        bundle.putString(PlayerSettingsDialogFragment.KEY_INITIAL_NAME, name)
+        
+        playerDialogFragment.arguments = bundle
+        playerDialogFragment.setPlayerDialogListener(this)
+        
+        playerDialogFragment.show(requireActivity().supportFragmentManager, PlayerSettingsDialogFragment.TAG)
     }
     
     private fun restartPlayerPoints() {
@@ -272,7 +264,7 @@ class PlayerFragment : Fragment() {
                 isAutoIncrement -> incrementPoints()
                 isAutoDecrement -> decrementPoints()
                 else -> {
-                    with(fragmentBinding) {
+                    with(binding) {
                         tvUpCount.startAnimation(MyAnimationUtils.getFadeOutAnimation {
                             tvUpCount.text = ""
                             upCount = 0
