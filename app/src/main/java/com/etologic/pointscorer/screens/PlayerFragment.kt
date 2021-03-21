@@ -12,7 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.etologic.pointscorer.R
 import com.etologic.pointscorer.databinding.PlayerFragmentBinding
-import com.etologic.pointscorer.screens.PlayerDialogFragment.PlayerDialogListener
+import com.etologic.pointscorer.screens.PlayerSettingsDialogFragment.PlayerDialogListener
 import com.etologic.pointscorer.utils.MyAnimationUtils
 import com.etologic.pointscorer.utils.MyAnimationUtils.AnimationEndListener
 import com.etologic.pointscorer.utils.MyConversionUtils
@@ -70,13 +70,13 @@ class PlayerFragment : Fragment() {
     
     private fun initValues() {
         defaultTextColor = activity?.let { ContextCompat.getColor(it, R.color.gray_text) }
-        arguments?.let {
-            playerId = it.getInt(KEY_PLAYER_ID)
-            playerNameSize = it.getInt(KEY_PLAYER_NAME_SIZE)
-            playerNameMarginTop = it.getInt(KEY_PLAYER_NAME_MARGIN_TOP, 8)
-            playerPointsSize = it.getInt(KEY_PLAYER_POINTS_SIZE)
+        arguments?.let { arguments ->
+            playerId = arguments.getInt(KEY_PLAYER_ID)
+            playerNameSize = arguments.getInt(KEY_PLAYER_NAME_SIZE)
+            playerNameMarginTop = arguments.getInt(KEY_PLAYER_NAME_MARGIN_TOP, 8)
+            playerPointsSize = arguments.getInt(KEY_PLAYER_POINTS_SIZE)
             playerPointsMarginTop = 0
-        }?.run {
+        } ?: run {
             playerId = 0
             playerNameSize = 16
             playerPointsSize = 48
@@ -232,19 +232,19 @@ class PlayerFragment : Fragment() {
     
     private fun showPlayerDialog() {
         if (activity != null) {
-            val playerDialogFragment = PlayerDialogFragment()
+            val playerDialogFragment = PlayerSettingsDialogFragment()
             val bundle = Bundle()
             
-            bundle.putInt(PlayerDialogFragment.KEY_INITIAL_COLOR, fragmentBinding.etName.currentTextColor)
+            bundle.putInt(PlayerSettingsDialogFragment.KEY_INITIAL_COLOR, fragmentBinding.etName.currentTextColor)
             val name =
                 if (fragmentBinding.etName.text == null)
                     sharedPrefsHelper?.getPlayerName(playerId)
                 else
                     fragmentBinding.etName.text.toString()
-            bundle.putString(PlayerDialogFragment.KEY_INITIAL_NAME, name)
+            bundle.putString(PlayerSettingsDialogFragment.KEY_INITIAL_NAME, name)
             
             playerDialogFragment.arguments = bundle
-            playerDialogFragment.show(activity!!.supportFragmentManager, PlayerDialogFragment.TAG)
+            playerDialogFragment.show(activity!!.supportFragmentManager, PlayerSettingsDialogFragment.TAG)
             playerDialogFragment.setPlayerDialogListener(object : PlayerDialogListener {
                 override fun onColorChanged(color: Int) {
                     sharedPrefsHelper?.savePlayerColor(color, playerId)

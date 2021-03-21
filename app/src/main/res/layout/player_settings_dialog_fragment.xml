@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@android:style/Theme.Dialog"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
     android:padding="16dp"
-    app:cardBackgroundColor="@color/colorPrimary"
+    app:cardBackgroundColor="@color/colorPrimaryDark"
     app:cardCornerRadius="8dp">
 
     <ScrollView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:layout_margin="16dp">
 
         <LinearLayout
@@ -21,12 +23,14 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilName"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
                 android:hint="@string/player_name"
                 android:paddingStart="16dp"
-                android:paddingEnd="16dp">
+                android:paddingEnd="16dp"
+                android:textColorHint="@color/white">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tietName"
@@ -34,29 +38,30 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/rock_on"
                     android:inputType="text"
+                    tools:text="@string/player_name"
                     android:maxLength="20"
                     android:selectAllOnFocus="true"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/nameSize2P" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
+                android:layout_gravity="center_horizontal"
                 android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/btColorRed"
                     android:layout_width="@dimen/colorButtonSize"
                     android:layout_height="@dimen/colorButtonSize"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
                     android:background="@drawable/shape_button_red" />
 
                 <Button
-                    style="?android:attr/buttonStyle"
                     android:id="@+id/btColorGreen"
+                    style="?android:attr/buttonStyle"
                     android:layout_width="@dimen/colorButtonSize"
                     android:layout_height="@dimen/colorButtonSize"
                     android:layout_marginStart="16dp"
@@ -64,8 +69,8 @@
                     android:background="@drawable/shape_button_green" />
 
                 <Button
-                    style="?android:attr/buttonStyleInset"
                     android:id="@+id/btColorOrange"
+                    style="?android:attr/buttonStyleInset"
                     android:layout_width="@dimen/colorButtonSize"
                     android:layout_height="@dimen/colorButtonSize"
                     android:layout_marginStart="16dp"
@@ -73,8 +78,8 @@
                     android:background="@drawable/shape_button_orange" />
 
                 <Button
-                    style="?android:attr/buttonStyleToggle"
                     android:id="@+id/btColorBlue"
+                    style="?android:attr/buttonStyleToggle"
                     android:layout_width="@dimen/colorButtonSize"
                     android:layout_height="@dimen/colorButtonSize"
                     android:layout_marginStart="16dp"
@@ -84,17 +89,16 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
+                android:layout_gravity="center_horizontal"
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btColorYellow"
                     android:layout_width="@dimen/colorButtonSize"
                     android:layout_height="@dimen/colorButtonSize"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
                     android:background="@drawable/shape_button_yellow" />
 
                 <androidx.appcompat.widget.AppCompatButton
