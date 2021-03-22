@@ -61,6 +61,11 @@ class PlayerFragment : Fragment(), PlayerDialogListener {
         binding.etName.setText(name)
     }
     
+    override fun onPlayerPointsRestarted() {
+        points = initialPoints
+        updatePoints()
+    }
+    
     //LIFECYCLE
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = PlayerFragmentBinding.inflate(inflater, container, false)
@@ -182,19 +187,7 @@ class PlayerFragment : Fragment(), PlayerDialogListener {
                 })
             }
             
-            ibMenu.setOnClickListener { view ->
-                val popup = PopupMenu(requireContext(), view)
-                popup.setOnMenuItemClickListener { item: MenuItem ->
-                    when (item.itemId) {
-                        R.id.menu_edit_player -> showPlayerDialog()
-                        R.id.menu_restart -> restartPlayerPoints()
-                        else -> return@setOnMenuItemClickListener false
-                    }
-                    true
-                }
-                popup.inflate(R.menu.one_player_menu)
-                popup.show()
-            }
+            ibMenu.setOnClickListener { showPlayerDialog() }
         }
     }
     
@@ -249,11 +242,6 @@ class PlayerFragment : Fragment(), PlayerDialogListener {
         playerDialogFragment.setPlayerDialogListener(this)
         
         playerDialogFragment.show(requireActivity().supportFragmentManager, PlayerSettingsDialogFragment.TAG)
-    }
-    
-    private fun restartPlayerPoints() {
-        points = initialPoints
-        updatePoints()
     }
     
     //INNER CLASSES

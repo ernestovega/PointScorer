@@ -24,6 +24,7 @@ class PlayerSettingsDialogFragment : DialogFragment() {
         
         fun onColorChanged(color: Int)
         fun onNameChanged(name: String?)
+        fun onPlayerPointsRestarted()
     }
     
     private var _binding: PlayerSettingsDialogFragmentBinding? = null
@@ -40,6 +41,7 @@ class PlayerSettingsDialogFragment : DialogFragment() {
     private var purpleColor: Int? = null
     private var pinkColor: Int? = null
     private var whiteColor: Int? = null
+    private var blackColor: Int? = null
     
     internal fun setPlayerDialogListener(playerDialogListener: PlayerDialogListener?) {
         this.playerDialogListener = playerDialogListener
@@ -54,20 +56,21 @@ class PlayerSettingsDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         initValues()
         initName()
-        initColor()
+        selectColor(initialColor)
         initListeners()
     }
     
     private fun initValues() {
         defaultTextColor = ContextCompat.getColor(requireContext(), R.color.gray_text)
         redColor = ContextCompat.getColor(requireContext(), R.color.red)
-        orangeColor = ContextCompat.getColor(requireContext(), R.color.colorAccent)
+        orangeColor = ContextCompat.getColor(requireContext(), R.color.orange)
         yellowColor = ContextCompat.getColor(requireContext(), R.color.yellow)
         greenColor = ContextCompat.getColor(requireContext(), R.color.green)
         blueColor = ContextCompat.getColor(requireContext(), R.color.blue)
         purpleColor = ContextCompat.getColor(requireContext(), R.color.purple)
         pinkColor = ContextCompat.getColor(requireContext(), R.color.pink)
         whiteColor = ContextCompat.getColor(requireContext(), R.color.white)
+        blackColor = ContextCompat.getColor(requireContext(), R.color.black)
         arguments?.let { arguments ->
             initialColor = defaultTextColor?.let { arguments.getInt(KEY_INITIAL_COLOR, it) }
             initialName = arguments.getString(KEY_INITIAL_NAME, getString(R.string.player_name))
@@ -79,11 +82,7 @@ class PlayerSettingsDialogFragment : DialogFragment() {
         initialColor?.let { binding.etName.setTextColor(it) }
     }
     
-    private fun initColor() {
-        selectOneColor(initialColor)
-    }
-    
-    private fun selectOneColor(selectedColor: Int?) {
+    private fun selectColor(selectedColor: Int?) {
         with(binding) {
             vColorRed.isSelected = false
             vColorOrange.isSelected = false
@@ -94,55 +93,84 @@ class PlayerSettingsDialogFragment : DialogFragment() {
             vColorPink.isSelected = false
             vColorWhite.isSelected = false
             when (selectedColor) {
-                redColor -> vColorRed.isSelected = true
-                orangeColor -> vColorOrange.isSelected = true
-                yellowColor -> vColorYellow.isSelected = true
-                greenColor -> vColorGreen.isSelected = true
-                blueColor -> vColorBlue.isSelected = true
-                purpleColor -> vColorPurple.isSelected = true
-                pinkColor -> vColorPink.isSelected = true
-                //whiteColor,
-                else -> vColorWhite.isSelected = true
+                redColor -> {
+                    vColorRed.isSelected = true
+                    redColor?.let { setNameColor(it) }
+                }
+                orangeColor -> {
+                    vColorOrange.isSelected = true
+                    orangeColor?.let { setNameColor(it) }
+                }
+                yellowColor -> {
+                    vColorYellow.isSelected = true
+                    yellowColor?.let { setNameColor(it) }
+                }
+                greenColor -> {
+                    vColorGreen.isSelected = true
+                    greenColor?.let { setNameColor(it) }
+                }
+                blueColor -> {
+                    vColorBlue.isSelected = true
+                    blueColor?.let { setNameColor(it) }
+                }
+                purpleColor -> {
+                    vColorPurple.isSelected = true
+                    purpleColor?.let { setNameColor(it) }
+                }
+                pinkColor -> {
+                    vColorPink.isSelected = true
+                    pinkColor?.let { setNameColor(it) }
+                }
+                else -> {
+                    vColorWhite.isSelected = true
+                    blackColor?.let { setNameColor(it) }
+                }
             }
         }
     }
     
+    private fun setNameColor(it: Int) {
+        binding.etName.setTextColor(it)
+        binding.etName.setHintTextColor(it)
+    }
+    
     private fun initListeners() {
         with(binding) {
+            btClose.setOnClickListener { dismiss() }
             etName.doOnTextChanged { text, _, _, _ -> playerDialogListener?.onNameChanged((text ?: "").toString()) }
             vColorRed.setOnClickListener {
-                selectOneColor(redColor)
+                selectColor(redColor)
                 redColor?.let { playerDialogListener?.onColorChanged(it) }
             }
             vColorOrange.setOnClickListener {
-                selectOneColor(orangeColor)
+                selectColor(orangeColor)
                 orangeColor?.let { playerDialogListener?.onColorChanged(it) }
             }
             vColorYellow.setOnClickListener {
-                selectOneColor(yellowColor)
+                selectColor(yellowColor)
                 yellowColor?.let { playerDialogListener?.onColorChanged(it) }
             }
             vColorGreen.setOnClickListener {
-                selectOneColor(greenColor)
+                selectColor(greenColor)
                 greenColor?.let { playerDialogListener?.onColorChanged(it) }
             }
             vColorBlue.setOnClickListener {
-                selectOneColor(blueColor)
+                selectColor(blueColor)
                 blueColor?.let { playerDialogListener?.onColorChanged(it) }
             }
             vColorPurple.setOnClickListener {
-                selectOneColor(purpleColor)
+                selectColor(purpleColor)
                 purpleColor?.let { playerDialogListener?.onColorChanged(it) }
             }
             vColorPink.setOnClickListener {
-                selectOneColor(pinkColor)
+                selectColor(pinkColor)
                 pinkColor?.let { playerDialogListener?.onColorChanged(it) }
             }
             vColorWhite.setOnClickListener {
-                selectOneColor(whiteColor)
+                selectColor(whiteColor)
                 whiteColor?.let { playerDialogListener?.onColorChanged(it) }
             }
-            btOk.setOnClickListener { dismiss() }
+            btResetPoints.setOnClickListener { playerDialogListener?.onPlayerPointsRestarted() }
         }
     }
     

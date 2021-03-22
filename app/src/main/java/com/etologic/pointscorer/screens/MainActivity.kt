@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import androidx.appcompat.app.AlertDialog.Builder
 import androidx.appcompat.app.AppCompatActivity
 import com.etologic.pointscorer.R
@@ -82,13 +84,49 @@ class MainActivity : AppCompatActivity() {
                 .show()
         }
         
-        binding.btOnePlayer.setOnClickListener { startActivity(Intent(applicationContext, AOnePlayerActivity::class.java)) }
-        binding.btTwoPlayers.setOnClickListener { startActivity(Intent(applicationContext, BTwoPlayersActivity::class.java)) }
-        binding.btThreePlayers.setOnClickListener { startActivity(Intent(applicationContext, CThreePlayersActivity::class.java)) }
-        binding.btFourPlayers.setOnClickListener { startActivity(Intent(applicationContext, DFourPlayersActivity::class.java)) }
-        binding.btFivePlayers.setOnClickListener { startActivity(Intent(applicationContext, EFivePlayersActivity::class.java)) }
-        binding.btSixPlayers.setOnClickListener { startActivity(Intent(applicationContext, FSixPlayersActivity::class.java)) }
-        binding.btSevenPlayers.setOnClickListener { startActivity(Intent(applicationContext, GSevenPlayersActivity::class.java)) }
-        binding.btEightPlayers.setOnClickListener { startActivity(Intent(applicationContext, HEightPlayersActivity::class.java)) }
+        binding.btMain1Player.setOnClickListener {
+            binding.pbMain1Player?.visibility = VISIBLE
+            startActivity(Intent(applicationContext, AOnePlayerActivity::class.java))
+        }
+        binding.btMain2Player?.setOnClickListener {
+            binding.pbMain2Player?.visibility = VISIBLE
+            startActivity(Intent(applicationContext, BTwoPlayersActivity::class.java))
+        }
+        binding.btMain3Player?.setOnClickListener {
+            binding.pbMain3Player?.visibility = VISIBLE
+            startActivity(Intent(applicationContext, CThreePlayersActivity::class.java))
+        }
+        binding.btMain4Player?.setOnClickListener {
+            binding.pbMain4Player?.visibility = VISIBLE
+            startActivity(Intent(applicationContext, DFourPlayersActivity::class.java))
+        }
+        binding.btMain5Player?.setOnClickListener {
+            binding.pbMain5Player?.visibility = VISIBLE
+            startActivity(Intent(applicationContext, EFivePlayersActivity::class.java))
+        }
+        binding.btMain6Player?.setOnClickListener {
+            binding.pbMain6Player?.visibility = VISIBLE
+            startActivity(Intent(applicationContext, FSixPlayersActivity::class.java))
+        }
+        binding.btMain7Player?.setOnClickListener {
+            binding.pbMain7Player?.visibility = VISIBLE
+            startActivity(Intent(applicationContext, GSevenPlayersActivity::class.java))
+        }
+        binding.btMain8Player?.setOnClickListener {
+            binding.pbMain8Player?.visibility = VISIBLE
+            startActivity(Intent(applicationContext, HEightPlayersActivity::class.java))
+        }
+    }
+    
+    override fun onPause() {
+        binding.pbMain1Player?.visibility = GONE
+        binding.pbMain2Player?.visibility = GONE
+        binding.pbMain3Player?.visibility = GONE
+        binding.pbMain4Player?.visibility = GONE
+        binding.pbMain5Player?.visibility = GONE
+        binding.pbMain6Player?.visibility = GONE
+        binding.pbMain7Player?.visibility = GONE
+        binding.pbMain8Player?.visibility = GONE
+        super.onPause()
     }
 }

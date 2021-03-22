@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/menu_edit_player"
-        android:title="@string/name_and_color" />
-    <item
-        android:id="@+id/menu_restart"
-        android:title="@string/restart_points" />
-</menu>
