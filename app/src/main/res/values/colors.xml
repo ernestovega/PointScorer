@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#242424</color>
     <color name="colorAccent">#ff6d00</color>
@@ -15,6 +16,7 @@
     <color name="blue">#006FC7</color>
     <color name="yellow">#FFEB3B</color>
     <color name="purple">#673AB7</color>
-    <color name="pink">#EA636E</color>
+    <color name="pink">#F323DD</color>
     <color name="white">#FFFFFF</color>
+
 </resources>

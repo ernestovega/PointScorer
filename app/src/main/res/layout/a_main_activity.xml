@@ -38,7 +38,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/acbMainResetAllPoints"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            style="?borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -58,7 +58,7 @@
 
         <ImageButton
             android:id="@+id/btOnePlayer"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            style="?borderlessButtonStyle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -72,7 +72,7 @@
 
         <ImageButton
             android:id="@+id/btTwoPlayers"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            style="?borderlessButtonStyle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -93,7 +93,7 @@
 
         <ImageButton
             android:id="@+id/btThreePlayers"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            style="?borderlessButtonStyle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -107,7 +107,7 @@
 
         <ImageButton
             android:id="@+id/btFourPlayers"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            style="?borderlessButtonStyle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -128,7 +128,7 @@
 
         <ImageButton
             android:id="@+id/btFivePlayers"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            style="?borderlessButtonStyle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -142,7 +142,7 @@
 
         <ImageButton
             android:id="@+id/btSixPlayers"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            style="?borderlessButtonStyle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -163,7 +163,7 @@
 
         <ImageButton
             android:id="@+id/btSevenPlayers"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            style="?borderlessButtonStyle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -177,7 +177,7 @@
 
         <ImageButton
             android:id="@+id/btEightPlayers"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            style="?borderlessButtonStyle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
