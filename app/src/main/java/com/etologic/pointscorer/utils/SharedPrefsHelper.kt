@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import androidx.annotation.WorkerThread
 import androidx.core.content.ContextCompat
 import com.etologic.pointscorer.R.color
-import java.lang.ref.WeakReference
 import java.util.*
 
 @WorkerThread//ToDo: como va esto?
@@ -23,7 +22,6 @@ class SharedPrefsHelper(context: Context) {
         private const val DEFAULT_PLAYER_NAME = "Player name"
     }
     
-    private val weakContext: WeakReference<Context> = WeakReference(context)
     private val sharedPrefs: SharedPreferences = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE)
     private val defaultTextColor: Int = ContextCompat.getColor(context, color.gray_text)
     internal var initialPoints: Int
@@ -39,13 +37,13 @@ class SharedPrefsHelper(context: Context) {
     fun initRecordsIfProceed() {
         Thread {
             if (!sharedPrefs.getBoolean(KEY_INITIAL_CHECK_DONE, false)) {
-                resetAll()
+                resetAllPoints()
                 sharedPrefs.edit().putBoolean(KEY_INITIAL_CHECK_DONE, true).apply()
             }
         }.run()
     }
 
-    fun resetAll() {
+    fun resetAllPoints() {
         for (i in 1..MAX_PLAYERS) {
             for (x in 1..i) {
                 val sId = String.format(Locale.ENGLISH, "%d%d", i, x)
@@ -56,7 +54,6 @@ class SharedPrefsHelper(context: Context) {
 
     private fun resetPlayer(playerId: Int) {
         savePlayerPoints(initialPoints, playerId)
-        savePlayerColor(ContextCompat.getColor(weakContext.get()!!, color.gray_text), playerId)
         savePlayerName("", playerId)
     }
 

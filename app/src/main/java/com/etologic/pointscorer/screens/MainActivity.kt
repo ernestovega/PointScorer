@@ -7,19 +7,19 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import androidx.appcompat.app.AlertDialog.Builder
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.etologic.pointscorer.R
 import com.etologic.pointscorer.databinding.AMainActivityBinding
 import com.etologic.pointscorer.screens.players_activities.*
-import com.etologic.pointscorer.utils.MyKeyboardUtils
 import com.etologic.pointscorer.utils.SharedPrefsHelper
+import com.etologic.pointscorer.utils.ViewExtensions.hideKeyboard
 import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
     
     companion object {
-    
+        
         const val REP_DELAY = 100
     }
     
@@ -71,13 +71,13 @@ class MainActivity : AppCompatActivity() {
         })
         
         binding.acbMainResetAllPoints.setOnClickListener {
-            Builder(this, R.style.AppTheme) //Theme_AppCompat_Light_Dialog)
-                .setTitle(R.string.initial_points)
-                .setMessage(R.string.restart_all_saved_points_)
+            AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog)
+                .setTitle(R.string.are_you_sure)
+                .setMessage(R.string.restart_all_points)
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes) { _: DialogInterface?, _: Int ->
-                    MyKeyboardUtils.hideKeyboard(binding.tietMainInitialPoints)
-                    sharedPrefsHelper?.resetAll()
+                    hideKeyboard(binding.tietMainInitialPoints)
+                    sharedPrefsHelper?.resetAllPoints()
                     Snackbar.make(binding.tietMainInitialPoints, R.string.all_points_restarted, Snackbar.LENGTH_LONG).show()
                 }
                 .create()
@@ -85,48 +85,49 @@ class MainActivity : AppCompatActivity() {
         }
         
         binding.btMain1Player.setOnClickListener {
-            binding.pbMain1Player?.visibility = VISIBLE
+            binding.pbMain1Player.visibility = VISIBLE
             startActivity(Intent(applicationContext, AOnePlayerActivity::class.java))
         }
-        binding.btMain2Player?.setOnClickListener {
-            binding.pbMain2Player?.visibility = VISIBLE
+        binding.btMain2Player.setOnClickListener {
+            binding.pbMain2Player.visibility = VISIBLE
             startActivity(Intent(applicationContext, BTwoPlayersActivity::class.java))
         }
-        binding.btMain3Player?.setOnClickListener {
-            binding.pbMain3Player?.visibility = VISIBLE
+        binding.btMain3Player.setOnClickListener {
+            binding.pbMain3Player.visibility = VISIBLE
             startActivity(Intent(applicationContext, CThreePlayersActivity::class.java))
         }
-        binding.btMain4Player?.setOnClickListener {
-            binding.pbMain4Player?.visibility = VISIBLE
+        binding.btMain4Player.setOnClickListener {
+            binding.pbMain4Player.visibility = VISIBLE
             startActivity(Intent(applicationContext, DFourPlayersActivity::class.java))
         }
-        binding.btMain5Player?.setOnClickListener {
-            binding.pbMain5Player?.visibility = VISIBLE
+        binding.btMain5Player.setOnClickListener {
+            binding.pbMain5Player.visibility = VISIBLE
             startActivity(Intent(applicationContext, EFivePlayersActivity::class.java))
         }
-        binding.btMain6Player?.setOnClickListener {
-            binding.pbMain6Player?.visibility = VISIBLE
+        binding.btMain6Player.setOnClickListener {
+            binding.pbMain6Player.visibility = VISIBLE
             startActivity(Intent(applicationContext, FSixPlayersActivity::class.java))
         }
-        binding.btMain7Player?.setOnClickListener {
-            binding.pbMain7Player?.visibility = VISIBLE
+        binding.btMain7Player.setOnClickListener {
+            binding.pbMain7Player.visibility = VISIBLE
             startActivity(Intent(applicationContext, GSevenPlayersActivity::class.java))
         }
-        binding.btMain8Player?.setOnClickListener {
-            binding.pbMain8Player?.visibility = VISIBLE
+        binding.btMain8Player.setOnClickListener {
+            binding.pbMain8Player.visibility = VISIBLE
             startActivity(Intent(applicationContext, HEightPlayersActivity::class.java))
         }
     }
     
     override fun onPause() {
-        binding.pbMain1Player?.visibility = GONE
-        binding.pbMain2Player?.visibility = GONE
-        binding.pbMain3Player?.visibility = GONE
-        binding.pbMain4Player?.visibility = GONE
-        binding.pbMain5Player?.visibility = GONE
-        binding.pbMain6Player?.visibility = GONE
-        binding.pbMain7Player?.visibility = GONE
-        binding.pbMain8Player?.visibility = GONE
+        binding.pbMain1Player.visibility = GONE
+        binding.pbMain2Player.visibility = GONE
+        binding.pbMain3Player.visibility = GONE
+        binding.pbMain4Player.visibility = GONE
+        binding.pbMain5Player.visibility = GONE
+        binding.pbMain6Player.visibility = GONE
+        binding.pbMain7Player.visibility = GONE
+        binding.pbMain8Player.visibility = GONE
+        hideKeyboard(binding.tietMainInitialPoints)
         super.onPause()
     }
 }

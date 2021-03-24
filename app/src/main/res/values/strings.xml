@@ -30,16 +30,16 @@
     <string name="player_7_options">Player 7 options</string>
     <string name="player_8_options">Player 8 options</string>
 
-    <string name="name_and_color">Name &amp; Color</string>
     <string name="reset_points">Reset points</string>
-    <string name="restart_all_points">Reset all points</string>
     <string name="initial_points">Initial points</string>
-    <string name="restart_all_saved_points_">Restart all saved points and colors?</string>
+    <string name="restart_all_points">This will restore all points</string>
     <string name="error_initial_points">Please enter a valid value. Should be less than 10.000.</string>
     <string name="reset_all">Reset all</string>
-    <string name="all_points_restarted">Every points and colors restored</string>
+    <string name="all_points_restarted">All points restored</string>
     <string name="restart_all_players_points_">Restart every players points?</string>
     <string name="edit_color">Edit color</string>
     <string name="close">Close</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="restart_x_points">This will restore %s points to %d</string>
 
 </resources>

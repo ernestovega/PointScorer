@@ -17,7 +17,7 @@ public class MyAnimationUtils {
         void animationEnded();
     }
 
-    public static Animation getUpdatePointsAnimation(TextView tvPoints, TextView tvPointsForAnimation, int points) {
+    public static Animation getUpdateShieldPointsAnimation(TextView tvPoints, TextView tvPointsForAnimation, int points) {
         AnimationSet animationSet = getAnimationSet();
         animationSet.setAnimationListener(new Animation.AnimationListener() {
             @Override public void onAnimationStart(Animation animation) {
@@ -44,7 +44,7 @@ public class MyAnimationUtils {
         return animationSet;
     }
 
-    public static Animation getUpdatePointsAnimation(TextView tvPoints, TextView tvPointsForAnimation, int points, AnimationEndListener animationEndListener) {
+    public static Animation getUpdateShieldPointsAnimation(TextView tvPoints, TextView tvPointsForAnimation, int points, AnimationEndListener animationEndListener) {
         AnimationSet animationSet = getAnimationSet();
         animationSet.setAnimationListener(new Animation.AnimationListener() {
             @Override public void onAnimationStart(Animation animation) {
@@ -63,9 +63,9 @@ public class MyAnimationUtils {
         return getAnimationSet();
     }
 
-    public static Animation getFadeOutAnimation(Runnable endAction) {
+    public static Animation getAuxPointsFadeOutAnimation(Runnable endAction) {
         AlphaAnimation alphaAnimation = new AlphaAnimation(1, 0);
-        alphaAnimation.setDuration(1000);
+        alphaAnimation.setDuration(5000);
         alphaAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override public void onAnimationStart(Animation animation) {}
             @Override public void onAnimationEnd(Animation animation) {
