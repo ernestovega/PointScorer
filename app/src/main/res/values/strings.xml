@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Point Scorer</string>
 
+    <string name="initial_points">Initial points</string>
+    <string name="reset_all">Reset all</string>
+    <string name="all_players_points_restored">All players points restored</string>
+
     <string name="one_player">One player</string>
     <string name="two_players">Two players</string>
     <string name="three_players">Three players</string>
@@ -30,16 +34,15 @@
     <string name="player_7_options">Player 7 options</string>
     <string name="player_8_options">Player 8 options</string>
 
-    <string name="reset_points">Reset points</string>
-    <string name="initial_points">Initial points</string>
-    <string name="restart_all_points">This will restore all points</string>
-    <string name="error_initial_points">Please enter a valid value. Should be less than 10.000.</string>
-    <string name="reset_all">Reset all</string>
-    <string name="all_points_restarted">All points restored</string>
-    <string name="restart_all_players_points_">Restart every players points?</string>
-    <string name="edit_color">Edit color</string>
+    <string name="restore_points">Restore points</string>
+    <string name="restore_all_points">Restore all points</string>
+    <string name="this_will_restore_all_points">This will restore everybody points</string>
+    <string name="error_initial_points">Please enter a valid number, must be less than 10.000.</string>
+    <string name="restart_all_players_points_">Restart every> players points?</string>
+    <string name="edit_name_and_color">Name and color</string>
     <string name="close">Close</string>
     <string name="are_you_sure">Are you sure?</string>
-    <string name="restart_x_points">This will restore %s points to %d</string>
+    <string name="restart_x_points_to_y">This will restore %s points to %d</string>
+    <string name="restart_all_points_to_y">This will restore evrybody points to %d</string>
 
 </resources>

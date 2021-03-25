@@ -4,11 +4,13 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.MotionEvent.ACTION_CANCEL
 import android.view.MotionEvent.ACTION_UP
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.etologic.pointscorer.R
@@ -18,8 +20,6 @@ import com.etologic.pointscorer.utils.MyAnimationUtils
 import com.etologic.pointscorer.utils.MyAnimationUtils.AnimationEndListener
 import com.etologic.pointscorer.utils.MyConversionUtils
 import com.etologic.pointscorer.utils.SharedPrefsHelper
-import com.etologic.pointscorer.utils.ViewExtensions
-import com.etologic.pointscorer.utils.ViewExtensions.showKeyboard
 import kotlinx.android.synthetic.main.player_settings_dialog_fragment.*
 import java.util.Locale.ENGLISH
 
@@ -52,7 +52,7 @@ class PlayerFragment : Fragment(), PlayerDialogListener {
     private var isAutoDecrement = false
     private var downCount = 0
     private var upCount = 0
-    private var confirmRestorePointsDialog: AlertDialog? = null
+//    private var confirmRestorePointsDialog: AlertDialog? = null
     
     //EVENTS
     override fun onColorChanged(color: Int) {
@@ -64,22 +64,32 @@ class PlayerFragment : Fragment(), PlayerDialogListener {
         sharedPrefsHelper?.savePlayerName(name, playerId)
         binding.etName.setText(name)
     }
-    
-    override fun onPlayerPointsRestarted() {
-        if (confirmRestorePointsDialog == null)
-            confirmRestorePointsDialog = AlertDialog.Builder(requireContext(), R.style.Theme_AppCompat_Light_Dialog)
-                .setTitle(R.string.are_you_sure)
-                .setMessage(String.format(getString(R.string.restart_x_points), (etName.text ?: "").toString(), initialPoints))
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes) { _, _ ->
-                    points = initialPoints
-                    updatePoints()
-                }
-                .create()
-        
-        confirmRestorePointsDialog?.show()
-    }
-    
+//    override fun onPlayerPointsRestarted() {
+//        if (confirmRestorePointsDialog == null)
+//            confirmRestorePointsDialog = getConfirmResetPlayerPointsDialog()
+//        confirmRestorePointsDialog?.show()
+//    }
+//    private fun getConfirmResetPlayerPointsDialog() =
+//        Builder(requireContext(), style.Theme_AppCompat_Light_Dialog)
+//            .setTitle(R.string.are_you_sure)
+//            .setMessage(String.format(getString(R.string.restart_x_points_to_y), (etName.text ?: "").toString(), initialPoints))
+//            .setNegativeButton(string.no, null)
+//            .setPositiveButton(string.yes) { _, _ -> resetPlayerPoints() }
+//            .create()
+//    private var confirmRestoreAllPointsDialog: AlertDialog? = null
+//
+//    override fun onAllPlayerPointsRestarted() {
+//        if (confirmRestoreAllPointsDialog == null)
+//            confirmRestoreAllPointsDialog = getConfirmRestoreAllPlayersPointsDialog()
+//        confirmRestoreAllPointsDialog?.show()
+//    }
+//    private fun getConfirmRestoreAllPlayersPointsDialog() =
+//        Builder(requireContext(), style.Theme_AppCompat_Light_Dialog)
+//            .setTitle(R.string.are_you_sure)
+//            .setMessage(String.format(getString(R.string.restart_all_points_to_y), initialPoints))
+//            .setNegativeButton(string.no, null)
+//            .setPositiveButton(string.yes) { _, _ -> activityViewModel.resetAllPlayersPoints() }
+//            .create()
     //LIFECYCLE
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = PlayerFragmentBinding.inflate(inflater, container, false)
@@ -161,7 +171,19 @@ class PlayerFragment : Fragment(), PlayerDialogListener {
     @SuppressLint("ClickableViewAccessibility")
     private fun initListeners() {
         with(binding) {
-            ibMenu.setOnClickListener { showPlayerDialog() }
+            ibMenu.setOnClickListener { view ->
+                val popup = PopupMenu(requireContext(), view)
+                popup.setOnMenuItemClickListener { item: MenuItem ->
+                    when (item.itemId) {
+                        R.id.menu_edit_player -> showPlayerDialog()
+                        R.id.menu_restart_points -> restorePlayerPoints()
+                        else -> return@setOnMenuItemClickListener false
+                    }
+                    true
+                }
+                popup.inflate(R.menu.player_menu)
+                popup.show()
+            }
             
             btUp.setOnLongClickListener {
                 isAutoIncrement = true
@@ -205,6 +227,11 @@ class PlayerFragment : Fragment(), PlayerDialogListener {
                 })
             }
         }
+    }
+    
+    private fun restorePlayerPoints() {
+        points = initialPoints
+        updatePoints()
     }
     
     private fun incrementPoints() {

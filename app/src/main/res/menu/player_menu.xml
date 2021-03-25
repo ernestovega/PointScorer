@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_edit_player"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:title="@string/edit_name_and_color" />
+
+    <item
+        android:id="@+id/menu_restart_points"
+        android:icon="@android:drawable/ic_menu_revert"
+        android:title="@string/restore_points" />
+
+    <item
+        android:id="@+id/menu_restart_all_points"
+        android:icon="@android:drawable/ic_menu_revert"
+        android:title="@string/this_will_restore_all_points"
+        android:visible="false" />
+
+</menu>

@@ -21,9 +21,9 @@
             android:layout_centerInParent="true"
             android:layout_marginTop="16dp"
             android:hint="@string/initial_points"
-            android:theme="@style/MyTextInputLayout"
             android:paddingTop="16dp"
-            android:textColorHint="@color/black">
+            android:textColorHint="@color/black"
+            android:theme="@style/MyTextInputLayout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tietMainInitialPoints"
@@ -31,9 +31,9 @@
                 android:layout_height="wrap_content"
                 android:digits="-0123456789"
                 android:gravity="center"
-                android:theme="@style/MyTextInputLayout"
                 android:inputType="number"
                 android:maxLength="4"
+                android:theme="@style/MyTextInputLayout"
                 tools:text="9999" />
 
         </com.google.android.material.textfield.TextInputLayout>

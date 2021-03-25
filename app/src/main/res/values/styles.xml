@@ -136,8 +136,8 @@
 
     <style name="MainButtonProgressBar" parent="Widget.AppCompat.ProgressBar">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:padding">40dp</item>
         <item name="android:layout_height">match_parent</item>
+        <item name="android:padding">40dp</item>
         <item name="android:layout_margin">16dp</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:theme">@style/MyProgressBar</item>

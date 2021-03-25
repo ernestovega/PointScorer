@@ -130,42 +130,19 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btOk"
+                style="?borderlessButtonStyle"
+                android:layout_width="48dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:gravity="end"
+                android:layout_gravity="end"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
-                android:orientation="horizontal">
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btResetPoints"
-                    style="?borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginRight="16dp"
-                    android:background="@color/ripple"
-                    android:text="@string/reset_points"
-                    android:textColor="@color/red" />
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btOk"
-                    style="?borderlessButtonStyle"
-                    android:layout_width="48dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:background="@color/ripple"
-                    android:text="@android:string/ok"
-                    android:textColor="@color/red" />
-
-            </LinearLayout>
+                android:background="@color/ripple"
+                android:text="@android:string/ok"
+                android:textColor="@color/red" />
 
         </LinearLayout>
 

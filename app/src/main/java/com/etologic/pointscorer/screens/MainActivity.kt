@@ -73,12 +73,12 @@ class MainActivity : AppCompatActivity() {
         binding.acbMainResetAllPoints.setOnClickListener {
             AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog)
                 .setTitle(R.string.are_you_sure)
-                .setMessage(R.string.restart_all_points)
+                .setMessage(R.string.restore_all_points)
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes) { _: DialogInterface?, _: Int ->
                     hideKeyboard(binding.tietMainInitialPoints)
                     sharedPrefsHelper?.resetAllPoints()
-                    Snackbar.make(binding.tietMainInitialPoints, R.string.all_points_restarted, Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(binding.tietMainInitialPoints, R.string.all_players_points_restored, Snackbar.LENGTH_LONG).show()
                 }
                 .create()
                 .show()

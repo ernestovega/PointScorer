@@ -26,7 +26,6 @@ class PlayerSettingsDialogFragment : DialogFragment() {
         
         fun onColorChanged(color: Int)
         fun onNameChanged(name: String?)
-        fun onPlayerPointsRestarted()
     }
     
     private var _binding: PlayerSettingsDialogFragmentBinding? = null
@@ -197,12 +196,6 @@ class PlayerSettingsDialogFragment : DialogFragment() {
                 hideKeyboard(binding.etName)
                 selectColor(whiteColor)
                 whiteColor?.let { playerDialogListener?.onColorChanged(it) }
-            }
-            
-            btResetPoints.setOnClickListener {
-                hideKeyboard(binding.etName)
-                playerDialogListener?.onPlayerPointsRestarted()
-                dismiss()
             }
             
             btOk.setOnClickListener {
