@@ -1,0 +1,50 @@
+package com.etologic.pointscorer.app.main.game_fragments
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
+import com.etologic.pointscorer.R
+import com.etologic.pointscorer.app.main.base.BaseMainFragment
+import com.etologic.pointscorer.app.main.game_fragments.base.BaseGameFragment
+import com.etologic.pointscorer.databinding.HSevenPlayersActivityBinding
+
+class HSevenPlayersFragment : BaseGameFragment() {
+    
+    private var fragmentBinding: HSevenPlayersActivityBinding? = null
+    private val binding: HSevenPlayersActivityBinding get() = fragmentBinding!!
+    
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        fragmentBinding = HSevenPlayersActivityBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+    
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+//        window.addFlags(FLAG_FULLSCREEN)
+//        window.addFlags(FLAG_KEEP_SCREEN_ON)
+        val nameSize = ResourcesCompat.getFloat(resources, R.dimen.nameSize7P).toInt()//14
+        val nameMarginTop = ResourcesCompat.getFloat(resources, R.dimen.nameMarginTop7P).toInt()//8
+        val pointsSize = ResourcesCompat.getFloat(resources, R.dimen.pointsSize7P).toInt()//48
+        
+        initPlayerFragment(PLAYER_1_ID, R.id.flPlayer71, nameSize, nameMarginTop, pointsSize)
+        initPlayerFragment(PLAYER_2_ID, R.id.flPlayer72, nameSize, nameMarginTop, pointsSize)
+        initPlayerFragment(PLAYER_3_ID, R.id.flPlayer73, nameSize, nameMarginTop, pointsSize)
+        initPlayerFragment(PLAYER_4_ID, R.id.flPlayer74, nameSize, nameMarginTop, pointsSize)
+        initPlayerFragment(PLAYER_5_ID, R.id.flPlayer75, nameSize, nameMarginTop, pointsSize)
+        initPlayerFragment(PLAYER_6_ID, R.id.flPlayer76, nameSize, nameMarginTop, pointsSize)
+        initPlayerFragment(PLAYER_7_ID, R.id.flPlayer77, nameSize, nameMarginTop, pointsSize)
+    }
+    
+    companion object {
+        
+        private const val PLAYER_1_ID = 71
+        private const val PLAYER_2_ID = 72
+        private const val PLAYER_3_ID = 73
+        private const val PLAYER_4_ID = 74
+        private const val PLAYER_5_ID = 75
+        private const val PLAYER_6_ID = 76
+        private const val PLAYER_7_ID = 77
+    }
+}

@@ -7,9 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 
 object ViewExtensions {
     
-    fun hideKeyboard(view: View) {
-        (view.context.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager)
-            .hideSoftInputFromWindow(view.windowToken, 0)
+    fun View.hideKeyboard() {
+        (rootView.context.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager)
+            .hideSoftInputFromWindow(rootView.windowToken, 0)
     }
     
     fun View.showKeyboard() {

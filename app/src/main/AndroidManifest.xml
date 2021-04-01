@@ -4,15 +4,16 @@
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:name=".injection.PointsScorerApplication"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:fullBackupContent="true">
+        android:theme="@style/AppTheme">
 
         <activity
-            android:name=".screens.MainActivity"
+            android:name=".app.main.MainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden">
@@ -25,45 +26,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".screens.players_activities.AOnePlayerActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
-
-        <activity
-            android:name=".screens.players_activities.BTwoPlayersActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
-
-        <activity
-            android:name=".screens.players_activities.CThreePlayersActivity"
-            android:screenOrientation="landscape"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
-
-        <activity
-            android:name=".screens.players_activities.DFourPlayersActivity"
-            android:configChanges="orientation"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
-
-        <activity
-            android:name=".screens.players_activities.EFivePlayersActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
-
-        <activity
-            android:name=".screens.players_activities.FSixPlayersActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
-
-        <activity
-            android:name=".screens.players_activities.GSevenPlayersActivity"
-            android:screenOrientation="landscape"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
-
-        <activity
-            android:name=".screens.players_activities.HEightPlayersActivity"
-            android:screenOrientation="landscape"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
 
     </application>
 
