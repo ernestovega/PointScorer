@@ -1,4 +1,4 @@
-package com.etologic.pointscorer.app.main
+package com.etologic.pointscorer.app.main.activity
 
 import dagger.Module
 import dagger.Provides

@@ -1,4 +1,4 @@
-package com.etologic.pointscorer.app.main.game_fragments
+package com.etologic.pointscorer.app.main.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,24 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import com.etologic.pointscorer.R
-import com.etologic.pointscorer.app.main.base.BaseMainFragment
-import com.etologic.pointscorer.app.main.game_fragments.base.BaseGameFragment
-import com.etologic.pointscorer.databinding.GSixPlayersActivityBinding
+import com.etologic.pointscorer.app.main.base.BaseXPlayersFragment
+import com.etologic.pointscorer.databinding.GameGSixPlayersFragmentBinding
 
-class GSixPlayersFragment : BaseGameFragment() {
+class GSixPlayersFragment : BaseXPlayersFragment() {
     
-    private var fragmentBinding: GSixPlayersActivityBinding? = null
-    private val binding: GSixPlayersActivityBinding get() = fragmentBinding!!
+    private var fragmentBinding: GameGSixPlayersFragmentBinding? = null
+    private val binding get() = fragmentBinding!!
     
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        fragmentBinding = GSixPlayersActivityBinding.inflate(inflater, container, false)
+        fragmentBinding = GameGSixPlayersFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        window.addFlags(FLAG_FULLSCREEN)
-//        window.addFlags(FLAG_KEEP_SCREEN_ON)
         val nameSize = ResourcesCompat.getFloat(resources, R.dimen.nameSize6P).toInt()//16
         val nameMarginTop = ResourcesCompat.getFloat(resources, R.dimen.nameMarginTop6P).toInt()//8
         val pointsSize = ResourcesCompat.getFloat(resources, R.dimen.pointsSize6P).toInt()//48

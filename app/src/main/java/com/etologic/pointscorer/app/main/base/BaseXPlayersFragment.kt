@@ -1,17 +1,11 @@
-package com.etologic.pointscorer.app.main.game_fragments.base
+package com.etologic.pointscorer.app.main.base
 
 import android.R.animator
+import android.content.res.Configuration
 import android.os.Bundle
-import android.view.View
-import androidx.lifecycle.ViewModelProvider
-import com.etologic.pointscorer.app.main.MainActivityViewModel
-import com.etologic.pointscorer.app.main.MainActivityViewModelFactory
-import com.etologic.pointscorer.app.main.base.BaseMainFragment
-import com.etologic.pointscorer.app.player.PlayerFragment
-import dagger.android.support.DaggerFragment
-import javax.inject.Inject
+import com.etologic.pointscorer.app.main.fragments.player.PlayerFragment
 
-abstract class BaseGameFragment : BaseMainFragment() {
+abstract class BaseXPlayersFragment : BaseMainFragment() {
     
     protected fun initPlayerFragment(
         playerId: Int,

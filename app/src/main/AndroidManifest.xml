@@ -13,9 +13,9 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".app.main.MainActivity"
+            android:name=".app.main.activity.MainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

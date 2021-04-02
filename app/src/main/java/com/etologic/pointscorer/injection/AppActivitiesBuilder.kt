@@ -1,8 +1,8 @@
 package com.etologic.pointscorer.injection
 
-import com.etologic.pointscorer.app.main.MainActivity
-import com.etologic.pointscorer.app.main.MainActivityFragmentsBuilder
-import com.etologic.pointscorer.app.main.MainActivityModule
+import com.etologic.pointscorer.app.main.activity.MainActivity
+import com.etologic.pointscorer.app.main.activity.MainActivityFragmentsBuilder
+import com.etologic.pointscorer.app.main.activity.MainActivityModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

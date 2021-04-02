@@ -1,10 +1,11 @@
 package com.etologic.pointscorer.app.main.base
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import com.etologic.pointscorer.app.main.MainActivityViewModel
-import com.etologic.pointscorer.app.main.MainActivityViewModelFactory
+import com.etologic.pointscorer.app.main.activity.MainActivityViewModel
+import com.etologic.pointscorer.app.main.activity.MainActivityViewModelFactory
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 

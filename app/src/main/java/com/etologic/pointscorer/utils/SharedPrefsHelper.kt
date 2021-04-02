@@ -11,6 +11,7 @@ import java.util.*
 class SharedPrefsHelper(context: Context) {
     
     companion object {
+        
         private const val FILE_NAME = "points_scorer_shared_prefs"
         private const val MAX_PLAYERS = 8
         private const val DEFAULT_INITIAL_POINTS = 100
@@ -33,7 +34,7 @@ class SharedPrefsHelper(context: Context) {
     fun getInitialPoints(): Int {
         return sharedPrefs.getInt(KEY_INITIAL_POINTS, DEFAULT_INITIAL_POINTS)
     }
-
+    
     fun initRecordsIfProceed() {
         Thread {
             if (!sharedPrefs.getBoolean(KEY_INITIAL_CHECK_DONE, false)) {
@@ -42,7 +43,7 @@ class SharedPrefsHelper(context: Context) {
             }
         }.run()
     }
-
+    
     fun resetAllPoints() {
         for (i in 1..MAX_PLAYERS) {
             for (x in 1..i) {
@@ -51,43 +52,43 @@ class SharedPrefsHelper(context: Context) {
             }
         }
     }
-
+    
     private fun resetPlayer(playerId: Int) {
         savePlayerPoints(initialPoints, playerId)
         savePlayerName("", playerId)
     }
-
+    
     private fun resetPlayers(playerIds: IntArray) {
         for (id in playerIds) resetPlayer(id)
     }
-
+    
     fun saveInitialPoints(points: Int) {
         sharedPrefs.edit().putInt(KEY_INITIAL_POINTS, points).apply()
         initialPoints = points
     }
-
+    
     fun getPlayerPoints(playerId: Int): Int {
         val key = String.format(Locale.ENGLISH, "%s%d", KEY_POINTS, playerId)
         return sharedPrefs.getInt(key, initialPoints)
     }
-
+    
     fun getPlayerColor(playerId: Int): Int {
         return sharedPrefs.getInt(KEY_COLOR + playerId, defaultTextColor)
     }
-
+    
     fun getPlayerName(playerId: Int): String? {
         return sharedPrefs.getString(KEY_NAME + playerId, DEFAULT_PLAYER_NAME)
     }
-
+    
     fun savePlayerName(name: String?, playerId: Int) {
         sharedPrefs.edit().putString(KEY_NAME + playerId, name).apply()
     }
-
+    
     fun savePlayerPoints(points: Int, playerId: Int) {
         val key = String.format(Locale.ENGLISH, "%s%d", KEY_POINTS, playerId)
         sharedPrefs.edit().putInt(key, points).apply()
     }
-
+    
     fun savePlayerColor(color: Int, playerId: Int) {
         sharedPrefs.edit().putInt(String.format(Locale.ENGLISH, "%s%d", KEY_COLOR, playerId), color)
             .apply()

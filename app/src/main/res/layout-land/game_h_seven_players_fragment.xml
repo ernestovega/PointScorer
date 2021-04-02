@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".app.main.fragments.GSixPlayersFragment">
+    tools:context=".app.main.fragments.HSevenPlayersFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,15 +15,26 @@
         android:orientation="horizontal">
 
         <FrameLayout
-            android:id="@+id/flPlayer61"
+            android:id="@+id/flPlayer71"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             tools:ignore="NestedWeights" />
 
         <FrameLayout
-            android:id="@+id/flPlayer62"
+            android:id="@+id/flPlayer72"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
 
+        <FrameLayout
+            android:id="@+id/flPlayer73"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <FrameLayout
+            android:id="@+id/flPlayer74"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" />
@@ -38,36 +49,20 @@
         android:orientation="horizontal">
 
         <FrameLayout
-            android:id="@+id/flPlayer63"
+            android:id="@+id/flPlayer75"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             tools:ignore="NestedWeights" />
 
         <FrameLayout
-            android:id="@+id/flPlayer64"
+            android:id="@+id/flPlayer76"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:baselineAligned="false"
-        android:orientation="horizontal">
-
         <FrameLayout
-            android:id="@+id/flPlayer65"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            tools:ignore="NestedWeights" />
-
-        <FrameLayout
-            android:id="@+id/flPlayer66"
+            android:id="@+id/flPlayer77"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" />

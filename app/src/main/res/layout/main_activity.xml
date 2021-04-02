@@ -4,4 +4,4 @@
     android:id="@+id/flMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".app.main.MainActivity" />
+    tools:context=".app.main.activity.MainActivity" />

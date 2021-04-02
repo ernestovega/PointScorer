@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:orientation="vertical"
-    tools:context=".app.main.MainActivity">
+    tools:context=".app.main.activity.MainActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -32,6 +32,7 @@
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="4"
+                android:textSize="32sp"
                 android:textColor="@color/gray_text"
                 app:backgroundTint="@color/colorAccent"
                 tools:text="9999" />
@@ -46,9 +47,9 @@
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/tilMainInitialPoints"
             android:layout_toRightOf="@+id/tilMainInitialPoints"
-            android:text="@string/restore_all_points"
+            android:text="@string/reset_all"
             android:textColor="@color/gray_text"
-            android:textSize="12sp" />
+            android:textSize="16sp" />
 
     </RelativeLayout>
 

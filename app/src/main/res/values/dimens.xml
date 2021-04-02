@@ -11,7 +11,7 @@
 
     <dimen name="nameMarginTop1P">48</dimen>
     <dimen name="nameMarginTop2P">2</dimen>
-    <dimen name="nameMarginTop3P">20</dimen>
+    <dimen name="nameMarginTop3P">4</dimen>
     <dimen name="nameMarginTop4P">40</dimen>
     <dimen name="nameMarginTop5P">8</dimen>
     <dimen name="nameMarginTop6P">8</dimen>

@@ -4,7 +4,7 @@
     <item
         android:id="@+id/menu_edit_player"
         android:icon="@android:drawable/ic_menu_manage"
-        android:title="@string/edit_name_and_color" />
+        android:title="@string/name_and_color" />
 
     <item
         android:id="@+id/menu_restart_points"
@@ -14,7 +14,6 @@
     <item
         android:id="@+id/menu_restart_all_points"
         android:icon="@android:drawable/ic_menu_revert"
-        android:title="@string/this_will_restore_all_points"
-        android:visible="false" />
+        android:title="@string/restore_all_points" />
 
 </menu>

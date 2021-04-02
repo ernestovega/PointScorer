@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="nameMarginTop4P">4</dimen>
+    <dimen name="nameMarginTop1P">0</dimen>
+    <dimen name="nameMarginTop4P">8</dimen>
+    <dimen name="nameMarginTop5P">4</dimen>
+    <dimen name="nameMarginTop6P">4</dimen>
 </resources>

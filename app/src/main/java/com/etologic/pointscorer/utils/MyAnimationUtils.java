@@ -31,7 +31,7 @@ public class MyAnimationUtils {
         return animationSet;
     }
 
-    private static AnimationSet getAnimationSet() {
+    private static AnimationSet   getAnimationSet() {
         AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1);
         alphaAnimation.setDuration(1000);
         ScaleAnimation scaleAnimation = new ScaleAnimation(4, 1, 4, 1, RELATIVE_TO_SELF, .5f, RELATIVE_TO_SELF, .3f);

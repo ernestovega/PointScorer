@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".app.main.MainFragment">
+    tools:context=".app.main.fragments.AMenuFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorPrimary"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
             android:animateLayoutChanges="true">
 
@@ -23,9 +23,8 @@
                 android:layout_width="128dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginTop="16dp"
+                android:layout_margin="16dp"
                 android:hint="@string/initial_points"
-                android:paddingTop="16dp"
                 android:textColorHint="@color/black"
                 android:theme="@style/MyTextInputLayout">
 
@@ -47,9 +46,9 @@
                 style="?borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@+id/tilMainInitialPoints"
-                android:layout_toRightOf="@+id/tilMainInitialPoints"
+                android:layout_below="@+id/tilMainInitialPoints"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"
                 android:text="@string/reset_all"
                 android:textColor="@color/gray_text"
                 android:textSize="12sp" />
@@ -57,14 +56,14 @@
         </RelativeLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 tools:ignore="NestedWeights">
 
@@ -82,81 +81,8 @@
             </FrameLayout>
 
             <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                tools:ignore="NestedWeights">
-
-                <ImageButton
-                    android:id="@+id/btMain2Player"
-                    style="@style/MainButton"
-                    android:contentDescription="@string/two_players"
-                    app:srcCompat="@drawable/ic_two_players" />
-
-                <androidx.core.widget.ContentLoadingProgressBar
-                    android:id="@+id/pbMain2Player"
-                    style="@style/MainButtonProgressBar"
-                    tools:visibility="visible" />
-
-            </FrameLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                tools:ignore="NestedWeights">
-
-                <ImageButton
-                    android:id="@+id/btMain3Player"
-                    style="@style/MainButton"
-                    android:contentDescription="@string/three_players"
-                    app:srcCompat="@drawable/ic_three_players" />
-
-                <androidx.core.widget.ContentLoadingProgressBar
-                    android:id="@+id/pbMain3Player"
-                    style="@style/MainButtonProgressBar"
-                    tools:visibility="visible" />
-
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                tools:ignore="NestedWeights">
-
-                <ImageButton
-                    android:id="@+id/btMain4Player"
-                    style="@style/MainButton"
-                    android:contentDescription="@string/four_players"
-                    app:srcCompat="@drawable/ic_four_players" />
-
-                <androidx.core.widget.ContentLoadingProgressBar
-                    android:id="@+id/pbMain4Player"
-                    style="@style/MainButtonProgressBar"
-                    tools:visibility="visible" />
-
-            </FrameLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 tools:ignore="NestedWeights">
 
@@ -173,9 +99,36 @@
 
             </FrameLayout>
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
             <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                tools:ignore="NestedWeights">
+
+                <ImageButton
+                    android:id="@+id/btMain2Player"
+                    style="@style/MainButton"
+                    android:contentDescription="@string/two_players"
+                    app:srcCompat="@drawable/ic_two_players" />
+
+                <androidx.core.widget.ContentLoadingProgressBar
+                    android:id="@+id/pbMain2Player"
+                    style="@style/MainButtonProgressBar"
+                    tools:visibility="visible" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 tools:ignore="NestedWeights">
 
@@ -195,14 +148,33 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                tools:ignore="NestedWeights">
+
+                <ImageButton
+                    android:id="@+id/btMain3Player"
+                    style="@style/MainButton"
+                    android:contentDescription="@string/three_players"
+                    app:srcCompat="@drawable/ic_three_players" />
+
+                <androidx.core.widget.ContentLoadingProgressBar
+                    android:id="@+id/pbMain3Player"
+                    style="@style/MainButtonProgressBar"
+                    tools:visibility="visible" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 tools:ignore="NestedWeights">
 
@@ -219,9 +191,36 @@
 
             </FrameLayout>
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
             <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                tools:ignore="NestedWeights">
+
+                <ImageButton
+                    android:id="@+id/btMain4Player"
+                    style="@style/MainButton"
+                    android:contentDescription="@string/four_players"
+                    app:srcCompat="@drawable/ic_four_players" />
+
+                <androidx.core.widget.ContentLoadingProgressBar
+                    android:id="@+id/pbMain4Player"
+                    style="@style/MainButtonProgressBar"
+                    tools:visibility="visible" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 tools:ignore="NestedWeights">
 
