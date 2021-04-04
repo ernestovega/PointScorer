@@ -2,8 +2,9 @@
     <string name="app_name">Point Scorer</string>
 
     <string name="initial_points">Initial points</string>
-    <string name="reset_all">Reset all</string>
-    <string name="all_players_points_restored">All players points restored</string>
+    <string name="min_max_points">[-9999, 9999]</string>
+    <string name="reset_all">Reset all points</string>
+    <string name="all_players_points_were_restored">All players points were restored</string>
 
     <string name="one_player">One player</string>
     <string name="two_players">Two players</string>
@@ -42,7 +43,7 @@
     <string name="close">Close</string>
     <string name="are_you_sure">Are you sure?</string>
     <string name="restart_x_points_to_y">This will restore %s points to %d</string>
-    <string name="restart_all_points_to_y">This will restore everybody\'s points to %d</string>
     <string name="your">your</string>
+    <string name="restart_all_points_to_y">This will restore everybody\'s points to %d</string>
 
 </resources>

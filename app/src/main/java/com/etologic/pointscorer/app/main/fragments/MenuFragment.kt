@@ -10,12 +10,13 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.Toast
+import android.widget.Toast.LENGTH_LONG
 import com.etologic.pointscorer.R
 import com.etologic.pointscorer.app.main.activity.MainActivityViewModel.MainScreens.*
 import com.etologic.pointscorer.app.main.base.BaseMainFragment
 import com.etologic.pointscorer.app.utils.ViewExtensions.hideKeyboard
 import com.etologic.pointscorer.databinding.MenuFragmentBinding
-import com.google.android.material.snackbar.Snackbar
 import java.util.Locale.ENGLISH
 
 class MenuFragment : BaseMainFragment() {
@@ -41,17 +42,17 @@ class MenuFragment : BaseMainFragment() {
     }
     
     private fun initInitialPoints() {
-        binding.tietMainInitialPoints.setText(activityViewModel.getInitialPoints().toString())
+        binding.etMainInitialPoints?.setText(activityViewModel.getInitialPoints().toString())
     }
     
     private fun initListeners() {
-        binding.tietMainInitialPoints.addTextChangedListener(object : TextWatcher {
+        binding.etMainInitialPoints?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 p0?.let {
                     try {
                         activityViewModel.saveInitialPoints(activityViewModel.getInitialPoints())
                     } catch (nfe: NumberFormatException) {
-                        binding.tietMainInitialPoints.error = errorInitialPointsLiteral
+                        binding.etMainInitialPoints?.error = errorInitialPointsLiteral
                     }
                 }
             }
@@ -66,9 +67,9 @@ class MenuFragment : BaseMainFragment() {
                 .setMessage(String.format(ENGLISH, getString(R.string.this_will_restore_all_points), activityViewModel.getInitialPoints()))
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes) { _: DialogInterface?, _: Int ->
-                    binding.tietMainInitialPoints.hideKeyboard()
+                    binding.etMainInitialPoints?.hideKeyboard()
                     activityViewModel.restoreAllPoints()
-                    Snackbar.make(binding.tietMainInitialPoints, R.string.all_players_points_restored, Snackbar.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), R.string.all_players_points_were_restored, LENGTH_LONG).show()
                 }
                 .create()
                 .show()
@@ -133,7 +134,7 @@ class MenuFragment : BaseMainFragment() {
         binding.btMain6Player.visibility = VISIBLE
         binding.btMain7Player.visibility = VISIBLE
         binding.btMain8Player.visibility = VISIBLE
-        binding.tietMainInitialPoints.hideKeyboard()
+        binding.etMainInitialPoints?.hideKeyboard()
         super.onStop()
     }
 }

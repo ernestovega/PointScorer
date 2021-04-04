@@ -134,14 +134,22 @@
         <item name="android:background">@drawable/ripple_effect_white_wood_bg</item>
     </style>
 
+    <style name="MainButtonSw600dp" parent="MainButton">
+        <item name="android:padding">128dp</item>
+    </style>
+
     <style name="MainButtonProgressBar" parent="Widget.AppCompat.ProgressBar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:padding">40dp</item>
+        <item name="android:padding">32dp</item>
         <item name="android:layout_margin">16dp</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:theme">@style/MyProgressBar</item>
         <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="MainButtonProgressBarSw600dp" parent="MainButtonProgressBar">
+        <item name="android:padding">80dp</item>
     </style>
 
 </resources>

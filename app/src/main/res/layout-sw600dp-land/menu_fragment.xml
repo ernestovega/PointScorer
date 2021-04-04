@@ -9,50 +9,57 @@
     android:orientation="horizontal"
     tools:context=".app.main.activity.MainActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:animateLayoutChanges="true"
-        android:gravity="center">
+        android:layout_gravity="center"
+        android:layout_margin="32dp"
+        android:gravity="center"
+        android:orientation="vertical">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilMainInitialPoints"
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="16dp"
-            android:hint="@string/initial_points"
-            android:textColorHint="@color/black">
+            android:text="@string/initial_points"
+            android:textColor="@color/black"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:theme="@style/MyTextInputLayout" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tietMainInitialPoints"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:digits="-0123456789"
-                android:gravity="center"
-                android:inputType="number"
-                android:maxLength="4"
-                android:textColor="@color/black"
-                android:textSize="48sp"
-                app:backgroundTint="@color/colorAccent"
-                tools:text="9999" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/acetMainInitialPoints"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:digits="-0123456789"
+            android:gravity="center"
+            android:hint="@string/min_max_points"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:maxLength="4"
+            android:textSize="48sp"
+            android:theme="@style/MyTextInputLayout"
+            tools:text="9999" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/acbMainResetAllPoints"
-            style="?borderlessButtonStyle"
-            android:layout_width="256dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tilMainInitialPoints"
-            android:layout_centerVertical="true"
-            android:layout_margin="16dp"
-            android:lines="2"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@color/red"
+            android:paddingStart="32dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="32dp"
+            android:paddingBottom="16dp"
             android:text="@string/reset_all"
-            android:textColor="@color/black"
-            android:textSize="32sp" />
+            android:textColor="@color/white"
+            android:textSize="32sp"
+            android:textStyle="bold" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="0dp"
@@ -66,15 +73,15 @@
             android:layout_weight="1"
             tools:ignore="NestedWeights">
 
-            <ImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btMain1Player"
-                style="@style/MainButton"
+                style="@style/MainButtonSw600dp"
                 android:contentDescription="@string/one_player"
                 app:srcCompat="@drawable/ic_one_player" />
 
             <androidx.core.widget.ContentLoadingProgressBar
                 android:id="@+id/pbMain1Player"
-                style="@style/MainButtonProgressBar"
+                style="@style/MainButtonProgressBarSw600dp"
                 tools:visibility="visible" />
 
         </FrameLayout>
@@ -85,15 +92,15 @@
             android:layout_weight="1"
             tools:ignore="NestedWeights">
 
-            <ImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btMain5Player"
-                style="@style/MainButton"
+                style="@style/MainButtonSw600dp"
                 android:contentDescription="@string/five_players"
                 app:srcCompat="@drawable/ic_five_players" />
 
             <androidx.core.widget.ContentLoadingProgressBar
                 android:id="@+id/pbMain5Player"
-                style="@style/MainButtonProgressBar"
+                style="@style/MainButtonProgressBarSw600dp"
                 tools:visibility="visible" />
 
         </FrameLayout>
@@ -112,15 +119,15 @@
             android:layout_weight="1"
             tools:ignore="NestedWeights">
 
-            <ImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btMain2Player"
-                style="@style/MainButton"
+                style="@style/MainButtonSw600dp"
                 android:contentDescription="@string/two_players"
                 app:srcCompat="@drawable/ic_two_players" />
 
             <androidx.core.widget.ContentLoadingProgressBar
                 android:id="@+id/pbMain2Player"
-                style="@style/MainButtonProgressBar"
+                style="@style/MainButtonProgressBarSw600dp"
                 tools:visibility="visible" />
 
         </FrameLayout>
@@ -131,15 +138,15 @@
             android:layout_weight="1"
             tools:ignore="NestedWeights">
 
-            <ImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btMain6Player"
-                style="@style/MainButton"
+                style="@style/MainButtonSw600dp"
                 android:contentDescription="@string/six_players"
                 app:srcCompat="@drawable/ic_six_players" />
 
             <androidx.core.widget.ContentLoadingProgressBar
                 android:id="@+id/pbMain6Player"
-                style="@style/MainButtonProgressBar"
+                style="@style/MainButtonProgressBarSw600dp"
                 tools:visibility="visible" />
 
         </FrameLayout>
@@ -158,15 +165,15 @@
             android:layout_weight="1"
             tools:ignore="NestedWeights">
 
-            <ImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btMain3Player"
-                style="@style/MainButton"
+                style="@style/MainButtonSw600dp"
                 android:contentDescription="@string/three_players"
                 app:srcCompat="@drawable/ic_three_players" />
 
             <androidx.core.widget.ContentLoadingProgressBar
                 android:id="@+id/pbMain3Player"
-                style="@style/MainButtonProgressBar"
+                style="@style/MainButtonProgressBarSw600dp"
                 tools:visibility="visible" />
 
         </FrameLayout>
@@ -177,15 +184,15 @@
             android:layout_weight="1"
             tools:ignore="NestedWeights">
 
-            <ImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btMain7Player"
-                style="@style/MainButton"
+                style="@style/MainButtonSw600dp"
                 android:contentDescription="@string/seven_players"
                 app:srcCompat="@drawable/ic_seven_players" />
 
             <androidx.core.widget.ContentLoadingProgressBar
                 android:id="@+id/pbMain7Player"
-                style="@style/MainButtonProgressBar"
+                style="@style/MainButtonProgressBarSw600dp"
                 tools:visibility="visible" />
 
         </FrameLayout>
@@ -206,15 +213,15 @@
             android:layout_weight="1"
             tools:ignore="NestedWeights">
 
-            <ImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btMain4Player"
-                style="@style/MainButton"
+                style="@style/MainButtonSw600dp"
                 android:contentDescription="@string/four_players"
                 app:srcCompat="@drawable/ic_four_players" />
 
             <androidx.core.widget.ContentLoadingProgressBar
                 android:id="@+id/pbMain4Player"
-                style="@style/MainButtonProgressBar"
+                style="@style/MainButtonProgressBarSw600dp"
                 tools:visibility="visible" />
 
         </FrameLayout>
@@ -225,15 +232,15 @@
             android:layout_weight="1"
             tools:ignore="NestedWeights">
 
-            <ImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btMain8Player"
-                style="@style/MainButton"
+                style="@style/MainButtonSw600dp"
                 android:contentDescription="@string/eight_players"
                 app:srcCompat="@drawable/ic_eight_players" />
 
             <androidx.core.widget.ContentLoadingProgressBar
                 android:id="@+id/pbMain8Player"
-                style="@style/MainButtonProgressBar"
+                style="@style/MainButtonProgressBarSw600dp"
                 tools:visibility="visible" />
 
         </FrameLayout>
