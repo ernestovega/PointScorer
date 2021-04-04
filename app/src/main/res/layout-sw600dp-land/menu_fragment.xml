@@ -5,15 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
+    android:baselineAligned="false"
     android:orientation="horizontal"
-    tools:context=".app.main.activity.MainActivity"
-    android:baselineAligned="false">
+    tools:context=".app.main.activity.MainActivity">
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:gravity="center"
         android:layout_height="match_parent"
-        android:animateLayoutChanges="true">
+        android:animateLayoutChanges="true"
+        android:gravity="center">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilMainInitialPoints"
@@ -22,7 +22,7 @@
             android:layout_centerHorizontal="true"
             android:layout_margin="16dp"
             android:hint="@string/initial_points"
-            android:textColorHint="@color/gray_text">
+            android:textColorHint="@color/black">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tietMainInitialPoints"
@@ -30,10 +30,10 @@
                 android:layout_height="wrap_content"
                 android:digits="-0123456789"
                 android:gravity="center"
-                android:textSize="48sp"
                 android:inputType="number"
                 android:maxLength="4"
-                android:textColor="@color/gray_text"
+                android:textColor="@color/black"
+                android:textSize="48sp"
                 app:backgroundTint="@color/colorAccent"
                 tools:text="9999" />
 
@@ -44,12 +44,12 @@
             style="?borderlessButtonStyle"
             android:layout_width="256dp"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/tilMainInitialPoints"
+            android:layout_centerVertical="true"
             android:layout_margin="16dp"
             android:lines="2"
-            android:layout_centerVertical="true"
-            android:layout_below="@+id/tilMainInitialPoints"
             android:text="@string/reset_all"
-            android:textColor="@color/gray_text"
+            android:textColor="@color/black"
             android:textSize="32sp" />
 
     </RelativeLayout>
@@ -195,9 +195,9 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <FrameLayout

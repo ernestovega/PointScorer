@@ -1,4 +1,4 @@
-package com.etologic.pointscorer.utils
+package com.etologic.pointscorer.app.utils
 
 import android.content.Context
 

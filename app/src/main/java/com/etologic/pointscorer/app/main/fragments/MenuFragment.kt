@@ -13,17 +13,16 @@ import android.view.ViewGroup
 import com.etologic.pointscorer.R
 import com.etologic.pointscorer.app.main.activity.MainActivityViewModel.MainScreens.*
 import com.etologic.pointscorer.app.main.base.BaseMainFragment
+import com.etologic.pointscorer.app.utils.ViewExtensions.hideKeyboard
 import com.etologic.pointscorer.databinding.MenuFragmentBinding
-import com.etologic.pointscorer.utils.SharedPrefsHelper
-import com.etologic.pointscorer.utils.ViewExtensions.hideKeyboard
 import com.google.android.material.snackbar.Snackbar
+import java.util.Locale.ENGLISH
 
-class AMenuFragment : BaseMainFragment() {
+class MenuFragment : BaseMainFragment() {
     
     private var fragmentBinding: MenuFragmentBinding? = null
     private val binding get() = fragmentBinding!!
     private var errorInitialPointsLiteral: String? = null
-    private var sharedPrefsHelper: SharedPrefsHelper? = null
     
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         fragmentBinding = MenuFragmentBinding.inflate(inflater, container, false)
@@ -33,7 +32,6 @@ class AMenuFragment : BaseMainFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initValues()
-        initSharedPrefs()
         initInitialPoints()
         initListeners()
     }
@@ -42,38 +40,34 @@ class AMenuFragment : BaseMainFragment() {
         errorInitialPointsLiteral = getString(R.string.error_initial_points)
     }
     
-    private fun initSharedPrefs() {
-        Thread {
-            sharedPrefsHelper = SharedPrefsHelper(requireContext())
-            sharedPrefsHelper?.initRecordsIfProceed()
-        }.run()
-    }
-    
     private fun initInitialPoints() {
-        sharedPrefsHelper?.getInitialPoints()?.let { binding.tietMainInitialPoints.setText(it.toString()) }
+        binding.tietMainInitialPoints.setText(activityViewModel.getInitialPoints().toString())
     }
     
     private fun initListeners() {
         binding.tietMainInitialPoints.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {}
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                try {
-                    p0?.let { sharedPrefsHelper?.saveInitialPoints(Integer.valueOf(it.toString())) }
-                } catch (nfe: NumberFormatException) {
-                    binding.tietMainInitialPoints.error = errorInitialPointsLiteral
+            override fun afterTextChanged(p0: Editable?) {
+                p0?.let {
+                    try {
+                        activityViewModel.saveInitialPoints(activityViewModel.getInitialPoints())
+                    } catch (nfe: NumberFormatException) {
+                        binding.tietMainInitialPoints.error = errorInitialPointsLiteral
+                    }
                 }
             }
+    
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         })
         
         binding.acbMainResetAllPoints.setOnClickListener {
             AlertDialog.Builder(requireContext(), R.style.Theme_AppCompat_Light_Dialog)
                 .setTitle(R.string.are_you_sure)
-                .setMessage(R.string.this_will_restore_all_points)
+                .setMessage(String.format(ENGLISH, getString(R.string.this_will_restore_all_points), activityViewModel.getInitialPoints()))
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes) { _: DialogInterface?, _: Int ->
                     binding.tietMainInitialPoints.hideKeyboard()
-                    sharedPrefsHelper?.resetAllPoints()
+                    activityViewModel.restoreAllPoints()
                     Snackbar.make(binding.tietMainInitialPoints, R.string.all_players_points_restored, Snackbar.LENGTH_LONG).show()
                 }
                 .create()

@@ -9,9 +9,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import com.etologic.pointscorer.R
+import com.etologic.pointscorer.app.utils.ViewExtensions.hideKeyboard
 import com.etologic.pointscorer.databinding.GamePlayerSettingsDialogfragmentBinding
-import com.etologic.pointscorer.utils.ViewExtensions.hideKeyboard
-import com.etologic.pointscorer.utils.ViewExtensions.showKeyboard
 
 class PlayerSettingsDialogFragment : DialogFragment() {
     
@@ -24,13 +23,12 @@ class PlayerSettingsDialogFragment : DialogFragment() {
     
     interface PlayerDialogListener {
         
-        fun onColorChanged(color: Int?)
-        fun onNameChanged(name: String?)
+        fun onColorChanged(color: Int)
+        fun onNameChanged(name: String)
     }
     
     private var _binding: GamePlayerSettingsDialogfragmentBinding? = null
     private val binding get() = _binding!!
-    private var defaultTextColor: Int? = null
     private var initialColor: Int? = null
     private var initialName: String? = null
     private var playerDialogListener: PlayerDialogListener? = null
@@ -71,7 +69,6 @@ class PlayerSettingsDialogFragment : DialogFragment() {
     }
     
     private fun initValues() {
-        defaultTextColor = ContextCompat.getColor(requireContext(), R.color.gray_text)
         redColor = ContextCompat.getColor(requireContext(), R.color.red)
         orangeColor = ContextCompat.getColor(requireContext(), R.color.orange)
         yellowColor = ContextCompat.getColor(requireContext(), R.color.yellow)
@@ -90,7 +87,7 @@ class PlayerSettingsDialogFragment : DialogFragment() {
         pinkTransparentColor = ContextCompat.getColor(requireContext(), R.color.pink)
         blackTransparentColor = ContextCompat.getColor(requireContext(), R.color.black)
         arguments?.let { arguments ->
-            initialColor = defaultTextColor?.let { arguments.getInt(KEY_INITIAL_COLOR, it) }
+            initialColor = whiteColor?.let { arguments.getInt(KEY_INITIAL_COLOR, it) }
             initialName = arguments.getString(KEY_INITIAL_NAME, getString(R.string.player_name))
         }
     }
@@ -158,35 +155,35 @@ class PlayerSettingsDialogFragment : DialogFragment() {
             
             vColorRed.setOnClickListener {
                 selectColor(redColor)
-                playerDialogListener?.onColorChanged(redColor)
+                redColor?.let { color -> playerDialogListener?.onColorChanged(color) }
             }
             vColorOrange.setOnClickListener {
                 selectColor(orangeColor)
-                playerDialogListener?.onColorChanged(orangeColor)
+                orangeColor?.let { color -> playerDialogListener?.onColorChanged(color) }
             }
             vColorYellow.setOnClickListener {
                 selectColor(yellowColor)
-                playerDialogListener?.onColorChanged(yellowColor)
+                yellowColor?.let { color -> playerDialogListener?.onColorChanged(color) }
             }
             vColorGreen.setOnClickListener {
                 selectColor(greenColor)
-                playerDialogListener?.onColorChanged(greenColor)
+                greenColor?.let { color -> playerDialogListener?.onColorChanged(color) }
             }
             vColorBlue.setOnClickListener {
                 selectColor(blueColor)
-                playerDialogListener?.onColorChanged(blueColor)
+                blueColor?.let { color -> playerDialogListener?.onColorChanged(color) }
             }
             vColorPurple.setOnClickListener {
                 selectColor(purpleColor)
-                playerDialogListener?.onColorChanged(purpleColor)
+                purpleColor?.let { color -> playerDialogListener?.onColorChanged(color) }
             }
             vColorPink.setOnClickListener {
                 selectColor(pinkColor)
-                playerDialogListener?.onColorChanged(pinkColor)
+                pinkColor?.let { color -> playerDialogListener?.onColorChanged(color) }
             }
             vColorWhite.setOnClickListener {
                 selectColor(whiteColor)
-                playerDialogListener?.onColorChanged(whiteColor)
+                whiteColor?.let { color -> playerDialogListener?.onColorChanged(color) }
             }
             
             btOk.setOnClickListener {

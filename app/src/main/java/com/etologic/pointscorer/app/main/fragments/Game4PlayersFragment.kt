@@ -9,7 +9,7 @@ import com.etologic.pointscorer.R
 import com.etologic.pointscorer.app.main.base.BaseXPlayersFragment
 import com.etologic.pointscorer.databinding.GameEFourPlayersFragmentBinding
 
-class EFourPlayersFragment : BaseXPlayersFragment() {
+class Game4PlayersFragment : BaseXPlayersFragment() {
     
     private var fragmentBinding: GameEFourPlayersFragmentBinding? = null
     private val binding get() = fragmentBinding!!

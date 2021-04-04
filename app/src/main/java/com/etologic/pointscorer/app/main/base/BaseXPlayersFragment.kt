@@ -1,7 +1,6 @@
 package com.etologic.pointscorer.app.main.base
 
 import android.R.animator
-import android.content.res.Configuration
 import android.os.Bundle
 import com.etologic.pointscorer.app.main.fragments.player.PlayerFragment
 

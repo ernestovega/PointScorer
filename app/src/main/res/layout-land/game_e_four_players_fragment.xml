@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".app.main.fragments.EFourPlayersFragment">
+    tools:context=".app.main.fragments.Game4PlayersFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -1,8 +1,6 @@
 package com.etologic.pointscorer.app.main.activity
 
-import android.content.res.Configuration
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -40,18 +38,18 @@ class MainActivity : DaggerAppCompatActivity() {
     }
     
     private fun screenObserver(screen: MainScreens) {
-            when (screen) {
-                MENU -> goToFragment(AMenuFragment())
-                ONE_PLAYER -> goToFragment(BOnePlayerFragment())
-                TWO_PLAYER -> goToFragment(CTwoPlayersFragment())
-                THREE_PLAYER -> goToFragment(DThreePlayersFragment())
-                FOUR_PLAYER -> goToFragment(EFourPlayersFragment())
-                FIVE_PLAYER -> goToFragment(FFivePlayersFragment())
-                SIX_PLAYER -> goToFragment(GSixPlayersFragment())
-                SEVEN_PLAYER -> goToFragment(HSevenPlayersFragment())
-                EIGHT_PLAYER -> goToFragment(IEightPlayersFragment())
-                FINISH -> finish()
-            }
+        when (screen) {
+            MENU -> goToFragment(MenuFragment())
+            ONE_PLAYER -> goToFragment(Game1PlayerFragment())
+            TWO_PLAYER -> goToFragment(Game2PlayersFragment())
+            THREE_PLAYER -> goToFragment(Game3PlayersFragment())
+            FOUR_PLAYER -> goToFragment(Game4PlayersFragment())
+            FIVE_PLAYER -> goToFragment(Game5PlayersFragment())
+            SIX_PLAYER -> goToFragment(Game6PlayersFragment())
+            SEVEN_PLAYER -> goToFragment(Game7PlayersFragment())
+            EIGHT_PLAYER -> goToFragment(Game8PlayersFragment())
+            FINISH -> finish()
+        }
     }
     
     private fun goToFragment(fragment: Fragment) {

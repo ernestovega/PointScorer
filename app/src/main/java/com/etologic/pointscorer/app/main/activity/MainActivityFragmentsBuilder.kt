@@ -9,33 +9,33 @@ import dagger.android.ContributesAndroidInjector
 abstract class MainActivityFragmentsBuilder {
     
     @ContributesAndroidInjector
-    internal abstract fun provideMainFragmentFragmentFactory(): AMenuFragment
+    internal abstract fun provideMainFragmentFragmentFactory(): MenuFragment
     
     @ContributesAndroidInjector
     internal abstract fun providePlayerFragmentFragmentFactory(): PlayerFragment
     
     @ContributesAndroidInjector
-    internal abstract fun provideBOnePlayerFragmentFragmentFactory(): BOnePlayerFragment
+    internal abstract fun provideBOnePlayerFragmentFragmentFactory(): Game1PlayerFragment
     
     @ContributesAndroidInjector
-    internal abstract fun provideCTwoPlayersFragmentFragmentFactory(): CTwoPlayersFragment
+    internal abstract fun provideCTwoPlayersFragmentFragmentFactory(): Game2PlayersFragment
     
     @ContributesAndroidInjector
-    internal abstract fun provideDThreePlayersFragmentFragmentFactory(): DThreePlayersFragment
+    internal abstract fun provideDThreePlayersFragmentFragmentFactory(): Game3PlayersFragment
     
     @ContributesAndroidInjector
-    internal abstract fun provideEFourPlayersFragmentFragmentFactory(): EFourPlayersFragment
+    internal abstract fun provideEFourPlayersFragmentFragmentFactory(): Game4PlayersFragment
     
     @ContributesAndroidInjector
-    internal abstract fun provideFFivePlayersFragmentFragmentFactory(): FFivePlayersFragment
+    internal abstract fun provideFFivePlayersFragmentFragmentFactory(): Game5PlayersFragment
     
     @ContributesAndroidInjector
-    internal abstract fun provideGSixPlayersFragmentFragmentFactory(): GSixPlayersFragment
+    internal abstract fun provideGSixPlayersFragmentFragmentFactory(): Game6PlayersFragment
     
     @ContributesAndroidInjector
-    internal abstract fun provideHSevenPlayersFragmentFragmentFactory(): HSevenPlayersFragment
+    internal abstract fun provideHSevenPlayersFragmentFragmentFactory(): Game7PlayersFragment
     
     @ContributesAndroidInjector
-    internal abstract fun provideIEightPlayersFragmentFragmentFactory(): IEightPlayersFragment
+    internal abstract fun provideIEightPlayersFragmentFragmentFactory(): Game8PlayersFragment
     
 }

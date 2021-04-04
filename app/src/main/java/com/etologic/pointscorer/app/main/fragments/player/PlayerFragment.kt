@@ -13,13 +13,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import com.etologic.pointscorer.R
+import com.etologic.pointscorer.R.menu
 import com.etologic.pointscorer.app.main.base.BaseMainFragment
+import com.etologic.pointscorer.app.main.fragments.Game1PlayerFragment.Companion.GAME_1_PLAYER_1_ID
 import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsDialogFragment.PlayerDialogListener
+import com.etologic.pointscorer.app.utils.MyAnimationUtils
+import com.etologic.pointscorer.app.utils.MyAnimationUtils.AnimationEndListener
+import com.etologic.pointscorer.app.utils.MyConversionUtils
 import com.etologic.pointscorer.databinding.GamePlayerFragmentBinding
-import com.etologic.pointscorer.utils.MyAnimationUtils
-import com.etologic.pointscorer.utils.MyAnimationUtils.AnimationEndListener
-import com.etologic.pointscorer.utils.MyConversionUtils
-import com.etologic.pointscorer.utils.SharedPrefsHelper
 import java.util.Locale.ENGLISH
 
 class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
@@ -33,17 +34,17 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
         const val KEY_PLAYER_NAME_MARGIN_TOP = "key_player_name_margin_top"
         const val KEY_PLAYER_POINTS_SIZE = "key_player_points_size"
         const val REP_DELAY = 100
+        private const val RESTORE_ALL_POINTS_ITEM_INDEX = 2
     }
     
     //FIELDS
     private var _binding: GamePlayerFragmentBinding? = null
     private val binding get() = _binding!!
-    private var sharedPrefsHelper: SharedPrefsHelper? = null
     private var playerId = 0
     private var initialPoints = 0
     private var points = 0
     private val repeatUpdateHandler = Handler()
-    private var defaultTextColor: Int? = null
+    private var defaultPlayerColor: Int? = null
     private var playerNameSize = 16
     private var playerNameMarginTop = 0
     private var playerPointsSize = 48
@@ -52,6 +53,7 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
     private var isAutoDecrement = false
     private var downCount = 0
     private var upCount = 0
+    private var popup: PopupMenu? = null
     private var numberOfPlayersInThisGame: Int = 0
         get() {
             if (field == 0)
@@ -60,15 +62,13 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
         }
     
     //EVENTS
-    override fun onColorChanged(color: Int?) {
-        color?.let {
-            sharedPrefsHelper?.savePlayerColor(color, playerId)
-            (if (color == 0) defaultTextColor else color)?.let { setTextsColor(it) }
-        }
+    override fun onColorChanged(color: Int) {
+        activityViewModel.savePlayerColor(color, playerId)
+        (if (color == 0) defaultPlayerColor else color)?.let { setTextsColor(it) }
     }
     
-    override fun onNameChanged(name: String?) {
-        sharedPrefsHelper?.savePlayerName(name, playerId)
+    override fun onNameChanged(name: String) {
+        activityViewModel.savePlayerName(playerId, name)
         binding.etName.setText(name)
     }
     
@@ -80,7 +80,6 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
     
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initSharedPrefs()
         initValues()
         if (playerId > 0) {
             initName()
@@ -93,33 +92,25 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
     }
     
     private fun initValues() {
-        defaultTextColor = ContextCompat.getColor(requireContext(), R.color.gray_text)
+        defaultPlayerColor = ContextCompat.getColor(requireContext(), R.color.white)
         arguments?.let { arguments ->
             playerId = arguments.getInt(KEY_PLAYER_ID)
             playerNameSize = arguments.getInt(KEY_PLAYER_NAME_SIZE)
             playerNameMarginTop = arguments.getInt(KEY_PLAYER_NAME_MARGIN_TOP, 8)
             playerPointsSize = arguments.getInt(KEY_PLAYER_POINTS_SIZE)
         }
-    }
-    
-    private fun initSharedPrefs() {
-        Thread {
-            sharedPrefsHelper = SharedPrefsHelper(requireContext())
-        }.run()
+        initialPoints = activityViewModel.getInitialPoints()
     }
     
     private fun initPoints() {
-        sharedPrefsHelper?.let {
-            initialPoints = it.initialPoints
-            points = it.getPlayerPoints(playerId)
-            with(binding) {
-                tvUpCount.textSize = playerPointsSize * 0.5f
-                tvDownCount.textSize = playerPointsSize * 0.5f
-                tvPointsPlayer.textSize = playerPointsSize.toFloat()
-                tvPointsForAnimation.textSize = playerPointsSize.toFloat()
-                tvPointsPlayer.setPadding(0, MyConversionUtils.dpToPx(requireContext(), playerPointsMarginTop), 0, 0)
-                tvPointsForAnimation.setPadding(0, MyConversionUtils.dpToPx(requireContext(), playerPointsMarginTop), 0, 0)
-            }
+        points = activityViewModel.getPlayerPoints(playerId)
+        with(binding) {
+            tvUpCount.textSize = playerPointsSize * 0.5f
+            tvDownCount.textSize = playerPointsSize * 0.5f
+            tvPointsPlayer.textSize = playerPointsSize.toFloat()
+            tvPointsForAnimation.textSize = playerPointsSize.toFloat()
+            tvPointsPlayer.setPadding(0, MyConversionUtils.dpToPx(requireContext(), playerPointsMarginTop), 0, 0)
+            tvPointsForAnimation.setPadding(0, MyConversionUtils.dpToPx(requireContext(), playerPointsMarginTop), 0, 0)
         }
     }
     
@@ -127,12 +118,12 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
         with(binding) {
             etName.setPadding(0, MyConversionUtils.dpToPx(requireContext(), playerNameMarginTop), 0, 0)
             etName.textSize = playerNameSize.toFloat()
-            etName.setText(sharedPrefsHelper?.getPlayerName(playerId))
+            etName.setText(activityViewModel.getPlayerName(playerId))
         }
     }
     
     private fun initColors() {
-        sharedPrefsHelper?.let { setTextsColor(it.getPlayerColor(playerId)) }
+        setTextsColor(activityViewModel.getPlayerColor(playerId))
     }
     
     private fun setTextsColor(color: Int) {
@@ -146,7 +137,7 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
     
     private fun initShieldAndPoints() {
         with(binding) {
-            binding.ivShield.startAnimation(MyAnimationUtils.getShieldAnimation())
+            ivShield.startAnimation(MyAnimationUtils.getShieldAnimation())
             tvPointsForAnimation.startAnimation(MyAnimationUtils.getUpdateShieldPointsAnimation(tvPointsPlayer, tvPointsForAnimation, points))
         }
     }
@@ -163,19 +154,10 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
     @SuppressLint("ClickableViewAccessibility")
     private fun initListeners() {
         with(binding) {
-            ibMenu.setOnClickListener { view ->
-                val popup = PopupMenu(requireContext(), view)
-                popup.setOnMenuItemClickListener { item: MenuItem ->
-                    when (item.itemId) {
-                        R.id.menu_edit_player -> showPlayerDialog()
-                        R.id.menu_restart_points -> askConfirmRestorePlayerPoints()
-                        R.id.menu_restart_all_points -> askConfirmRestoreAllPlayersPoints()
-                        else -> return@setOnMenuItemClickListener false
-                    }
-                    true
-                }
-                popup.inflate(R.menu.game_player_menu)
-                popup.show()
+            ibMenu.setOnClickListener {
+                if (popup == null)
+                    buildPopupMenu()
+                popup!!.show()
             }
             
             btUp.setOnLongClickListener {
@@ -191,13 +173,17 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
             }
             
             btUp.setOnTouchListener { _, motionEvent ->
-                if (isAutoIncrement && (motionEvent.action == ACTION_UP || motionEvent.action == ACTION_CANCEL))
+                if (isAutoIncrement &&
+                    (motionEvent.action == ACTION_UP || motionEvent.action == ACTION_CANCEL)
+                )
                     isAutoIncrement = false
                 false
             }
             
             btDown.setOnTouchListener { _, motionEvent ->
-                if (isAutoDecrement && (motionEvent.action == ACTION_UP || motionEvent.action == ACTION_CANCEL))
+                if (isAutoDecrement &&
+                    (motionEvent.action == ACTION_UP || motionEvent.action == ACTION_CANCEL)
+                )
                     isAutoDecrement = false
                 false
             }
@@ -222,6 +208,22 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
         }
     }
     
+    private fun buildPopupMenu() {
+        popup = PopupMenu(requireActivity(), binding.ibMenu)
+        popup!!.setOnMenuItemClickListener { item: MenuItem ->
+            when (item.itemId) {
+                R.id.menu_edit_player -> showPlayerDialog()
+                R.id.menu_restart_points -> askConfirmRestorePlayerPoints()
+                R.id.menu_restart_game_points -> askConfirmRestoreGamePlayersPoints()
+                else -> return@setOnMenuItemClickListener false
+            }
+            true
+        }
+        popup!!.inflate(menu.game_player_menu)
+        if (playerId == GAME_1_PLAYER_1_ID)
+            popup!!.menu.getItem(RESTORE_ALL_POINTS_ITEM_INDEX)?.isVisible = false
+    }
+    
     private fun showPlayerDialog() {
         val playerDialogFragment = PlayerSettingsDialogFragment()
         val bundle = Bundle()
@@ -229,7 +231,7 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
         bundle.putInt(PlayerSettingsDialogFragment.KEY_INITIAL_COLOR, binding.etName.currentTextColor)
         val name =
             if (binding.etName.text == null)
-                sharedPrefsHelper?.getPlayerName(playerId)
+                activityViewModel.getPlayerName(playerId)
             else
                 binding.etName.text.toString()
         bundle.putString(PlayerSettingsDialogFragment.KEY_INITIAL_NAME, name)
@@ -258,12 +260,12 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
         updatePoints()
     }
     
-    private fun askConfirmRestoreAllPlayersPoints() {
+    private fun askConfirmRestoreGamePlayersPoints() {
         AlertDialog.Builder(requireContext(), R.style.Theme_AppCompat_Light_Dialog)
             .setTitle(R.string.are_you_sure)
             .setMessage(String.format(getString(R.string.restart_all_points_to_y), initialPoints))
             .setNegativeButton(android.R.string.no, null)
-            .setPositiveButton(android.R.string.yes) { _, _ -> activityViewModel.restoreAllPlayersPoints(numberOfPlayersInThisGame) }
+            .setPositiveButton(android.R.string.yes) { _, _ -> activityViewModel.restoreGamePlayersPoints(numberOfPlayersInThisGame) }
             .create()
             .show()
     }
@@ -292,7 +294,7 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
         binding.tvUpCount.text = formattedUpCount
         binding.tvDownCount.text = formattedDownCount
         val animationEndListener = AnimationEndListener {
-            Thread { sharedPrefsHelper?.savePlayerPoints(points, playerId) }.run()
+            Thread { activityViewModel.savePlayerPoints(points, playerId) }.run()
         }
         val updatePointsAnimation = MyAnimationUtils.getUpdateShieldPointsAnimation(
             binding.tvPointsPlayer,
@@ -324,7 +326,7 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
                     return
                 }
             }
-            sharedPrefsHelper?.savePlayerPoints(points, playerId)
+            activityViewModel.savePlayerPoints(points, playerId)
             updatePoints()
             repeatUpdateHandler.postDelayed(RepeatUpdater(), REP_DELAY.toLong())
         }

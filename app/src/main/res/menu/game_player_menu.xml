@@ -12,7 +12,7 @@
         android:title="@string/restore_points" />
 
     <item
-        android:id="@+id/menu_restart_all_points"
+        android:id="@+id/menu_restart_game_points"
         android:icon="@android:drawable/ic_menu_revert"
         android:title="@string/restore_all_points" />
 

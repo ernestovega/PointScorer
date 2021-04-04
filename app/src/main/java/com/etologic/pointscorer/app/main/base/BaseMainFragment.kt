@@ -1,6 +1,5 @@
 package com.etologic.pointscorer.app.main.base
 
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider

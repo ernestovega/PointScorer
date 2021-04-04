@@ -22,7 +22,7 @@
             android:layout_marginTop="16dp"
             android:hint="@string/initial_points"
             android:paddingTop="16dp"
-            android:textColorHint="@color/gray_text">
+            android:textColorHint="@color/white">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tietMainInitialPoints"
@@ -32,8 +32,8 @@
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="4"
+                android:textColor="@color/white"
                 android:textSize="32sp"
-                android:textColor="@color/gray_text"
                 app:backgroundTint="@color/colorAccent"
                 tools:text="9999" />
 
@@ -48,7 +48,7 @@
             android:layout_toEndOf="@+id/tilMainInitialPoints"
             android:layout_toRightOf="@+id/tilMainInitialPoints"
             android:text="@string/reset_all"
-            android:textColor="@color/gray_text"
+            android:textColor="@color/white"
             android:textSize="16sp" />
 
     </RelativeLayout>

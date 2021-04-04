@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:baselineAligned="false"
     android:orientation="vertical"
-    tools:context=".app.main.fragments.DThreePlayersFragment">
+    tools:context=".app.main.fragments.Game3PlayersFragment">
 
     <FrameLayout
         android:id="@+id/flPlayer31"

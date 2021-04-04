@@ -9,7 +9,7 @@ import com.etologic.pointscorer.R
 import com.etologic.pointscorer.app.main.base.BaseXPlayersFragment
 import com.etologic.pointscorer.databinding.GameCTwoPlayersFragmentBinding
 
-class CTwoPlayersFragment : BaseXPlayersFragment() {
+class Game2PlayersFragment : BaseXPlayersFragment() {
     
     private var fragmentBinding: GameCTwoPlayersFragmentBinding? = null
     private val binding get() = fragmentBinding!!
@@ -25,13 +25,13 @@ class CTwoPlayersFragment : BaseXPlayersFragment() {
         val nameMarginTop = ResourcesCompat.getFloat(resources, R.dimen.nameMarginTop2P).toInt()
         val pointsSize = ResourcesCompat.getFloat(resources, R.dimen.pointsSize2P).toInt()
         
-        initPlayerFragment(PLAYER_1_ID, R.id.flPlayer21, nameSize, nameMarginTop, pointsSize)
-        initPlayerFragment(PLAYER_2_ID, R.id.flPlayer22, nameSize, nameMarginTop, pointsSize)
+        initPlayerFragment(GAME_2_PLAYER_1_ID, R.id.flPlayer21, nameSize, nameMarginTop, pointsSize)
+        initPlayerFragment(GAME_2_PLAYER_2_ID, R.id.flPlayer22, nameSize, nameMarginTop, pointsSize)
     }
     
     companion object {
         
-        private const val PLAYER_1_ID = 21
-        private const val PLAYER_2_ID = 22
+        const val GAME_2_PLAYER_1_ID = 21
+        const val GAME_2_PLAYER_2_ID = 22
     }
 }
