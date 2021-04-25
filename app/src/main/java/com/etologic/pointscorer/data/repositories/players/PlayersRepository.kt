@@ -3,73 +3,94 @@ package com.etologic.pointscorer.data.repositories.players
 import android.content.Context
 import androidx.core.content.ContextCompat
 import com.etologic.pointscorer.R
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class PlayersRepository
 @Inject internal constructor(
     context: Context,
+    private val memoryDataSource: PlayersMemoryDataSource,
     private val sharedPrefsDataSource: PlayersSharedPrefsDataSource
 ) {
     
-    companion object {
-        private const val MAX_PLAYERS = 8
-        private const val DEFAULT_INITIAL_POINTS = 100
-    }
-    
     private val defaultPlayerName: String = context.getString(R.string.player_name)
-    private val defaultTextColor: Int = ContextCompat.getColor(context, R.color.white)
-    var initialPoints: Int? = null
-        get() {
-            return field ?: sharedPrefsDataSource.getInitialPoints(DEFAULT_INITIAL_POINTS).also { field = it }
-        }
+    private val defaultPlayerColor: Int = ContextCompat.getColor(context, R.color.white)
     
     init {
-        Thread {
+        runBlocking {
             if (sharedPrefsDataSource.isInitialCheckNotDone()) {
-                restoreAllPlayersPoints()
+                restoreAllPlayers()
                 sharedPrefsDataSource.saveInitialCheckDone()
             }
-        }.run()
+        }
     }
     
-    //INITIAL POINTS
-    private fun resetPlayer(playerId: Int) {
-        savePlayerPoints(initialPoints!!, playerId)
-        savePlayerName(playerId, "")
-    }
-    
-    fun saveInitialPoints(newInitialPoints: Int) {
-        sharedPrefsDataSource.saveInitialPoints(newInitialPoints)
-    }
-    
-    //POINTS
-    fun getPlayerPoints(playerId: Int): Int =
-        sharedPrefsDataSource.getPlayerPoints(playerId, initialPoints!!)
-    
-    fun savePlayerPoints(playerId: Int, newInitialPoints: Int) {
-        sharedPrefsDataSource.savePlayerPoints(playerId, newInitialPoints)
-    }
-    
-    fun restoreAllPlayersPoints() {
+    private suspend fun restoreAllPlayers() {
         for (i in 1..MAX_PLAYERS)
             for (x in 1..i)
                 resetPlayer(Integer.valueOf("$i$x"))
     }
     
-    //NAME
-    fun getPlayerName(playerId: Int): String =
-        sharedPrefsDataSource.getPlayerName(playerId, defaultPlayerName)
+    private suspend fun resetPlayer(playerId: Int) {
+        savePlayerPoints(getInitialPoints(), playerId)
+        savePlayerName(playerId, "")
+        savePlayerColor(playerId, defaultPlayerColor)
+    }
     
-    fun savePlayerName(playerId: Int, newName: String) {
+    //INITIAL POINTS
+    suspend fun getInitialPoints(): Int =
+        memoryDataSource.getInitialPoints() ?:
+            sharedPrefsDataSource.getInitialPoints(DEFAULT_INITIAL_POINTS)
+                .also { memoryDataSource.saveInitialPoints(it) }
+    
+    suspend fun saveInitialPoints(newInitialPoints: Int) {
+        memoryDataSource.saveInitialPoints(newInitialPoints)
+        sharedPrefsDataSource.saveInitialPoints(newInitialPoints)
+    }
+    
+    //POINTS
+    suspend fun getPlayerPoints(playerId: Int): Int =
+        memoryDataSource.getPlayerPoints(playerId) ?:
+        sharedPrefsDataSource.getPlayerPoints(playerId, getInitialPoints())
+            .also { memoryDataSource.savePlayerPoints(playerId, it) }
+    
+    suspend fun savePlayerPoints(playerId: Int, newInitialPoints: Int) {
+        memoryDataSource.savePlayerPoints(playerId, newInitialPoints)
+        sharedPrefsDataSource.savePlayerPoints(playerId, newInitialPoints)
+    }
+    
+    suspend fun restoreAllPlayersPoints() {
+        for (i in 1..MAX_PLAYERS)
+            for (x in 1..i)
+                savePlayerPoints(getInitialPoints(), Integer.valueOf("$i$x"))
+    }
+    
+    //NAME
+    suspend fun getPlayerName(playerId: Int): String =
+        memoryDataSource.getPlayerName(playerId) ?:
+        sharedPrefsDataSource.getPlayerName(playerId, defaultPlayerName)
+            .also { memoryDataSource.savePlayerName(playerId, it) }
+    
+    suspend fun savePlayerName(playerId: Int, newName: String) {
+        memoryDataSource.savePlayerName(playerId, newName)
         sharedPrefsDataSource.savePlayerName(playerId, newName)
     }
     
     //COLOR
-    fun getPlayerColor(playerId: Int): Int =
-        sharedPrefsDataSource.getPlayerColor(playerId, defaultTextColor)
+    suspend fun getPlayerColor(playerId: Int): Int =
+        memoryDataSource.getPlayerColor(playerId) ?:
+        sharedPrefsDataSource.getPlayerColor(playerId, defaultPlayerColor)
+            .also { memoryDataSource.savePlayerColor(playerId, it) }
     
-    fun savePlayerColor(playerId: Int, newInitialColor: Int) {
+    suspend fun savePlayerColor(playerId: Int, newInitialColor: Int) {
+        memoryDataSource.savePlayerColor(playerId, newInitialColor)
         sharedPrefsDataSource.savePlayerColor(playerId, newInitialColor)
+    }
+    
+    companion object {
+        
+        private const val MAX_PLAYERS = 8
+        const val DEFAULT_INITIAL_POINTS = 100
     }
     
 }

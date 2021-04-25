@@ -5,8 +5,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.etologic.pointscorer.R
-import com.etologic.pointscorer.app.main.activity.MainActivityViewModel.MainScreens
-import com.etologic.pointscorer.app.main.activity.MainActivityViewModel.MainScreens.*
+import com.etologic.pointscorer.app.main.activity.MainActivityViewModel.Companion.MainScreens
+import com.etologic.pointscorer.app.main.activity.MainActivityViewModel.Companion.MainScreens.*
 import com.etologic.pointscorer.app.main.fragments.*
 import com.etologic.pointscorer.databinding.MainActivityBinding
 import dagger.android.support.DaggerAppCompatActivity
@@ -34,7 +34,7 @@ class MainActivity : DaggerAppCompatActivity() {
     
     private fun initViewModel() {
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainActivityViewModel::class.java)
-        viewModel.getScreen().observe(this, Observer(this::screenObserver))
+        viewModel.liveScreen().observe(this, Observer(this::screenObserver))
     }
     
     private fun screenObserver(screen: MainScreens) {

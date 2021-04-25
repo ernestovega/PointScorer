@@ -9,6 +9,7 @@ import android.view.MotionEvent.ACTION_CANCEL
 import android.view.MotionEvent.ACTION_UP
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
@@ -18,10 +19,9 @@ import com.etologic.pointscorer.app.main.base.BaseMainFragment
 import com.etologic.pointscorer.app.main.fragments.Game1PlayerFragment.Companion.GAME_1_PLAYER_1_ID
 import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsDialogFragment.PlayerDialogListener
 import com.etologic.pointscorer.app.utils.MyAnimationUtils
-import com.etologic.pointscorer.app.utils.MyAnimationUtils.AnimationEndListener
 import com.etologic.pointscorer.app.utils.MyConversionUtils
 import com.etologic.pointscorer.databinding.GamePlayerFragmentBinding
-import java.util.Locale.ENGLISH
+import kotlinx.android.synthetic.main.game_player_fragment.*
 
 class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
     
@@ -43,16 +43,11 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
     private var playerId = 0
     private var initialPoints = 0
     private var points = 0
-    private val repeatUpdateHandler = Handler()
     private var defaultPlayerColor: Int? = null
     private var playerNameSize = 16
     private var playerNameMarginTop = 0
     private var playerPointsSize = 48
     private var playerPointsMarginTop = 0
-    private var isAutoIncrement = false /* https://stackoverflow.com/questions/7938516/continuously-increase-integer-value-as-the-button-is-pressed */
-    private var isAutoDecrement = false
-    private var downCount = 0
-    private var upCount = 0
     private var popup: PopupMenu? = null
     private var numberOfPlayersInThisGame: Int = 0
         get() {
@@ -60,6 +55,14 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
                 field = playerId / 10
             return field
         }
+    private lateinit var upRepeatUpdateHandler: Handler
+    private lateinit var downRepeatUpdateHandler: Handler
+    private lateinit var upAuxPointsFadeOutAnimation: Animation
+    private lateinit var downAuxPointsFadeOutAnimation: Animation
+    private var isUpPressed = false /* https://stackoverflow.com/questions/7938516/continuously-increase-integer-value-as-the-button-is-pressed */
+    private var isDownPressed = false
+    private var downCount = 0
+    private var upCount = 0
     
     //EVENTS
     override fun onColorChanged(color: Int) {
@@ -93,6 +96,8 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
     
     private fun initValues() {
         defaultPlayerColor = ContextCompat.getColor(requireContext(), R.color.white)
+        upRepeatUpdateHandler = binding.root.handler
+        downRepeatUpdateHandler = binding.root.handler
         arguments?.let { arguments ->
             playerId = arguments.getInt(KEY_PLAYER_ID)
             playerNameSize = arguments.getInt(KEY_PLAYER_NAME_SIZE)
@@ -100,6 +105,14 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
             playerPointsSize = arguments.getInt(KEY_PLAYER_POINTS_SIZE)
         }
         initialPoints = activityViewModel.getInitialPoints()
+        upAuxPointsFadeOutAnimation = MyAnimationUtils.getAuxPointsFadeOutAnimation {
+            binding.tvUpCount.text = ""
+            upCount = 0
+        }
+        downAuxPointsFadeOutAnimation = MyAnimationUtils.getAuxPointsFadeOutAnimation {
+            binding.tvDownCount.text = ""
+            downCount = 0
+        }
     }
     
     private fun initPoints() {
@@ -143,7 +156,7 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
     }
     
     private fun initObservers() {
-        activityViewModel.getShouldRestoreAllPoints().observe(viewLifecycleOwner, { restorePlayerPointsIfProceed(it) })
+        activityViewModel.liveShouldRestoreAllPoints().observe(viewLifecycleOwner, { restorePlayerPointsIfProceed(it) })
     }
     
     private fun restorePlayerPointsIfProceed(numberOfPlayersInTheGameToRestore: Int) {
@@ -161,49 +174,41 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
             }
             
             btUp.setOnLongClickListener {
-                isAutoIncrement = true
-                upCount = 0
-                repeatUpdateHandler.post(RepeatUpdater())
+                isUpPressed = true
+                upRepeatUpdateHandler.post(UpCountRepeater())
             }
             
             btDown.setOnLongClickListener {
-                isAutoDecrement = true
-                downCount = 0
-                repeatUpdateHandler.post(RepeatUpdater())
+                isDownPressed = true
+                downRepeatUpdateHandler.post(DownCountRepeater())
             }
             
             btUp.setOnTouchListener { _, motionEvent ->
-                if (isAutoIncrement &&
-                    (motionEvent.action == ACTION_UP || motionEvent.action == ACTION_CANCEL)
-                )
-                    isAutoIncrement = false
+                val isActionUp = motionEvent.action == ACTION_UP
+                val isActionCancel = motionEvent.action == ACTION_CANCEL
+                if (isUpPressed && (isActionUp || isActionCancel))
+                    isUpPressed = false
                 false
             }
             
             btDown.setOnTouchListener { _, motionEvent ->
-                if (isAutoDecrement &&
-                    (motionEvent.action == ACTION_UP || motionEvent.action == ACTION_CANCEL)
-                )
-                    isAutoDecrement = false
+                val isActionUp = motionEvent.action == ACTION_UP
+                val isActionCancel = motionEvent.action == ACTION_CANCEL
+                if (isDownPressed && (isActionUp || isActionCancel))
+                    isDownPressed = false
                 false
             }
             
             btUp.setOnClickListener {
                 incrementPoints()
                 updatePoints()
-                tvUpCount.startAnimation(MyAnimationUtils.getAuxPointsFadeOutAnimation {
-                    tvUpCount.text = ""
-                    upCount = 0
-                })
+                tvUpCount.startAnimation(upAuxPointsFadeOutAnimation)
             }
             
             btDown.setOnClickListener {
                 decrementPoints()
                 updatePoints()
-                tvDownCount.startAnimation(MyAnimationUtils.getAuxPointsFadeOutAnimation {
-                    tvDownCount.text = ""
-                    downCount = 0
-                })
+                tvDownCount.startAnimation(downAuxPointsFadeOutAnimation)
             }
         }
     }
@@ -249,8 +254,8 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
         AlertDialog.Builder(requireContext(), R.style.Theme_AppCompat_Light_Dialog)
             .setTitle(R.string.are_you_sure)
             .setMessage(String.format(getString(R.string.restart_x_points_to_y), name, initialPoints))
-            .setNegativeButton(android.R.string.no, null)
-            .setPositiveButton(android.R.string.yes) { _, _ -> restorePlayerPoints() }
+            .setNegativeButton(android.R.string.cancel, null)
+            .setPositiveButton(android.R.string.ok) { _, _ -> restorePlayerPoints() }
             .create()
             .show()
     }
@@ -264,8 +269,8 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
         AlertDialog.Builder(requireContext(), R.style.Theme_AppCompat_Light_Dialog)
             .setTitle(R.string.are_you_sure)
             .setMessage(String.format(getString(R.string.restart_all_points_to_y), initialPoints))
-            .setNegativeButton(android.R.string.no, null)
-            .setPositiveButton(android.R.string.yes) { _, _ -> activityViewModel.restoreGamePlayersPoints(numberOfPlayersInThisGame) }
+            .setNegativeButton(android.R.string.cancel, null)
+            .setPositiveButton(android.R.string.ok) { _, _ -> activityViewModel.restoreGamePlayersPoints(numberOfPlayersInThisGame) }
             .create()
             .show()
     }
@@ -285,50 +290,48 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
     }
     
     private fun updatePoints() {
-        var formattedUpCount = ""
-        var formattedDownCount = ""
-        
-        if (upCount != 0) formattedUpCount = String.format(ENGLISH, "%+d", upCount)
-        if (downCount != 0) formattedDownCount = String.format(ENGLISH, "%+d", downCount)
-        
-        binding.tvUpCount.text = formattedUpCount
-        binding.tvDownCount.text = formattedDownCount
-        val animationEndListener = AnimationEndListener {
-            Thread { activityViewModel.savePlayerPoints(points, playerId) }.run()
-        }
-        val updatePointsAnimation = MyAnimationUtils.getUpdateShieldPointsAnimation(
+        binding.tvUpCount.text = if (upCount != 0) String.format("%+d", upCount) else ""
+        binding.tvDownCount.text = if (downCount != 0) String.format("%+d", downCount) else ""
+        binding.tvPointsForAnimation.startAnimation(MyAnimationUtils.getUpdateShieldPointsAnimation(
             binding.tvPointsPlayer,
             binding.tvPointsForAnimation,
-            points,
-            animationEndListener
-        )
-        binding.tvPointsForAnimation.startAnimation(updatePointsAnimation)
+            points
+        ) {
+            activityViewModel.savePlayerPoints(points, playerId)
+        })
     }
     
     //INNER CLASSES
-    internal inner class RepeatUpdater : Runnable {
+    internal inner class UpCountRepeater : Runnable {
         
         override fun run() {
-            when {
-                isAutoIncrement -> incrementPoints()
-                isAutoDecrement -> decrementPoints()
-                else -> {
-                    with(binding) {
-                        tvUpCount.startAnimation(MyAnimationUtils.getAuxPointsFadeOutAnimation {
-                            tvUpCount.text = ""
-                            upCount = 0
-                        })
-                        tvDownCount.startAnimation(MyAnimationUtils.getAuxPointsFadeOutAnimation {
-                            tvDownCount.text = ""
-                            downCount = 0
-                        })
-                    }
-                    return
-                }
+            if (binding.tvUpCount.animation == null)
+                binding.tvUpCount.animation = upAuxPointsFadeOutAnimation
+            
+            upAuxPointsFadeOutAnimation.start()
+            
+            if (isUpPressed) {
+                incrementPoints()
+                updatePoints()
+                upRepeatUpdateHandler.postDelayed(UpCountRepeater(), REP_DELAY.toLong())
             }
-            activityViewModel.savePlayerPoints(points, playerId)
-            updatePoints()
-            repeatUpdateHandler.postDelayed(RepeatUpdater(), REP_DELAY.toLong())
+        }
+    }
+    
+    //INNER CLASSES
+    internal inner class DownCountRepeater : Runnable {
+        
+        override fun run() {
+            if (binding.tvDownCount.animation == null)
+                binding.tvDownCount.animation = downAuxPointsFadeOutAnimation
+            
+            downAuxPointsFadeOutAnimation.start()
+            
+            if (isDownPressed) {
+                decrementPoints()
+                updatePoints()
+                downRepeatUpdateHandler.postDelayed(DownCountRepeater(), REP_DELAY.toLong())
+            }
         }
     }
     

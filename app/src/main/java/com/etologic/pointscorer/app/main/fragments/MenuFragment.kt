@@ -13,7 +13,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
 import com.etologic.pointscorer.R
-import com.etologic.pointscorer.app.main.activity.MainActivityViewModel.MainScreens.*
+import com.etologic.pointscorer.app.main.activity.MainActivityViewModel.Companion.MainScreens.*
 import com.etologic.pointscorer.app.main.base.BaseMainFragment
 import com.etologic.pointscorer.app.utils.ViewExtensions.hideKeyboard
 import com.etologic.pointscorer.databinding.MenuFragmentBinding
@@ -32,17 +32,17 @@ class MenuFragment : BaseMainFragment() {
     
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initObservers()
         initValues()
-        initInitialPoints()
         initListeners()
     }
     
-    private fun initValues() {
-        errorInitialPointsLiteral = getString(R.string.error_initial_points)
+    private fun initObservers() {
     }
     
-    private fun initInitialPoints() {
+    private fun initValues() {
         binding.etMainInitialPoints?.setText(activityViewModel.getInitialPoints().toString())
+        errorInitialPointsLiteral = getString(R.string.error_initial_points)
     }
     
     private fun initListeners() {
@@ -50,7 +50,7 @@ class MenuFragment : BaseMainFragment() {
             override fun afterTextChanged(p0: Editable?) {
                 p0?.let {
                     try {
-                        activityViewModel.saveInitialPoints(activityViewModel.getInitialPoints())
+                        activityViewModel.saveInitialPoints(p0.toString().toInt())
                     } catch (nfe: NumberFormatException) {
                         binding.etMainInitialPoints?.error = errorInitialPointsLiteral
                     }
@@ -65,8 +65,8 @@ class MenuFragment : BaseMainFragment() {
             AlertDialog.Builder(requireContext(), R.style.Theme_AppCompat_Light_Dialog)
                 .setTitle(R.string.are_you_sure)
                 .setMessage(String.format(ENGLISH, getString(R.string.this_will_restore_all_points), activityViewModel.getInitialPoints()))
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes) { _: DialogInterface?, _: Int ->
+                .setNegativeButton(android.R.string.cancel, null)
+                .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                     binding.etMainInitialPoints?.hideKeyboard()
                     activityViewModel.restoreAllPoints()
                     Toast.makeText(requireContext(), R.string.all_players_points_were_restored, LENGTH_LONG).show()
