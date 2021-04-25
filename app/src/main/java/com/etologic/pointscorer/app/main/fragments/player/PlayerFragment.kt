@@ -13,15 +13,18 @@ import android.view.animation.Animation
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import com.etologic.pointscorer.R
 import com.etologic.pointscorer.R.menu
 import com.etologic.pointscorer.app.main.base.BaseMainFragment
 import com.etologic.pointscorer.app.main.fragments.Game1PlayerFragment.Companion.GAME_1_PLAYER_1_ID
 import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsDialogFragment.PlayerDialogListener
 import com.etologic.pointscorer.app.utils.MyAnimationUtils
+import com.etologic.pointscorer.app.utils.MyAnimationUtils.getUpdateShieldPointsAnimation
 import com.etologic.pointscorer.app.utils.MyConversionUtils
 import com.etologic.pointscorer.databinding.GamePlayerFragmentBinding
 import kotlinx.android.synthetic.main.game_player_fragment.*
+import javax.inject.Inject
 
 class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
     
@@ -38,23 +41,19 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
     }
     
     //FIELDS
+    @Inject
+    internal lateinit var viewModelFactory: PlayerFragmentViewModelFactory
+    private lateinit var viewModel: PlayerFragmentViewModel
     private var _binding: GamePlayerFragmentBinding? = null
     private val binding get() = _binding!!
     private var playerId = 0
-    private var initialPoints = 0
-    private var points = 0
+    private var auxPoints: Int? = null
     private var defaultPlayerColor: Int? = null
     private var playerNameSize = 16
     private var playerNameMarginTop = 0
     private var playerPointsSize = 48
     private var playerPointsMarginTop = 0
     private var popup: PopupMenu? = null
-    private var numberOfPlayersInThisGame: Int = 0
-        get() {
-            if (field == 0)
-                field = playerId / 10
-            return field
-        }
     private lateinit var upRepeatUpdateHandler: Handler
     private lateinit var downRepeatUpdateHandler: Handler
     private lateinit var upAuxPointsFadeOutAnimation: Animation
@@ -63,16 +62,15 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
     private var isDownPressed = false
     private var downCount = 0
     private var upCount = 0
+    private var numberOfPlayersInTheGame = 0
     
     //EVENTS
     override fun onColorChanged(color: Int) {
-        activityViewModel.savePlayerColor(color, playerId)
-        (if (color == 0) defaultPlayerColor else color)?.let { setTextsColor(it) }
+        viewModel.savePlayerColor(color, playerId)
     }
     
     override fun onNameChanged(name: String) {
-        activityViewModel.savePlayerName(playerId, name)
-        binding.etName.setText(name)
+        viewModel.savePlayerName(playerId, name)
     }
     
     //LIFECYCLE
@@ -83,15 +81,18 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
     
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initViewModel()
         initValues()
-        if (playerId > 0) {
-            initName()
-            initPoints()
-            initColors()
-            initShieldAndPoints()
-        }
+        initViews()
         initObservers()
         initListeners()
+        viewModel.getPlayerPoints(playerId)
+        viewModel.getPlayerName(playerId)
+        viewModel.getPlayerColor(playerId)
+    }
+    
+    private fun initViewModel() {
+        viewModel = ViewModelProvider(this, viewModelFactory).get(PlayerFragmentViewModel::class.java)
     }
     
     private fun initValues() {
@@ -100,11 +101,11 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
         downRepeatUpdateHandler = binding.root.handler
         arguments?.let { arguments ->
             playerId = arguments.getInt(KEY_PLAYER_ID)
+            numberOfPlayersInTheGame = playerId / 10
             playerNameSize = arguments.getInt(KEY_PLAYER_NAME_SIZE)
             playerNameMarginTop = arguments.getInt(KEY_PLAYER_NAME_MARGIN_TOP, 8)
             playerPointsSize = arguments.getInt(KEY_PLAYER_POINTS_SIZE)
         }
-        initialPoints = activityViewModel.getInitialPoints()
         upAuxPointsFadeOutAnimation = MyAnimationUtils.getAuxPointsFadeOutAnimation {
             binding.tvUpCount.text = ""
             upCount = 0
@@ -115,8 +116,7 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
         }
     }
     
-    private fun initPoints() {
-        points = activityViewModel.getPlayerPoints(playerId)
+    private fun initViews() {
         with(binding) {
             tvUpCount.textSize = playerPointsSize * 0.5f
             tvDownCount.textSize = playerPointsSize * 0.5f
@@ -124,19 +124,23 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
             tvPointsForAnimation.textSize = playerPointsSize.toFloat()
             tvPointsPlayer.setPadding(0, MyConversionUtils.dpToPx(requireContext(), playerPointsMarginTop), 0, 0)
             tvPointsForAnimation.setPadding(0, MyConversionUtils.dpToPx(requireContext(), playerPointsMarginTop), 0, 0)
-        }
-    }
-    
-    private fun initName() {
-        with(binding) {
             etName.setPadding(0, MyConversionUtils.dpToPx(requireContext(), playerNameMarginTop), 0, 0)
             etName.textSize = playerNameSize.toFloat()
-            etName.setText(activityViewModel.getPlayerName(playerId))
+            ivShield.startAnimation(MyAnimationUtils.getShieldAnimation())
         }
     }
     
-    private fun initColors() {
-        setTextsColor(activityViewModel.getPlayerColor(playerId))
+    private fun initObservers() {
+        viewModel.livePlayerPoints().observe(viewLifecycleOwner, { initShieldPoints(it) })
+        viewModel.livePlayerName().observe(viewLifecycleOwner, { binding.etName.setText(it) })
+        viewModel.livePlayerColor().observe(viewLifecycleOwner, { setTextsColor(it) })
+        activityViewModel.liveShouldRestoreAllPoints().observe(viewLifecycleOwner, { if (it == playerId / 10) restorePlayerPoints() })
+    }
+    
+    private fun initShieldPoints(points: Int) {
+        auxPoints = points
+        updatePoints()
+        viewModel.livePlayerPoints().removeObservers(viewLifecycleOwner)
     }
     
     private fun setTextsColor(color: Int) {
@@ -148,20 +152,22 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
         }
     }
     
-    private fun initShieldAndPoints() {
-        with(binding) {
-            ivShield.startAnimation(MyAnimationUtils.getShieldAnimation())
-            tvPointsForAnimation.startAnimation(MyAnimationUtils.getUpdateShieldPointsAnimation(tvPointsPlayer, tvPointsForAnimation, points))
-        }
+    private fun restorePlayerPoints() {
+        auxPoints = activityViewModel.liveInitialPoints().value!!
+        updatePoints()
     }
     
-    private fun initObservers() {
-        activityViewModel.liveShouldRestoreAllPoints().observe(viewLifecycleOwner, { restorePlayerPointsIfProceed(it) })
-    }
-    
-    private fun restorePlayerPointsIfProceed(numberOfPlayersInTheGameToRestore: Int) {
-        if (numberOfPlayersInTheGameToRestore == numberOfPlayersInThisGame)
-            restorePlayerPoints()
+    private fun updatePoints() {
+        binding.tvUpCount.text = if (upCount != 0) String.format("%+d", upCount) else ""
+        binding.tvDownCount.text = if (downCount != 0) String.format("%+d", downCount) else ""
+        binding.tvPointsForAnimation.startAnimation(
+            getUpdateShieldPointsAnimation(
+                binding.tvPointsPlayer,
+                binding.tvPointsForAnimation,
+                auxPoints!!
+            ) {
+                viewModel.savePlayerPoints(auxPoints!!, playerId)
+            })
     }
     
     @SuppressLint("ClickableViewAccessibility")
@@ -200,16 +206,30 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
             }
             
             btUp.setOnClickListener {
-                incrementPoints()
+                incrementAuxPointsAndCount()
                 updatePoints()
                 tvUpCount.startAnimation(upAuxPointsFadeOutAnimation)
             }
             
             btDown.setOnClickListener {
-                decrementPoints()
+                decrementAuxPointsAndCount()
                 updatePoints()
                 tvDownCount.startAnimation(downAuxPointsFadeOutAnimation)
             }
+        }
+    }
+    
+    private fun incrementAuxPointsAndCount() {
+        if (auxPoints!! < MAX_POINTS) {
+            auxPoints = auxPoints!! + 1
+            upCount++
+        }
+    }
+    
+    private fun decrementAuxPointsAndCount() {
+        if (auxPoints!! > MIN_POINTS) {
+            auxPoints = auxPoints!! - 1
+            downCount--
         }
     }
     
@@ -236,7 +256,7 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
         bundle.putInt(PlayerSettingsDialogFragment.KEY_INITIAL_COLOR, binding.etName.currentTextColor)
         val name =
             if (binding.etName.text == null)
-                activityViewModel.getPlayerName(playerId)
+                viewModel.livePlayerName().value
             else
                 binding.etName.text.toString()
         bundle.putString(PlayerSettingsDialogFragment.KEY_INITIAL_NAME, name)
@@ -253,52 +273,21 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
             name = getString(R.string.your)
         AlertDialog.Builder(requireContext(), R.style.Theme_AppCompat_Light_Dialog)
             .setTitle(R.string.are_you_sure)
-            .setMessage(String.format(getString(R.string.restart_x_points_to_y), name, initialPoints))
+            .setMessage(String.format(getString(R.string.restart_x_points_to_y), name, activityViewModel.liveInitialPoints().value))
             .setNegativeButton(android.R.string.cancel, null)
             .setPositiveButton(android.R.string.ok) { _, _ -> restorePlayerPoints() }
             .create()
             .show()
     }
     
-    private fun restorePlayerPoints() {
-        points = initialPoints
-        updatePoints()
-    }
-    
     private fun askConfirmRestoreGamePlayersPoints() {
         AlertDialog.Builder(requireContext(), R.style.Theme_AppCompat_Light_Dialog)
             .setTitle(R.string.are_you_sure)
-            .setMessage(String.format(getString(R.string.restart_all_points_to_y), initialPoints))
+            .setMessage(String.format(getString(R.string.restart_all_points_to_y), activityViewModel.liveInitialPoints().value))
             .setNegativeButton(android.R.string.cancel, null)
-            .setPositiveButton(android.R.string.ok) { _, _ -> activityViewModel.restoreGamePlayersPoints(numberOfPlayersInThisGame) }
+            .setPositiveButton(android.R.string.ok) { _, _ -> activityViewModel.restoreOneGamePoints(numberOfPlayersInTheGame) }
             .create()
             .show()
-    }
-    
-    private fun incrementPoints() {
-        if (points < MAX_POINTS) {
-            points++
-            upCount++
-        }
-    }
-    
-    private fun decrementPoints() {
-        if (points > MIN_POINTS) {
-            points--
-            downCount--
-        }
-    }
-    
-    private fun updatePoints() {
-        binding.tvUpCount.text = if (upCount != 0) String.format("%+d", upCount) else ""
-        binding.tvDownCount.text = if (downCount != 0) String.format("%+d", downCount) else ""
-        binding.tvPointsForAnimation.startAnimation(MyAnimationUtils.getUpdateShieldPointsAnimation(
-            binding.tvPointsPlayer,
-            binding.tvPointsForAnimation,
-            points
-        ) {
-            activityViewModel.savePlayerPoints(points, playerId)
-        })
     }
     
     //INNER CLASSES
@@ -311,14 +300,13 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
             upAuxPointsFadeOutAnimation.start()
             
             if (isUpPressed) {
-                incrementPoints()
+                incrementAuxPointsAndCount()
                 updatePoints()
                 upRepeatUpdateHandler.postDelayed(UpCountRepeater(), REP_DELAY.toLong())
             }
         }
     }
     
-    //INNER CLASSES
     internal inner class DownCountRepeater : Runnable {
         
         override fun run() {
@@ -328,7 +316,7 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
             downAuxPointsFadeOutAnimation.start()
             
             if (isDownPressed) {
-                decrementPoints()
+                decrementAuxPointsAndCount()
                 updatePoints()
                 downRepeatUpdateHandler.postDelayed(DownCountRepeater(), REP_DELAY.toLong())
             }

@@ -32,17 +32,18 @@ class MenuFragment : BaseMainFragment() {
     
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initObservers()
         initValues()
         initListeners()
     }
     
-    private fun initObservers() {
-    }
-    
     private fun initValues() {
-        binding.etMainInitialPoints?.setText(activityViewModel.getInitialPoints().toString())
         errorInitialPointsLiteral = getString(R.string.error_initial_points)
+        activityViewModel.liveInitialPoints()
+            .observe(viewLifecycleOwner) {
+                binding.etMainInitialPoints?.setText(it.toString())
+                activityViewModel.liveInitialPoints().removeObservers(viewLifecycleOwner)
+            }
+        activityViewModel.loadInitialPoints()
     }
     
     private fun initListeners() {
@@ -64,11 +65,11 @@ class MenuFragment : BaseMainFragment() {
         binding.acbMainResetAllPoints.setOnClickListener {
             AlertDialog.Builder(requireContext(), R.style.Theme_AppCompat_Light_Dialog)
                 .setTitle(R.string.are_you_sure)
-                .setMessage(String.format(ENGLISH, getString(R.string.this_will_restore_all_points), activityViewModel.getInitialPoints()))
+                .setMessage(String.format(ENGLISH, getString(R.string.this_will_restore_all_points), activityViewModel.liveInitialPoints().value))
                 .setNegativeButton(android.R.string.cancel, null)
                 .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                     binding.etMainInitialPoints?.hideKeyboard()
-                    activityViewModel.restoreAllPoints()
+                    activityViewModel.restoreAllGamesPoints()
                     Toast.makeText(requireContext(), R.string.all_players_points_were_restored, LENGTH_LONG).show()
                 }
                 .create()

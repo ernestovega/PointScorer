@@ -3,12 +3,11 @@ package com.etologic.pointscorer.app.main.activity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.etologic.pointscorer.app.main.activity.MainActivityViewModel.Companion.MainScreens.FINISH
 import com.etologic.pointscorer.app.main.activity.MainActivityViewModel.Companion.MainScreens.MENU
 import com.etologic.pointscorer.data.repositories.players.PlayersRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MainActivityViewModel
@@ -16,6 +15,9 @@ class MainActivityViewModel
     
     private val _screen = MutableLiveData<MainScreens>()
     fun liveScreen(): LiveData<MainScreens> = _screen
+    
+    private val _initialPoints = MutableLiveData<Int>()
+    fun liveInitialPoints(): LiveData<Int> = _initialPoints
     
     private val _shouldRestoreAllPoints = MutableLiveData<Int>()
     fun liveShouldRestoreAllPoints(): LiveData<Int> = _shouldRestoreAllPoints
@@ -33,63 +35,28 @@ class MainActivityViewModel
         )
     }
     
-    fun restoreGamePlayersPoints(numberOfPlayers: Int) {
-        _shouldRestoreAllPoints.value = numberOfPlayers //For control where is been executed
-        _shouldRestoreAllPoints.value = 0 //For avoid execution on reloads
-    }
-    
-    fun getInitialPoints() = runBlocking {
-        withContext(Dispatchers.Default) {
-            playersRepository.getInitialPoints()
+    fun loadInitialPoints() {
+        viewModelScope.launch {
+            _initialPoints.postValue(playersRepository.getInitialPoints())
         }
     }
     
-    fun saveInitialPoints(newInitialPoints: Int) = runBlocking {
-        withContext(Dispatchers.Default) {
+    fun saveInitialPoints(newInitialPoints: Int) {
+        viewModelScope.launch {
             playersRepository.saveInitialPoints(newInitialPoints)
+            _initialPoints.postValue(newInitialPoints)
         }
     }
     
-    fun restoreAllPoints() = runBlocking {
-        withContext(Dispatchers.Default) {
+    fun restoreAllGamesPoints() {
+        viewModelScope.launch {
             playersRepository.restoreAllPlayersPoints()
         }
     }
     
-    fun getPlayerPoints(playerId: Int): Int = runBlocking {
-        withContext(Dispatchers.Default) {
-            playersRepository.getPlayerPoints(playerId)
-        }
-    }
-    
-    fun savePlayerPoints(playerId: Int, newPoints: Int) = runBlocking {
-        withContext(Dispatchers.Default) {
-            playersRepository.savePlayerPoints(playerId, newPoints)
-        }
-    }
-    
-    fun getPlayerName(playerId: Int): String = runBlocking {
-        withContext(Dispatchers.Default) {
-            playersRepository.getPlayerName(playerId)
-        }
-    }
-    
-    fun savePlayerName(playerId: Int, newName: String) = runBlocking {
-        withContext(Dispatchers.Default) {
-            playersRepository.savePlayerName(playerId, newName)
-        }
-    }
-    
-    fun getPlayerColor(playerId: Int): Int = runBlocking {
-        withContext(Dispatchers.Default) {
-            playersRepository.getPlayerColor(playerId)
-        }
-    }
-    
-    fun savePlayerColor(playerId: Int, newPlayerColor: Int) = runBlocking {
-        withContext(Dispatchers.Default) {
-            playersRepository.savePlayerColor(playerId, newPlayerColor)
-        }
+    fun restoreOneGamePoints(numberOfPlayersInTheGame: Int) {
+        _shouldRestoreAllPoints.value = numberOfPlayersInTheGame //For control where will be executed
+        _shouldRestoreAllPoints.value = 0 //For avoid execution on reloads
     }
     
     companion object {
