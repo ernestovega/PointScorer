@@ -54,9 +54,9 @@ class PlayersRepository
         sharedPrefsDataSource.getPlayerPoints(playerId, getInitialPoints())
             .also { memoryDataSource.savePlayerPoints(playerId, it) }
     
-    suspend fun savePlayerPoints(playerId: Int, newInitialPoints: Int) {
-        memoryDataSource.savePlayerPoints(playerId, newInitialPoints)
-        sharedPrefsDataSource.savePlayerPoints(playerId, newInitialPoints)
+    suspend fun savePlayerPoints(playerId: Int, newPoints: Int) {
+        memoryDataSource.savePlayerPoints(playerId, newPoints)
+        sharedPrefsDataSource.savePlayerPoints(playerId, newPoints)
     }
     
     suspend fun restoreAllPlayersPoints() {

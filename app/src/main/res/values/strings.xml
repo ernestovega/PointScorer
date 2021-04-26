@@ -2,7 +2,7 @@
     <string name="app_name">Point Scorer</string>
 
     <string name="initial_points">Initial points</string>
-    <string name="min_max_points">[-9999, 9999]</string>
+    <string name="min_max_points">[-999, 9999]</string>
     <string name="reset_all">Reset all points</string>
     <string name="all_players_points_were_restored">All players points were restored</string>
 
