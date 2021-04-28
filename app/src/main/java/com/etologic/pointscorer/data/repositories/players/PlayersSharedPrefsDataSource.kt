@@ -2,8 +2,9 @@ package com.etologic.pointscorer.data.repositories.players
 
 import android.content.Context
 import android.content.SharedPreferences
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import javax.inject.Singleton
 
 class PlayersSharedPrefsDataSource
 @Inject constructor(context: Context) {
@@ -11,38 +12,58 @@ class PlayersSharedPrefsDataSource
     private val sharedPrefs: SharedPreferences = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE)
     
     suspend fun isInitialCheckNotDone(): Boolean =
-        sharedPrefs.getBoolean(KEY_INITIAL_CHECK_DONE, false)
+        withContext(Dispatchers.IO) {
+            sharedPrefs.getBoolean(KEY_INITIAL_CHECK_DONE, false)
+        }
     
     suspend fun saveInitialCheckDone() {
-        sharedPrefs.edit().putBoolean(KEY_INITIAL_CHECK_DONE, true).apply()
+        withContext(Dispatchers.IO) {
+            sharedPrefs.edit().putBoolean(KEY_INITIAL_CHECK_DONE, true).apply()
+        }
     }
     
     suspend fun getInitialPoints(defaultInitialPoints: Int) =
-        sharedPrefs.getInt(KEY_INITIAL_POINTS, defaultInitialPoints)
+        withContext(Dispatchers.IO) {
+            sharedPrefs.getInt(KEY_INITIAL_POINTS, defaultInitialPoints)
+        }
     
     suspend fun saveInitialPoints(newInitialPoints: Int) {
-        sharedPrefs.edit().putInt(KEY_INITIAL_POINTS, newInitialPoints).apply()
+        withContext(Dispatchers.IO) {
+            sharedPrefs.edit().putInt(KEY_INITIAL_POINTS, newInitialPoints).apply()
+        }
     }
     
     suspend fun getPlayerPoints(playerId: Int, initialPoints: Int): Int =
-        sharedPrefs.getInt(getPlayerPointsKey(playerId), initialPoints)
+        withContext(Dispatchers.IO) {
+            sharedPrefs.getInt(getPlayerPointsKey(playerId), initialPoints)
+        }
     
-    suspend fun savePlayerPoints(points: Int, playerId: Int) {
-        sharedPrefs.edit().putInt(getPlayerPointsKey(playerId), points).apply()
+    suspend fun savePlayerPoints(playerId: Int, points: Int) {
+        withContext(Dispatchers.IO) {
+            sharedPrefs.edit().putInt(getPlayerPointsKey(playerId), points).apply()
+        }
     }
     
     suspend fun getPlayerName(playerId: Int, defaultPlayerName: String): String =
-        sharedPrefs.getString(getPlayerNameKey(playerId), defaultPlayerName) ?: defaultPlayerName
+        withContext(Dispatchers.IO) {
+            sharedPrefs.getString(getPlayerNameKey(playerId), defaultPlayerName) ?: defaultPlayerName
+        }
     
     suspend fun savePlayerName(playerId: Int, name: String) {
-        sharedPrefs.edit().putString(getPlayerNameKey(playerId), name).apply()
+        withContext(Dispatchers.IO) {
+            sharedPrefs.edit().putString(getPlayerNameKey(playerId), name).apply()
+        }
     }
     
     suspend fun getPlayerColor(playerId: Int, defaultColor: Int): Int =
-        sharedPrefs.getInt(getPlayerColorKey(playerId), defaultColor)
+        withContext(Dispatchers.IO) {
+            sharedPrefs.getInt(getPlayerColorKey(playerId), defaultColor)
+        }
     
-    suspend fun savePlayerColor(color: Int, playerId: Int) =
-        sharedPrefs.edit().putInt(getPlayerColorKey(playerId), color).apply()
+    suspend fun savePlayerColor(playerId: Int, color: Int) =
+        withContext(Dispatchers.IO) {
+            sharedPrefs.edit().putInt(getPlayerColorKey(playerId), color).apply()
+        }
     
     private fun getPlayerPointsKey(playerId: Int) =
         "$KEY_POINTS$playerId"

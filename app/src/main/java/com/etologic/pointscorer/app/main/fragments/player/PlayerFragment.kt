@@ -3,6 +3,7 @@ package com.etologic.pointscorer.app.main.fragments.player
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.MotionEvent.ACTION_CANCEL
@@ -30,8 +31,6 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
     
     companion object {
         
-        const val MAX_POINTS = 9999
-        const val MIN_POINTS = -999
         const val UNABLED_COUNT = -1_000
         const val KEY_PLAYER_ID = "key_player_id"
         const val KEY_PLAYER_NAME_SIZE = "key_player_name_size"
@@ -53,8 +52,8 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
     private var playerPointsSize = 48
     private var playerPointsMarginTop = 0
     private var popup: PopupMenu? = null
-    private lateinit var upRepeatUpdateHandler: Handler
-    private lateinit var downRepeatUpdateHandler: Handler
+    private val upRepeatUpdateHandler = Handler(Looper.getMainLooper())
+    private val downRepeatUpdateHandler = Handler(Looper.getMainLooper())
     private lateinit var upAuxPointsFadeOutAnimation: Animation
     private lateinit var downAuxPointsFadeOutAnimation: Animation
     private var isUpPressed = false /* https://stackoverflow.com/questions/7938516/continuously-increase-integer-value-as-the-button-is-pressed */
@@ -90,8 +89,6 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
     
     private fun initValues() {
         defaultPlayerColor = ContextCompat.getColor(requireContext(), R.color.white)
-        upRepeatUpdateHandler = binding.root.handler
-        downRepeatUpdateHandler = binding.root.handler
         arguments?.let { arguments ->
             viewModel.playerId = arguments.getInt(KEY_PLAYER_ID)
             playerNameSize = arguments.getInt(KEY_PLAYER_NAME_SIZE)
@@ -129,7 +126,7 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
         viewModel.livePlayerName().observe(viewLifecycleOwner, { updateName(it) })
         viewModel.livePlayerColor().observe(viewLifecycleOwner, { setTextsColor(it) })
         viewModel.livePlayerCount().observe(viewLifecycleOwner, { updateCountPoints(it) })
-        activityViewModel.liveShouldRestoreAllPoints().observe(viewLifecycleOwner, { restorePlayerPoints(it) })
+        activityViewModel.liveShouldRestoreAllPoints.observe(viewLifecycleOwner, { restorePlayerPoints(it) })
     }
     
     private fun updateShieldPoints(points: Int) {
@@ -269,7 +266,7 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
             name = getString(R.string.your)
         AlertDialog.Builder(requireContext(), R.style.Theme_AppCompat_Light_Dialog)
             .setTitle(R.string.are_you_sure)
-            .setMessage(String.format(getString(R.string.restart_x_points_to_y), name, activityViewModel.liveInitialPoints().value))
+            .setMessage(String.format(getString(R.string.restart_x_points_to_y), name, activityViewModel.liveInitialPoints.value))
             .setNegativeButton(android.R.string.cancel, null)
             .setPositiveButton(android.R.string.ok) { _, _ -> restorePlayerPoints(viewModel.gamePlayersNum) }
             .create()
@@ -279,7 +276,7 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
     private fun askConfirmRestoreGamePlayersPoints() {
         AlertDialog.Builder(requireContext(), R.style.Theme_AppCompat_Light_Dialog)
             .setTitle(R.string.are_you_sure)
-            .setMessage(String.format(getString(R.string.restart_all_points_to_y), activityViewModel.liveInitialPoints().value))
+            .setMessage(String.format(getString(R.string.restart_all_points_to_y), activityViewModel.liveInitialPoints.value))
             .setNegativeButton(android.R.string.cancel, null)
             .setPositiveButton(android.R.string.ok) { _, _ -> activityViewModel.restoreOneGamePoints(viewModel.gamePlayersNum!!) }
             .create()

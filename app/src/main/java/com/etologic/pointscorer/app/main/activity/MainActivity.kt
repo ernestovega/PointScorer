@@ -1,12 +1,12 @@
 package com.etologic.pointscorer.app.main.activity
 
 import android.os.Bundle
+import android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.etologic.pointscorer.R
-import com.etologic.pointscorer.app.main.activity.MainActivityViewModel.Companion.MainScreens
 import com.etologic.pointscorer.app.main.activity.MainActivityViewModel.Companion.MainScreens.*
+import com.etologic.pointscorer.app.main.base.BaseXPlayersFragment
 import com.etologic.pointscorer.app.main.fragments.*
 import com.etologic.pointscorer.databinding.MainActivityBinding
 import dagger.android.support.DaggerAppCompatActivity
@@ -24,7 +24,7 @@ class MainActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
         initViewBinding()
         initViewModel()
-        viewModel.navigateTo(MENU)
+        initObservers()
     }
     
     private fun initViewBinding() {
@@ -34,22 +34,23 @@ class MainActivity : DaggerAppCompatActivity() {
     
     private fun initViewModel() {
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainActivityViewModel::class.java)
-        viewModel.liveScreen().observe(this, Observer(this::screenObserver))
     }
     
-    private fun screenObserver(screen: MainScreens) {
-        when (screen) {
-            MENU -> goToFragment(MenuFragment())
-            ONE_PLAYER -> goToFragment(Game1PlayerFragment())
-            TWO_PLAYER -> goToFragment(Game2PlayersFragment())
-            THREE_PLAYER -> goToFragment(Game3PlayersFragment())
-            FOUR_PLAYER -> goToFragment(Game4PlayersFragment())
-            FIVE_PLAYER -> goToFragment(Game5PlayersFragment())
-            SIX_PLAYER -> goToFragment(Game6PlayersFragment())
-            SEVEN_PLAYER -> goToFragment(Game7PlayersFragment())
-            EIGHT_PLAYER -> goToFragment(Game8PlayersFragment())
-            FINISH -> finish()
-        }
+    private fun initObservers() {
+        viewModel.liveScreen.observe(this, {
+            when (it) {
+                MENU -> goToFragment(MenuFragment())
+                ONE_PLAYER -> goToFragment(Game1PlayerFragment())
+                TWO_PLAYER -> goToFragment(Game2PlayersFragment())
+                THREE_PLAYER -> goToFragment(Game3PlayersFragment())
+                FOUR_PLAYER -> goToFragment(Game4PlayersFragment())
+                FIVE_PLAYER -> goToFragment(Game5PlayersFragment())
+                SIX_PLAYER -> goToFragment(Game6PlayersFragment())
+                SEVEN_PLAYER -> goToFragment(Game7PlayersFragment())
+                EIGHT_PLAYER -> goToFragment(Game8PlayersFragment())
+                else -> finish()
+            }
+        })
     }
     
     private fun goToFragment(fragment: Fragment) {
@@ -57,6 +58,15 @@ class MainActivity : DaggerAppCompatActivity() {
             .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
             .replace(R.id.flMain, fragment)
             .commit()
+        
+        handleKeepScreenOn(fragment)
+    }
+    
+    private fun handleKeepScreenOn(fragment: Fragment) {
+        if (fragment is BaseXPlayersFragment)
+            window.addFlags(FLAG_KEEP_SCREEN_ON)
+        else
+            window.clearFlags(FLAG_KEEP_SCREEN_ON)
     }
     
     override fun onBackPressed() {

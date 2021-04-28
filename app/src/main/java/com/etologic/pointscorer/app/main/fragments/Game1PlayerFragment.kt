@@ -24,8 +24,8 @@ class Game1PlayerFragment : BaseXPlayersFragment() {
         val nameSize = ResourcesCompat.getFloat(resources, R.dimen.nameSize1P).toInt()//36
         val nameMarginTop = ResourcesCompat.getFloat(resources, R.dimen.nameMarginTop1P).toInt()//48
         val pointsSize = ResourcesCompat.getFloat(resources, R.dimen.pointsSize1P).toInt()//100
+        
         initPlayerFragment(GAME_1_PLAYER_1_ID, R.id.flPlayer11, nameSize, nameMarginTop, pointsSize)
-        //ToDo: requireActivity().window.addFlags(FLAG_KEEP_SCREEN_ON)
     }
     
     companion object {

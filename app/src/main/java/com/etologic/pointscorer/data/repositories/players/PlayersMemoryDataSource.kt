@@ -10,28 +10,27 @@ class PlayersMemoryDataSource
     private var playersNames: MutableMap<Int, String> = mutableMapOf()
     private var playersColors: MutableMap<Int, Int> = mutableMapOf()
     
-    suspend fun getInitialPoints() = initialPoints
+    fun getInitialPoints() = initialPoints
     
-    suspend fun getPlayerPoints(playerId: Int) = playersPoints[playerId]
+    fun getPlayerPoints(playerId: Int) = playersPoints[playerId]
     
-    suspend fun getPlayerName(playerId: Int) = playersNames[playerId]
+    fun getPlayerName(playerId: Int) = playersNames[playerId]
     
-    suspend fun getPlayerColor(playerId: Int) = playersColors[playerId]
+    fun getPlayerColor(playerId: Int) = playersColors[playerId]
     
-    suspend fun saveInitialPoints(initialPoints: Int) {
+    fun saveInitialPoints(initialPoints: Int) {
         this.initialPoints = initialPoints
     }
     
-    suspend fun savePlayerPoints(playerId: Int, points: Int) {
+    fun savePlayerPoints(playerId: Int, points: Int) {
         playersPoints[playerId] = points
     }
     
-    suspend fun savePlayerName(playerId: Int, name: String) {
+    fun savePlayerName(playerId: Int, name: String) {
         playersNames[playerId] = name
     }
     
-    suspend fun savePlayerColor(playerId: Int, color: Int) {
+    fun savePlayerColor(playerId: Int, color: Int) {
         playersColors[playerId] = color
     }
-    
 }

@@ -14,13 +14,15 @@ class MainActivityViewModel
 @Inject internal constructor(private val playersRepository: PlayersRepository) : ViewModel() {
     
     private val _screen = MutableLiveData<MainScreens>()
-    fun liveScreen(): LiveData<MainScreens> = _screen
-    
     private val _initialPoints = MutableLiveData<Int>()
-    fun liveInitialPoints(): LiveData<Int> = _initialPoints
-    
     private val _shouldRestoreAllPoints = MutableLiveData<Int>()
-    fun liveShouldRestoreAllPoints(): LiveData<Int> = _shouldRestoreAllPoints
+    val liveScreen: LiveData<MainScreens> = _screen
+    val liveInitialPoints: LiveData<Int> = _initialPoints
+    val liveShouldRestoreAllPoints: LiveData<Int> = _shouldRestoreAllPoints
+    
+    init {
+        navigateTo(MENU)
+    }
     
     fun navigateTo(screen: MainScreens) {
         _screen.postValue(screen)
@@ -35,7 +37,7 @@ class MainActivityViewModel
         )
     }
     
-    fun loadInitialPoints() {
+    fun getInitialPoints() {
         viewModelScope.launch {
             _initialPoints.postValue(playersRepository.getInitialPoints())
         }

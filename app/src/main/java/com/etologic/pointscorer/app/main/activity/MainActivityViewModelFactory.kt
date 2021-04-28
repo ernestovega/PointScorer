@@ -9,5 +9,5 @@ class MainActivityViewModelFactory
 @Inject internal constructor(private val playersRepository: PlayersRepository) : ViewModelProvider.NewInstanceFactory() {
     
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T = MainActivityViewModel(playersRepository) as T
+    override fun <T : ViewModel> create(modelClass: Class<T>): T = MainActivityViewModel(playersRepository,) as T
 }

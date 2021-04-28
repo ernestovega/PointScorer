@@ -38,12 +38,11 @@ class MenuFragment : BaseMainFragment() {
     
     private fun initValues() {
         errorInitialPointsLiteral = getString(R.string.error_initial_points)
-        activityViewModel.liveInitialPoints()
-            .observe(viewLifecycleOwner) {
-                binding.etMainInitialPoints?.setText(it.toString())
-                activityViewModel.liveInitialPoints().removeObservers(viewLifecycleOwner)
-            }
-        activityViewModel.loadInitialPoints()
+        activityViewModel.liveInitialPoints.observe(viewLifecycleOwner) {
+            binding.etMainInitialPoints?.setText(it.toString())
+            activityViewModel.liveInitialPoints.removeObservers(viewLifecycleOwner)
+        }
+        activityViewModel.getInitialPoints()
     }
     
     private fun initListeners() {
@@ -65,7 +64,7 @@ class MenuFragment : BaseMainFragment() {
         binding.acbMainResetAllPoints.setOnClickListener {
             AlertDialog.Builder(requireContext(), R.style.Theme_AppCompat_Light_Dialog)
                 .setTitle(R.string.are_you_sure)
-                .setMessage(String.format(ENGLISH, getString(R.string.this_will_restore_all_points), activityViewModel.liveInitialPoints().value))
+                .setMessage(String.format(ENGLISH, getString(R.string.this_will_restore_all_points), activityViewModel.liveInitialPoints.value))
                 .setNegativeButton(android.R.string.cancel, null)
                 .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                     binding.etMainInitialPoints?.hideKeyboard()

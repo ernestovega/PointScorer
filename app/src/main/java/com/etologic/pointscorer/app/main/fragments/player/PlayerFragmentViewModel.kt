@@ -4,11 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.etologic.pointscorer.app.main.fragments.player.PlayerFragment.Companion.MAX_POINTS
-import com.etologic.pointscorer.app.main.fragments.player.PlayerFragment.Companion.MIN_POINTS
 import com.etologic.pointscorer.app.main.fragments.player.PlayerFragment.Companion.UNABLED_COUNT
 import com.etologic.pointscorer.data.repositories.players.PlayersRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,62 +32,59 @@ class PlayerFragmentViewModel
     fun livePlayerCount(): LiveData<Int> = _playerCount
     
     init {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             _playerName.postValue(playersRepository.getPlayerName(playerId))
             _playerColor.postValue(playersRepository.getPlayerColor(playerId))
             _playerPoints.postValue(playersRepository.getPlayerPoints(playerId))
+            _playerCount.postValue(UNABLED_COUNT)
         }
-        _playerCount.value = UNABLED_COUNT
     }
     
     fun upClicked() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val playerPoints = playersRepository.getPlayerPoints(playerId)
-            if (playerPoints < MAX_POINTS) {
-                val newPoints = playerPoints + 1
-                playersRepository.savePlayerPoints(playerId, newPoints)
-                _playerPoints.postValue(newPoints)
-                _playerCount.postValue(if (_playerCount.value == UNABLED_COUNT) 1 else _playerCount.value?.plus(1))
-            }
+        viewModelScope.launch {
+            val newPoints = playersRepository.plus1PlayerPoint(playerId)
+            _playerPoints.postValue(newPoints)
+            _playerCount.postValue(if (_playerCount.value == UNABLED_COUNT) 1 else _playerCount.value?.plus(1))
         }
     }
     
     fun downClicked() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val playerPoints = playersRepository.getPlayerPoints(playerId)
-            if (playerPoints > MIN_POINTS) {
-                val newPoints = playerPoints - 1
-                playersRepository.savePlayerPoints(playerId, newPoints)
-                _playerPoints.postValue(newPoints)
-                _playerCount.postValue(if (_playerCount.value == UNABLED_COUNT) -1 else _playerCount.value?.minus(1))
-            }
+        viewModelScope.launch {
+            val newPoints = playersRepository.minus1PlayerPoint(playerId)
+            _playerPoints.postValue(newPoints)
+            _playerCount.postValue(if (_playerCount.value == UNABLED_COUNT) -1 else _playerCount.value?.minus(1))
         }
     }
     
     fun savePlayerName(newName: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             playersRepository.savePlayerName(playerId, newName)
             _playerName.postValue(newName)
         }
     }
     
     fun savePlayerColor(newColor: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             playersRepository.savePlayerColor(playerId, newColor)
             _playerColor.postValue(newColor)
         }
     }
     
     fun restorePlayerPoints() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val initialPoints = playersRepository.getInitialPoints()
-            playersRepository.savePlayerPoints(playerId, initialPoints)
+            playersRepository.resetPlayerPoints(playerId)
             _playerPoints.postValue(initialPoints)
         }
     }
     
     fun countAnimationEnded() {
         _playerCount.postValue(UNABLED_COUNT)
+    }
+    
+    override fun onCleared() {
+        super.onCleared()
+        playersRepository.invalidate()
     }
     
 }
