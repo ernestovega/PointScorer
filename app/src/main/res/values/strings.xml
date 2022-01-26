@@ -3,7 +3,7 @@
 
     <string name="initial_points">Initial points</string>
     <string name="min_max_points">[-999, 9999]</string>
-    <string name="reset_all">Reset all points</string>
+    <string name="reset_all">Reset all</string>
     <string name="all_players_points_were_restored">All players points were restored</string>
 
     <string name="one_player">One player</string>
