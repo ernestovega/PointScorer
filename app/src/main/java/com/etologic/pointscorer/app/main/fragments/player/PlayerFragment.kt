@@ -39,7 +39,7 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
         const val REP_DELAY = 100
         private const val RESTORE_ALL_POINTS_ITEM_INDEX = 2
     }
-    
+    Ya puede probarse en la versión 4.6.7.0.beta5 de ONE y Marca en todos los entornos en Firebase.
     //FIELDS
     @Inject
     internal lateinit var viewModelFactory: PlayerFragmentViewModelFactory
@@ -228,7 +228,7 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
     
     private fun buildPopupMenu() {
         popup = PopupMenu(requireActivity(), binding.ibMenu)
-        popup!!.setOnMenuItemClickListener { item: MenuItem ->
+        popup?.setOnMenuItemClickListener { item: MenuItem ->
             when (item.itemId) {
                 R.id.menu_edit_player -> showPlayerDialog()
                 R.id.menu_restart_points -> askConfirmRestorePlayerPoints()
@@ -237,9 +237,9 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
             }
             true
         }
-        popup!!.inflate(menu.game_player_menu)
+        popup?.inflate(menu.game_player_menu)
         if (viewModel.playerId == GAME_1_PLAYER_1_ID)
-            popup!!.menu.getItem(RESTORE_ALL_POINTS_ITEM_INDEX)?.isVisible = false
+            popup?.menu?.getItem(RESTORE_ALL_POINTS_ITEM_INDEX)?.isVisible = false
     }
     
     private fun showPlayerDialog() {
