@@ -25,12 +25,13 @@ import com.etologic.pointscorer.app.utils.MyAnimationUtils.getUpdateShieldPoints
 import com.etologic.pointscorer.app.utils.MyConversionUtils
 import com.etologic.pointscorer.databinding.GamePlayerFragmentBinding
 import kotlinx.android.synthetic.main.game_player_fragment.*
+import java.util.*
 import javax.inject.Inject
 
-class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
-    
+class PlayerFragment : BaseMainFragment() {
+
     companion object {
-        
+
         const val UNABLED_COUNT = -1_000
         const val KEY_PLAYER_ID = "key_player_id"
         const val KEY_PLAYER_NAME_SIZE = "key_player_name_size"
@@ -39,7 +40,7 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
         const val REP_DELAY = 100
         private const val RESTORE_ALL_POINTS_ITEM_INDEX = 2
     }
-    Ya puede probarse en la versión 4.6.7.0.beta5 de ONE y Marca en todos los entornos en Firebase.
+
     //FIELDS
     @Inject
     internal lateinit var viewModelFactory: PlayerFragmentViewModelFactory
@@ -58,22 +59,12 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
     private lateinit var downAuxPointsFadeOutAnimation: Animation
     private var isUpPressed = false /* https://stackoverflow.com/questions/7938516/continuously-increase-integer-value-as-the-button-is-pressed */
     private var isDownPressed = false
-    
-    //EVENTS
-    override fun onColorChanged(color: Int) {
-        viewModel.savePlayerColor(color)
-    }
-    
-    override fun onNameChanged(name: String) {
-        viewModel.savePlayerName(name)
-    }
-    
-    //LIFECYCLE
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = GamePlayerFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
-    
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViewModel()
@@ -82,11 +73,11 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
         initObservers()
         initListeners()
     }
-    
+
     private fun initViewModel() {
         viewModel = ViewModelProvider(this, viewModelFactory).get(PlayerFragmentViewModel::class.java)
     }
-    
+
     private fun initValues() {
         defaultPlayerColor = ContextCompat.getColor(requireContext(), R.color.white)
         arguments?.let { arguments ->
@@ -96,7 +87,7 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
             playerPointsSize = arguments.getInt(KEY_PLAYER_POINTS_SIZE)
         }
     }
-    
+
     private fun initViews() {
         with(binding) {
             tvUpCount.textSize = playerPointsSize * 0.5f
@@ -120,23 +111,27 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
             ivShield.startAnimation(MyAnimationUtils.shieldAnimation)
         }
     }
-    
+
     private fun initObservers() {
-        viewModel.livePlayerPoints().observe(viewLifecycleOwner, { updateShieldPoints(it) })
-        viewModel.livePlayerName().observe(viewLifecycleOwner, { updateName(it) })
-        viewModel.livePlayerColor().observe(viewLifecycleOwner, { setTextsColor(it) })
-        viewModel.livePlayerCount().observe(viewLifecycleOwner, { updateCountPoints(it) })
-        activityViewModel.liveShouldRestoreAllPoints.observe(viewLifecycleOwner, { restorePlayerPoints(it) })
+        viewModel.livePlayerPoints().observe(viewLifecycleOwner) { updateShieldPoints(it) }
+        viewModel.livePlayerName().observe(viewLifecycleOwner) { updateName(it) }
+        viewModel.livePlayerColor().observe(viewLifecycleOwner) { setTextsColor(it) }
+        viewModel.livePlayerCount().observe(viewLifecycleOwner) { updateCountPoints(it) }
+        activityViewModel.liveShouldRestoreAllPoints.observe(viewLifecycleOwner) { restorePlayerPoints(it) }
     }
-    
+
     private fun updateShieldPoints(points: Int) {
-        tvPointsForAnimation.startAnimation(getUpdateShieldPointsAnimation(tvPointsPlayer, tvPointsForAnimation, points))
+        if (viewModel.playerAnimatePoints) {
+            tvPointsForAnimation.startAnimation(getUpdateShieldPointsAnimation(tvPointsPlayer, tvPointsForAnimation, points))
+        } else {
+            tvPointsPlayer.text = String.format(Locale.getDefault(), "%d", points)
+        }
     }
-    
+
     private fun updateName(it: String) {
         binding.etName.setText(it)
     }
-    
+
     private fun setTextsColor(color: Int) {
         with(binding) {
             etName.setTextColor(color)
@@ -145,7 +140,7 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
             tvPointsForAnimation.setTextColor(color)
         }
     }
-    
+
     private fun updateCountPoints(count: Int) {
         if (count != UNABLED_COUNT) {
             with(binding) {
@@ -175,12 +170,12 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
             }
         }
     }
-    
+
     private fun restorePlayerPoints(playersNum: Int?) {
         if (playersNum == viewModel.gamePlayersNum)
             viewModel.restorePlayerPoints()
     }
-    
+
     @SuppressLint("ClickableViewAccessibility")
     private fun initListeners() {
         with(binding) {
@@ -189,17 +184,17 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
                     buildPopupMenu()
                 popup!!.show()
             }
-            
+
             btUp.setOnLongClickListener {
                 isUpPressed = true
                 upRepeatUpdateHandler.post(UpCountRepeater())
             }
-            
+
             btDown.setOnLongClickListener {
                 isDownPressed = true
                 downRepeatUpdateHandler.post(DownCountRepeater())
             }
-            
+
             btUp.setOnTouchListener { _, motionEvent ->
                 val isActionUp = motionEvent.action == ACTION_UP
                 val isActionCancel = motionEvent.action == ACTION_CANCEL
@@ -207,7 +202,7 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
                     isUpPressed = false
                 false
             }
-            
+
             btDown.setOnTouchListener { _, motionEvent ->
                 val isActionUp = motionEvent.action == ACTION_UP
                 val isActionCancel = motionEvent.action == ACTION_CANCEL
@@ -215,17 +210,17 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
                     isDownPressed = false
                 false
             }
-            
+
             btUp.setOnClickListener {
                 viewModel.upClicked()
             }
-            
+
             btDown.setOnClickListener {
                 viewModel.downClicked()
             }
         }
     }
-    
+
     private fun buildPopupMenu() {
         popup = PopupMenu(requireActivity(), binding.ibMenu)
         popup?.setOnMenuItemClickListener { item: MenuItem ->
@@ -241,11 +236,11 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
         if (viewModel.playerId == GAME_1_PLAYER_1_ID)
             popup?.menu?.getItem(RESTORE_ALL_POINTS_ITEM_INDEX)?.isVisible = false
     }
-    
+
     private fun showPlayerDialog() {
         val playerDialogFragment = PlayerSettingsDialogFragment()
         val bundle = Bundle()
-        
+
         bundle.putInt(PlayerSettingsDialogFragment.KEY_INITIAL_COLOR, binding.etName.currentTextColor)
         val name =
             if (binding.etName.text == null)
@@ -253,13 +248,26 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
             else
                 binding.etName.text.toString()
         bundle.putString(PlayerSettingsDialogFragment.KEY_INITIAL_NAME, name)
-        
+
         playerDialogFragment.arguments = bundle
-        playerDialogFragment.setPlayerDialogListener(this)
-        
+        playerDialogFragment.setPlayerDialogListener(object : PlayerDialogListener {
+
+            override fun onColorChanged(color: Int) {
+                viewModel.savePlayerColor(color)
+            }
+
+            override fun onNameChanged(name: String) {
+                viewModel.savePlayerName(name)
+            }
+
+            override fun onUseAnimationChanged(animate: Boolean) {
+                viewModel.animatePoints(animate)
+            }
+        })
+
         playerDialogFragment.show(requireActivity().supportFragmentManager, PlayerSettingsDialogFragment.TAG)
     }
-    
+
     private fun askConfirmRestorePlayerPoints() {
         var name = (binding.etName.text ?: "").toString()
         if (name.isBlank())
@@ -272,7 +280,7 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
             .create()
             .show()
     }
-    
+
     private fun askConfirmRestoreGamePlayersPoints() {
         AlertDialog.Builder(requireContext(), R.style.Theme_AppCompat_Light_Dialog)
             .setTitle(R.string.are_you_sure)
@@ -282,10 +290,10 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
             .create()
             .show()
     }
-    
+
     //INNER CLASSES
     internal inner class UpCountRepeater : Runnable {
-        
+
         override fun run() {
             if (isUpPressed) {
                 viewModel.upClicked()
@@ -293,9 +301,9 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
             }
         }
     }
-    
+
     internal inner class DownCountRepeater : Runnable {
-        
+
         override fun run() {
             if (isDownPressed) {
                 viewModel.downClicked()
@@ -303,5 +311,5 @@ class PlayerFragment : BaseMainFragment(), PlayerDialogListener {
             }
         }
     }
-    
+
 }

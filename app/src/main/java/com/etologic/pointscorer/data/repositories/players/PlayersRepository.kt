@@ -109,7 +109,17 @@ class PlayersRepository
         memoryDataSource.savePlayerColor(playerId, newInitialColor)
         sharedPrefsDataSource.savePlayerColor(playerId, newInitialColor)
     }
-    
+
+    suspend fun getPlayerAnimatePoints(playerId: Int): Boolean =
+        memoryDataSource.getPlayerAnimatePoints(playerId)
+            ?: sharedPrefsDataSource.getPlayerAnimatePoints(playerId)
+                .also { memoryDataSource.savePlayerAnimatePoints(playerId, it) }
+
+    suspend fun savePlayerAnimatePoints(playerId: Int, animate: Boolean) {
+        memoryDataSource.savePlayerAnimatePoints(playerId, animate)
+        sharedPrefsDataSource.savePlayerAnimatePoints(playerId, animate)
+    }
+
     fun invalidate() {
         coroutineContext.job.cancel()
     }

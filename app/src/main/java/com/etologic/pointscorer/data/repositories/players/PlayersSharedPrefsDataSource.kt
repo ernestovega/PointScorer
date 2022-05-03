@@ -64,6 +64,16 @@ class PlayersSharedPrefsDataSource
         withContext(Dispatchers.IO) {
             sharedPrefs.edit().putInt(getPlayerColorKey(playerId), color).apply()
         }
+
+    suspend fun getPlayerAnimatePoints(playerId: Int): Boolean =
+        withContext(Dispatchers.IO) {
+            sharedPrefs.getBoolean(getPlayerAnimatePointsKey(playerId), true)
+        }
+
+    suspend fun savePlayerAnimatePoints(playerId: Int, animate: Boolean) =
+        withContext(Dispatchers.IO) {
+            sharedPrefs.edit().putBoolean(getPlayerAnimatePointsKey(playerId), animate).apply()
+        }
     
     private fun getPlayerPointsKey(playerId: Int) =
         "$KEY_POINTS$playerId"
@@ -73,6 +83,9 @@ class PlayersSharedPrefsDataSource
     
     private fun getPlayerColorKey(playerId: Int) =
         "$KEY_COLOR$playerId"
+
+    private fun getPlayerAnimatePointsKey(playerId: Int) =
+        "$KEY_ANIMATE_POINTS$playerId"
     
     companion object {
         
@@ -82,5 +95,6 @@ class PlayersSharedPrefsDataSource
         private const val KEY_NAME = "name_player_"
         private const val KEY_POINTS = "points_player_"
         private const val KEY_COLOR = "color_player_"
+        private const val KEY_ANIMATE_POINTS = "animate_points_player_"
     }
 }

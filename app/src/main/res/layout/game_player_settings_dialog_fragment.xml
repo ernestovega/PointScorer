@@ -130,6 +130,17 @@
 
             </LinearLayout>
 
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/cbUseAnimation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                app:buttonTint="@color/colorAccent"
+                android:fontFamily="@font/rock_on"
+                android:text="@string/animate_points"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btOk"
                 style="?borderlessButtonStyle"
@@ -141,7 +152,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
                 android:background="@color/ripple"
-                android:text="@android:string/ok"
+                android:text="@string/ok"
                 android:textColor="@color/red" />
 
         </LinearLayout>

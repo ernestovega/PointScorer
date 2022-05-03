@@ -35,15 +35,17 @@
     <string name="player_7_options">Player 7 options</string>
     <string name="player_8_options">Player 8 options</string>
 
+    <string name="animate_points">Animate points</string>
     <string name="restore_points">Restore points</string>
     <string name="restore_all_points">Restore all points</string>
     <string name="this_will_restore_all_points">This will restore everybody\'s points to %d</string>
     <string name="error_initial_points">Please enter a valid number, must be less than 10.000.</string>
-    <string name="name_and_color">Name and color</string>
+    <string name="settings">Settings</string>
     <string name="close">Close</string>
     <string name="are_you_sure">Are you sure?</string>
     <string name="restart_x_points_to_y">This will restore %s points to %d</string>
     <string name="your">your</string>
     <string name="restart_all_points_to_y">This will restore everybody\'s points to %d</string>
+    <string name="ok">Ok</string>
 
 </resources>

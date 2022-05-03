@@ -10,27 +10,30 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import com.etologic.pointscorer.R
 import com.etologic.pointscorer.app.utils.ViewExtensions.hideKeyboard
-import com.etologic.pointscorer.databinding.GamePlayerSettingsDialogfragmentBinding
+import com.etologic.pointscorer.databinding.GamePlayerSettingsDialogFragmentBinding
 
 class PlayerSettingsDialogFragment : DialogFragment() {
-    
+
     companion object {
-        
+
         const val TAG = "PlayerSettingsDialogFragment"
         const val KEY_INITIAL_COLOR = "key_initial_color"
         const val KEY_INITIAL_NAME = "key_initial_name"
+        const val KEY_USE_ANIMATION = "key_use_animation"
     }
-    
+
     interface PlayerDialogListener {
-        
+
         fun onColorChanged(color: Int)
         fun onNameChanged(name: String)
+        fun onUseAnimationChanged(animate: Boolean)
     }
-    
-    private var _binding: GamePlayerSettingsDialogfragmentBinding? = null
+
+    private var _binding: GamePlayerSettingsDialogFragmentBinding? = null
     private val binding get() = _binding!!
     private var initialColor: Int? = null
     private var initialName: String? = null
+    private var useAnimation: Boolean = true
     private var playerDialogListener: PlayerDialogListener? = null
     private var redColor: Int? = null
     private var orangeColor: Int? = null
@@ -49,25 +52,26 @@ class PlayerSettingsDialogFragment : DialogFragment() {
     private var purpleTransparentColor: Int? = null
     private var pinkTransparentColor: Int? = null
     private var blackTransparentColor: Int? = null
-    
+
     internal fun setPlayerDialogListener(playerDialogListener: PlayerDialogListener?) {
         this.playerDialogListener = playerDialogListener
     }
-    
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = GamePlayerSettingsDialogfragmentBinding.inflate(inflater, container, false)
+        _binding = GamePlayerSettingsDialogFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
-    
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initValues()
         initName()
         selectColor(initialColor)
+        markUseAnimation(useAnimation)
         initListeners()
         binding.etName.requestFocus()
     }
-    
+
     private fun initValues() {
         redColor = ContextCompat.getColor(requireContext(), R.color.red)
         orangeColor = ContextCompat.getColor(requireContext(), R.color.orange)
@@ -89,15 +93,22 @@ class PlayerSettingsDialogFragment : DialogFragment() {
         arguments?.let { arguments ->
             initialColor = whiteColor?.let { arguments.getInt(KEY_INITIAL_COLOR, it) }
             initialName = arguments.getString(KEY_INITIAL_NAME, getString(R.string.player_name))
+            useAnimation = arguments.getBoolean(KEY_USE_ANIMATION, true)
         }
     }
-    
+
     private fun initName() {
         binding.etName.setText(initialName)
         initialColor?.let { binding.etName.setTextColor(it) }
     }
-    
+
     private fun selectColor(selectedColor: Int?) {
+
+        fun setNameColor(textColor: Int?, hintColor: Int?) {
+            textColor?.let { binding.etName.setTextColor(it) }
+            hintColor?.let { binding.etName.setHintTextColor(it) }
+        }
+
         with(binding) {
             vColorRed.isSelected = false
             vColorOrange.isSelected = false
@@ -143,16 +154,15 @@ class PlayerSettingsDialogFragment : DialogFragment() {
             }
         }
     }
-    
-    private fun setNameColor(textColor: Int?, hintColor: Int?) {
-        textColor?.let { binding.etName.setTextColor(it) }
-        hintColor?.let { binding.etName.setHintTextColor(it) }
+
+    private fun markUseAnimation(animate: Boolean) {
+        binding.cbUseAnimation.isChecked = animate
     }
-    
+
     private fun initListeners() {
         with(binding) {
             etName.doOnTextChanged { text, _, _, _ -> playerDialogListener?.onNameChanged((text ?: "").toString()) }
-            
+
             vColorRed.setOnClickListener {
                 selectColor(redColor)
                 redColor?.let { color -> playerDialogListener?.onColorChanged(color) }
@@ -185,26 +195,30 @@ class PlayerSettingsDialogFragment : DialogFragment() {
                 selectColor(whiteColor)
                 whiteColor?.let { color -> playerDialogListener?.onColorChanged(color) }
             }
-            
+
+            cbUseAnimation.setOnCheckedChangeListener { _, isChecked ->
+                playerDialogListener?.onUseAnimationChanged(isChecked)
+            }
+
             btOk.setOnClickListener {
                 etName.hideKeyboard()
                 dismiss()
             }
         }
     }
-    
+
     override fun onStart() {
         super.onStart()
         dialog?.window?.setLayout(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
         dialog?.window?.setBackgroundDrawable(null)
         dialog?.setCancelable(false)
     }
-    
+
     override fun onResume() {
         super.onResume()
         if (!isAdded) dismiss()
     }
-    
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
