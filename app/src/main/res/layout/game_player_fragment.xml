@@ -44,29 +44,6 @@
         android:visibility="invisible"
         tools:text="100" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btUp"
-            style="?borderlessButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@drawable/ripple_effect_green" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btDown"
-            style="?borderlessButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@drawable/ripple_effect_red" />
-
-    </LinearLayout>
-
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvUpCount"
         android:layout_width="wrap_content"
@@ -99,6 +76,29 @@
         android:textColor="@color/red"
         android:textSize="50sp"
         tools:text="-23" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btUp"
+            style="?borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/ripple_effect_green" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btDown"
+            style="?borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/ripple_effect_red" />
+
+    </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/ibMenu"
