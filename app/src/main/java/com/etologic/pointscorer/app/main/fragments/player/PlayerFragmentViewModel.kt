@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.etologic.pointscorer.app.main.fragments.player.PlayerFragment.Companion.UNABLED_COUNT
+import com.etologic.pointscorer.app.main.fragments.player.PlayerFragment.Companion.DISABLED_COUNT
 import com.etologic.pointscorer.data.repositories.players.PlayersRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -35,7 +35,7 @@ class PlayerFragmentViewModel
             _playerColor.postValue(playersRepository.getPlayerColor(playerId))
             _playerPoints.postValue(playersRepository.getPlayerPoints(playerId))
             playerAnimatePoints = playersRepository.getPlayerAnimatePoints(playerId)
-            _playerCount.postValue(UNABLED_COUNT)
+            _playerCount.postValue(DISABLED_COUNT)
         }
     }
 
@@ -43,7 +43,7 @@ class PlayerFragmentViewModel
         viewModelScope.launch {
             val newPoints = playersRepository.plus1PlayerPoint(playerId)
             _playerPoints.postValue(newPoints)
-            _playerCount.postValue(if (_playerCount.value == UNABLED_COUNT) 1 else _playerCount.value?.plus(1))
+            _playerCount.postValue(if (_playerCount.value == DISABLED_COUNT) 1 else _playerCount.value?.plus(1))
         }
     }
 
@@ -51,7 +51,7 @@ class PlayerFragmentViewModel
         viewModelScope.launch {
             val newPoints = playersRepository.minus1PlayerPoint(playerId)
             _playerPoints.postValue(newPoints)
-            _playerCount.postValue(if (_playerCount.value == UNABLED_COUNT) -1 else _playerCount.value?.minus(1))
+            _playerCount.postValue(if (_playerCount.value == DISABLED_COUNT) -1 else _playerCount.value?.minus(1))
         }
     }
 
@@ -85,7 +85,7 @@ class PlayerFragmentViewModel
     }
 
     fun countAnimationEnded() {
-        _playerCount.postValue(UNABLED_COUNT)
+        _playerCount.postValue(DISABLED_COUNT)
     }
 
     override fun onCleared() {

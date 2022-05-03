@@ -30,28 +30,16 @@ import javax.inject.Inject
 
 class PlayerFragment : BaseMainFragment() {
 
-    companion object {
-
-        const val UNABLED_COUNT = -1_000
-        const val KEY_PLAYER_ID = "key_player_id"
-        const val KEY_PLAYER_NAME_SIZE = "key_player_name_size"
-        const val KEY_PLAYER_NAME_MARGIN_TOP = "key_player_name_margin_top"
-        const val KEY_PLAYER_POINTS_SIZE = "key_player_points_size"
-        const val REP_DELAY = 100
-        private const val RESTORE_ALL_POINTS_ITEM_INDEX = 2
-    }
-
-    //FIELDS
     @Inject
     internal lateinit var viewModelFactory: PlayerFragmentViewModelFactory
     private lateinit var viewModel: PlayerFragmentViewModel
     private var _binding: GamePlayerFragmentBinding? = null
     private val binding get() = _binding!!
     private var defaultPlayerColor: Int? = null
-    private var playerNameSize = 16
-    private var playerNameMarginTop = 0
-    private var playerPointsSize = 48
-    private var playerPointsMarginTop = 0
+    private var playerNameSize = DEFAULT_PLAYER_NAME_SIZE
+    private var playerNameMarginTop = DEFAULT_PLAYER_NAME_MARGIN_TOP
+    private var playerPointsSize = DEFAULT_PLAYER_POINTS_SIZE
+    private var playerPointsMarginTop = DEFAULT_PLAYER_POINTS_MARGIN_TOP
     private var popup: PopupMenu? = null
     private val upRepeatUpdateHandler = Handler(Looper.getMainLooper())
     private val downRepeatUpdateHandler = Handler(Looper.getMainLooper())
@@ -142,7 +130,7 @@ class PlayerFragment : BaseMainFragment() {
     }
 
     private fun updateCountPoints(count: Int) {
-        if (count != UNABLED_COUNT) {
+        if (count != DISABLED_COUNT) {
             with(binding) {
                 val countText by lazy { String.format("%+d", count) }
                 when {
@@ -291,7 +279,12 @@ class PlayerFragment : BaseMainFragment() {
             .show()
     }
 
-    //INNER CLASSES
+    override fun onDestroy() {
+        _binding = null
+        super.onDestroy()
+    }
+
+
     internal inner class UpCountRepeater : Runnable {
 
         override fun run() {
@@ -310,6 +303,22 @@ class PlayerFragment : BaseMainFragment() {
                 downRepeatUpdateHandler.postDelayed(DownCountRepeater(), REP_DELAY.toLong())
             }
         }
+    }
+
+
+    companion object {
+
+        const val DISABLED_COUNT = -1_000
+        const val KEY_PLAYER_ID = "key_player_id"
+        const val KEY_PLAYER_NAME_SIZE = "key_player_name_size"
+        const val KEY_PLAYER_NAME_MARGIN_TOP = "key_player_name_margin_top"
+        const val KEY_PLAYER_POINTS_SIZE = "key_player_points_size"
+        const val REP_DELAY = 100
+        private const val RESTORE_ALL_POINTS_ITEM_INDEX = 2
+        private const val DEFAULT_PLAYER_NAME_SIZE = 16
+        private const val DEFAULT_PLAYER_NAME_MARGIN_TOP = 0
+        private const val DEFAULT_PLAYER_POINTS_SIZE = 48
+        private const val DEFAULT_PLAYER_POINTS_MARGIN_TOP = 0
     }
 
 }

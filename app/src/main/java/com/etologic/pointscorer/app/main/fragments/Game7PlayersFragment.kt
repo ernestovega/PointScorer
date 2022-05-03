@@ -11,11 +11,11 @@ import com.etologic.pointscorer.databinding.GameHSevenPlayersFragmentBinding
 
 class Game7PlayersFragment : BaseXPlayersFragment() {
     
-    private var fragmentBinding: GameHSevenPlayersFragmentBinding? = null
-    private val binding get() = fragmentBinding!!
+    private var _binding: GameHSevenPlayersFragmentBinding? = null
+    private val binding get() = _binding!!
     
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        fragmentBinding = GameHSevenPlayersFragmentBinding.inflate(inflater, container, false)
+        _binding = GameHSevenPlayersFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
     
@@ -32,6 +32,11 @@ class Game7PlayersFragment : BaseXPlayersFragment() {
         initPlayerFragment(PLAYER_5_ID, R.id.flPlayer75, nameSize, nameMarginTop, pointsSize)
         initPlayerFragment(PLAYER_6_ID, R.id.flPlayer76, nameSize, nameMarginTop, pointsSize)
         initPlayerFragment(PLAYER_7_ID, R.id.flPlayer77, nameSize, nameMarginTop, pointsSize)
+    }
+
+    override fun onDestroy() {
+        _binding = null
+        super.onDestroy()
     }
     
     companion object {
