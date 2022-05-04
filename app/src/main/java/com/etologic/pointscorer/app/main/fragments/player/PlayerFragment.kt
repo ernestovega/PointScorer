@@ -22,7 +22,6 @@ import com.etologic.pointscorer.app.main.base.BaseMainFragment
 import com.etologic.pointscorer.app.main.fragments.Game1PlayerFragment.Companion.GAME_1_PLAYER_1_ID
 import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsDialogFragment.PlayerDialogListener
 import com.etologic.pointscorer.app.utils.MyAnimationUtils
-import com.etologic.pointscorer.app.utils.MyAnimationUtils.getUpdateShieldPointsAnimation
 import com.etologic.pointscorer.app.utils.MyConversionUtils.dpToPx
 import com.etologic.pointscorer.databinding.GamePlayerFragmentBinding
 import kotlinx.android.synthetic.main.game_player_fragment.*
@@ -84,9 +83,7 @@ class PlayerFragment : BaseMainFragment() {
             tvUpCount.textSize = playerPointsSize * 0.5f
             tvDownCount.textSize = playerPointsSize * 0.5f
             tvPointsPlayer.textSize = playerPointsSize.toFloat()
-            tvPointsForAnimation.textSize = playerPointsSize.toFloat()
             tvPointsPlayer.setPadding(0, dpToPx(requireContext(), playerPointsMarginTop), 0, 0)
-            tvPointsForAnimation.setPadding(0, dpToPx(requireContext(), playerPointsMarginTop), 0, 0)
             etName.setPadding(0, dpToPx(requireContext(), playerNameMarginTop), 0, 0)
             etName.textSize = playerNameSize.toFloat()
             upAuxPointsFadeOutAnimation = MyAnimationUtils.getAuxPointsFadeOutAnimation {
@@ -112,11 +109,7 @@ class PlayerFragment : BaseMainFragment() {
     }
 
     private fun updateShieldPoints(points: Int) {
-        if (viewModel.playerAnimatePoints) {
-            tvPointsForAnimation.startAnimation(getUpdateShieldPointsAnimation(tvPointsPlayer, tvPointsForAnimation, points))
-        } else {
-            tvPointsPlayer.text = String.format(Locale.getDefault(), "%d", points)
-        }
+        tvPointsPlayer.text = String.format(Locale.getDefault(), "%d", points)
     }
 
     private fun updateName(it: String) {
@@ -128,7 +121,6 @@ class PlayerFragment : BaseMainFragment() {
             etName.setTextColor(color)
             etName.setHintTextColor(color)
             tvPointsPlayer.setTextColor(color)
-            tvPointsForAnimation.setTextColor(color)
         }
     }
 
@@ -247,17 +239,12 @@ class PlayerFragment : BaseMainFragment() {
 
         playerDialogFragment.arguments = bundle
         playerDialogFragment.setPlayerDialogListener(object : PlayerDialogListener {
-
             override fun onColorChanged(color: Int) {
                 viewModel.savePlayerColor(color)
             }
 
             override fun onNameChanged(name: String) {
                 viewModel.savePlayerName(name)
-            }
-
-            override fun onUseAnimationChanged(animate: Boolean) {
-                viewModel.animatePoints(animate)
             }
         })
 

@@ -3,26 +3,8 @@ package com.etologic.pointscorer.app.utils
 import android.view.animation.*
 import android.view.animation.Animation.AnimationListener
 import android.view.animation.Animation.RELATIVE_TO_SELF
-import android.widget.TextView
-import java.util.*
 
 object MyAnimationUtils {
-    
-    fun getUpdateShieldPointsAnimation(tvPoints: TextView, tvPointsForAnimation: TextView, points: Int): Animation {
-        val animationSet = animationSet
-        animationSet.setAnimationListener(object : AnimationListener {
-            override fun onAnimationStart(animation: Animation) {
-                tvPointsForAnimation.text = String.format(Locale.getDefault(), "%d", points)
-            }
-    
-            override fun onAnimationEnd(animation: Animation) {
-                tvPoints.text = String.format(Locale.getDefault(), "%d", points)
-            }
-    
-            override fun onAnimationRepeat(animation: Animation) {}
-        })
-        return animationSet
-    }
     
     private val animationSet: AnimationSet
         get() {

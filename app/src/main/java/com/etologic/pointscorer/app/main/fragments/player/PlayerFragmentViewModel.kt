@@ -20,7 +20,6 @@ class PlayerFragmentViewModel
                 field = playerId / 10
             return field
         }
-    var playerAnimatePoints = true
     var playerCountEnabled = false
     private val _playerPoints = MutableLiveData<Int>()
     fun livePlayerPoints(): LiveData<Int> = _playerPoints
@@ -38,7 +37,6 @@ class PlayerFragmentViewModel
                 _playerName.postValue(playersRepository.getPlayerName(playerId))
                 _playerColor.postValue(playersRepository.getPlayerColor(playerId))
                 _playerPoints.postValue(playersRepository.getPlayerPoints(playerId))
-                playerAnimatePoints = playersRepository.getPlayerAnimatePoints(playerId)
             }
         }
     }
@@ -84,13 +82,6 @@ class PlayerFragmentViewModel
         viewModelScope.launch {
             playersRepository.savePlayerColor(playerId, newColor)
             _playerColor.postValue(newColor)
-        }
-    }
-
-    fun animatePoints(animate: Boolean) {
-        viewModelScope.launch {
-            playersRepository.savePlayerAnimatePoints(playerId, animate)
-            playerAnimatePoints = animate
         }
     }
 

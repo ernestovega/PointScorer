@@ -19,21 +19,17 @@ class PlayerSettingsDialogFragment : DialogFragment() {
         const val TAG = "PlayerSettingsDialogFragment"
         const val KEY_INITIAL_COLOR = "key_initial_color"
         const val KEY_INITIAL_NAME = "key_initial_name"
-        const val KEY_USE_ANIMATION = "key_use_animation"
     }
 
     interface PlayerDialogListener {
-
         fun onColorChanged(color: Int)
         fun onNameChanged(name: String)
-        fun onUseAnimationChanged(animate: Boolean)
     }
 
     private var _binding: GamePlayerSettingsDialogFragmentBinding? = null
     private val binding get() = _binding!!
     private var initialColor: Int? = null
     private var initialName: String? = null
-    private var useAnimation: Boolean = true
     private var playerDialogListener: PlayerDialogListener? = null
     private var redColor: Int? = null
     private var orangeColor: Int? = null
@@ -67,7 +63,6 @@ class PlayerSettingsDialogFragment : DialogFragment() {
         initValues()
         initName()
         selectColor(initialColor)
-        markUseAnimation(useAnimation)
         initListeners()
         binding.etName.requestFocus()
     }
@@ -93,7 +88,6 @@ class PlayerSettingsDialogFragment : DialogFragment() {
         arguments?.let { arguments ->
             initialColor = whiteColor?.let { arguments.getInt(KEY_INITIAL_COLOR, it) }
             initialName = arguments.getString(KEY_INITIAL_NAME, getString(R.string.player_name))
-            useAnimation = arguments.getBoolean(KEY_USE_ANIMATION, true)
         }
     }
 
@@ -155,10 +149,6 @@ class PlayerSettingsDialogFragment : DialogFragment() {
         }
     }
 
-    private fun markUseAnimation(animate: Boolean) {
-        binding.cbUseAnimation.isChecked = animate
-    }
-
     private fun initListeners() {
         with(binding) {
             etName.doOnTextChanged { text, _, _, _ -> playerDialogListener?.onNameChanged((text ?: "").toString()) }
@@ -194,10 +184,6 @@ class PlayerSettingsDialogFragment : DialogFragment() {
             vColorWhite.setOnClickListener {
                 selectColor(whiteColor)
                 whiteColor?.let { color -> playerDialogListener?.onColorChanged(color) }
-            }
-
-            cbUseAnimation.setOnCheckedChangeListener { _, isChecked ->
-                playerDialogListener?.onUseAnimationChanged(isChecked)
             }
 
             btOk.setOnClickListener {
