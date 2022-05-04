@@ -3,10 +3,13 @@ package com.etologic.pointscorer.data.repositories.players
 import android.content.Context
 import androidx.core.content.ContextCompat
 import com.etologic.pointscorer.R
+import com.etologic.pointscorer.data.exceptions.MaxPointsReachedException
+import com.etologic.pointscorer.data.exceptions.MinPointsReachedException
 import kotlinx.coroutines.*
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.coroutines.CoroutineContext
+import kotlin.jvm.Throws
 
 @Singleton
 class PlayersRepository
@@ -67,19 +70,29 @@ class PlayersRepository
         memoryDataSource.getPlayerPoints(playerId)
             ?: sharedPrefsDataSource.getPlayerPoints(playerId, getInitialPoints())
                 .also { memoryDataSource.savePlayerPoints(playerId, it) }
-    
+
+    @Throws(MaxPointsReachedException::class)
     suspend fun plus1PlayerPoint(playerId: Int): Int {
-        val points = getPlayerPoints(playerId)
-        val newPoints = if (points < MAX_POINTS) points + 1 else points
-        savePlayerPoints(playerId, newPoints)
-        return newPoints
+        val oldPoints = getPlayerPoints(playerId)
+        val newPoints = oldPoints + 1
+        if (oldPoints < MAX_POINTS) {
+            savePlayerPoints(playerId, newPoints)
+            return newPoints
+        } else {
+            throw MaxPointsReachedException()
+        }
     }
-    
+
+    @Throws(MinPointsReachedException::class)
     suspend fun minus1PlayerPoint(playerId: Int): Int {
-        val points = getPlayerPoints(playerId)
-        val newPoints = if (points > MIN_POINTS) points - 1 else points
-        savePlayerPoints(playerId, newPoints)
-        return newPoints
+        val oldPoints = getPlayerPoints(playerId)
+        val newPoints = oldPoints - 1
+        if (oldPoints > MIN_POINTS) {
+            savePlayerPoints(playerId, newPoints)
+            return newPoints
+        } else {
+            throw MinPointsReachedException()
+        }
     }
     
     suspend fun restoreAllPlayersPoints() {

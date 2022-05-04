@@ -11,6 +11,7 @@ import android.view.MotionEvent.ACTION_UP
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
@@ -22,7 +23,7 @@ import com.etologic.pointscorer.app.main.fragments.Game1PlayerFragment.Companion
 import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsDialogFragment.PlayerDialogListener
 import com.etologic.pointscorer.app.utils.MyAnimationUtils
 import com.etologic.pointscorer.app.utils.MyAnimationUtils.getUpdateShieldPointsAnimation
-import com.etologic.pointscorer.app.utils.MyConversionUtils
+import com.etologic.pointscorer.app.utils.MyConversionUtils.dpToPx
 import com.etologic.pointscorer.databinding.GamePlayerFragmentBinding
 import kotlinx.android.synthetic.main.game_player_fragment.*
 import java.util.*
@@ -45,6 +46,8 @@ class PlayerFragment : BaseMainFragment() {
     private val downRepeatUpdateHandler = Handler(Looper.getMainLooper())
     private lateinit var upAuxPointsFadeOutAnimation: Animation
     private lateinit var downAuxPointsFadeOutAnimation: Animation
+    private var lastUpCountPoints = 0
+    private var lastDownCountPoints = 0
     private var isUpPressed = false /* https://stackoverflow.com/questions/7938516/continuously-increase-integer-value-as-the-button-is-pressed */
     private var isDownPressed = false
 
@@ -60,16 +63,16 @@ class PlayerFragment : BaseMainFragment() {
         initViews()
         initObservers()
         initListeners()
+        viewModel.initScreen(arguments?.getInt(KEY_PLAYER_ID))
     }
 
     private fun initViewModel() {
-        viewModel = ViewModelProvider(this, viewModelFactory).get(PlayerFragmentViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory)[PlayerFragmentViewModel::class.java]
     }
 
     private fun initValues() {
         defaultPlayerColor = ContextCompat.getColor(requireContext(), R.color.white)
         arguments?.let { arguments ->
-            viewModel.playerId = arguments.getInt(KEY_PLAYER_ID)
             playerNameSize = arguments.getInt(KEY_PLAYER_NAME_SIZE)
             playerNameMarginTop = arguments.getInt(KEY_PLAYER_NAME_MARGIN_TOP, 8)
             playerPointsSize = arguments.getInt(KEY_PLAYER_POINTS_SIZE)
@@ -82,9 +85,9 @@ class PlayerFragment : BaseMainFragment() {
             tvDownCount.textSize = playerPointsSize * 0.5f
             tvPointsPlayer.textSize = playerPointsSize.toFloat()
             tvPointsForAnimation.textSize = playerPointsSize.toFloat()
-            tvPointsPlayer.setPadding(0, MyConversionUtils.dpToPx(requireContext(), playerPointsMarginTop), 0, 0)
-            tvPointsForAnimation.setPadding(0, MyConversionUtils.dpToPx(requireContext(), playerPointsMarginTop), 0, 0)
-            etName.setPadding(0, MyConversionUtils.dpToPx(requireContext(), playerNameMarginTop), 0, 0)
+            tvPointsPlayer.setPadding(0, dpToPx(requireContext(), playerPointsMarginTop), 0, 0)
+            tvPointsForAnimation.setPadding(0, dpToPx(requireContext(), playerPointsMarginTop), 0, 0)
+            etName.setPadding(0, dpToPx(requireContext(), playerNameMarginTop), 0, 0)
             etName.textSize = playerNameSize.toFloat()
             upAuxPointsFadeOutAnimation = MyAnimationUtils.getAuxPointsFadeOutAnimation {
                 if (downAuxPointsFadeOutAnimation.hasEnded())
@@ -102,9 +105,9 @@ class PlayerFragment : BaseMainFragment() {
 
     private fun initObservers() {
         viewModel.livePlayerPoints().observe(viewLifecycleOwner) { updateShieldPoints(it) }
+        viewModel.livePlayerCount().observe(viewLifecycleOwner) { updateCountPoints(it) }
         viewModel.livePlayerName().observe(viewLifecycleOwner) { updateName(it) }
         viewModel.livePlayerColor().observe(viewLifecycleOwner) { setTextsColor(it) }
-        viewModel.livePlayerCount().observe(viewLifecycleOwner) { updateCountPoints(it) }
         activityViewModel.liveShouldRestoreAllPoints.observe(viewLifecycleOwner) { restorePlayerPoints(it) }
     }
 
@@ -130,28 +133,33 @@ class PlayerFragment : BaseMainFragment() {
     }
 
     private fun updateCountPoints(count: Int) {
-        if (count != DISABLED_COUNT) {
+        if (viewModel.playerCountEnabled) {
             with(binding) {
-                val countText by lazy { String.format("%+d", count) }
+                val countText = String.format("%+d", count)
                 when {
                     count > 0 -> {
+                        lastUpCountPoints = count
                         tvUpCount.text = countText
                         upAuxPointsFadeOutAnimation.start()
                     }
                     count < 0 -> {
+                        lastDownCountPoints = count
                         tvDownCount.text = countText
                         downAuxPointsFadeOutAnimation.start()
                     }
                     else -> {
                         try {
-                            if (tvUpCount.text.toString().toInt() == 1) {
+                            if (lastUpCountPoints == 1) {
+                                lastUpCountPoints = 0
                                 tvUpCount.text = countText
-                                downAuxPointsFadeOutAnimation.start()
-                            } else if (tvDownCount.text.toString().toInt() == -1) {
+                                upAuxPointsFadeOutAnimation.start()
+                            } else if (lastDownCountPoints == -1) {
+                                lastDownCountPoints = 0
                                 tvDownCount.text = countText
                                 downAuxPointsFadeOutAnimation.start()
                             }
                         } catch (nfe: NumberFormatException) {
+                            Toast.makeText(context, nfe.message, Toast.LENGTH_LONG).show()
                         }
                     }
                 }
@@ -308,7 +316,6 @@ class PlayerFragment : BaseMainFragment() {
 
     companion object {
 
-        const val DISABLED_COUNT = -1_000
         const val KEY_PLAYER_ID = "key_player_id"
         const val KEY_PLAYER_NAME_SIZE = "key_player_name_size"
         const val KEY_PLAYER_NAME_MARGIN_TOP = "key_player_name_margin_top"
