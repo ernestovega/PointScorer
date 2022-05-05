@@ -24,7 +24,6 @@ import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsDialogFr
 import com.etologic.pointscorer.app.utils.MyAnimationUtils
 import com.etologic.pointscorer.app.utils.MyConversionUtils.dpToPx
 import com.etologic.pointscorer.databinding.GamePlayerFragmentBinding
-import kotlinx.android.synthetic.main.game_player_fragment.*
 import java.util.*
 import javax.inject.Inject
 
@@ -109,7 +108,7 @@ class PlayerFragment : BaseMainFragment() {
     }
 
     private fun updateShieldPoints(points: Int) {
-        tvPointsPlayer.text = String.format(Locale.getDefault(), "%d", points)
+        binding.tvPointsPlayer.text = String.format(Locale.getDefault(), "%d", points)
     }
 
     private fun updateName(it: String) {

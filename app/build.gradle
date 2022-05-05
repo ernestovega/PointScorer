@@ -2,6 +2,9 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.firebase.firebase-perf'
 
 android {
 
@@ -22,7 +25,7 @@ android {
 
     defaultConfig {
         applicationId "com.etologic.pointscorer"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 32
         versionCode 8
         versionName "2.0.0"
@@ -52,10 +55,10 @@ android {
 dependencies {
 
     //KOTLIN
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.21'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0-native-mt"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0-native-mt"
 
@@ -70,4 +73,11 @@ dependencies {
     implementation "com.google.dagger:dagger-android-support:2.40.5"
     kapt "com.google.dagger:dagger-compiler:2.40.5"
     kapt "com.google.dagger:dagger-android-processor:2.40.5"
+
+    //FIREBASE
+    implementation platform('com.google.firebase:firebase-bom:29.3.1')
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-perf-ktx'
 }

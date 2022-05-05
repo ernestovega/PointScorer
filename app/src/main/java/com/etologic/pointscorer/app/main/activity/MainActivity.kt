@@ -9,6 +9,7 @@ import com.etologic.pointscorer.app.main.activity.MainActivityViewModel.Companio
 import com.etologic.pointscorer.app.main.base.BaseXPlayersFragment
 import com.etologic.pointscorer.app.main.fragments.*
 import com.etologic.pointscorer.databinding.MainActivityBinding
+import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
@@ -17,27 +18,33 @@ class MainActivity : DaggerAppCompatActivity() {
     @Inject
     internal lateinit var viewModelFactory: MainActivityViewModelFactory
     private lateinit var viewModel: MainActivityViewModel
-    private var _activityBinding: MainActivityBinding? = null
-    private val binding get() = _activityBinding!!
+    private lateinit var binding: MainActivityBinding
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initFirebase()
         initViewBinding()
         initViewModel()
         initObservers()
     }
-    
+
+    private fun initFirebase() {
+//        FirebaseCrashlytics.getInstance().setUserId("")
+            firebaseAnalytics = FirebaseAnalytics.getInstance(applicationContext)
+    }
+
     private fun initViewBinding() {
-        _activityBinding = MainActivityBinding.inflate(layoutInflater)
+        binding = MainActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
-    
+
     private fun initViewModel() {
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainActivityViewModel::class.java)
     }
     
     private fun initObservers() {
-        viewModel.liveScreen.observe(this, {
+        viewModel.liveScreen.observe(this) {
             when (it) {
                 MENU -> goToFragment(MenuFragment())
                 ONE_PLAYER -> goToFragment(Game1PlayerFragment())
@@ -50,7 +57,7 @@ class MainActivity : DaggerAppCompatActivity() {
                 EIGHT_PLAYER -> goToFragment(Game8PlayersFragment())
                 else -> finish()
             }
-        })
+        }
     }
     
     private fun goToFragment(fragment: Fragment) {
