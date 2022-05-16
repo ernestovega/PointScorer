@@ -125,31 +125,43 @@
         <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="MainButton" parent="Widget.AppCompat.Button.Borderless">
+    <style name="MainMenuButton" parent="Widget.AppCompat.Button.Borderless">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:padding">48dp</item>
-        <item name="android:scaleType">centerCrop</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:scaleType">centerInside</item>
         <item name="android:tint">@color/black</item>
         <item name="android:background">@drawable/ripple_effect_white_wood_bg</item>
     </style>
 
-    <style name="MainButtonSw600dp" parent="MainButton">
-        <item name="android:padding">128dp</item>
-    </style>
-
-    <style name="MainButtonProgressBar" parent="Widget.AppCompat.ProgressBar">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:padding">32dp</item>
+    <style name="MainMenuButtonProgress" parent="Widget.AppCompat.ProgressBar">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">16dp</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:theme">@style/MyProgressBar</item>
         <item name="android:visibility">gone</item>
     </style>
 
-    <style name="MainButtonProgressBarSw600dp" parent="MainButtonProgressBar">
-        <item name="android:padding">80dp</item>
+    <style name="SettingsMenuColorButton">
+        <item name="android:layout_width">@dimen/colorButtonSize</item>
+        <item name="android:layout_height">@dimen/colorButtonSize</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+    </style>
+
+    <style name="SettingsMenuColorsRowContainer">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="SettingsMenuButton" parent="android:Widget.Material.Button.Borderless">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/ripple</item>
+        <item name="android:textColor">@color/colorAccent</item>
     </style>
 
 </resources>

@@ -14,10 +14,10 @@ class MainActivityViewModel
 @Inject internal constructor(private val playersRepository: PlayersRepository) : ViewModel() {
     
     private val _screen = MutableLiveData<MainScreens>()
-    private val _initialPoints = MutableLiveData<Int>()
-    private val _shouldRestoreAllPoints = MutableLiveData<Int>()
     val liveScreen: LiveData<MainScreens> = _screen
+    private val _initialPoints = MutableLiveData<Int>()
     val liveInitialPoints: LiveData<Int> = _initialPoints
+    private val _shouldRestoreAllPoints = MutableLiveData<Int>()
     val liveShouldRestoreAllPoints: LiveData<Int> = _shouldRestoreAllPoints
     
     init {

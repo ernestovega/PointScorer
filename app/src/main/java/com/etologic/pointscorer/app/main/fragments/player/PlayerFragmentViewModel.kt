@@ -14,12 +14,7 @@ class PlayerFragmentViewModel
 @Inject internal constructor(private val playersRepository: PlayersRepository) : ViewModel() {
 
     var playerId: Int = 0
-    var gamePlayersNum: Int? = null
-        get() {
-            if (field == null)
-                field = playerId / 10
-            return field
-        }
+    var gamePlayersNum: Int = playerId / 10
     var playerCountEnabled = false
     private val _playerPoints = MutableLiveData<Int>()
     fun livePlayerPoints(): LiveData<Int> = _playerPoints

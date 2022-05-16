@@ -3,7 +3,6 @@
 
     <string name="initial_points">Initial points</string>
     <string name="min_max_points">[-999, 9999]</string>
-    <string name="reset_all">Reset all</string>
     <string name="all_players_points_were_restored">All players points were restored</string>
 
     <string name="one_player">One player</string>
@@ -46,6 +45,8 @@
     <string name="restart_x_points_to_y">This will restore %s points to %d</string>
     <string name="your">your</string>
     <string name="restart_all_points_to_y">This will restore everybody\'s points to %d</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="initial_points_help">Are the default points for each player.\n\nThe \"Restore all points\" button will restore every player to this quantity.</string>
 
 </resources>

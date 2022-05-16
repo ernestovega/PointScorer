@@ -1,7 +1,9 @@
 package com.etologic.pointscorer.app.main.activity
 
 import com.etologic.pointscorer.app.main.fragments.*
+import com.etologic.pointscorer.app.main.fragments.main_menu.MainMenuFragment
 import com.etologic.pointscorer.app.main.fragments.player.PlayerFragment
+import com.etologic.pointscorer.app.main.fragments.player.settings_menu.PlayerSettingsDialogFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -9,7 +11,7 @@ import dagger.android.ContributesAndroidInjector
 abstract class MainActivityFragmentsBuilder {
     
     @ContributesAndroidInjector
-    internal abstract fun provideMainFragmentFragmentFactory(): MenuFragment
+    internal abstract fun provideMainFragmentFragmentFactory(): MainMenuFragment
     
     @ContributesAndroidInjector
     internal abstract fun providePlayerFragmentFragmentFactory(): PlayerFragment
@@ -37,5 +39,8 @@ abstract class MainActivityFragmentsBuilder {
     
     @ContributesAndroidInjector
     internal abstract fun provideIEightPlayersFragmentFragmentFactory(): Game8PlayersFragment
+
+    @ContributesAndroidInjector
+    internal abstract fun providePlayerSettingsDialogFragmentFragmentFactory(): PlayerSettingsDialogFragment
     
 }

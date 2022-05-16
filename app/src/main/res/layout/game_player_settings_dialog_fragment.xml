@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="300dp"
     android:layout_height="wrap_content"
-    android:background="@drawable/shape_dialog_bg"
-    android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:layout_gravity="center"
+    android:background="@color/white">
 
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal">
+        tools:ignore="RelativeOverlap">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -21,19 +20,14 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/etName"
+                android:id="@+id/etSettingsMenuName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/rock_on"
                 android:gravity="center_horizontal"
                 android:hint="@string/player_name"
-                android:importantForAutofill="no"
                 android:inputType="textPersonName"
                 android:lines="1"
                 android:maxLength="20"
@@ -44,108 +38,87 @@
                 app:backgroundTint="@color/colorAccent"
                 tools:text="@string/player_name" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginRight="32dp"
-                android:orientation="horizontal">
+            <LinearLayout style="@style/SettingsMenuColorsRowContainer">
 
                 <View
-                    android:id="@+id/vColorRed"
-                    android:layout_width="@dimen/colorButtonSize"
-                    android:layout_height="@dimen/colorButtonSize"
+                    android:id="@+id/vSettingsMenuColorRed"
+                    style="@style/SettingsMenuColorButton"
                     android:background="@drawable/shape_button_red" />
 
                 <View
-                    android:id="@+id/vColorGreen"
-                    android:layout_width="@dimen/colorButtonSize"
-                    android:layout_height="@dimen/colorButtonSize"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
+                    android:id="@+id/vSettingsMenuColorGreen"
+                    style="@style/SettingsMenuColorButton"
                     android:background="@drawable/shape_button_green" />
 
                 <View
-                    android:id="@+id/vColorOrange"
-                    android:layout_width="@dimen/colorButtonSize"
-                    android:layout_height="@dimen/colorButtonSize"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
+                    android:id="@+id/vSettingsMenuColorOrange"
+                    style="@style/SettingsMenuColorButton"
                     android:background="@drawable/shape_button_orange" />
 
                 <View
-                    android:id="@+id/vColorPurple"
-                    android:layout_width="@dimen/colorButtonSize"
-                    android:layout_height="@dimen/colorButtonSize"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
+                    android:id="@+id/vSettingsMenuColorPurple"
+                    style="@style/SettingsMenuColorButton"
                     android:background="@drawable/shape_button_purple" />
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginRight="32dp"
-                android:orientation="horizontal">
+            <LinearLayout style="@style/SettingsMenuColorsRowContainer">
 
                 <View
-                    android:id="@+id/vColorYellow"
-                    android:layout_width="@dimen/colorButtonSize"
-                    android:layout_height="@dimen/colorButtonSize"
+                    android:id="@+id/vSettingsMenuColorYellow"
+                    style="@style/SettingsMenuColorButton"
                     android:background="@drawable/shape_button_yellow" />
 
                 <View
-                    android:id="@+id/vColorPink"
-                    android:layout_width="@dimen/colorButtonSize"
-                    android:layout_height="@dimen/colorButtonSize"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
+                    android:id="@+id/vSettingsMenuColorPink"
+                    style="@style/SettingsMenuColorButton"
                     android:background="@drawable/shape_button_pink" />
 
                 <View
-                    android:id="@+id/vColorBlue"
-                    android:layout_width="@dimen/colorButtonSize"
-                    android:layout_height="@dimen/colorButtonSize"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
+                    android:id="@+id/vSettingsMenuColorBlue"
+                    style="@style/SettingsMenuColorButton"
                     android:background="@drawable/shape_button_blue" />
 
                 <View
-                    android:id="@+id/vColorWhite"
-                    android:layout_width="@dimen/colorButtonSize"
-                    android:layout_height="@dimen/colorButtonSize"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
+                    android:id="@+id/vSettingsMenuColorWhite"
+                    style="@style/SettingsMenuColorButton"
                     android:background="@drawable/shape_button_white" />
 
             </LinearLayout>
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btOk"
-                style="?borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
+            <Button
+                android:id="@+id/btSettingMenuRestorePoints"
+                style="@style/SettingsMenuButton"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="16dp"
-                android:background="@color/ripple"
-                android:text="@string/ok"
-                android:textColor="@color/red" />
+                android:text="@string/restore_points" />
+
+            <Button
+                android:id="@+id/btSettingMenuRestoreAllPoints"
+                style="@style/SettingsMenuButton"
+                android:text="@string/restore_all_points" />
+
+            <LinearLayout
+                android:id="@+id/llSettingsMenuMediumRectangleAdContainer"
+                android:layout_width="300dp"
+                android:layout_height="250dp"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:orientation="vertical" />
 
         </LinearLayout>
 
     </ScrollView>
 
-</LinearLayout>
+    <ImageButton
+        android:id="@+id/btSettingMenuClose"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/white"
+        android:contentDescription="@string/close"
+        android:src="@drawable/ic_close"
+        app:tint="@color/colorAccent" />
+
+</RelativeLayout>

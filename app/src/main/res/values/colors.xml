@@ -6,17 +6,24 @@
     <color name="colorAccent">#ff6d00</color>
 
     <color name="ripple">#44ffffff</color>
-    <color name="red_transparent">#66690000</color>
-    <color name="green_transparent">#66005617</color>
 
     <color name="black">#000000</color>
+    <color name="black_transparent">#66000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="white_transparent">#66FFFFFF</color>
     <color name="red">#DA0000</color>
+    <color name="red_transparent">#66DA0000</color>
     <color name="orange">#ff6d00</color>
+    <color name="orange_transparent">#66ff6d00</color>
     <color name="green">#00CC41</color>
+    <color name="green_transparent">#6600CC41</color>
     <color name="blue">#1D9BFF</color>
+    <color name="blue_transparent">#661D9BFF</color>
     <color name="yellow">#FFEB3B</color>
+    <color name="yellow_transparent">#66FFEB3B</color>
     <color name="purple">#A260FF</color>
+    <color name="purple_transparent">#66A260FF</color>
     <color name="pink">#FF00E3</color>
+    <color name="pink_transparent">#66FF00E3</color>
 
 </resources>
