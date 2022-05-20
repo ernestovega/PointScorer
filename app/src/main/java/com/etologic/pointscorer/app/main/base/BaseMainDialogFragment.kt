@@ -5,10 +5,11 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.etologic.pointscorer.app.main.activity.MainActivityViewModel
 import com.etologic.pointscorer.app.main.activity.MainActivityViewModelFactory
+import dagger.android.support.DaggerDialogFragment
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-abstract class BaseMainFragment : DaggerFragment() {
+abstract class BaseMainDialogFragment : DaggerDialogFragment() {
     
     @Inject
     internal lateinit var activityViewModelFactory: MainActivityViewModelFactory

@@ -41,6 +41,7 @@ android {
             minifyEnabled false
             manifestPlaceholders = [admob_app_id: "ca-app-pub-3940256099942544~3347511713"]
             buildConfigField "String", "ADMOB_EDITOR_ID", "\"pub-2237700199215764\""
+            buildConfigField "String", "ADMOB_ADUNIT_BANNER_FINISH_MENU", "\"ca-app-pub-3940256099942544/6300978111\""
             buildConfigField "String", "ADMOB_ADUNIT_BANNER_MAIN_MENU_1", "\"ca-app-pub-3940256099942544/6300978111\""
             buildConfigField "String", "ADMOB_ADUNIT_BANNER_MAIN_MENU_2", "\"ca-app-pub-3940256099942544/6300978111\""
             buildConfigField "String", "ADMOB_ADUNIT_BANNER_MAIN_MENU_3", "\"ca-app-pub-3940256099942544/6300978111\""
@@ -58,6 +59,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             manifestPlaceholders = [admob_app_id: "ca-app-pub-2237700199215764~1007481213"]
             buildConfigField "String", "ADMOB_EDITOR_ID", "\"pub-2237700199215764\""
+            buildConfigField "String", "ADMOB_ADUNIT_BANNER_FINISH_MENU", "\"ca-app-pub-2237700199215764/9952338995\""
             buildConfigField "String", "ADMOB_ADUNIT_BANNER_MAIN_MENU_1", "\"ca-app-pub-2237700199215764/4812679065\""
             buildConfigField "String", "ADMOB_ADUNIT_BANNER_MAIN_MENU_2", "\"ca-app-pub-2237700199215764/6063364753\""
             buildConfigField "String", "ADMOB_ADUNIT_BANNER_MAIN_MENU_3", "\"ca-app-pub-2237700199215764/2670914650\""

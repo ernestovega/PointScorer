@@ -1,9 +1,10 @@
 package com.etologic.pointscorer.app.main.activity
 
 import com.etologic.pointscorer.app.main.fragments.*
+import com.etologic.pointscorer.app.main.dialogs.finish_menu.FinishMenuDialogFragment
 import com.etologic.pointscorer.app.main.fragments.main_menu.MainMenuFragment
 import com.etologic.pointscorer.app.main.fragments.player.PlayerFragment
-import com.etologic.pointscorer.app.main.fragments.player.settings_menu.PlayerSettingsDialogFragment
+import com.etologic.pointscorer.app.main.dialogs.finish_menu.payer_settings_menu.PlayerSettingsMenuDialogFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -11,36 +12,39 @@ import dagger.android.ContributesAndroidInjector
 abstract class MainActivityFragmentsBuilder {
     
     @ContributesAndroidInjector
-    internal abstract fun provideMainFragmentFragmentFactory(): MainMenuFragment
+    internal abstract fun provideMainFragmentFactory(): MainMenuFragment
     
     @ContributesAndroidInjector
-    internal abstract fun providePlayerFragmentFragmentFactory(): PlayerFragment
+    internal abstract fun providePlayerFragmentFactory(): PlayerFragment
     
     @ContributesAndroidInjector
-    internal abstract fun provideBOnePlayerFragmentFragmentFactory(): Game1PlayerFragment
+    internal abstract fun provideBOnePlayerFragmentFactory(): Game1PlayerFragment
     
     @ContributesAndroidInjector
-    internal abstract fun provideCTwoPlayersFragmentFragmentFactory(): Game2PlayersFragment
+    internal abstract fun provideCTwoPlayersFragmentFactory(): Game2PlayersFragment
     
     @ContributesAndroidInjector
-    internal abstract fun provideDThreePlayersFragmentFragmentFactory(): Game3PlayersFragment
+    internal abstract fun provideDThreePlayersFragmentFactory(): Game3PlayersFragment
     
     @ContributesAndroidInjector
-    internal abstract fun provideEFourPlayersFragmentFragmentFactory(): Game4PlayersFragment
+    internal abstract fun provideEFourPlayersFragmentFactory(): Game4PlayersFragment
     
     @ContributesAndroidInjector
-    internal abstract fun provideFFivePlayersFragmentFragmentFactory(): Game5PlayersFragment
+    internal abstract fun provideFFivePlayersFragmentFactory(): Game5PlayersFragment
     
     @ContributesAndroidInjector
-    internal abstract fun provideGSixPlayersFragmentFragmentFactory(): Game6PlayersFragment
+    internal abstract fun provideGSixPlayersFragmentFactory(): Game6PlayersFragment
     
     @ContributesAndroidInjector
-    internal abstract fun provideHSevenPlayersFragmentFragmentFactory(): Game7PlayersFragment
+    internal abstract fun provideHSevenPlayersFragmentFactory(): Game7PlayersFragment
     
     @ContributesAndroidInjector
-    internal abstract fun provideIEightPlayersFragmentFragmentFactory(): Game8PlayersFragment
+    internal abstract fun provideIEightPlayersFragmentFactory(): Game8PlayersFragment
 
     @ContributesAndroidInjector
-    internal abstract fun providePlayerSettingsDialogFragmentFragmentFactory(): PlayerSettingsDialogFragment
+    internal abstract fun providePlayerSettingsDialogFragmentFactory(): PlayerSettingsMenuDialogFragment
+
+    @ContributesAndroidInjector
+    internal abstract fun provideFinishMenuDialogFragmentFactory(): FinishMenuDialogFragment
     
 }

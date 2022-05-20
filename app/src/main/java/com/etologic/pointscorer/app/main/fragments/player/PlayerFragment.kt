@@ -18,12 +18,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.etologic.pointscorer.R
 import com.etologic.pointscorer.app.main.base.BaseMainFragment
 import com.etologic.pointscorer.app.main.fragments.Game1PlayerFragment.Companion.GAME_1_PLAYER_1_ID
-import com.etologic.pointscorer.app.main.fragments.player.settings_menu.PlayerSettingsDialogFragment
-import com.etologic.pointscorer.app.main.fragments.player.settings_menu.PlayerSettingsDialogFragment.Companion.KEY_INITIAL_COLOR
-import com.etologic.pointscorer.app.main.fragments.player.settings_menu.PlayerSettingsDialogFragment.Companion.KEY_INITIAL_NAME
-import com.etologic.pointscorer.app.main.fragments.player.settings_menu.PlayerSettingsDialogFragment.Companion.KEY_INITIAL_POINTS
-import com.etologic.pointscorer.app.main.fragments.player.settings_menu.PlayerSettingsDialogFragment.Companion.KEY_IS_ONE_PLAYER_FRAGMENT
-import com.etologic.pointscorer.app.main.fragments.player.settings_menu.PlayerSettingsDialogFragment.PlayerDialogListener
+import com.etologic.pointscorer.app.main.dialogs.finish_menu.payer_settings_menu.PlayerSettingsMenuDialogFragment
+import com.etologic.pointscorer.app.main.dialogs.finish_menu.payer_settings_menu.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_COLOR
+import com.etologic.pointscorer.app.main.dialogs.finish_menu.payer_settings_menu.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_NAME
+import com.etologic.pointscorer.app.main.dialogs.finish_menu.payer_settings_menu.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_POINTS
+import com.etologic.pointscorer.app.main.dialogs.finish_menu.payer_settings_menu.PlayerSettingsMenuDialogFragment.Companion.KEY_IS_ONE_PLAYER_FRAGMENT
+import com.etologic.pointscorer.app.main.dialogs.finish_menu.payer_settings_menu.PlayerSettingsMenuDialogFragment.PlayerDialogListener
 import com.etologic.pointscorer.app.utils.MyAnimationUtils
 import com.etologic.pointscorer.app.utils.dpToPx
 import com.etologic.pointscorer.databinding.GamePlayerFragmentBinding
@@ -50,7 +50,7 @@ class PlayerFragment : BaseMainFragment() {
     private var lastDownCountPoints = 0
     private var isUpPressed = false /* https://stackoverflow.com/questions/7938516/continuously-increase-integer-value-as-the-button-is-pressed */
     private var isDownPressed = false
-    private var playerSettingsMenuDialogFragment: PlayerSettingsDialogFragment? = null
+    private var playerSettingsMenuDialogFragment: PlayerSettingsMenuDialogFragment? = null
     private val playerSettingsMenuDialogFragmentListener = object : PlayerDialogListener {
         override fun onColorChanged(color: Int) { viewModel.savePlayerColor(color) }
         override fun onNameChanged(name: String) { viewModel.savePlayerName(name) }
@@ -113,7 +113,7 @@ class PlayerFragment : BaseMainFragment() {
         viewModel.livePlayerCount().observe(viewLifecycleOwner) { updateCountPoints(it) }
         viewModel.livePlayerName().observe(viewLifecycleOwner) { updateName(it) }
         viewModel.livePlayerColor().observe(viewLifecycleOwner) { setTextsColor(it) }
-        activityViewModel.liveShouldRestoreAllPoints.observe(viewLifecycleOwner) { restorePlayerPoints(it) }
+        activityViewModel.shouldRestoreAllPointsObservable.observe(viewLifecycleOwner) { restorePlayerPoints(it) }
     }
 
     private fun updateShieldPoints(points: Int) {
@@ -137,27 +137,26 @@ class PlayerFragment : BaseMainFragment() {
     private fun updateCountPoints(count: Int) {
         if (viewModel.playerCountEnabled) {
             with(binding) {
-                val countText = String.format("%+d", count)
                 when {
                     count > 0 -> {
                         lastUpCountPoints = count
-                        tvUpCount.text = countText
+                        tvUpCount.text = String.format("%+d", count)
                         upAuxPointsFadeOutAnimation.start()
                     }
                     count < 0 -> {
                         lastDownCountPoints = count
-                        tvDownCount.text = countText
+                        tvDownCount.text = String.format("%+d", count)
                         downAuxPointsFadeOutAnimation.start()
                     }
                     else -> {
                         try {
                             if (lastUpCountPoints == 1) {
                                 lastUpCountPoints = 0
-                                tvUpCount.text = countText
+                                tvUpCount.text = "+0"
                                 upAuxPointsFadeOutAnimation.start()
                             } else if (lastDownCountPoints == -1) {
                                 lastDownCountPoints = 0
-                                tvDownCount.text = countText
+                                tvDownCount.text = "-0"
                                 downAuxPointsFadeOutAnimation.start()
                             }
                         } catch (nfe: NumberFormatException) {
@@ -218,20 +217,20 @@ class PlayerFragment : BaseMainFragment() {
     }
 
     private fun showPlayerDialog() {
-        playerSettingsMenuDialogFragment = PlayerSettingsDialogFragment()
+        playerSettingsMenuDialogFragment = PlayerSettingsMenuDialogFragment()
         val bundle = Bundle().apply { putInt(KEY_INITIAL_COLOR, binding.etName.currentTextColor) }
         bundle.putString(KEY_INITIAL_NAME, (binding.etName.text ?: viewModel.livePlayerName().value).toString())
-        bundle.putInt(KEY_INITIAL_POINTS, activityViewModel.liveInitialPoints.value!!)
+        bundle.putInt(KEY_INITIAL_POINTS, activityViewModel.initialPointsObservable.value!!)
         bundle.putBoolean(KEY_IS_ONE_PLAYER_FRAGMENT, viewModel.playerId == GAME_1_PLAYER_1_ID)
         playerSettingsMenuDialogFragment?.arguments = bundle
         playerSettingsMenuDialogFragment?.setPlayerDialogListener(playerSettingsMenuDialogFragmentListener)
-        playerSettingsMenuDialogFragment?.show(requireActivity().supportFragmentManager, PlayerSettingsDialogFragment.TAG)
+        playerSettingsMenuDialogFragment?.show(requireActivity().supportFragmentManager, PlayerSettingsMenuDialogFragment.TAG)
     }
 
     override fun onResume() {
         super.onResume()
-        playerSettingsMenuDialogFragment = parentFragmentManager.findFragmentByTag(PlayerSettingsDialogFragment.TAG)?.let {
-            it as PlayerSettingsDialogFragment
+        playerSettingsMenuDialogFragment = parentFragmentManager.findFragmentByTag(PlayerSettingsMenuDialogFragment.TAG)?.let {
+            it as PlayerSettingsMenuDialogFragment
         }
         playerSettingsMenuDialogFragment?.setPlayerDialogListener(playerSettingsMenuDialogFragmentListener)
     }

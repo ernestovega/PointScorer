@@ -16,6 +16,7 @@ class Game5PlayersFragment : BaseXPlayersFragment() {
     
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = GameFFivePlayersFragmentBinding.inflate(inflater, container, false)
+        baseBinding = binding
         return binding.root
     }
     

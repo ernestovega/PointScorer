@@ -14,7 +14,7 @@ import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
 import com.etologic.pointscorer.BuildConfig
 import com.etologic.pointscorer.R
-import com.etologic.pointscorer.app.main.activity.MainActivityViewModel.Companion.MainScreens.*
+import com.etologic.pointscorer.app.main.activity.MainActivityViewModel.Screens.*
 import com.etologic.pointscorer.app.main.base.BaseMainFragment
 import com.etologic.pointscorer.app.utils.ViewExtensions.hideKeyboard
 import com.etologic.pointscorer.app.utils.dpToPx
@@ -30,7 +30,6 @@ import java.util.Locale.ENGLISH
 class MainMenuFragment : BaseMainFragment() {
 
     companion object {
-        private const val TAG_ORIENTATION_LANDSCAPE = "LANDSCAPE"
         val adUnitsList = listOf(
             BuildConfig.ADMOB_ADUNIT_BANNER_MAIN_MENU_1,
             BuildConfig.ADMOB_ADUNIT_BANNER_MAIN_MENU_2,
@@ -73,7 +72,7 @@ class MainMenuFragment : BaseMainFragment() {
             context?.let {
                 AdView(it).apply {
                     adUnitId = adUnit
-                    adSize = if (binding.root.tag == TAG_ORIENTATION_LANDSCAPE) AdSize.BANNER else AdSize.LARGE_BANNER
+                    adSize = AdSize.BANNER
                 }
             }
 
@@ -95,9 +94,9 @@ class MainMenuFragment : BaseMainFragment() {
 
     private fun initValues() {
         errorInitialPointsLiteral = getString(R.string.error_initial_points)
-        activityViewModel.liveInitialPoints.observe(viewLifecycleOwner) {
+        activityViewModel.initialPointsObservable.observe(viewLifecycleOwner) {
             binding.etMainMenuInitialPoints?.setText(it.toString())
-            activityViewModel.liveInitialPoints.removeObservers(viewLifecycleOwner)
+            activityViewModel.initialPointsObservable.removeObservers(viewLifecycleOwner)
         }
         activityViewModel.getInitialPoints()
     }
@@ -108,7 +107,7 @@ class MainMenuFragment : BaseMainFragment() {
                 AlertDialog.Builder(requireContext(), R.style.Theme_AppCompat_Light_Dialog)
                     .setTitle(R.string.initial_points)
                     .setMessage(R.string.initial_points_help)
-                    .setPositiveButton(android.R.string.ok) { _, _ -> etMainMenuInitialPoints?.hideKeyboard() }
+                    .setPositiveButton(R.string.ok) { _, _ -> etMainMenuInitialPoints?.hideKeyboard() }
                     .create()
                     .show()
             }
@@ -131,9 +130,9 @@ class MainMenuFragment : BaseMainFragment() {
             acbMainMenuResetAllPoints.setOnClickListener {
                 AlertDialog.Builder(requireContext(), R.style.Theme_AppCompat_Light_Dialog)
                     .setTitle(R.string.are_you_sure)
-                    .setMessage(String.format(ENGLISH, getString(R.string.this_will_restore_all_points), activityViewModel.liveInitialPoints.value))
-                    .setNegativeButton(android.R.string.cancel, null)
-                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                    .setMessage(String.format(ENGLISH, getString(R.string.this_will_restore_all_points), activityViewModel.initialPointsObservable.value))
+                    .setNegativeButton(R.string.cancel, null)
+                    .setPositiveButton(R.string.ok) { _: DialogInterface?, _: Int ->
                         etMainMenuInitialPoints?.hideKeyboard()
                         activityViewModel.restoreAllGamesPoints()
                         Toast.makeText(requireContext(), R.string.all_players_points_were_restored, LENGTH_LONG).show()
@@ -184,7 +183,6 @@ class MainMenuFragment : BaseMainFragment() {
             }
         }
     }
-
 
     override fun onStop() {
         with(binding) {

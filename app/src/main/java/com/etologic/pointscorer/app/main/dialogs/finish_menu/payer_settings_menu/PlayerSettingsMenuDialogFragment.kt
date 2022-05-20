@@ -1,4 +1,4 @@
-package com.etologic.pointscorer.app.main.fragments.player.settings_menu
+package com.etologic.pointscorer.app.main.dialogs.finish_menu.payer_settings_menu
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,12 +17,10 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import dagger.android.support.DaggerDialogFragment
-import kotlinx.android.synthetic.main.game_player_settings_dialog_fragment.*
 
-class PlayerSettingsDialogFragment : DaggerDialogFragment() {
+class PlayerSettingsMenuDialogFragment : DaggerDialogFragment() {
 
     companion object {
-
         const val TAG = "PlayerSettingsDialogFragment"
         const val KEY_INITIAL_COLOR = "key_initial_color"
         const val KEY_INITIAL_NAME = "key_initial_name"
@@ -99,7 +97,7 @@ class PlayerSettingsDialogFragment : DaggerDialogFragment() {
         }
 
         buildMediumRectangleAd()?.let { bannerAdView ->
-            binding.llSettingsMenuMediumRectangleAdContainer.addView(bannerAdView)
+            binding.flSettingsMenuMediumRectangleAdContainer?.addView(bannerAdView)
             loadAd(bannerAdView)
         }
     }
@@ -128,7 +126,7 @@ class PlayerSettingsDialogFragment : DaggerDialogFragment() {
                 initialName = getString(KEY_INITIAL_NAME, getString(R.string.player_name))
                 initialPoints = getInt(KEY_INITIAL_POINTS, 0)
                 val isOnePlayerGame = getBoolean(KEY_IS_ONE_PLAYER_FRAGMENT, false)
-                if (isOnePlayerGame) btSettingMenuRestoreAllPoints.visibility = GONE
+                if (isOnePlayerGame) binding.btSettingMenuRestoreAllPoints.visibility = GONE
             }
         }
     }

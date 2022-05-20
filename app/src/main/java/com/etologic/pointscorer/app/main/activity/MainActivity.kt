@@ -5,9 +5,10 @@ import android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.etologic.pointscorer.R
-import com.etologic.pointscorer.app.main.activity.MainActivityViewModel.Companion.MainScreens.*
+import com.etologic.pointscorer.app.main.activity.MainActivityViewModel.Screens.*
 import com.etologic.pointscorer.app.main.base.BaseXPlayersFragment
 import com.etologic.pointscorer.app.main.fragments.*
+import com.etologic.pointscorer.app.main.dialogs.finish_menu.FinishMenuDialogFragment
 import com.etologic.pointscorer.app.main.fragments.main_menu.MainMenuFragment
 import com.etologic.pointscorer.databinding.MainActivityBinding
 import com.google.android.gms.ads.MobileAds
@@ -40,9 +41,9 @@ class MainActivity : DaggerAppCompatActivity() {
     }
 
     private fun initViewModel() {
-        viewModel = ViewModelProvider(this, viewModelFactory).get(MainActivityViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory)[MainActivityViewModel::class.java]
 
-        viewModel.liveScreen.observe(this) { screen ->
+        viewModel.screenObservable.observe(this) { screen ->
 
             fun handleKeepScreenOn(fragment: Fragment) {
                 if (fragment is BaseXPlayersFragment)
@@ -86,6 +87,14 @@ class MainActivity : DaggerAppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        viewModel.navigateBack()
+        if (viewModel.screenObservable.value == MENU) {
+            showFinishDialog()
+        } else {
+            viewModel.navigateTo(MENU)
+        }
+    }
+
+    private fun showFinishDialog() {
+        FinishMenuDialogFragment().show(supportFragmentManager, FinishMenuDialogFragment.TAG)
     }
 }

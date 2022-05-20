@@ -3,57 +3,77 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     tools:context=".app.main.fragments.Game5PlayersFragment">
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
-        android:baselineAligned="false"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:baselineAligned="false">
 
-        <FrameLayout
-            android:id="@+id/flPlayer51"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            tools:ignore="NestedWeights" />
+            android:baselineAligned="false"
+            android:orientation="vertical"
+            tools:ignore="NestedWeights">
 
-        <FrameLayout
-            android:id="@+id/flPlayer53"
-            android:layout_width="match_parent"
+            <FrameLayout
+                android:id="@+id/flPlayer51"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                tools:ignore="NestedWeights" />
+
+            <FrameLayout
+                android:id="@+id/flPlayer53"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                tools:ignore="NestedWeights" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            tools:ignore="NestedWeights" />
+            android:baselineAligned="false"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/flPlayer52"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                tools:ignore="NestedWeights" />
+
+            <FrameLayout
+                android:id="@+id/flPlayer54"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/flPlayer55"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:baselineAligned="false"
-        android:orientation="vertical">
-
-        <FrameLayout
-            android:id="@+id/flPlayer52"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <FrameLayout
-            android:id="@+id/flPlayer54"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-    </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/flPlayer55"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:id="@+id/llMainMenuAdsContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:minHeight="50dp"
+        android:orientation="horizontal" />
 
 </LinearLayout>
