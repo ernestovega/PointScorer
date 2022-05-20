@@ -1,4 +1,4 @@
-package com.etologic.pointscorer.app.main.dialogs.finish_menu.payer_settings_menu
+package com.etologic.pointscorer.app.main.dialogs.payer_settings_menu
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +11,7 @@ import androidx.core.widget.doOnTextChanged
 import com.etologic.pointscorer.BuildConfig
 import com.etologic.pointscorer.R
 import com.etologic.pointscorer.app.utils.ViewExtensions.hideKeyboard
+import com.etologic.pointscorer.app.utils.ViewExtensions.showKeyboard
 import com.etologic.pointscorer.databinding.GamePlayerSettingsDialogFragmentBinding
 import com.google.ads.mediation.admob.AdMobAdapter
 import com.google.android.gms.ads.AdRequest
@@ -75,7 +76,10 @@ class PlayerSettingsMenuDialogFragment : DaggerDialogFragment() {
         initName()
         selectColor(initialColor)
         initListeners()
-        binding.etSettingsMenuName.requestFocus()
+        with (binding.etSettingsMenuName) {
+            requestFocus()
+            showKeyboard()
+        }
     }
 
     private fun initAd() {

@@ -4,7 +4,7 @@ import com.etologic.pointscorer.app.main.fragments.*
 import com.etologic.pointscorer.app.main.dialogs.finish_menu.FinishMenuDialogFragment
 import com.etologic.pointscorer.app.main.fragments.main_menu.MainMenuFragment
 import com.etologic.pointscorer.app.main.fragments.player.PlayerFragment
-import com.etologic.pointscorer.app.main.dialogs.finish_menu.payer_settings_menu.PlayerSettingsMenuDialogFragment
+import com.etologic.pointscorer.app.main.dialogs.payer_settings_menu.PlayerSettingsMenuDialogFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
