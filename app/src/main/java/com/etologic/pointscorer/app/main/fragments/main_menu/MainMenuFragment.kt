@@ -16,6 +16,7 @@ import com.etologic.pointscorer.BuildConfig
 import com.etologic.pointscorer.R
 import com.etologic.pointscorer.app.main.activity.MainActivityViewModel.Screens.*
 import com.etologic.pointscorer.app.main.base.BaseMainFragment
+import com.etologic.pointscorer.app.main.dialogs.restore_all_points_dialog.RestoreAllPointsDialogFragment
 import com.etologic.pointscorer.app.utils.ViewExtensions.hideKeyboard
 import com.etologic.pointscorer.app.utils.dpToPx
 import com.etologic.pointscorer.databinding.MainMenuFragmentBinding
@@ -128,17 +129,8 @@ class MainMenuFragment : BaseMainFragment() {
             })
 
             acbMainMenuResetAllPoints.setOnClickListener {
-                AlertDialog.Builder(requireContext(), R.style.Theme_AppCompat_Light_Dialog)
-                    .setTitle(R.string.are_you_sure)
-                    .setMessage(String.format(ENGLISH, getString(R.string.this_will_restore_all_points), activityViewModel.initialPointsObservable.value))
-                    .setNegativeButton(R.string.cancel, null)
-                    .setPositiveButton(R.string.ok) { _: DialogInterface?, _: Int ->
-                        etMainMenuInitialPoints?.hideKeyboard()
-                        activityViewModel.restoreAllGamesPoints()
-                        Toast.makeText(requireContext(), R.string.all_players_points_were_restored, LENGTH_LONG).show()
-                    }
-                    .create()
-                    .show()
+                etMainMenuInitialPoints?.hideKeyboard()
+                RestoreAllPointsDialogFragment().show(parentFragmentManager, RestoreAllPointsDialogFragment.TAG)
             }
 
             btMainMenu1Player.setOnClickListener {

@@ -5,6 +5,7 @@ import com.etologic.pointscorer.app.main.dialogs.finish_menu.FinishMenuDialogFra
 import com.etologic.pointscorer.app.main.fragments.main_menu.MainMenuFragment
 import com.etologic.pointscorer.app.main.fragments.player.PlayerFragment
 import com.etologic.pointscorer.app.main.dialogs.payer_settings_menu.PlayerSettingsMenuDialogFragment
+import com.etologic.pointscorer.app.main.dialogs.restore_all_points_dialog.RestoreAllPointsDialogFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -46,5 +47,8 @@ abstract class MainActivityFragmentsBuilder {
 
     @ContributesAndroidInjector
     internal abstract fun provideFinishMenuDialogFragmentFactory(): FinishMenuDialogFragment
+
+    @ContributesAndroidInjector
+    internal abstract fun provideRestoreAllPointsDialogFragmentFactory(): RestoreAllPointsDialogFragment
     
 }

@@ -1,29 +1,30 @@
-package com.etologic.pointscorer.app.main.dialogs.finish_menu
+package com.etologic.pointscorer.app.main.dialogs.restore_all_points_dialog
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.etologic.pointscorer.BuildConfig
-import com.etologic.pointscorer.app.main.activity.MainActivityViewModel.Screens.*
+import com.etologic.pointscorer.R
 import com.etologic.pointscorer.app.main.base.BaseMainDialogFragment
-import com.etologic.pointscorer.databinding.FinishMenuDialogFragmentBinding
+import com.etologic.pointscorer.databinding.RestoreAllPointsDialogFragmentBinding
 import com.google.ads.mediation.admob.AdMobAdapter
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 
-class FinishMenuDialogFragment : BaseMainDialogFragment() {
+class RestoreAllPointsDialogFragment : BaseMainDialogFragment() {
 
     companion object {
-        const val TAG = "FinishMenuDialogFragment"
+        const val TAG = "RestoreAllPointsDialogFragment"
     }
 
-    private var fragmentBinding: FinishMenuDialogFragmentBinding? = null
+    private var fragmentBinding: RestoreAllPointsDialogFragmentBinding? = null
     private val binding get() = fragmentBinding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        fragmentBinding = FinishMenuDialogFragmentBinding.inflate(inflater, container, false)
+        fragmentBinding = RestoreAllPointsDialogFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -31,6 +32,11 @@ class FinishMenuDialogFragment : BaseMainDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         initAd()
         initListeners()
+        initMessage()
+    }
+
+    private fun initMessage() {
+        binding.tvRestoreAllPointsMessage.text = getString(R.string.this_will_restore_all_points_to_, activityViewModel.initialPointsObservable.value)
     }
 
     private fun initAd() {
@@ -38,7 +44,7 @@ class FinishMenuDialogFragment : BaseMainDialogFragment() {
         fun buildMediumRectangleAd(): AdView? =
             context?.let {
                 AdView(it).apply {
-                    adUnitId = BuildConfig.ADMOB_ADUNIT_BANNER_FINISH_MENU
+                    adUnitId = BuildConfig.ADMOB_ADUNIT_BANNER_RESTORE_ALL_POINTS_MENU
                     adSize = AdSize.MEDIUM_RECTANGLE
                 }
             }
@@ -52,18 +58,19 @@ class FinishMenuDialogFragment : BaseMainDialogFragment() {
         }
 
         buildMediumRectangleAd()?.let { bannerAdView ->
-            binding.flFinishMenuMediumRectangleAdContainer.addView(bannerAdView)
+            binding.flRestoreAllPointsMediumRectangleAdContainer.addView(bannerAdView)
             loadAd(bannerAdView)
         }
     }
 
     private fun initListeners() {
         with(binding) {
-            btFinishMenuExit.setOnClickListener {
-                activityViewModel.navigateTo(FINISH)
+            btRestoreAllPointsOk.setOnClickListener {
+                activityViewModel.restoreAllGamesPoints()
+                Toast.makeText(requireContext(), R.string.all_players_points_were_restored, Toast.LENGTH_LONG).show()
                 dismiss()
             }
-            btFinishMenuCancel.setOnClickListener {
+            btRestoreAllPointsCancel.setOnClickListener {
                 dismiss()
             }
         }

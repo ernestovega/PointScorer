@@ -17,7 +17,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
-
 class MainActivity : DaggerAppCompatActivity() {
 
     @Inject

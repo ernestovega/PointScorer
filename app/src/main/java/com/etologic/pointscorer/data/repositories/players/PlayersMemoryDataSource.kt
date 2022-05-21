@@ -1,7 +1,9 @@
 package com.etologic.pointscorer.data.repositories.players
 
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class PlayersMemoryDataSource
 @Inject constructor() {
     
@@ -10,13 +12,13 @@ class PlayersMemoryDataSource
     private var playersNames: MutableMap<Int, String> = mutableMapOf()
     private var playersColors: MutableMap<Int, Int> = mutableMapOf()
 
-    fun getInitialPoints() = initialPoints
+    fun getInitialPoints(): Int? = initialPoints
     
-    fun getPlayerPoints(playerId: Int) = playersPoints[playerId]
+    fun getPlayerPoints(playerId: Int): Int? = playersPoints[playerId]
     
-    fun getPlayerName(playerId: Int) = playersNames[playerId]
+    fun getPlayerName(playerId: Int): String? = playersNames[playerId]
     
-    fun getPlayerColor(playerId: Int) = playersColors[playerId]
+    fun getPlayerColor(playerId: Int): Int? = playersColors[playerId]
 
     fun saveInitialPoints(initialPoints: Int) {
         this.initialPoints = initialPoints
