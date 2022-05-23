@@ -76,10 +76,6 @@ class PlayerSettingsMenuDialogFragment : DaggerDialogFragment() {
         initName()
         selectColor(initialColor)
         initListeners()
-        with (binding.etSettingsMenuName) {
-            requestFocus()
-            showKeyboard()
-        }
     }
 
     private fun initAd() {
