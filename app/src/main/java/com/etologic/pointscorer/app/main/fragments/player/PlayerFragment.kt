@@ -18,7 +18,7 @@ import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.ViewModelProvider
 import com.etologic.pointscorer.R
 import com.etologic.pointscorer.app.main.base.BaseMainFragment
-import com.etologic.pointscorer.app.main.fragments.Game1PlayerFragment.Companion.GAME_1_PLAYER_1_ID
+import com.etologic.pointscorer.app.main.fragments.players.Game1PlayerFragment.Companion.GAME_1_PLAYER_1_ID
 import com.etologic.pointscorer.app.main.dialogs.payer_settings_menu.PlayerSettingsMenuDialogFragment
 import com.etologic.pointscorer.app.main.dialogs.payer_settings_menu.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_COLOR
 import com.etologic.pointscorer.app.main.dialogs.payer_settings_menu.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_NAME

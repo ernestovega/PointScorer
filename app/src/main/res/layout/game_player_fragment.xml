@@ -21,8 +21,8 @@
         android:layout_centerInParent="true"
         android:padding="32dp"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/shield"
         android:tintMode="multiply"
+        app:srcCompat="@drawable/shield"
         tools:ignore="ContentDescription" />
 
     <androidx.appcompat.widget.AppCompatEditText
@@ -43,15 +43,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/etName"
-        tools:layout_alignParentStart="true"
-        tools:layout_margin="32dp"
-        tools:rotation="-15"
-        tools:textColor="@color/green"
         android:background="@android:color/transparent"
         android:fontFamily="@font/rock_on"
         android:inputType="text"
         android:textSize="50sp"
-        tools:text="23" />
+        tools:layout_alignParentStart="true"
+        tools:layout_margin="32dp"
+        tools:rotation="-15"
+        tools:text="23"
+        tools:textColor="@color/green" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package com.etologic.pointscorer.app.main.fragments
+package com.etologic.pointscorer.app.main.fragments.players
 
 import android.os.Bundle
 import android.view.LayoutInflater

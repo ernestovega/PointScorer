@@ -10,6 +10,7 @@ import com.etologic.pointscorer.app.main.base.BaseXPlayersFragment
 import com.etologic.pointscorer.app.main.fragments.*
 import com.etologic.pointscorer.app.main.dialogs.finish_menu.FinishMenuDialogFragment
 import com.etologic.pointscorer.app.main.fragments.main_menu.MainMenuFragment
+import com.etologic.pointscorer.app.main.fragments.players.*
 import com.etologic.pointscorer.databinding.MainActivityBinding
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.analytics.FirebaseAnalytics

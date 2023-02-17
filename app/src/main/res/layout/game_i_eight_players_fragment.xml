@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:baselineAligned="false"
     android:orientation="vertical"
-    tools:context=".app.main.fragments.Game8PlayersFragment">
+    tools:context=".app.main.fragments.players.Game8PlayersFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
