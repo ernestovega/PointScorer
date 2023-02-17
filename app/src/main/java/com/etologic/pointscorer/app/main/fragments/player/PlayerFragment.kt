@@ -10,8 +10,9 @@ import android.view.MotionEvent.ACTION_CANCEL
 import android.view.MotionEvent.ACTION_UP
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.animation.Animation
-import android.widget.Toast
+import android.widget.RelativeLayout.*
 import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.ViewModelProvider
@@ -27,6 +28,7 @@ import com.etologic.pointscorer.app.main.dialogs.payer_settings_menu.PlayerSetti
 import com.etologic.pointscorer.app.utils.MyAnimationUtils
 import com.etologic.pointscorer.app.utils.dpToPx
 import com.etologic.pointscorer.databinding.GamePlayerFragmentBinding
+import kotlinx.android.synthetic.main.game_player_fragment.view.*
 import java.util.*
 import javax.inject.Inject
 
@@ -37,6 +39,11 @@ class PlayerFragment : BaseMainFragment() {
     private lateinit var viewModel: PlayerFragmentViewModel
     private var _binding: GamePlayerFragmentBinding? = null
     private val binding get() = _binding!!
+    private var auxPointsMarginSize: Int? = null
+    private var auxPointsPositiveRotation: Float? = null
+    private var auxPointsNegativeRotation: Float? = null
+    private var greenColor: Int? = null
+    private var redColor: Int? = null
     private var defaultPlayerColor: Int? = null
     private var playerNameSize = DEFAULT_PLAYER_NAME_SIZE
     private var playerNameMarginTop = DEFAULT_PLAYER_NAME_MARGIN_TOP
@@ -44,21 +51,35 @@ class PlayerFragment : BaseMainFragment() {
     private var playerPointsMarginTop = DEFAULT_PLAYER_POINTS_MARGIN_TOP
     private val upRepeatUpdateHandler = Handler(Looper.getMainLooper())
     private val downRepeatUpdateHandler = Handler(Looper.getMainLooper())
-    private lateinit var upAuxPointsFadeOutAnimation: Animation
-    private lateinit var downAuxPointsFadeOutAnimation: Animation
-    private var lastUpCountPoints = 0
-    private var lastDownCountPoints = 0
-    private var isUpPressed = false /* https://stackoverflow.com/questions/7938516/continuously-increase-integer-value-as-the-button-is-pressed */
+    private lateinit var auxPointsFadeOutAnimation: Animation
+    private var auxPoints = 0
+    private var isUpPressed =
+        false /* https://stackoverflow.com/questions/7938516/continuously-increase-integer-value-as-the-button-is-pressed */
     private var isDownPressed = false
     private var playerSettingsMenuDialogFragment: PlayerSettingsMenuDialogFragment? = null
     private val playerSettingsMenuDialogFragmentListener = object : PlayerDialogListener {
-        override fun onColorChanged(color: Int) { viewModel.savePlayerColor(color) }
-        override fun onNameChanged(name: String) { viewModel.savePlayerName(name) }
-        override fun onRestorePlayerPointsClicked() { viewModel.restorePlayerPoints() }
-        override fun onRestoreAllPlayersPointsClicked() { activityViewModel.restoreOneGamePoints(viewModel.gamePlayersNum) }
+        override fun onColorChanged(color: Int) {
+            viewModel.savePlayerColor(color)
+        }
+
+        override fun onNameChanged(name: String) {
+            viewModel.savePlayerName(name)
+        }
+
+        override fun onRestorePlayerPointsClicked() {
+            viewModel.restorePlayerPoints()
+        }
+
+        override fun onRestoreAllPlayersPointsClicked() {
+            activityViewModel.restoreOneGamePoints(viewModel.gamePlayersNum)
+        }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = GamePlayerFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -78,6 +99,11 @@ class PlayerFragment : BaseMainFragment() {
     }
 
     private fun initValues() {
+        auxPointsMarginSize = 32.dpToPx(resources)
+        auxPointsPositiveRotation = -15f
+        auxPointsNegativeRotation = 15f
+        greenColor = ContextCompat.getColor(requireContext(), R.color.green)
+        redColor = ContextCompat.getColor(requireContext(), R.color.red)
         defaultPlayerColor = ContextCompat.getColor(requireContext(), R.color.white)
         arguments?.let { arguments ->
             playerNameSize = arguments.getInt(KEY_PLAYER_NAME_SIZE)
@@ -88,32 +114,29 @@ class PlayerFragment : BaseMainFragment() {
 
     private fun initViews() {
         with(binding) {
-            tvUpCount.textSize = playerPointsSize * 0.5f
-            tvDownCount.textSize = playerPointsSize * 0.5f
+            tvAuxPoints.textSize = playerPointsSize * 0.5f
             tvPointsPlayer.textSize = playerPointsSize.toFloat()
             tvPointsPlayer.setPadding(0, playerPointsMarginTop.dpToPx(resources), 0, 0)
             etName.setPadding(0, playerNameMarginTop.dpToPx(resources), 0, 0)
             etName.textSize = playerNameSize.toFloat()
-            upAuxPointsFadeOutAnimation = MyAnimationUtils.getAuxPointsFadeOutAnimation {
-                if (downAuxPointsFadeOutAnimation.hasEnded())
-                    viewModel.countAnimationEnded()
+            auxPointsFadeOutAnimation = MyAnimationUtils.getAuxPointsFadeOutAnimation {
+                if (auxPointsFadeOutAnimation.hasEnded()) { viewModel.auxPointsAnimationEnded() }
             }
-            downAuxPointsFadeOutAnimation = MyAnimationUtils.getAuxPointsFadeOutAnimation {
-                if (upAuxPointsFadeOutAnimation.hasEnded())
-                    viewModel.countAnimationEnded()
-            }
-            binding.tvUpCount.animation = upAuxPointsFadeOutAnimation
-            binding.tvDownCount.animation = downAuxPointsFadeOutAnimation
+            binding.tvAuxPoints.animation = auxPointsFadeOutAnimation
             ivShield.startAnimation(MyAnimationUtils.shieldAnimation)
         }
     }
 
     private fun initObservers() {
         viewModel.livePlayerPoints().observe(viewLifecycleOwner) { updateShieldPoints(it) }
-        viewModel.livePlayerCount().observe(viewLifecycleOwner) { updateCountPoints(it) }
+        viewModel.livePlayerAuxPoints().observe(viewLifecycleOwner) { updateCountPoints(it) }
         viewModel.livePlayerName().observe(viewLifecycleOwner) { updateName(it) }
         viewModel.livePlayerColor().observe(viewLifecycleOwner) { setTextsColor(it) }
-        activityViewModel.shouldRestoreAllPointsObservable.observe(viewLifecycleOwner) { restorePlayerPoints(it) }
+        activityViewModel.shouldRestoreAllPointsObservable.observe(viewLifecycleOwner) {
+            restorePlayerPoints(
+                it
+            )
+        }
     }
 
     private fun updateShieldPoints(points: Int) {
@@ -135,36 +158,44 @@ class PlayerFragment : BaseMainFragment() {
     }
 
     private fun updateCountPoints(count: Int) {
-        if (viewModel.playerCountEnabled) {
-            with(binding) {
-                when {
-                    count > 0 -> {
-                        lastUpCountPoints = count
-                        tvUpCount.text = String.format("%+d", count)
-                        upAuxPointsFadeOutAnimation.start()
-                    }
-                    count < 0 -> {
-                        lastDownCountPoints = count
-                        tvDownCount.text = String.format("%+d", count)
-                        downAuxPointsFadeOutAnimation.start()
-                    }
-                    else -> {
-                        try {
-                            if (lastUpCountPoints == 1) {
-                                lastUpCountPoints = 0
-                                tvUpCount.text = "+0"
-                                upAuxPointsFadeOutAnimation.start()
-                            } else if (lastDownCountPoints == -1) {
-                                lastDownCountPoints = 0
-                                tvDownCount.text = "-0"
-                                downAuxPointsFadeOutAnimation.start()
-                            }
-                        } catch (nfe: NumberFormatException) {
-                            Toast.makeText(context, nfe.message, Toast.LENGTH_LONG).show()
-                        }
-                    }
+
+        fun setupPositiveAuxPointsView() {
+            binding.tvAuxPoints.apply {
+                layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
+                    removeRule(ALIGN_PARENT_BOTTOM)
+                    removeRule(ALIGN_PARENT_END)
+                    addRule(BELOW, R.id.etName)
+                    addRule(ALIGN_PARENT_START)
+                    auxPointsMarginSize?.let { setMargins(it, 0, it, it) }
                 }
+                auxPointsPositiveRotation?.let { rotation = it }
+                greenColor?.let { setTextColor(it) }
             }
+        }
+
+        fun setupNegativeAuxPointsView() {
+            binding.tvAuxPoints.apply {
+                layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
+                    removeRule(BELOW)
+                    removeRule(ALIGN_PARENT_TOP)
+                    removeRule(ALIGN_PARENT_START)
+                    addRule(ALIGN_PARENT_BOTTOM)
+                    addRule(ALIGN_PARENT_END)
+                    auxPointsMarginSize?.let { setMargins(it, it, it, it) }
+                }
+                auxPointsNegativeRotation?.let { rotation = it }
+                redColor?.let { setTextColor(it) }
+            }
+        }
+
+        if (viewModel.playerAuxPointsEnabled) {
+            auxPoints = count
+            when {
+                count > 0 -> setupPositiveAuxPointsView()
+                count < 0 -> setupNegativeAuxPointsView()
+            }
+            binding.tvAuxPoints.text = if (count == 0) "0" else String.format("%+d", count)
+            auxPointsFadeOutAnimation.start()
         }
     }
 
@@ -219,20 +250,31 @@ class PlayerFragment : BaseMainFragment() {
     private fun showPlayerDialog() {
         playerSettingsMenuDialogFragment = PlayerSettingsMenuDialogFragment()
         val bundle = Bundle().apply { putInt(KEY_INITIAL_COLOR, binding.etName.currentTextColor) }
-        bundle.putString(KEY_INITIAL_NAME, (binding.etName.text ?: viewModel.livePlayerName().value).toString())
+        bundle.putString(
+            KEY_INITIAL_NAME,
+            (binding.etName.text ?: viewModel.livePlayerName().value).toString()
+        )
         bundle.putInt(KEY_INITIAL_POINTS, activityViewModel.initialPointsObservable.value!!)
         bundle.putBoolean(KEY_IS_ONE_PLAYER_FRAGMENT, viewModel.playerId == GAME_1_PLAYER_1_ID)
         playerSettingsMenuDialogFragment?.arguments = bundle
-        playerSettingsMenuDialogFragment?.setPlayerDialogListener(playerSettingsMenuDialogFragmentListener)
-        playerSettingsMenuDialogFragment?.show(requireActivity().supportFragmentManager, PlayerSettingsMenuDialogFragment.TAG)
+        playerSettingsMenuDialogFragment?.setPlayerDialogListener(
+            playerSettingsMenuDialogFragmentListener
+        )
+        playerSettingsMenuDialogFragment?.show(
+            requireActivity().supportFragmentManager,
+            PlayerSettingsMenuDialogFragment.TAG
+        )
     }
 
     override fun onResume() {
         super.onResume()
-        playerSettingsMenuDialogFragment = parentFragmentManager.findFragmentByTag(PlayerSettingsMenuDialogFragment.TAG)?.let {
-            it as PlayerSettingsMenuDialogFragment
-        }
-        playerSettingsMenuDialogFragment?.setPlayerDialogListener(playerSettingsMenuDialogFragmentListener)
+        playerSettingsMenuDialogFragment =
+            parentFragmentManager.findFragmentByTag(PlayerSettingsMenuDialogFragment.TAG)?.let {
+                it as PlayerSettingsMenuDialogFragment
+            }
+        playerSettingsMenuDialogFragment?.setPlayerDialogListener(
+            playerSettingsMenuDialogFragmentListener
+        )
     }
 
     override fun onDestroy() {

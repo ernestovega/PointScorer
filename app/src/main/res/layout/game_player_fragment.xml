@@ -39,34 +39,19 @@
         tools:text="100" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvUpCount"
+        android:id="@+id/tvAuxPoints"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/etName"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="32dp"
+        tools:layout_alignParentStart="true"
+        tools:layout_margin="32dp"
+        tools:rotation="-15"
+        tools:textColor="@color/green"
         android:background="@android:color/transparent"
         android:fontFamily="@font/rock_on"
         android:inputType="text"
-        android:rotation="-15"
-        android:textColor="@color/green"
         android:textSize="50sp"
         tools:text="23" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvDownCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="32dp"
-        android:background="@android:color/transparent"
-        android:fontFamily="@font/rock_on"
-        android:inputType="text"
-        android:rotation="15"
-        android:textColor="@color/red"
-        android:textSize="50sp"
-        tools:text="-23" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -15,11 +15,11 @@ class PlayerFragmentViewModel
 
     var playerId: Int = 0
     var gamePlayersNum: Int = playerId / 10
-    var playerCountEnabled = false
+    var playerAuxPointsEnabled = false
     private val _playerPoints = MutableLiveData<Int>()
     fun livePlayerPoints(): LiveData<Int> = _playerPoints
-    private val _playerCount = MutableLiveData<Int>()
-    fun livePlayerCount(): LiveData<Int> = _playerCount
+    private val _playerAuxPoints = MutableLiveData<Int>()
+    fun livePlayerAuxPoints(): LiveData<Int> = _playerAuxPoints
     private val _playerName = MutableLiveData<String>()
     fun livePlayerName(): LiveData<String> = _playerName
     private val _playerColor = MutableLiveData<Int>()
@@ -40,13 +40,13 @@ class PlayerFragmentViewModel
         viewModelScope.launch {
             try {
                 val newPoints = playersRepository.plus1PlayerPoint(playerId)
-                playerCountEnabled = true
+                playerAuxPointsEnabled = true
                 _playerPoints.postValue(newPoints)
-                _playerCount.postValue((_playerCount.value ?: 0).plus(1))
+                _playerAuxPoints.postValue((_playerAuxPoints.value ?: 0).plus(1))
             } catch (_: MaxPointsReachedException) {
-                playerCountEnabled = false
+                playerAuxPointsEnabled = false
                 _playerPoints.postValue(_playerPoints.value)
-                _playerCount.postValue(_playerCount.value ?: 0)
+                _playerAuxPoints.postValue(_playerAuxPoints.value ?: 0)
             }
         }
     }
@@ -55,13 +55,13 @@ class PlayerFragmentViewModel
         viewModelScope.launch {
             try {
                 val newPoints = playersRepository.minus1PlayerPoint(playerId)
-                playerCountEnabled = true
+                playerAuxPointsEnabled = true
                 _playerPoints.postValue(newPoints)
-                _playerCount.postValue((_playerCount.value ?: 0).minus(1))
+                _playerAuxPoints.postValue((_playerAuxPoints.value ?: 0).minus(1))
             } catch (_: MinPointsReachedException) {
-                playerCountEnabled = false
+                playerAuxPointsEnabled = false
                 _playerPoints.postValue(_playerPoints.value)
-                _playerCount.postValue(_playerCount.value ?: 0)
+                _playerAuxPoints.postValue(_playerAuxPoints.value ?: 0)
             }
         }
     }
@@ -80,9 +80,9 @@ class PlayerFragmentViewModel
         }
     }
 
-    fun countAnimationEnded() {
-        playerCountEnabled = false
-        _playerCount.postValue(0)
+    fun auxPointsAnimationEnded() {
+        playerAuxPointsEnabled = false
+        _playerAuxPoints.postValue(0)
     }
 
 
