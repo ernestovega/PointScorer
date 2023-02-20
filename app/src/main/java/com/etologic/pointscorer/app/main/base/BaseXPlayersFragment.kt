@@ -27,12 +27,16 @@ abstract class BaseXPlayersFragment : BaseMainFragment() {
 
         fun getAdUnitsForThisScreen(): List<String> {
             val adUnitsListForThisScreen = mutableListOf<String>()
-            var numBannersFittingThisScreenWidth = resources.displayMetrics.widthPixels / BANNER.width.dpToPx(resources)
+            var numBannersFittingThisScreenWidth =
+                resources.displayMetrics.widthPixels / BANNER.width.dpToPx(resources)
             if (numBannersFittingThisScreenWidth > MainMenuFragment.adUnitsList.size) {
-                FirebaseCrashlytics.getInstance().setCustomKey("MoreThan6BannersCouldBeAdded", numBannersFittingThisScreenWidth)
+                FirebaseCrashlytics.getInstance()
+                    .setCustomKey("MoreThan6BannersCouldBeAdded", numBannersFittingThisScreenWidth)
                 numBannersFittingThisScreenWidth = MainMenuFragment.adUnitsList.size
             }
-            for (i in 0 until numBannersFittingThisScreenWidth) adUnitsListForThisScreen.add(MainMenuFragment.adUnitsList[i])
+            for (i in 0 until numBannersFittingThisScreenWidth) adUnitsListForThisScreen.add(
+                MainMenuFragment.adUnitsList[i]
+            )
             return adUnitsListForThisScreen
         }
 
@@ -40,28 +44,44 @@ abstract class BaseXPlayersFragment : BaseMainFragment() {
             context?.let {
                 AdView(it).apply {
                     adUnitId = adUnit
-                    this.adSize = BANNER
+                    setAdSize(BANNER)
                 }
             }
 
         fun addView(bannerAdView: AdView) {
             when (baseBinding) {
                 is GameBOnePlayerFragmentBinding ->
-                    (baseBinding as GameBOnePlayerFragmentBinding).llMainMenuAdsContainer.addView(bannerAdView)
+                    (baseBinding as GameBOnePlayerFragmentBinding).llMainMenuAdsContainer.addView(
+                        bannerAdView
+                    )
                 is GameCTwoPlayersFragmentBinding ->
-                    (baseBinding as GameCTwoPlayersFragmentBinding).llMainMenuAdsContainer.addView(bannerAdView)
+                    (baseBinding as GameCTwoPlayersFragmentBinding).llMainMenuAdsContainer.addView(
+                        bannerAdView
+                    )
                 is GameDThreePlayersFragmentBinding ->
-                    (baseBinding as GameDThreePlayersFragmentBinding).llMainMenuAdsContainer.addView(bannerAdView)
+                    (baseBinding as GameDThreePlayersFragmentBinding).llMainMenuAdsContainer.addView(
+                        bannerAdView
+                    )
                 is GameEFourPlayersFragmentBinding ->
-                    (baseBinding as GameEFourPlayersFragmentBinding).llMainMenuAdsContainer.addView(bannerAdView)
+                    (baseBinding as GameEFourPlayersFragmentBinding).llMainMenuAdsContainer.addView(
+                        bannerAdView
+                    )
                 is GameFFivePlayersFragmentBinding ->
-                    (baseBinding as GameFFivePlayersFragmentBinding).llMainMenuAdsContainer.addView(bannerAdView)
+                    (baseBinding as GameFFivePlayersFragmentBinding).llMainMenuAdsContainer.addView(
+                        bannerAdView
+                    )
                 is GameGSixPlayersFragmentBinding ->
-                    (baseBinding as GameGSixPlayersFragmentBinding).llMainMenuAdsContainer.addView(bannerAdView)
+                    (baseBinding as GameGSixPlayersFragmentBinding).llMainMenuAdsContainer.addView(
+                        bannerAdView
+                    )
                 is GameHSevenPlayersFragmentBinding ->
-                    (baseBinding as GameHSevenPlayersFragmentBinding).llMainMenuAdsContainer.addView(bannerAdView)
+                    (baseBinding as GameHSevenPlayersFragmentBinding).llMainMenuAdsContainer.addView(
+                        bannerAdView
+                    )
                 is GameIEightPlayersFragmentBinding ->
-                    (baseBinding as GameIEightPlayersFragmentBinding).llMainMenuAdsContainer.addView(bannerAdView)
+                    (baseBinding as GameIEightPlayersFragmentBinding).llMainMenuAdsContainer.addView(
+                        bannerAdView
+                    )
             }
         }
 
@@ -95,7 +115,7 @@ abstract class BaseXPlayersFragment : BaseMainFragment() {
         bundle.putInt(PlayerFragment.KEY_PLAYER_POINTS_SIZE, pointsSize)
         val fragment = PlayerFragment()
         fragment.arguments = bundle
-        
+
         parentFragmentManager
             .beginTransaction()
             .setCustomAnimations(animator.fade_in, animator.fade_out)

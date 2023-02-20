@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -17,13 +17,18 @@ class PlayersDataStoreDataSource
         private const val FILE_NAME = "points_scorer_shared_prefs"
         private val PREFS_KEY_INITIAL_CHECK_DONE = booleanPreferencesKey("initial_check_done")
         private val PREFS_KEY_INITIAL_POINTS = intPreferencesKey("initial_points")
-        private fun getPlayerNamePrefsKey(playerId: Int) = stringPreferencesKey("name_player_$playerId")
-        private fun getPlayerPointsPrefsKey(playerId: Int) = intPreferencesKey("points_player_$playerId")
-        private fun getPlayerColorPrefsKey(playerId: Int) = intPreferencesKey("color_player_$playerId")
+        private fun getPlayerNamePrefsKey(playerId: Int) =
+            stringPreferencesKey("name_player_$playerId")
+
+        private fun getPlayerPointsPrefsKey(playerId: Int) =
+            intPreferencesKey("points_player_$playerId")
+
+        private fun getPlayerColorPrefsKey(playerId: Int) =
+            intPreferencesKey("color_player_$playerId")
     }
 
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(FILE_NAME)
-    
+
     suspend fun isInitialCheckDone(): Boolean =
         context.dataStore.data.map { preferences ->
             preferences[PREFS_KEY_INITIAL_CHECK_DONE]

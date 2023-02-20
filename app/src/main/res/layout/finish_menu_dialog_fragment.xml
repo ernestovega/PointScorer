@@ -10,21 +10,32 @@
         android:id="@+id/flFinishMenuMediumRectangleAdContainer"
         android:layout_width="300dp"
         android:layout_height="250dp"
-        android:gravity="center"
-        android:layout_gravity="center_vertical" />
+        android:layout_gravity="center_vertical"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/tvFinishMenuTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/flFinishMenuMediumRectangleAdContainer"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="24dp"
+        android:text="@string/bye"
+        android:textColor="@color/black"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvFinishMenuMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/flFinishMenuMediumRectangleAdContainer"
-        android:layout_marginTop="32dp"
+        android:layout_below="@+id/tvFinishMenuTitle"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
-        android:layout_alignEnd="@+id/flFinishMenuMediumRectangleAdContainer"
-        android:text="@string/thanks_for_using_my_app_see_you_soon"
-        android:gravity="end"
         android:lineSpacingMultiplier="1.3"
+        android:text="@string/thanks_for_using_my_app_see_you_soon"
         android:textColor="@color/black" />
 
     <Button
@@ -32,8 +43,8 @@
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:layout_below="@+id/tvFinishMenuMessage"
+        android:layout_marginBottom="16dp"
         android:layout_toStartOf="@+id/btFinishMenuExit"
         android:text="@string/cancel"
         android:textColor="@color/colorAccent" />
@@ -43,9 +54,9 @@
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:layout_below="@+id/tvFinishMenuMessage"
         android:layout_alignEnd="@+id/flFinishMenuMediumRectangleAdContainer"
+        android:layout_marginBottom="16dp"
         android:text="@string/exit"
         android:textColor="@color/colorAccent" />
 

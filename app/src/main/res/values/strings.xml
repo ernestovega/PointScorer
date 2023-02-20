@@ -37,14 +37,15 @@
     <string name="animate_points">Animate points</string>
     <string name="restore_points">Restore points</string>
     <string name="restore_all_points">Restore all points</string>
-    <string name="this_will_restore_all_points_to_">This will restore everybody\'s\npoints to %d.</string>
+    <string name="this_will_restore_all_points_to_">This will restore every points to %d, but also the names and the colors on every player in every screen.\nIf you want to restore just the points in one screen press cancel and go to the \"Restore all\" option in that screen.</string>
     <string name="error_initial_points">Please enter a valid number, must be less than 10.000.</string>
     <string name="settings">Settings</string>
     <string name="close">Close</string>
+    <string name="bye">Bye bye</string>
     <string name="are_you_sure">Are you sure?</string>
+    <string name="this_will_restore_all_points_in_this_screen_to_">This will restore everybody\'s points in this screen to %d.</string>
     <string name="restart_x_points_to_y">This will restore %s points to %d</string>
     <string name="your">your</string>
-    <string name="restart_all_points_to_y">This will restore everybody\'s points to %d</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="accept">Accept</string>

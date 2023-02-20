@@ -7,9 +7,10 @@ import javax.inject.Singleton
 
 @Module
 internal class AppModule {
-    
+
     @Provides
     @Singleton
-    internal fun provideContext(pointsScorerApplication: PointsScorerApplication): Context = pointsScorerApplication
-    
+    internal fun provideContext(pointsScorerApplication: PointsScorerApplication): Context =
+        pointsScorerApplication
+
 }

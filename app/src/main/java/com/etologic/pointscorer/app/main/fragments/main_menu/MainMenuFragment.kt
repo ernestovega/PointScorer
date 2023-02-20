@@ -1,7 +1,6 @@
 package com.etologic.pointscorer.app.main.fragments.main_menu
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,8 +9,6 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.Toast
-import android.widget.Toast.LENGTH_LONG
 import com.etologic.pointscorer.BuildConfig
 import com.etologic.pointscorer.R
 import com.etologic.pointscorer.app.main.activity.MainActivityViewModel.Screens.*
@@ -20,13 +17,12 @@ import com.etologic.pointscorer.app.main.dialogs.restore_all_points_dialog.Resto
 import com.etologic.pointscorer.app.utils.ViewExtensions.hideKeyboard
 import com.etologic.pointscorer.app.utils.dpToPx
 import com.etologic.pointscorer.databinding.MainMenuFragmentBinding
-import com.google.ads.AdSize.BANNER
 import com.google.ads.mediation.admob.AdMobAdapter
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdSize.BANNER
 import com.google.android.gms.ads.AdView
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import java.util.Locale.ENGLISH
+import javax.inject.Inject
 
 class MainMenuFragment : BaseMainFragment() {
 
@@ -40,11 +36,17 @@ class MainMenuFragment : BaseMainFragment() {
         )
     }
 
+    @Inject
+    lateinit var restoreAllPointsDialogFragment: RestoreAllPointsDialogFragment
     private var fragmentBinding: MainMenuFragmentBinding? = null
     private val binding get() = fragmentBinding!!
     private var errorInitialPointsLiteral: String? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         fragmentBinding = MainMenuFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -60,12 +62,16 @@ class MainMenuFragment : BaseMainFragment() {
 
         fun getAdUnitsForThisScreen(): List<String> {
             val adUnitsListForThisScreen = mutableListOf<String>()
-            var numBannersFittingThisScreenWidth = resources.displayMetrics.widthPixels / BANNER.width.dpToPx(resources)
+            var numBannersFittingThisScreenWidth =
+                resources.displayMetrics.widthPixels / BANNER.width.dpToPx(resources)
             if (numBannersFittingThisScreenWidth > adUnitsList.size) {
-                FirebaseCrashlytics.getInstance().setCustomKey("MoreThan6BannersCouldBeAdded", numBannersFittingThisScreenWidth)
+                FirebaseCrashlytics.getInstance()
+                    .setCustomKey("MoreThan6BannersCouldBeAdded", numBannersFittingThisScreenWidth)
                 numBannersFittingThisScreenWidth = adUnitsList.size
             }
-            for (i in 0 until numBannersFittingThisScreenWidth) adUnitsListForThisScreen.add(adUnitsList[i])
+            for (i in 0 until numBannersFittingThisScreenWidth) adUnitsListForThisScreen.add(
+                adUnitsList[i]
+            )
             return adUnitsListForThisScreen
         }
 
@@ -73,7 +79,7 @@ class MainMenuFragment : BaseMainFragment() {
             context?.let {
                 AdView(it).apply {
                     adUnitId = adUnit
-                    adSize = AdSize.BANNER
+                    setAdSize(BANNER)
                 }
             }
 
@@ -130,7 +136,10 @@ class MainMenuFragment : BaseMainFragment() {
 
             acbMainMenuResetAllPoints.setOnClickListener {
                 etMainMenuInitialPoints?.hideKeyboard()
-                RestoreAllPointsDialogFragment().show(parentFragmentManager, RestoreAllPointsDialogFragment.TAG)
+                restoreAllPointsDialogFragment.show(
+                    parentFragmentManager,
+                    RestoreAllPointsDialogFragment.TAG
+                )
             }
 
             btMainMenu1Player.setOnClickListener {

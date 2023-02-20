@@ -14,7 +14,11 @@ class Game1PlayerFragment : BaseXPlayersFragment() {
     private var _binding: GameBOnePlayerFragmentBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = GameBOnePlayerFragmentBinding.inflate(inflater, container, false)
         baseBinding = binding
         return binding.root
@@ -35,7 +39,6 @@ class Game1PlayerFragment : BaseXPlayersFragment() {
     }
 
     companion object {
-
         const val GAME_1_PLAYER_1_ID = 11
     }
 }

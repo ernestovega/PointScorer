@@ -1,4 +1,4 @@
-package com.etologic.pointscorer.app.main.dialogs.payer_settings_menu
+package com.etologic.pointscorer.app.main.dialogs.player_settings_menu
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,16 +10,15 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.etologic.pointscorer.BuildConfig
 import com.etologic.pointscorer.R
+import com.etologic.pointscorer.app.utils.AdsExtensions.load
 import com.etologic.pointscorer.app.utils.ViewExtensions.hideKeyboard
-import com.etologic.pointscorer.app.utils.ViewExtensions.showKeyboard
 import com.etologic.pointscorer.databinding.GamePlayerSettingsDialogFragmentBinding
-import com.google.ads.mediation.admob.AdMobAdapter
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdSize.MEDIUM_RECTANGLE
 import com.google.android.gms.ads.AdView
 import dagger.android.support.DaggerDialogFragment
+import javax.inject.Inject
 
-class PlayerSettingsMenuDialogFragment : DaggerDialogFragment() {
+class PlayerSettingsMenuDialogFragment @Inject constructor() : DaggerDialogFragment() {
 
     companion object {
         const val TAG = "PlayerSettingsDialogFragment"
@@ -59,47 +58,146 @@ class PlayerSettingsMenuDialogFragment : DaggerDialogFragment() {
     private var initialColor: Int? = null
     private var initialName: String? = null
     private var playerDialogListener: PlayerDialogListener? = null
+    private var bannerAdView: AdView? = null
 
     internal fun setPlayerDialogListener(playerDialogListener: PlayerDialogListener?) {
         this.playerDialogListener = playerDialogListener
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = GamePlayerSettingsDialogFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        fun initListeners() {
+
+            with(binding) {
+
+                btSettingMenuClose.setOnClickListener {
+                    etSettingsMenuName.hideKeyboard()
+                    dismiss()
+                }
+
+                etSettingsMenuName.doOnTextChanged { text, _, _, _ ->
+                    val name = (text ?: "").toString()
+                    initialName = name
+                    playerDialogListener?.onNameChanged(name)
+                }
+
+                vSettingsMenuColorRed.setOnClickListener {
+                    selectColor(redColor)
+                    redColor?.let { color -> playerDialogListener?.onColorChanged(color) }
+                }
+                vSettingsMenuColorOrange.setOnClickListener {
+                    selectColor(orangeColor)
+                    orangeColor?.let { color -> playerDialogListener?.onColorChanged(color) }
+                }
+                vSettingsMenuColorYellow.setOnClickListener {
+                    selectColor(yellowColor)
+                    yellowColor?.let { color -> playerDialogListener?.onColorChanged(color) }
+                }
+                vSettingsMenuColorGreen.setOnClickListener {
+                    selectColor(greenColor)
+                    greenColor?.let { color -> playerDialogListener?.onColorChanged(color) }
+                }
+                vSettingsMenuColorBlue.setOnClickListener {
+                    selectColor(blueColor)
+                    blueColor?.let { color -> playerDialogListener?.onColorChanged(color) }
+                }
+                vSettingsMenuColorPurple.setOnClickListener {
+                    selectColor(purpleColor)
+                    purpleColor?.let { color -> playerDialogListener?.onColorChanged(color) }
+                }
+                vSettingsMenuColorPink.setOnClickListener {
+                    selectColor(pinkColor)
+                    pinkColor?.let { color -> playerDialogListener?.onColorChanged(color) }
+                }
+                vSettingsMenuColorWhite.setOnClickListener {
+                    selectColor(whiteColor)
+                    whiteColor?.let { color -> playerDialogListener?.onColorChanged(color) }
+                }
+
+                btSettingMenuRestorePoints.setOnClickListener {
+
+                    fun askConfirmRestorePlayerPoints() {
+                        var name = (binding.etSettingsMenuName.text ?: "").toString()
+                        if (name.isBlank())
+                            name = getString(R.string.your)
+                        AlertDialog.Builder(requireContext(), R.style.Theme_AppCompat_Light_Dialog)
+                            .setTitle(R.string.are_you_sure)
+                            .setMessage(
+                                String.format(
+                                    getString(R.string.restart_x_points_to_y),
+                                    name,
+                                    initialPoints
+                                )
+                            )
+                            .setNegativeButton(R.string.cancel, null)
+                            .setPositiveButton(R.string.ok) { _, _ ->
+                                playerDialogListener?.onRestorePlayerPointsClicked()
+                                dismiss()
+                            }
+                            .create()
+                            .show()
+                    }
+
+                    etSettingsMenuName.hideKeyboard()
+                    askConfirmRestorePlayerPoints()
+                }
+
+                btSettingMenuRestoreAllPoints.setOnClickListener {
+
+                    fun askConfirmRestoreAllPlayersPoints() {
+                        AlertDialog.Builder(requireContext(), R.style.Theme_AppCompat_Light_Dialog)
+                            .setTitle(R.string.are_you_sure)
+                            .setMessage(
+                                String.format(
+                                    getString(R.string.this_will_restore_all_points_in_this_screen_to_),
+                                    initialPoints
+                                )
+                            )
+                            .setNegativeButton(R.string.cancel, null)
+                            .setPositiveButton(R.string.ok) { _, _ ->
+                                playerDialogListener?.onRestoreAllPlayersPointsClicked()
+                                dismiss()
+                            }
+                            .create()
+                            .show()
+                    }
+
+                    etSettingsMenuName.hideKeyboard()
+                    askConfirmRestoreAllPlayersPoints()
+                }
+            }
+        }
+
+        fun initAd() {
+            bannerAdView = context?.let {
+                AdView(it).apply {
+                    adUnitId = BuildConfig.ADMOB_ADUNIT_BANNER_SETTINGS_MENU
+                    setAdSize(MEDIUM_RECTANGLE)
+                }
+            }
+            bannerAdView?.let { binding.flSettingsMenuMediumRectangleAdContainer?.addView(it) }
+        }
+
         super.onViewCreated(view, savedInstanceState)
-        initAd()
         initValues()
         initName()
         selectColor(initialColor)
         initListeners()
+        initAd()
     }
 
-    private fun initAd() {
-
-        fun buildMediumRectangleAd(): AdView? =
-            context?.let {
-                AdView(it).apply {
-                    adUnitId = BuildConfig.ADMOB_ADUNIT_BANNER_SETTINGS_MENU
-                    adSize = AdSize.MEDIUM_RECTANGLE
-                }
-            }
-
-        fun loadAd(adView: AdView) {
-            val adRequest = AdRequest.Builder().apply {
-                val extras = Bundle().apply { putString("npa", "1") }
-                addNetworkExtrasBundle(AdMobAdapter::class.java, extras)
-            }.build()
-            adView.loadAd(adRequest)
-        }
-
-        buildMediumRectangleAd()?.let { bannerAdView ->
-            binding.flSettingsMenuMediumRectangleAdContainer?.addView(bannerAdView)
-            loadAd(bannerAdView)
-        }
+    override fun onStart() {
+        super.onStart()
+        bannerAdView?.load()
     }
 
     private fun initValues() {
@@ -113,11 +211,14 @@ class PlayerSettingsMenuDialogFragment : DaggerDialogFragment() {
         whiteColor = ContextCompat.getColor(requireContext(), R.color.white)
         blackColor = ContextCompat.getColor(requireContext(), R.color.black)
         redTransparentColor = ContextCompat.getColor(requireContext(), R.color.red_transparent)
-        orangeTransparentColor = ContextCompat.getColor(requireContext(), R.color.orange_transparent)
-        yellowTransparentColor = ContextCompat.getColor(requireContext(), R.color.yellow_transparent)
+        orangeTransparentColor =
+            ContextCompat.getColor(requireContext(), R.color.orange_transparent)
+        yellowTransparentColor =
+            ContextCompat.getColor(requireContext(), R.color.yellow_transparent)
         greenTransparentColor = ContextCompat.getColor(requireContext(), R.color.green_transparent)
         blueTransparentColor = ContextCompat.getColor(requireContext(), R.color.blue_transparent)
-        purpleTransparentColor = ContextCompat.getColor(requireContext(), R.color.purple_transparent)
+        purpleTransparentColor =
+            ContextCompat.getColor(requireContext(), R.color.purple_transparent)
         pinkTransparentColor = ContextCompat.getColor(requireContext(), R.color.pink_transparent)
         blackTransparentColor = ContextCompat.getColor(requireContext(), R.color.black_transparent)
         arguments?.let { arguments ->
@@ -188,94 +289,6 @@ class PlayerSettingsMenuDialogFragment : DaggerDialogFragment() {
                 }
             }
         }
-    }
-
-    private fun initListeners() {
-        with(binding) {
-
-            btSettingMenuClose.setOnClickListener {
-                etSettingsMenuName.hideKeyboard()
-                dismiss()
-            }
-
-            etSettingsMenuName.doOnTextChanged { text, _, _, _ ->
-                val name = (text ?: "").toString()
-                initialName = name
-                playerDialogListener?.onNameChanged(name)
-            }
-
-            vSettingsMenuColorRed.setOnClickListener {
-                selectColor(redColor)
-                redColor?.let { color -> playerDialogListener?.onColorChanged(color) }
-            }
-            vSettingsMenuColorOrange.setOnClickListener {
-                selectColor(orangeColor)
-                orangeColor?.let { color -> playerDialogListener?.onColorChanged(color) }
-            }
-            vSettingsMenuColorYellow.setOnClickListener {
-                selectColor(yellowColor)
-                yellowColor?.let { color -> playerDialogListener?.onColorChanged(color) }
-            }
-            vSettingsMenuColorGreen.setOnClickListener {
-                selectColor(greenColor)
-                greenColor?.let { color -> playerDialogListener?.onColorChanged(color) }
-            }
-            vSettingsMenuColorBlue.setOnClickListener {
-                selectColor(blueColor)
-                blueColor?.let { color -> playerDialogListener?.onColorChanged(color) }
-            }
-            vSettingsMenuColorPurple.setOnClickListener {
-                selectColor(purpleColor)
-                purpleColor?.let { color -> playerDialogListener?.onColorChanged(color) }
-            }
-            vSettingsMenuColorPink.setOnClickListener {
-                selectColor(pinkColor)
-                pinkColor?.let { color -> playerDialogListener?.onColorChanged(color) }
-            }
-            vSettingsMenuColorWhite.setOnClickListener {
-                selectColor(whiteColor)
-                whiteColor?.let { color -> playerDialogListener?.onColorChanged(color) }
-            }
-
-            btSettingMenuRestorePoints.setOnClickListener {
-                etSettingsMenuName.hideKeyboard()
-                askConfirmRestorePlayerPoints()
-            }
-
-            btSettingMenuRestoreAllPoints.setOnClickListener {
-                etSettingsMenuName.hideKeyboard()
-                askConfirmRestoreAllPlayersPoints()
-            }
-        }
-    }
-
-    private fun askConfirmRestorePlayerPoints() {
-        var name = (binding.etSettingsMenuName.text ?: "").toString()
-        if (name.isBlank())
-            name = getString(R.string.your)
-        AlertDialog.Builder(requireContext(), R.style.Theme_AppCompat_Light_Dialog)
-            .setTitle(R.string.are_you_sure)
-            .setMessage(String.format(getString(R.string.restart_x_points_to_y), name, initialPoints))
-            .setNegativeButton(R.string.cancel, null)
-            .setPositiveButton(R.string.ok) { _, _ ->
-                playerDialogListener?.onRestorePlayerPointsClicked()
-                dismiss()
-            }
-            .create()
-            .show()
-    }
-
-    private fun askConfirmRestoreAllPlayersPoints() {
-        AlertDialog.Builder(requireContext(), R.style.Theme_AppCompat_Light_Dialog)
-            .setTitle(R.string.are_you_sure)
-            .setMessage(String.format(getString(R.string.restart_all_points_to_y), initialPoints))
-            .setNegativeButton(R.string.cancel, null)
-            .setPositiveButton(R.string.ok) { _, _ ->
-                playerDialogListener?.onRestoreAllPlayersPointsClicked()
-                dismiss()
-            }
-            .create()
-            .show()
     }
 
     override fun onResume() {

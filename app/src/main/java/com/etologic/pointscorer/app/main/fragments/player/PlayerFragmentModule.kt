@@ -6,7 +6,7 @@ import dagger.Provides
 
 @Module
 class PlayerFragmentModule {
-    
+
     @Provides
     internal fun provideMainActivityViewModelFactory(playersRepository: PlayersRepository): PlayerFragmentViewModelFactory =
         PlayerFragmentViewModelFactory(playersRepository)

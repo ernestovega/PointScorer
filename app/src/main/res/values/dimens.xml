@@ -27,4 +27,8 @@
     <dimen name="pointsSize7P">48</dimen>
     <dimen name="pointsSize8P">48</dimen>
     <dimen name="colorButtonSize">24dp</dimen>
+
+    <dimen name="auxPointsMargin">32</dimen>
+    <dimen name="auxPointsPositiveRotationDegrees">-15</dimen>
+    <dimen name="auxPointsNegativeRotationDegrees">15</dimen>
 </resources>

@@ -14,21 +14,21 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.animation.Animation
 import android.widget.RelativeLayout.*
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.ViewModelProvider
 import com.etologic.pointscorer.R
 import com.etologic.pointscorer.app.main.base.BaseMainFragment
+import com.etologic.pointscorer.app.main.dialogs.player_settings_menu.PlayerSettingsMenuDialogFragment
+import com.etologic.pointscorer.app.main.dialogs.player_settings_menu.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_COLOR
+import com.etologic.pointscorer.app.main.dialogs.player_settings_menu.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_NAME
+import com.etologic.pointscorer.app.main.dialogs.player_settings_menu.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_POINTS
+import com.etologic.pointscorer.app.main.dialogs.player_settings_menu.PlayerSettingsMenuDialogFragment.Companion.KEY_IS_ONE_PLAYER_FRAGMENT
+import com.etologic.pointscorer.app.main.dialogs.player_settings_menu.PlayerSettingsMenuDialogFragment.PlayerDialogListener
 import com.etologic.pointscorer.app.main.fragments.players.Game1PlayerFragment.Companion.GAME_1_PLAYER_1_ID
-import com.etologic.pointscorer.app.main.dialogs.payer_settings_menu.PlayerSettingsMenuDialogFragment
-import com.etologic.pointscorer.app.main.dialogs.payer_settings_menu.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_COLOR
-import com.etologic.pointscorer.app.main.dialogs.payer_settings_menu.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_NAME
-import com.etologic.pointscorer.app.main.dialogs.payer_settings_menu.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_POINTS
-import com.etologic.pointscorer.app.main.dialogs.payer_settings_menu.PlayerSettingsMenuDialogFragment.Companion.KEY_IS_ONE_PLAYER_FRAGMENT
-import com.etologic.pointscorer.app.main.dialogs.payer_settings_menu.PlayerSettingsMenuDialogFragment.PlayerDialogListener
 import com.etologic.pointscorer.app.utils.MyAnimationUtils
 import com.etologic.pointscorer.app.utils.dpToPx
 import com.etologic.pointscorer.databinding.GamePlayerFragmentBinding
-import kotlinx.android.synthetic.main.game_player_fragment.view.*
 import java.util.*
 import javax.inject.Inject
 
@@ -99,9 +99,12 @@ class PlayerFragment : BaseMainFragment() {
     }
 
     private fun initValues() {
-        auxPointsMarginSize = 32.dpToPx(resources)
-        auxPointsPositiveRotation = -15f
-        auxPointsNegativeRotation = 15f
+        auxPointsMarginSize =
+            ResourcesCompat.getFloat(resources, R.dimen.auxPointsMargin).toInt().dpToPx(resources)
+        auxPointsPositiveRotation =
+            ResourcesCompat.getFloat(resources, R.dimen.auxPointsPositiveRotationDegrees)
+        auxPointsNegativeRotation =
+            ResourcesCompat.getFloat(resources, R.dimen.auxPointsNegativeRotationDegrees)
         greenColor = ContextCompat.getColor(requireContext(), R.color.green)
         redColor = ContextCompat.getColor(requireContext(), R.color.red)
         defaultPlayerColor = ContextCompat.getColor(requireContext(), R.color.white)
@@ -120,7 +123,9 @@ class PlayerFragment : BaseMainFragment() {
             etName.setPadding(0, playerNameMarginTop.dpToPx(resources), 0, 0)
             etName.textSize = playerNameSize.toFloat()
             auxPointsFadeOutAnimation = MyAnimationUtils.getAuxPointsFadeOutAnimation {
-                if (auxPointsFadeOutAnimation.hasEnded()) { viewModel.auxPointsAnimationEnded() }
+                if (auxPointsFadeOutAnimation.hasEnded()) {
+                    viewModel.auxPointsAnimationEnded()
+                }
             }
             binding.tvAuxPoints.animation = auxPointsFadeOutAnimation
             ivShield.startAnimation(MyAnimationUtils.shieldAnimation)

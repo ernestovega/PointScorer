@@ -6,7 +6,7 @@ import dagger.Provides
 
 @Module
 class MainActivityModule {
-    
+
     @Provides
     internal fun provideMainActivityViewModelFactory(playersRepository: PlayersRepository): MainActivityViewModelFactory =
         MainActivityViewModelFactory(playersRepository)
