@@ -7,6 +7,14 @@ apply plugin: 'com.google.firebase.firebase-perf'
 
 android {
 
+    signingConfigs {
+        release {
+            storeFile file('/Users/ernestovegadelaiglesia/Projects/PointScorer/keystore_pointscorer.jks')
+            storePassword 'ac9jy34X'
+            keyAlias 'PointsScorerKeyStore'
+            keyPassword 'ac9jy34X'
+        }
+    }
     kapt {
         javacOptions {
             option("-Adagger.fastInit=enabled")
@@ -30,6 +38,7 @@ android {
         versionName "2.0.1.alpha1"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         multiDexEnabled true
+        signingConfig signingConfigs.release
     }
 
     buildTypes {
@@ -40,8 +49,6 @@ android {
             minifyEnabled false
             manifestPlaceholders = [admob_app_id: "ca-app-pub-3940256099942544~3347511713"]
             buildConfigField "String", "ADMOB_EDITOR_ID", "\"pub-2237700199215764\""
-            buildConfigField "String", "ADMOB_ADUNIT_BANNER_FINISH_MENU", "\"ca-app-pub-3940256099942544/6300978111\""
-            buildConfigField "String", "ADMOB_ADUNIT_BANNER_RESTORE_ALL_POINTS_MENU", "\"ca-app-pub-3940256099942544/6300978111\""
             buildConfigField "String", "ADMOB_ADUNIT_BANNER_MAIN_MENU_1", "\"ca-app-pub-3940256099942544/6300978111\""
             buildConfigField "String", "ADMOB_ADUNIT_BANNER_MAIN_MENU_2", "\"ca-app-pub-3940256099942544/6300978111\""
             buildConfigField "String", "ADMOB_ADUNIT_BANNER_MAIN_MENU_3", "\"ca-app-pub-3940256099942544/6300978111\""
@@ -59,8 +66,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             manifestPlaceholders = [admob_app_id: "ca-app-pub-2237700199215764~1007481213"]
             buildConfigField "String", "ADMOB_EDITOR_ID", "\"pub-2237700199215764\""
-            buildConfigField "String", "ADMOB_ADUNIT_BANNER_FINISH_MENU", "\"ca-app-pub-2237700199215764/9952338995\""
-            buildConfigField "String", "ADMOB_ADUNIT_BANNER_RESTORE_ALL_POINTS_MENU", "\"ca-app-pub-2237700199215764/5367895026\""
             buildConfigField "String", "ADMOB_ADUNIT_BANNER_MAIN_MENU_1", "\"ca-app-pub-2237700199215764/4812679065\""
             buildConfigField "String", "ADMOB_ADUNIT_BANNER_MAIN_MENU_2", "\"ca-app-pub-2237700199215764/6063364753\""
             buildConfigField "String", "ADMOB_ADUNIT_BANNER_MAIN_MENU_3", "\"ca-app-pub-2237700199215764/2670914650\""

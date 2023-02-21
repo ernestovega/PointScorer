@@ -1,8 +1,6 @@
 package com.etologic.pointscorer.app.main.activity
 
-import com.etologic.pointscorer.app.main.dialogs.finish_menu.FinishMenuDialogFragment
 import com.etologic.pointscorer.app.main.dialogs.player_settings_menu.PlayerSettingsMenuDialogFragment
-import com.etologic.pointscorer.app.main.dialogs.restore_all_points_dialog.RestoreAllPointsDialogFragment
 import com.etologic.pointscorer.app.main.fragments.main_menu.MainMenuFragment
 import com.etologic.pointscorer.app.main.fragments.player.PlayerFragment
 import com.etologic.pointscorer.app.main.fragments.players.*
@@ -44,11 +42,5 @@ abstract class MainActivityFragmentsBuilder {
 
     @ContributesAndroidInjector
     internal abstract fun providePlayerSettingsDialogFragmentFactory(): PlayerSettingsMenuDialogFragment
-
-    @ContributesAndroidInjector
-    internal abstract fun provideFinishMenuDialogFragmentFactory(): FinishMenuDialogFragment
-
-    @ContributesAndroidInjector
-    internal abstract fun provideRestoreAllPointsDialogFragmentFactory(): RestoreAllPointsDialogFragment
 
 }

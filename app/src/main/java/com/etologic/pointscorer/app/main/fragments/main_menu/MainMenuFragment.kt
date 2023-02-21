@@ -9,38 +9,19 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import com.etologic.pointscorer.BuildConfig
+import android.widget.Toast
 import com.etologic.pointscorer.R
 import com.etologic.pointscorer.app.main.activity.MainActivityViewModel.Screens.*
-import com.etologic.pointscorer.app.main.base.BaseMainFragment
-import com.etologic.pointscorer.app.main.dialogs.restore_all_points_dialog.RestoreAllPointsDialogFragment
+import com.etologic.pointscorer.app.main.base.BaseMainFragmentWithAds
 import com.etologic.pointscorer.app.utils.ViewExtensions.hideKeyboard
-import com.etologic.pointscorer.app.utils.dpToPx
+import com.etologic.pointscorer.common.Constants.MAX_POINTS
+import com.etologic.pointscorer.common.Constants.MIN_POINTS
 import com.etologic.pointscorer.databinding.MainMenuFragmentBinding
-import com.google.ads.mediation.admob.AdMobAdapter
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize.BANNER
-import com.google.android.gms.ads.AdView
-import com.google.firebase.crashlytics.FirebaseCrashlytics
-import javax.inject.Inject
 
-class MainMenuFragment : BaseMainFragment() {
+class MainMenuFragment : BaseMainFragmentWithAds() {
 
-    companion object {
-        val adUnitsList = listOf(
-            BuildConfig.ADMOB_ADUNIT_BANNER_MAIN_MENU_1,
-            BuildConfig.ADMOB_ADUNIT_BANNER_MAIN_MENU_2,
-            BuildConfig.ADMOB_ADUNIT_BANNER_MAIN_MENU_3,
-            BuildConfig.ADMOB_ADUNIT_BANNER_MAIN_MENU_4,
-            BuildConfig.ADMOB_ADUNIT_BANNER_MAIN_MENU_5,
-        )
-    }
-
-    @Inject
-    lateinit var restoreAllPointsDialogFragment: RestoreAllPointsDialogFragment
     private var fragmentBinding: MainMenuFragmentBinding? = null
     private val binding get() = fragmentBinding!!
-    private var errorInitialPointsLiteral: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,59 +29,17 @@ class MainMenuFragment : BaseMainFragment() {
         savedInstanceState: Bundle?
     ): View {
         fragmentBinding = MainMenuFragmentBinding.inflate(inflater, container, false)
+        baseBinding = binding
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initAds()
         initValues()
         initListeners()
     }
 
-    private fun initAds() {
-
-        fun getAdUnitsForThisScreen(): List<String> {
-            val adUnitsListForThisScreen = mutableListOf<String>()
-            var numBannersFittingThisScreenWidth =
-                resources.displayMetrics.widthPixels / BANNER.width.dpToPx(resources)
-            if (numBannersFittingThisScreenWidth > adUnitsList.size) {
-                FirebaseCrashlytics.getInstance()
-                    .setCustomKey("MoreThan6BannersCouldBeAdded", numBannersFittingThisScreenWidth)
-                numBannersFittingThisScreenWidth = adUnitsList.size
-            }
-            for (i in 0 until numBannersFittingThisScreenWidth) adUnitsListForThisScreen.add(
-                adUnitsList[i]
-            )
-            return adUnitsListForThisScreen
-        }
-
-        fun buildBannerAd(adUnit: String): AdView? =
-            context?.let {
-                AdView(it).apply {
-                    adUnitId = adUnit
-                    setAdSize(BANNER)
-                }
-            }
-
-        fun loadAd(adView: AdView) {
-            val adRequest = AdRequest.Builder().apply {
-                val extras = Bundle().apply { putString("npa", "1") }
-                addNetworkExtrasBundle(AdMobAdapter::class.java, extras)
-            }.build()
-            adView.loadAd(adRequest)
-        }
-
-        getAdUnitsForThisScreen().forEach { adUnit ->
-            buildBannerAd(adUnit)?.let { bannerAdView ->
-                binding.llMainMenuAdsContainer.addView(bannerAdView)
-                loadAd(bannerAdView)
-            }
-        }
-    }
-
     private fun initValues() {
-        errorInitialPointsLiteral = getString(R.string.error_initial_points)
         activityViewModel.initialPointsObservable.observe(viewLifecycleOwner) {
             binding.etMainMenuInitialPoints?.setText(it.toString())
             activityViewModel.initialPointsObservable.removeObservers(viewLifecycleOwner)
@@ -122,11 +61,22 @@ class MainMenuFragment : BaseMainFragment() {
             etMainMenuInitialPoints?.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(p0: Editable?) {
                     p0?.let {
-                        try {
-                            activityViewModel.saveInitialPoints(p0.toString().toInt())
+                        var points = try {
+                            p0.toString().toInt()
                         } catch (nfe: NumberFormatException) {
-                            etMainMenuInitialPoints.error = errorInitialPointsLiteral
+                            etMainMenuInitialPoints.error = getString(R.string.error_initial_points)
+                            return
                         }
+                        if (points > MAX_POINTS) {
+                            points = MAX_POINTS
+                            etMainMenuInitialPoints.error = getString(R.string.error_max_points)
+                            etMainMenuInitialPoints.setText(points.toString())
+                        } else if (points < MIN_POINTS) {
+                            points = MIN_POINTS
+                            etMainMenuInitialPoints.error = getString(R.string.error_min_points)
+                            etMainMenuInitialPoints.setText(points.toString())
+                        }
+                        activityViewModel.saveInitialPoints(points)
                     }
                 }
 
@@ -136,10 +86,42 @@ class MainMenuFragment : BaseMainFragment() {
 
             acbMainMenuResetAllPoints.setOnClickListener {
                 etMainMenuInitialPoints?.hideKeyboard()
-                restoreAllPointsDialogFragment.show(
-                    parentFragmentManager,
-                    RestoreAllPointsDialogFragment.TAG
-                )
+                with (AlertDialog.Builder(requireContext())) {
+                    setTitle(R.string.are_you_sure)
+                    setMessage(
+                        getString(
+                            R.string.this_will_restore_all_points_to_,
+                            activityViewModel.initialPointsObservable.value
+                        )
+                    )
+                    setPositiveButton(R.string.ok) { _, _ ->
+                        activityViewModel.restoreAllGamesPoints()
+                        Toast.makeText(
+                            requireContext(),
+                            R.string.all_players_points_were_restored,
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    setNegativeButton(R.string.cancel) { _, _ -> }
+                    show()
+                }
+            }
+
+            acbMainMenuResetAllNamesAndColors.setOnClickListener {
+                with (AlertDialog.Builder(requireContext())) {
+                    setTitle(R.string.are_you_sure)
+                    setMessage(getString(R.string.this_will_restore_all_names_and_colors_to))
+                    setPositiveButton(R.string.ok) { _, _ ->
+                        activityViewModel.restoreAllGamesNamesAndColors()
+                        Toast.makeText(
+                            requireContext(),
+                            R.string.all_players_names_and_colors_were_restored,
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    setNegativeButton(R.string.cancel) { _, _ -> }
+                    show()
+                }
             }
 
             btMainMenu1Player.setOnClickListener {

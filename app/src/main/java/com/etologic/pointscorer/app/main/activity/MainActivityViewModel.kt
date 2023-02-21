@@ -59,6 +59,12 @@ class MainActivityViewModel
         }
     }
 
+    fun restoreAllGamesNamesAndColors() {
+        viewModelScope.launch {
+            playersRepository.restoreAllPlayersNamesAndColors()
+        }
+    }
+
     fun restoreOneGamePoints(numberOfPlayersInTheGame: Int) {
         _shouldRestoreAllPoints.value = numberOfPlayersInTheGame //To control where will be executed
         _shouldRestoreAllPoints.value = 0 //To avoid execution on reloads

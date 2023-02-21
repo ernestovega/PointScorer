@@ -184,7 +184,7 @@ class PlayerSettingsMenuDialogFragment @Inject constructor() : DaggerDialogFragm
                     setAdSize(MEDIUM_RECTANGLE)
                 }
             }
-            bannerAdView?.let { binding.flSettingsMenuMediumRectangleAdContainer?.addView(it) }
+            bannerAdView?.let { binding.flSettingsMenuMediumRectangleAdContainer.addView(it) }
         }
 
         super.onViewCreated(view, savedInstanceState)

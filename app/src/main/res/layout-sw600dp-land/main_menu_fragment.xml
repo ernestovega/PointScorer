@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:orientation="vertical"
-    tools:context=".app.main.dialogs.finish_menu.FinishMenuDialogFragment">
+    tools:context=".app.main.fragments.main_menu.MainMenuFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,6 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="64dp"
                 android:drawableEnd="@drawable/ic_help_24"
                 android:drawablePadding="8dp"
                 android:drawableTint="@color/colorAccent"
@@ -58,15 +59,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
                 android:background="@color/colorAccent"
                 android:paddingStart="32dp"
                 android:paddingTop="16dp"
                 android:paddingEnd="32dp"
                 android:paddingBottom="16dp"
                 android:text="@string/restore_all_points"
+                android:textColor="@color/white"
+                android:textSize="32sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/acbMainMenuResetAllNamesAndColors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="48dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/colorAccent"
+                android:paddingStart="32dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="32dp"
+                android:paddingBottom="16dp"
+                android:text="@string/restore_all_names_and_colors"
                 android:textColor="@color/white"
                 android:textSize="32sp"
                 android:textStyle="bold" />

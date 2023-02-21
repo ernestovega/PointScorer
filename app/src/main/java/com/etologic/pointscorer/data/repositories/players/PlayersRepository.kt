@@ -3,6 +3,10 @@ package com.etologic.pointscorer.data.repositories.players
 import android.content.Context
 import androidx.core.content.ContextCompat
 import com.etologic.pointscorer.R
+import com.etologic.pointscorer.common.Constants.DEFAULT_INITIAL_POINTS
+import com.etologic.pointscorer.common.Constants.MAX_PLAYERS
+import com.etologic.pointscorer.common.Constants.MAX_POINTS
+import com.etologic.pointscorer.common.Constants.MIN_POINTS
 import com.etologic.pointscorer.data.exceptions.MaxPointsReachedException
 import com.etologic.pointscorer.data.exceptions.MinPointsReachedException
 import kotlinx.coroutines.*
@@ -93,9 +97,20 @@ class PlayersRepository
     }
 
     suspend fun restoreAllPlayersPoints() {
-        for (i in 1..MAX_PLAYERS)
-            for (x in 1..i)
+        for (i in 1..MAX_PLAYERS) {
+            for (x in 1..i) {
                 savePlayerPoints(buildPlayerId(i, x), getInitialPoints())
+            }
+        }
+    }
+
+    suspend fun restoreAllPlayersNamesAndColors() {
+        for (i in 1..MAX_PLAYERS) {
+            for (x in 1..i) {
+                savePlayerColor(buildPlayerId(i, x), defaultPlayerColor)
+                savePlayerName(buildPlayerId(i, x), defaultPlayerName)
+            }
+        }
     }
 
     private fun buildPlayerId(i: Int, x: Int) = Integer.valueOf("$i$x")
@@ -122,14 +137,6 @@ class PlayersRepository
 
     fun invalidate() {
         coroutineContext.job.cancel()
-    }
-
-    companion object {
-
-        private const val MAX_PLAYERS = 8
-        const val DEFAULT_INITIAL_POINTS = 100
-        const val MAX_POINTS = 9999
-        const val MIN_POINTS = -999
     }
 
 }

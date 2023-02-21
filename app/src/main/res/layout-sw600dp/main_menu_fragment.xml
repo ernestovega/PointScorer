@@ -6,27 +6,28 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:orientation="vertical"
-    tools:context=".app.main.dialogs.finish_menu.FinishMenuDialogFragment">
+    tools:context=".app.main.fragments.main_menu.MainMenuFragment">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="48dp"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_marginTop="48dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:gravity="center_horizontal">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvMainMenuInitialPointsTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="16dp"
             android:drawableEnd="@drawable/ic_help_24"
             android:drawablePadding="8dp"
             android:drawableTint="@color/colorAccent"
             android:text="@string/initial_points"
             android:textColor="@color/black"
-            android:textSize="36sp"
+            android:textSize="30sp"
             android:textStyle="bold"
             android:theme="@style/MyTextInputLayout" />
 
@@ -37,11 +38,12 @@
             android:layout_gravity="center"
             android:digits="-0123456789"
             android:gravity="center"
+            android:layout_below="@+id/tvMainMenuInitialPointsTitle"
             android:hint="@string/min_max_points"
             android:importantForAutofill="no"
             android:inputType="number"
             android:maxLength="4"
-            android:textSize="48sp"
+            android:textSize="36sp"
             android:theme="@style/MyTextInputLayout"
             tools:text="9999" />
 
@@ -49,21 +51,31 @@
             android:id="@+id/acbMainMenuResetAllPoints"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginStart="32dp"
+            android:layout_toEndOf="@+id/tvMainMenuInitialPointsTitle"
+            android:layout_centerVertical="true"
             android:background="@color/colorAccent"
-            android:paddingStart="32dp"
-            android:paddingTop="16dp"
-            android:paddingEnd="32dp"
-            android:paddingBottom="16dp"
+            android:padding="16dp"
             android:text="@string/restore_all_points"
             android:textColor="@color/white"
-            android:textSize="32sp"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
-    </LinearLayout>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/acbMainMenuResetAllNamesAndColors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_toEndOf="@+id/acbMainMenuResetAllPoints"
+            android:layout_centerVertical="true"
+            android:background="@color/colorAccent"
+            android:padding="16dp"
+            android:text="@string/restore_all_names_and_colors"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

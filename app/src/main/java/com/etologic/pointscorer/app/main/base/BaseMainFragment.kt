@@ -21,10 +21,8 @@ abstract class BaseMainFragment : DaggerFragment() {
 
     private fun initActivityViewModel() {
         activity?.let {
-            activityViewModel = ViewModelProvider(
-                it,
-                activityViewModelFactory
-            ).get(MainActivityViewModel::class.java)
+            activityViewModel =
+                ViewModelProvider(it, activityViewModelFactory)[MainActivityViewModel::class.java]
         }
     }
 

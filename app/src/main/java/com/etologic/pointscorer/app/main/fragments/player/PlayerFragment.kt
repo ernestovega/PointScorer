@@ -53,8 +53,8 @@ class PlayerFragment : BaseMainFragment() {
     private val downRepeatUpdateHandler = Handler(Looper.getMainLooper())
     private lateinit var auxPointsFadeOutAnimation: Animation
     private var auxPoints = 0
-    private var isUpPressed =
-        false /* https://stackoverflow.com/questions/7938516/continuously-increase-integer-value-as-the-button-is-pressed */
+    private var isUpPressed = false
+    /* https://stackoverflow.com/questions/7938516/continuously-increase-integer-value-as-the-button-is-pressed */
     private var isDownPressed = false
     private var playerSettingsMenuDialogFragment: PlayerSettingsMenuDialogFragment? = null
     private val playerSettingsMenuDialogFragmentListener = object : PlayerDialogListener {
@@ -138,9 +138,7 @@ class PlayerFragment : BaseMainFragment() {
         viewModel.livePlayerName().observe(viewLifecycleOwner) { updateName(it) }
         viewModel.livePlayerColor().observe(viewLifecycleOwner) { setTextsColor(it) }
         activityViewModel.shouldRestoreAllPointsObservable.observe(viewLifecycleOwner) {
-            restorePlayerPoints(
-                it
-            )
+            restorePlayerPoints(it)
         }
     }
 

@@ -2,8 +2,7 @@
     <string name="app_name">Point Scorer</string>
 
     <string name="initial_points">Initial points</string>
-    <string name="min_max_points">[-999, 9999]</string>
-    <string name="all_players_points_were_restored">All players points were restored</string>
+    <string name="min_max_points">[-9999, 9999]</string>
 
     <string name="one_player">One player</string>
     <string name="two_players">Two players</string>
@@ -36,12 +35,16 @@
 
     <string name="animate_points">Animate points</string>
     <string name="restore_points">Restore points</string>
-    <string name="restore_all_points">Restore all points</string>
-    <string name="this_will_restore_all_points_to_">This will restore every points to %d, but also the names and the colors on every player in every screen.\nIf you want to restore just the points in one screen press cancel and go to the \"Restore all\" option in that screen.</string>
-    <string name="error_initial_points">Please enter a valid number, must be less than 10.000.</string>
-    <string name="settings">Settings</string>
+    <string name="restore_all_points">Restore\nall points</string>
+    <string name="error_initial_points">Please enter a number between -9999 and 9999</string>
+    <string name="error_min_points">Must be higher than -10.000</string>
+    <string name="error_max_points">Must be lower than 10.000</string>
+    <string name="restore_all_names_and_colors">Restore all\nnames &amp; colors</string>
+    <string name="this_will_restore_all_points_to_">This will restore every players points on every screen to %d.\n\nIf you want to restore just the points in one screen press cancel and go to the \"Restore all\" option in that screen.</string>
+    <string name="this_will_restore_all_names_and_colors_to">This will restore every names and colors of every player on every screen to the default values.</string>
+    <string name="all_players_points_were_restored">All players points were restored</string>
+    <string name="all_players_names_and_colors_were_restored">All players names and colors were restored</string>
     <string name="close">Close</string>
-    <string name="bye">Bye bye</string>
     <string name="are_you_sure">Are you sure?</string>
     <string name="this_will_restore_all_points_in_this_screen_to_">This will restore everybody\'s points in this screen to %d.</string>
     <string name="restart_x_points_to_y">This will restore %s points to %d</string>
@@ -49,7 +52,7 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="accept">Accept</string>
-    <string name="initial_points_help">Are the default points for each player.\n\nThe \"Restore all points\" button will restore every player to this quantity.</string>
+    <string name="initial_points_help">Are the default points for each player.\n\nThe \"Restore all points\" button will restore every player on every screen to this value.</string>
     <string name="exit">Exit</string>
     <string name="exit_title">Exit?</string>
     <string name="thanks_for_using_my_app_see_you_soon">Thanks for using my App.\nSee you soon!</string>
