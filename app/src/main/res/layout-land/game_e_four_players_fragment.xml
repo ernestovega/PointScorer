@@ -52,11 +52,6 @@
 
     <LinearLayout
         android:id="@+id/llMainMenuAdsContainer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:minHeight="50dp"
-        android:orientation="horizontal" />
+        style="@style/BannerAdContainer" />
 
 </LinearLayout>

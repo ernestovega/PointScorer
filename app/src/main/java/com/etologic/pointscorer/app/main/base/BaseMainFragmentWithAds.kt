@@ -2,6 +2,9 @@ package com.etologic.pointscorer.app.main.base
 
 import android.os.Bundle
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import android.widget.LinearLayout
 import androidx.viewbinding.ViewBinding
 import com.etologic.pointscorer.BuildConfig
 import com.etologic.pointscorer.app.utils.AdsExtensions.load
@@ -27,83 +30,80 @@ abstract class BaseMainFragmentWithAds : BaseMainFragment() {
     protected lateinit var baseBinding: ViewBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-        fun initAds() {
-
-            fun getAdUnitsForThisScreen(): List<String> {
-                val adUnitsListForThisScreen = mutableListOf<String>()
-                var numBannersFittingThisScreenWidth =
-                    resources.displayMetrics.widthPixels / AdSize.BANNER.width.dpToPx(resources)
-                if (numBannersFittingThisScreenWidth > adUnitsList.size) {
-                    FirebaseCrashlytics.getInstance()
-                        .setCustomKey("MoreThan6BannersCouldBeAdded", numBannersFittingThisScreenWidth)
-                    numBannersFittingThisScreenWidth = adUnitsList.size
-                }
-                for (i in 0 until numBannersFittingThisScreenWidth) adUnitsListForThisScreen.add(
-                    adUnitsList[i]
-                )
-                return adUnitsListForThisScreen
-            }
-
-            fun buildBannerAd(adUnit: String): AdView? =
-                context?.let {
-                    AdView(it).apply {
-                        adUnitId = adUnit
-                        setAdSize(AdSize.BANNER)
-                    }
-                }
-
-            fun addView(bannerAdView: AdView) {
-                when (baseBinding) {
-                    is MainMenuFragmentBinding -> {
-                        (baseBinding as MainMenuFragmentBinding)
-                            .llMainMenuAdsContainer.addView(bannerAdView)
-                    }
-                    is GameBOnePlayerFragmentBinding -> {
-                        (baseBinding as GameBOnePlayerFragmentBinding)
-                            .llMainMenuAdsContainer.addView(bannerAdView)
-                    }
-                    is GameCTwoPlayersFragmentBinding -> {
-                        (baseBinding as GameCTwoPlayersFragmentBinding)
-                            .llMainMenuAdsContainer.addView(bannerAdView)
-                    }
-                    is GameDThreePlayersFragmentBinding -> {
-                        (baseBinding as GameDThreePlayersFragmentBinding)
-                            .llMainMenuAdsContainer.addView(bannerAdView)
-                    }
-                    is GameEFourPlayersFragmentBinding -> {
-                        (baseBinding as GameEFourPlayersFragmentBinding)
-                            .llMainMenuAdsContainer.addView(bannerAdView)
-                    }
-                    is GameFFivePlayersFragmentBinding -> {
-                        (baseBinding as GameFFivePlayersFragmentBinding)
-                            .llMainMenuAdsContainer.addView(bannerAdView)
-                    }
-                    is GameGSixPlayersFragmentBinding -> {
-                        (baseBinding as GameGSixPlayersFragmentBinding)
-                            .llMainMenuAdsContainer.addView(bannerAdView)
-                    }
-                    is GameHSevenPlayersFragmentBinding -> {
-                        (baseBinding as GameHSevenPlayersFragmentBinding)
-                            .llMainMenuAdsContainer.addView(bannerAdView)
-                    }
-                    is GameIEightPlayersFragmentBinding -> {
-                        (baseBinding as GameIEightPlayersFragmentBinding)
-                            .llMainMenuAdsContainer.addView(bannerAdView)
-                    }
-                }
-            }
-
-            getAdUnitsForThisScreen().forEach { adUnit ->
-                buildBannerAd(adUnit)?.let { bannerAdView ->
-                    addView(bannerAdView)
-                    bannerAdView.load()
-                }
-            }
-        }
-
         super.onViewCreated(view, savedInstanceState)
         initAds()
     }
+
+    private fun initAds() {
+
+        fun getAdUnitsForThisScreen(): List<String> {
+            val adUnitsListForThisScreen = mutableListOf<String>()
+            var numBannersFittingThisScreenWidth =
+                resources.displayMetrics.widthPixels / AdSize.BANNER.width.dpToPx(resources)
+            if (numBannersFittingThisScreenWidth > adUnitsList.size) {
+                FirebaseCrashlytics.getInstance()
+                    .setCustomKey("MoreThan6BannersCouldBeAdded", numBannersFittingThisScreenWidth)
+                numBannersFittingThisScreenWidth = adUnitsList.size
+            }
+            for (i in 0 until numBannersFittingThisScreenWidth) adUnitsListForThisScreen.add(
+                adUnitsList[i]
+            )
+            return adUnitsListForThisScreen
+        }
+
+        fun buildBannerAd(adUnit: String): AdView? =
+            context?.let {
+                AdView(it).apply {
+                    adUnitId = adUnit
+                    setAdSize(AdSize.BANNER)
+                }
+            }
+
+        if (activityViewModel.shouldShowAds) {
+            getAdUnitsForThisScreen().forEach { adUnit ->
+                buildBannerAd(adUnit)?.let { bannerAdView ->
+                    getAdContainer()?.apply {
+                        visibility = VISIBLE
+                        addView(bannerAdView)
+                    }
+                    bannerAdView.load()
+                }
+            }
+        } else {
+            getAdContainer()?.visibility = GONE
+        }
+    }
+
+    private fun getAdContainer(): LinearLayout? =
+        when (baseBinding) {
+            is MainMenuFragmentBinding -> {
+                (baseBinding as MainMenuFragmentBinding).llMainMenuAdsContainer
+            }
+            is GameBOnePlayerFragmentBinding -> {
+                (baseBinding as GameBOnePlayerFragmentBinding).llMainMenuAdsContainer
+            }
+            is GameCTwoPlayersFragmentBinding -> {
+                (baseBinding as GameCTwoPlayersFragmentBinding).llMainMenuAdsContainer
+            }
+            is GameDThreePlayersFragmentBinding -> {
+                (baseBinding as GameDThreePlayersFragmentBinding).llMainMenuAdsContainer
+            }
+            is GameEFourPlayersFragmentBinding -> {
+                (baseBinding as GameEFourPlayersFragmentBinding).llMainMenuAdsContainer
+            }
+            is GameFFivePlayersFragmentBinding -> {
+                (baseBinding as GameFFivePlayersFragmentBinding).llMainMenuAdsContainer
+            }
+            is GameGSixPlayersFragmentBinding -> {
+                (baseBinding as GameGSixPlayersFragmentBinding).llMainMenuAdsContainer
+            }
+            is GameHSevenPlayersFragmentBinding -> {
+                (baseBinding as GameHSevenPlayersFragmentBinding).llMainMenuAdsContainer
+            }
+            is GameIEightPlayersFragmentBinding -> {
+                (baseBinding as GameIEightPlayersFragmentBinding).llMainMenuAdsContainer
+            }
+            else -> null
+        }
 
 }

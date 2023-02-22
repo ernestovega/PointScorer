@@ -4,24 +4,35 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
+import com.etologic.pointscorer.BuildConfig
 import com.etologic.pointscorer.R
 import com.etologic.pointscorer.app.main.activity.MainActivityViewModel.Screens.*
 import com.etologic.pointscorer.app.main.base.BaseMainFragmentWithAds
+import com.etologic.pointscorer.app.utils.MyAnimationUtils
 import com.etologic.pointscorer.app.utils.ViewExtensions.hideKeyboard
 import com.etologic.pointscorer.common.Constants.MAX_POINTS
 import com.etologic.pointscorer.common.Constants.MIN_POINTS
 import com.etologic.pointscorer.databinding.MainMenuFragmentBinding
+import com.google.ads.mediation.admob.AdMobAdapter
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.rewarded.RewardedAd
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 
 class MainMenuFragment : BaseMainFragmentWithAds() {
 
     private var fragmentBinding: MainMenuFragmentBinding? = null
     private val binding get() = fragmentBinding!!
+    private var rewardedAd: RewardedAd? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +48,64 @@ class MainMenuFragment : BaseMainFragmentWithAds() {
         super.onViewCreated(view, savedInstanceState)
         initValues()
         initListeners()
+        loadRewardedAd()
+    }
+
+    private fun loadRewardedAd() {
+        if (activityViewModel.shouldShowAds) {
+            RewardedAd.load(
+                requireContext(),
+                BuildConfig.ADMOB_ADUNIT_REWARDED_MAIN_MENU,
+                AdRequest.Builder().apply {
+                    val extras = Bundle().apply { putString("npa", "1") }
+                    addNetworkExtrasBundle(AdMobAdapter::class.java, extras)
+                }.build(),
+                object : RewardedAdLoadCallback() {
+                    override fun onAdFailedToLoad(adError: LoadAdError) {
+                        Log.d(TAG, adError.toString())
+                        rewardedAd = null
+                        binding.acbMainMenuWatchABigAd?.text = getString(R.string.watch_an_ad_for_love)
+                    }
+
+                    override fun onAdLoaded(ad: RewardedAd) {
+                        Log.d(TAG, "Ad was loaded.")
+                        rewardedAd = ad
+                        binding.acbMainMenuWatchABigAd?.text = getString(R.string.remove_ads_watching_a_big_one)
+                        rewardedAd?.fullScreenContentCallback =
+                            object : FullScreenContentCallback() {
+                                override fun onAdClicked() {
+                                    Log.d(TAG, "Ad was clicked.")
+                                }
+
+                                override fun onAdDismissedFullScreenContent() {
+                                    // Called when ad is dismissed.
+                                    // Set the ad reference to null so you don't show the ad a second time.
+                                    Log.d(TAG, "Ad dismissed fullscreen content.")
+                                    rewardedAd = null
+                                }
+
+                                override fun onAdFailedToShowFullScreenContent(adError: AdError) {
+                                    // Called when ad fails to show.
+                                    Log.e(TAG, "Ad failed to show fullscreen content.")
+                                    rewardedAd = null
+                                }
+
+                                override fun onAdImpression() {
+                                    // Called when an impression is recorded for an ad.
+                                    Log.d(TAG, "Ad recorded an impression.")
+                                }
+
+                                override fun onAdShowedFullScreenContent() {
+                                    // Called when ad is shown.
+                                    Log.d(TAG, "Ad showed fullscreen content.")
+                                }
+                            }
+                    }
+                }
+            )
+        } else {
+            binding.acbMainMenuWatchABigAd?.text = getString(R.string.watch_an_ad_for_love)
+        }
     }
 
     private fun initValues() {
@@ -86,7 +155,7 @@ class MainMenuFragment : BaseMainFragmentWithAds() {
 
             acbMainMenuResetAllPoints.setOnClickListener {
                 etMainMenuInitialPoints?.hideKeyboard()
-                with (AlertDialog.Builder(requireContext())) {
+                with(AlertDialog.Builder(requireContext())) {
                     setTitle(R.string.are_you_sure)
                     setMessage(
                         getString(
@@ -108,7 +177,7 @@ class MainMenuFragment : BaseMainFragmentWithAds() {
             }
 
             acbMainMenuResetAllNamesAndColors.setOnClickListener {
-                with (AlertDialog.Builder(requireContext())) {
+                with(AlertDialog.Builder(requireContext())) {
                     setTitle(R.string.are_you_sure)
                     setMessage(getString(R.string.this_will_restore_all_names_and_colors_to))
                     setPositiveButton(R.string.ok) { _, _ ->
@@ -164,6 +233,26 @@ class MainMenuFragment : BaseMainFragmentWithAds() {
                 pbMainMenu8Player.visibility = VISIBLE
                 activityViewModel.navigateTo(EIGHT_PLAYER)
             }
+
+            acbMainMenuWatchABigAd?.setOnClickListener {
+                if (activityViewModel.shouldShowAds && rewardedAd != null) {
+                    rewardedAd!!.show(requireActivity()) { rewardItem ->
+                        // Handle the reward.
+                        Log.d(TAG, "User earned the reward($rewardItem)")
+                        activityViewModel.shouldShowAds = false
+                        rewardedAd = null
+                        binding.acbMainMenuWatchABigAd?.text = getString(R.string.watch_an_ad_for_love)
+                        binding.llMainMenuAdsContainer.visibility = GONE
+                    }
+                } else {
+                    //ToDO: show regular interstitial <3
+                    Toast.makeText(
+                        requireContext(),
+                        "ToDo: Show regular interstitial <3",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
         }
     }
 
@@ -188,5 +277,9 @@ class MainMenuFragment : BaseMainFragmentWithAds() {
             etMainMenuInitialPoints?.hideKeyboard()
         }
         super.onStop()
+    }
+
+    companion object {
+        private const val TAG = "MainActivity"
     }
 }

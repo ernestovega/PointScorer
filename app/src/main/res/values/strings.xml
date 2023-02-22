@@ -53,8 +53,7 @@
     <string name="cancel">Cancel</string>
     <string name="accept">Accept</string>
     <string name="initial_points_help">Are the default points for each player.\n\nThe \"Restore all points\" button will restore every player on every screen to this value.</string>
-    <string name="exit">Exit</string>
-    <string name="exit_title">Exit?</string>
-    <string name="thanks_for_using_my_app_see_you_soon">Thanks for using my App.\nSee you soon!</string>
+    <string name="remove_ads_watching_a_big_one">Remove ads for this session watching a big one</string>
+    <string name="watch_an_ad_for_love">Watch a big ad for show love to the developer</string>
 
 </resources>

@@ -1,21 +1,26 @@
 package com.etologic.pointscorer.app.main.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.etologic.pointscorer.BuildConfig
 import com.etologic.pointscorer.R
 import com.etologic.pointscorer.app.main.activity.MainActivityViewModel.Screens.*
 import com.etologic.pointscorer.app.main.fragments.main_menu.MainMenuFragment
 import com.etologic.pointscorer.app.main.fragments.players.*
 import com.etologic.pointscorer.databinding.MainActivityBinding
-import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.RequestConfiguration
+import com.google.ads.mediation.admob.AdMobAdapter
+import com.google.android.gms.ads.*
+import com.google.android.gms.ads.rewarded.RewardedAd
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
+
 
 class MainActivity : DaggerAppCompatActivity() {
 
@@ -26,7 +31,6 @@ class MainActivity : DaggerAppCompatActivity() {
     private lateinit var binding: MainActivityBinding
     private lateinit var firebaseAnalytics: FirebaseAnalytics
     private lateinit var firebaseCrashlytics: FirebaseCrashlytics
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,7 +81,6 @@ class MainActivity : DaggerAppCompatActivity() {
 
     private fun setOnBackPressedCallback() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-
             override fun handleOnBackPressed() {
                 if (viewModel.screenObservable.value == MENU) {
                     viewModel.navigateTo(FINISH)

@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="300dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:ignore="RelativeOverlap">
+        android:layout_marginStart="20dp"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -23,7 +26,6 @@
                 android:id="@+id/etSettingsMenuName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/rock_on"
                 android:gravity="center_horizontal"
@@ -95,30 +97,30 @@
             <Button
                 android:id="@+id/btSettingMenuRestoreAllPoints"
                 style="@style/SettingsMenuButton"
+                android:layout_marginBottom="16dp"
                 android:text="@string/restore_all_points" />
-
-            <FrameLayout
-                android:id="@+id/flSettingsMenuMediumRectangleAdContainer"
-                android:layout_width="300dp"
-                android:layout_height="250dp"
-                android:layout_marginTop="24dp"
-                android:gravity="center"
-                android:orientation="vertical" />
 
         </LinearLayout>
 
-    </ScrollView>
+        <ImageButton
+            android:id="@+id/btSettingMenuClose"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="8dp"
+            android:background="@color/white"
+            android:contentDescription="@string/close"
+            android:src="@drawable/ic_close"
+            app:tint="@color/colorAccent" />
 
-    <ImageButton
-        android:id="@+id/btSettingMenuClose"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@color/white"
-        android:contentDescription="@string/close"
-        android:src="@drawable/ic_close"
-        app:tint="@color/colorAccent" />
+    </LinearLayout>
 
-</RelativeLayout>
+    <FrameLayout
+        android:id="@+id/flSettingsMenuMediumRectangleAdContainer"
+        android:layout_width="300dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone" />
+
+</LinearLayout>

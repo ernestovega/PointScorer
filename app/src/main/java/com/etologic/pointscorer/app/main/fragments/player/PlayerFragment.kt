@@ -128,7 +128,7 @@ class PlayerFragment : BaseMainFragment() {
                 }
             }
             binding.tvAuxPoints.animation = auxPointsFadeOutAnimation
-            ivShield.startAnimation(MyAnimationUtils.shieldAnimation)
+            ivShield.startAnimation(MyAnimationUtils.getShieldAnimation())
         }
     }
 

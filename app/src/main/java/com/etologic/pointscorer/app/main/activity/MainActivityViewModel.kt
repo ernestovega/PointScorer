@@ -32,6 +32,8 @@ class MainActivityViewModel
     private val _shouldRestoreAllPoints = MutableLiveData<Int>()
     val shouldRestoreAllPointsObservable: LiveData<Int> = _shouldRestoreAllPoints
 
+    var shouldShowAds = true
+
     init {
         navigateTo(MENU)
     }
