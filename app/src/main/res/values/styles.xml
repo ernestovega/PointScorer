@@ -14,6 +14,10 @@
         <item name="colorAccent">@color/black</item>
     </style>
 
+    <style name="WatchButtonAdProgressBar" parent="Theme.AppCompat">
+        <item name="colorAccent">@color/white</item>
+    </style>
+
     <style name="MyTextInputLayout" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorAccent">@color/colorAccent</item>
     </style>
@@ -136,10 +140,17 @@
     <style name="MainMenuButtonProgress" parent="Widget.AppCompat.ProgressBar">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">16dp</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:theme">@style/MyProgressBar</item>
         <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="MainMenuWatchAdButtonProgress" parent="Widget.AppCompat.ProgressBar">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:theme">@style/WatchButtonAdProgressBar</item>
     </style>
 
     <style name="SettingsMenuColorButton">

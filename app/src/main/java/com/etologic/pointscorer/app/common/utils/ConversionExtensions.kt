@@ -1,4 +1,4 @@
-package com.etologic.pointscorer.app.utils
+package com.etologic.pointscorer.app.common.utils
 
 import android.content.res.Resources
 import android.util.TypedValue

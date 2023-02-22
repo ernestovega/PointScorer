@@ -11,14 +11,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.etologic.pointscorer.BuildConfig
 import com.etologic.pointscorer.R
+import com.etologic.pointscorer.app.common.ads.base.MyBaseInterstitialAd
+import com.etologic.pointscorer.app.common.ads.MyRobaAd
+import com.etologic.pointscorer.app.common.ads.base.MyBaseAd
+import com.etologic.pointscorer.app.common.utils.ViewExtensions.hideKeyboard
 import com.etologic.pointscorer.app.main.base.BaseMainDialogFragment
-import com.etologic.pointscorer.app.utils.AdsExtensions.load
-import com.etologic.pointscorer.app.utils.MyAnimationUtils
-import com.etologic.pointscorer.app.utils.ViewExtensions.hideKeyboard
 import com.etologic.pointscorer.databinding.GamePlayerSettingsDialogFragmentBinding
-import com.google.android.gms.ads.AdSize.MEDIUM_RECTANGLE
-import com.google.android.gms.ads.AdView
-import dagger.android.support.DaggerDialogFragment
+import com.google.android.gms.ads.AdSize
 import javax.inject.Inject
 
 class PlayerSettingsMenuDialogFragment @Inject constructor() : BaseMainDialogFragment() {
@@ -61,7 +60,6 @@ class PlayerSettingsMenuDialogFragment @Inject constructor() : BaseMainDialogFra
     private var initialColor: Int? = null
     private var initialName: String? = null
     private var playerDialogListener: PlayerDialogListener? = null
-    private var bannerAdView: AdView? = null
 
     internal fun setPlayerDialogListener(playerDialogListener: PlayerDialogListener?) {
         this.playerDialogListener = playerDialogListener
@@ -189,27 +187,21 @@ class PlayerSettingsMenuDialogFragment @Inject constructor() : BaseMainDialogFra
 
     private fun initAd() {
         if (activityViewModel.shouldShowAds) {
-            bannerAdView = context?.let {
-                AdView(it).apply {
-                    adUnitId = BuildConfig.ADMOB_ADUNIT_BANNER_SETTINGS_MENU
-                    setAdSize(MEDIUM_RECTANGLE)
-                }
-            }
-            bannerAdView?.let {
-                with (binding.flSettingsMenuMediumRectangleAdContainer) {
-                    visibility = VISIBLE
-                    addView(it)
+            with(MyRobaAd(BuildConfig.ADMOB_ADUNIT_BANNER_SETTINGS_MENU, requireContext())) {
+                load(requireContext()) {
+                    binding.llSettingsMenuMediumRectangleAdContainer?.apply {
+                        visibility = try {
+                            show(this)
+                            VISIBLE
+                        } catch (_: MyBaseAd.AdCouldNotBeShownException) {
+                            GONE
+                        }
+                    }
                 }
             }
         } else {
-            bannerAdView = null
-            binding.flSettingsMenuMediumRectangleAdContainer.visibility = GONE
+            binding.llSettingsMenuMediumRectangleAdContainer?.visibility = GONE
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        bannerAdView?.load()
     }
 
     private fun initValues() {

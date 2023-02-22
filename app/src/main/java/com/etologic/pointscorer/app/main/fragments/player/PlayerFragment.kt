@@ -26,8 +26,8 @@ import com.etologic.pointscorer.app.main.dialogs.player_settings_menu.PlayerSett
 import com.etologic.pointscorer.app.main.dialogs.player_settings_menu.PlayerSettingsMenuDialogFragment.Companion.KEY_IS_ONE_PLAYER_FRAGMENT
 import com.etologic.pointscorer.app.main.dialogs.player_settings_menu.PlayerSettingsMenuDialogFragment.PlayerDialogListener
 import com.etologic.pointscorer.app.main.fragments.players.Game1PlayerFragment.Companion.GAME_1_PLAYER_1_ID
-import com.etologic.pointscorer.app.utils.MyAnimationUtils
-import com.etologic.pointscorer.app.utils.dpToPx
+import com.etologic.pointscorer.app.common.utils.MyAnimationUtils
+import com.etologic.pointscorer.app.common.utils.dpToPx
 import com.etologic.pointscorer.databinding.GamePlayerFragmentBinding
 import java.util.*
 import javax.inject.Inject

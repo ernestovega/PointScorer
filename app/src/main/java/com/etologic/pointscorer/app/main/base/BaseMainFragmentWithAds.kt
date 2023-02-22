@@ -7,11 +7,12 @@ import android.view.View.VISIBLE
 import android.widget.LinearLayout
 import androidx.viewbinding.ViewBinding
 import com.etologic.pointscorer.BuildConfig
-import com.etologic.pointscorer.app.utils.AdsExtensions.load
-import com.etologic.pointscorer.app.utils.dpToPx
+import com.etologic.pointscorer.app.common.ads.MyBannerAd
+import com.etologic.pointscorer.app.common.ads.base.MyBaseAd
+import com.etologic.pointscorer.app.common.ads.base.MyBaseBannerAd
+import com.etologic.pointscorer.app.common.utils.dpToPx
 import com.etologic.pointscorer.databinding.*
 import com.google.android.gms.ads.AdSize
-import com.google.android.gms.ads.AdView
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 abstract class BaseMainFragmentWithAds : BaseMainFragment() {
@@ -51,26 +52,25 @@ abstract class BaseMainFragmentWithAds : BaseMainFragment() {
             return adUnitsListForThisScreen
         }
 
-        fun buildBannerAd(adUnit: String): AdView? =
-            context?.let {
-                AdView(it).apply {
-                    adUnitId = adUnit
-                    setAdSize(AdSize.BANNER)
-                }
-            }
 
+        val adContainer = getAdContainer()
         if (activityViewModel.shouldShowAds) {
             getAdUnitsForThisScreen().forEach { adUnit ->
-                buildBannerAd(adUnit)?.let { bannerAdView ->
-                    getAdContainer()?.apply {
-                        visibility = VISIBLE
-                        addView(bannerAdView)
+                with (MyBannerAd(adUnit, requireContext())) {
+                    try {
+                        load(requireContext()) {
+                            adContainer?.apply {
+                                visibility = VISIBLE
+                                this@with.show(this@apply)
+                            }
+                        }
+                    } catch (_: MyBaseAd.AdCouldNotBeLoadedException) {
                     }
-                    bannerAdView.load()
+
                 }
             }
         } else {
-            getAdContainer()?.visibility = GONE
+            adContainer?.visibility = GONE
         }
     }
 

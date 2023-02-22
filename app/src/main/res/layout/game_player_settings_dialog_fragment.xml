@@ -114,8 +114,8 @@
 
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/flSettingsMenuMediumRectangleAdContainer"
+    <LinearLayout
+        android:id="@+id/llSettingsMenuMediumRectangleAdContainer"
         android:layout_width="300dp"
         android:layout_height="250dp"
         android:layout_marginTop="8dp"

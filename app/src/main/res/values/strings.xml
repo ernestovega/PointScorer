@@ -53,7 +53,9 @@
     <string name="cancel">Cancel</string>
     <string name="accept">Accept</string>
     <string name="initial_points_help">Are the default points for each player.\n\nThe \"Restore all points\" button will restore every player on every screen to this value.</string>
-    <string name="remove_ads_watching_a_big_one">Remove ads for this session watching a big one</string>
-    <string name="watch_an_ad_for_love">Watch a big ad for show love to the developer</string>
+    <string name="remove_ads_watching_a_big_one">Remove ads watching a big one</string>
+    <string name="watch_an_ad_for_love">Show some love watching an Ad</string>
+    <string name="ups">Ups! Something went wrong, sorry!</string>
+    <string name="ups_but_thanks">Ups! Something went wrong, but your intention is what matters, thanks!</string>
 
 </resources>

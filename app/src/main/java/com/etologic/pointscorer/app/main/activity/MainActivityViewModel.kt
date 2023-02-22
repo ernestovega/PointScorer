@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.etologic.pointscorer.app.common.ads.MyInterstitialAd
+import com.etologic.pointscorer.app.common.ads.MyRewardedAd
 import com.etologic.pointscorer.app.main.activity.MainActivityViewModel.Screens.MENU
 import com.etologic.pointscorer.data.repositories.players.PlayersRepository
 import kotlinx.coroutines.launch
@@ -33,6 +35,8 @@ class MainActivityViewModel
     val shouldRestoreAllPointsObservable: LiveData<Int> = _shouldRestoreAllPoints
 
     var shouldShowAds = true
+    var myRewardedAd: MyRewardedAd? = null
+    var myInterstitialAd: MyInterstitialAd? = null
 
     init {
         navigateTo(MENU)
@@ -70,6 +74,12 @@ class MainActivityViewModel
     fun restoreOneGamePoints(numberOfPlayersInTheGame: Int) {
         _shouldRestoreAllPoints.value = numberOfPlayersInTheGame //To control where will be executed
         _shouldRestoreAllPoints.value = 0 //To avoid execution on reloads
+    }
+
+    override fun onCleared() {
+        myRewardedAd = null
+        myInterstitialAd = null
+        super.onCleared()
     }
 
 }
