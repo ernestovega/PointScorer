@@ -1,4 +1,4 @@
-package com.etologic.pointscorer.injection
+package com.etologic.pointscorer.common.injection
 
 import com.etologic.pointscorer.app.main.activity.MainActivity
 import com.etologic.pointscorer.app.main.activity.MainActivityFragmentsBuilder

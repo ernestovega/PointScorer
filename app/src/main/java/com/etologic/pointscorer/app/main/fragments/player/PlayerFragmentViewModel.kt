@@ -4,14 +4,25 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.etologic.pointscorer.bussiness.*
 import com.etologic.pointscorer.data.exceptions.MaxPointsReachedException
 import com.etologic.pointscorer.data.exceptions.MinPointsReachedException
-import com.etologic.pointscorer.data.repositories.players.PlayersRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class PlayerFragmentViewModel
-@Inject internal constructor(private val playersRepository: PlayersRepository) : ViewModel() {
+@Inject internal constructor(
+    private val getPlayerNameUseCase: GetPlayerNameUseCase,
+    private val getPlayerColorUseCase: GetPlayerColorUseCase,
+    private val getPlayerPointsUseCase: GetPlayerPointsUseCase,
+    private val savePlayerNameUseCase: SavePlayerNameUseCase,
+    private val savePlayerColorUseCase: SavePlayerColorUseCase,
+    private val add1PointToAPlayerUseCase: Add1PointToAPlayerUseCase,
+    private val substract1PointToAPlayerUseCase: Substract1PointToAPlayerUseCase,
+    private val getInitialPointsUseCase: GetInitialPointsUseCase,
+    private val resetPlayerPointsUseCase: ResetPlayerPointsUseCase,
+    private val invalidateUseCase: InvalidateUseCase,
+    ) : ViewModel() {
 
     var playerId: Int = 0
     var gamePlayersNum: Int = playerId / 10
@@ -29,9 +40,9 @@ class PlayerFragmentViewModel
         playerId?.let {
             this.playerId = it
             viewModelScope.launch {
-                _playerName.postValue(playersRepository.getPlayerName(playerId))
-                _playerColor.postValue(playersRepository.getPlayerColor(playerId))
-                _playerPoints.postValue(playersRepository.getPlayerPoints(playerId))
+                _playerName.postValue(getPlayerNameUseCase.invoke(playerId))
+                _playerColor.postValue(getPlayerColorUseCase.invoke(playerId))
+                _playerPoints.postValue(getPlayerPointsUseCase.invoke(playerId))
             }
         }
     }
@@ -39,7 +50,7 @@ class PlayerFragmentViewModel
     fun upClicked() {
         viewModelScope.launch {
             try {
-                val newPoints = playersRepository.plus1PlayerPoint(playerId)
+                val newPoints = add1PointToAPlayerUseCase.invoke(playerId)
                 playerAuxPointsEnabled = true
                 _playerPoints.postValue(newPoints)
                 _playerAuxPoints.postValue((_playerAuxPoints.value ?: 0).plus(1))
@@ -54,7 +65,7 @@ class PlayerFragmentViewModel
     fun downClicked() {
         viewModelScope.launch {
             try {
-                val newPoints = playersRepository.minus1PlayerPoint(playerId)
+                val newPoints = substract1PointToAPlayerUseCase.invoke(playerId)
                 playerAuxPointsEnabled = true
                 _playerPoints.postValue(newPoints)
                 _playerAuxPoints.postValue((_playerAuxPoints.value ?: 0).minus(1))
@@ -68,14 +79,14 @@ class PlayerFragmentViewModel
 
     fun savePlayerName(newName: String) {
         viewModelScope.launch {
-            playersRepository.savePlayerName(playerId, newName)
+            savePlayerNameUseCase.invoke(playerId, newName)
             _playerName.postValue(newName)
         }
     }
 
     fun savePlayerColor(newColor: Int) {
         viewModelScope.launch {
-            playersRepository.savePlayerColor(playerId, newColor)
+            savePlayerColorUseCase.invoke(playerId, newColor)
             _playerColor.postValue(newColor)
         }
     }
@@ -88,15 +99,15 @@ class PlayerFragmentViewModel
 
     fun restorePlayerPoints() {
         viewModelScope.launch {
-            val initialPoints = playersRepository.getInitialPoints()
-            playersRepository.resetPlayerPoints(playerId)
+            val initialPoints = getInitialPointsUseCase.invoke()
+            resetPlayerPointsUseCase.invoke(playerId)
             _playerPoints.postValue(initialPoints)
         }
     }
 
     override fun onCleared() {
+        invalidateUseCase.invoke()
         super.onCleared()
-        playersRepository.invalidate()
     }
 
 }

@@ -1,6 +1,6 @@
 package com.etologic.pointscorer.app.main.activity
 
-import com.etologic.pointscorer.data.repositories.players.PlayersRepository
+import com.etologic.pointscorer.bussiness.*
 import dagger.Module
 import dagger.Provides
 
@@ -8,6 +8,19 @@ import dagger.Provides
 class MainActivityModule {
 
     @Provides
-    internal fun provideMainActivityViewModelFactory(playersRepository: PlayersRepository): MainActivityViewModelFactory =
-        MainActivityViewModelFactory(playersRepository)
+    internal fun provideMainActivityViewModelFactory(
+        getInitialPointsUseCase: GetInitialPointsUseCase,
+        saveInitialPointsUseCase: SaveInitialPointsUseCase,
+        resetAllPlayersPointsUseCase: ResetAllPlayersPointsUseCase,
+        resetAllPlayersNamesAndColorsUseCase: ResetAllPlayersNamesAndColorsUseCase,
+        invalidateUseCase: InvalidateUseCase,
+    ): MainActivityViewModelFactory =
+        MainActivityViewModelFactory(
+            getInitialPointsUseCase,
+            saveInitialPointsUseCase,
+            resetAllPlayersPointsUseCase,
+            resetAllPlayersNamesAndColorsUseCase,
+            invalidateUseCase,
+        )
+
 }

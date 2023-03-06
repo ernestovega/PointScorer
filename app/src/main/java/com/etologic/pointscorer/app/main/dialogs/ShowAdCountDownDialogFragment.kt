@@ -1,6 +1,5 @@
 package com.etologic.pointscorer.app.main.dialogs
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
@@ -76,11 +75,14 @@ class ShowAdCountDownDialogFragment
 
     override fun onStart() {
         super.onStart()
+        activityViewModel.canRestartTheCountDownToShowAd = false
+        activityViewModel.cancelHandlerCountDownToShowGameAd()
         adCountDownTimer.start()
     }
 
     override fun onPause() {
         adCountDownTimer.cancel()
+        activityViewModel.avoidRestartTheCountDownToShowGameAdDuringAuxPointsAnimationDuration()
         super.onPause()
     }
 

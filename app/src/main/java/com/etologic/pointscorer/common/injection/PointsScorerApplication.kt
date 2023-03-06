@@ -1,4 +1,4 @@
-package com.etologic.pointscorer.injection
+package com.etologic.pointscorer.common.injection
 
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication

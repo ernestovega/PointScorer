@@ -3,12 +3,15 @@ package com.etologic.pointscorer.data.repositories.players
 import android.content.Context
 import androidx.core.content.ContextCompat
 import com.etologic.pointscorer.R
-import com.etologic.pointscorer.common.Constants.DEFAULT_INITIAL_POINTS
 import com.etologic.pointscorer.common.Constants.MAX_PLAYERS
-import com.etologic.pointscorer.common.Constants.MAX_POINTS
-import com.etologic.pointscorer.common.Constants.MIN_POINTS
-import com.etologic.pointscorer.data.exceptions.MaxPointsReachedException
-import com.etologic.pointscorer.data.exceptions.MinPointsReachedException
+import com.etologic.pointscorer.data.repositories.initial_points.InitialPointsRepository
+import com.etologic.pointscorer.data.repositories.players.colors.PlayersColorsDataStoreDataSource
+import com.etologic.pointscorer.data.repositories.players.colors.PlayersColorsMemoryDataSource
+import com.etologic.pointscorer.data.repositories.players.initial_check.InitialCheckDataStoreDataSource
+import com.etologic.pointscorer.data.repositories.players.names.PlayersNamesDataStoreDataSource
+import com.etologic.pointscorer.data.repositories.players.names.PlayersNamesMemoryDataSource
+import com.etologic.pointscorer.data.repositories.players.points.PlayersPointsDataStoreDataSource
+import com.etologic.pointscorer.data.repositories.players.points.PlayersPointsMemoryDataSource
 import kotlinx.coroutines.*
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
@@ -16,8 +19,14 @@ import kotlin.coroutines.CoroutineContext
 class PlayersRepository
 @Inject internal constructor(
     context: Context,
-    private val memoryDataSource: PlayersMemoryDataSource,
-    private val dataStoreDataSource: PlayersDataStoreDataSource
+    private val playersPointsMemoryDataSource: PlayersPointsMemoryDataSource,
+    private val playersNamesMemoryDataSource: PlayersNamesMemoryDataSource,
+    private val playersColorsMemoryDataSource: PlayersColorsMemoryDataSource,
+    private val playersPointsDataStoreDataSource: PlayersPointsDataStoreDataSource,
+    private val playersNamesDataStoreDataSource: PlayersNamesDataStoreDataSource,
+    private val playersColorsDataStoreDataSource: PlayersColorsDataStoreDataSource,
+    private val initialCheckDataStoreDataSource: InitialCheckDataStoreDataSource,
+    private val initialPointsRepository: InitialPointsRepository
 ) : CoroutineScope {
 
     private val defaultPlayerName: String = context.getString(R.string.player_name)
@@ -26,85 +35,52 @@ class PlayersRepository
         get() = Dispatchers.Default + Job()
 
     init {
-        launch { doInitialCheck() }
-    }
 
-    private suspend fun doInitialCheck() {
-        if (!dataStoreDataSource.isInitialCheckDone()) {
-            restoreAllPlayers()
-            dataStoreDataSource.saveInitialCheckDone()
+        suspend fun resetPlayer(playerId: Int) {
+            savePlayerPoints(playerId, initialPointsRepository.getInitialPoints())
+            savePlayerName(playerId, "")
+            savePlayerColor(playerId, defaultPlayerColor)
         }
-    }
 
-    private suspend fun restoreAllPlayers() {
-        for (i in 1..MAX_PLAYERS)
-            for (x in 1..i)
-                resetPlayer(buildPlayerId(i, x))
-    }
-
-    private suspend fun resetPlayer(playerId: Int) {
-        savePlayerPoints(playerId, getInitialPoints())
-        savePlayerName(playerId, "")
-        savePlayerColor(playerId, defaultPlayerColor)
-    }
-
-    suspend fun resetPlayerPoints(playerId: Int) {
-        savePlayerPoints(playerId, getInitialPoints())
-    }
-
-    suspend fun getInitialPoints(): Int =
-        memoryDataSource.getInitialPoints()
-            ?: (dataStoreDataSource.getInitialPoints() ?: DEFAULT_INITIAL_POINTS)
-                .also { initialPoints -> memoryDataSource.saveInitialPoints(initialPoints) }
-
-    suspend fun saveInitialPoints(newInitialPoints: Int) {
-        memoryDataSource.saveInitialPoints(newInitialPoints)
-        dataStoreDataSource.saveInitialPoints(newInitialPoints)
-    }
-
-    private suspend fun savePlayerPoints(playerId: Int, newPoints: Int) {
-        memoryDataSource.savePlayerPoints(playerId, newPoints)
-        dataStoreDataSource.savePlayerPoints(playerId, newPoints)
-    }
-
-    suspend fun getPlayerPoints(playerId: Int): Int =
-        memoryDataSource.getPlayerPoints(playerId)
-            ?: (dataStoreDataSource.getPlayerPoints(playerId) ?: getInitialPoints())
-                .also { memoryDataSource.savePlayerPoints(playerId, it) }
-
-    @Throws(MaxPointsReachedException::class)
-    suspend fun plus1PlayerPoint(playerId: Int): Int {
-        val oldPoints = getPlayerPoints(playerId)
-        val newPoints = oldPoints + 1
-        if (oldPoints < MAX_POINTS) {
-            savePlayerPoints(playerId, newPoints)
-            return newPoints
-        } else {
-            throw MaxPointsReachedException()
+        suspend fun restoreAllPlayers() {
+            for (i in 1..MAX_PLAYERS) {
+                for (x in 1..i) {
+                    resetPlayer(buildPlayerId(i, x))
+                }
+            }
         }
-    }
 
-    @Throws(MinPointsReachedException::class)
-    suspend fun minus1PlayerPoint(playerId: Int): Int {
-        val oldPoints = getPlayerPoints(playerId)
-        val newPoints = oldPoints - 1
-        if (oldPoints > MIN_POINTS) {
-            savePlayerPoints(playerId, newPoints)
-            return newPoints
-        } else {
-            throw MinPointsReachedException()
-        }
-    }
-
-    suspend fun restoreAllPlayersPoints() {
-        for (i in 1..MAX_PLAYERS) {
-            for (x in 1..i) {
-                savePlayerPoints(buildPlayerId(i, x), getInitialPoints())
+        launch {
+            if (!initialCheckDataStoreDataSource.get()) {
+                restoreAllPlayers()
+                initialCheckDataStoreDataSource.save(true)
             }
         }
     }
 
-    suspend fun restoreAllPlayersNamesAndColors() {
+    suspend fun resetPlayerPoints(playerId: Int) {
+        savePlayerPoints(playerId, initialPointsRepository.getInitialPoints())
+    }
+
+    suspend fun savePlayerPoints(playerId: Int, newPoints: Int) {
+        playersPointsMemoryDataSource.save(playerId, newPoints)
+        playersPointsDataStoreDataSource.save(playerId, newPoints)
+    }
+
+    suspend fun getPlayerPoints(playerId: Int): Int =
+        playersPointsMemoryDataSource.get(playerId)
+            ?: (playersPointsDataStoreDataSource.get(playerId) ?: initialPointsRepository.getInitialPoints())
+                .also { playersPointsMemoryDataSource.save(playerId, it) }
+
+    suspend fun resetAllPlayersPoints() {
+        for (i in 1..MAX_PLAYERS) {
+            for (x in 1..i) {
+                savePlayerPoints(buildPlayerId(i, x), initialPointsRepository.getInitialPoints())
+            }
+        }
+    }
+
+    suspend fun resetAllPlayersNamesAndColors() {
         for (i in 1..MAX_PLAYERS) {
             for (x in 1..i) {
                 savePlayerColor(buildPlayerId(i, x), defaultPlayerColor)
@@ -116,23 +92,23 @@ class PlayersRepository
     private fun buildPlayerId(i: Int, x: Int) = Integer.valueOf("$i$x")
 
     suspend fun getPlayerName(playerId: Int): String =
-        memoryDataSource.getPlayerName(playerId)
-            ?: (dataStoreDataSource.getPlayerName(playerId) ?: defaultPlayerName)
-                .also { memoryDataSource.savePlayerName(playerId, it) }
+        playersNamesMemoryDataSource.get(playerId)
+            ?: (playersNamesDataStoreDataSource.get(playerId) ?: defaultPlayerName)
+                .also { playersNamesMemoryDataSource.save(playerId, it) }
 
     suspend fun savePlayerName(playerId: Int, newName: String) {
-        memoryDataSource.savePlayerName(playerId, newName)
-        dataStoreDataSource.savePlayerName(playerId, newName)
+        playersNamesMemoryDataSource.save(playerId, newName)
+        playersNamesDataStoreDataSource.save(playerId, newName)
     }
 
     suspend fun getPlayerColor(playerId: Int): Int =
-        memoryDataSource.getPlayerColor(playerId)
-            ?: (dataStoreDataSource.getPlayerColor(playerId) ?: defaultPlayerColor)
-                .also { memoryDataSource.savePlayerColor(playerId, it) }
+        playersColorsMemoryDataSource.get(playerId)
+            ?: (playersColorsDataStoreDataSource.get(playerId) ?: defaultPlayerColor)
+                .also { playersColorsMemoryDataSource.save(playerId, it) }
 
-    suspend fun savePlayerColor(playerId: Int, newInitialColor: Int) {
-        memoryDataSource.savePlayerColor(playerId, newInitialColor)
-        dataStoreDataSource.savePlayerColor(playerId, newInitialColor)
+    suspend fun savePlayerColor(playerId: Int, newColor: Int) {
+        playersColorsMemoryDataSource.save(playerId, newColor)
+        playersColorsDataStoreDataSource.save(playerId, newColor)
     }
 
     fun invalidate() {

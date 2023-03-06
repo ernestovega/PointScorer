@@ -1,4 +1,4 @@
-package com.etologic.pointscorer.injection
+package com.etologic.pointscorer.common.injection
 
 import android.content.Context
 import dagger.Module
