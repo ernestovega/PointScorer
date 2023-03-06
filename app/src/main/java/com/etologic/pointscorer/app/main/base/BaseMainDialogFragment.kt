@@ -20,10 +20,8 @@ abstract class BaseMainDialogFragment : DaggerDialogFragment() {
     }
 
     private fun initActivityViewModel() {
-        activity?.let {
-            activityViewModel =
-                ViewModelProvider(it, activityViewModelFactory)[MainActivityViewModel::class.java]
-        }
+        activityViewModel =
+            ViewModelProvider(requireActivity(), activityViewModelFactory)[MainActivityViewModel::class.java]
     }
 
 }

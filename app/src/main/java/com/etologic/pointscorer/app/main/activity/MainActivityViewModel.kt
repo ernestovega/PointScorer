@@ -16,14 +16,16 @@ class MainActivityViewModel
 
     enum class Screens {
         MENU,
-        ONE_PLAYER,
-        TWO_PLAYER,
-        THREE_PLAYER,
-        FOUR_PLAYER,
-        FIVE_PLAYER,
-        SIX_PLAYER,
-        SEVEN_PLAYER,
-        EIGHT_PLAYER,
+        GAME_ONE_PLAYER,
+        GAME_TWO_PLAYERS,
+        GAME_THREE_PLAYERS,
+        GAME_FOUR_PLAYERS,
+        GAME_FIVE_PLAYERS,
+        GAME_SIX_PLAYERS,
+        GAME_SEVEN_PLAYERS,
+        GAME_EIGHT_PLAYERS,
+        GAME_INTERSTITIAL_COUNTDOWN,
+        GAME_INTERSTITIAL,
         FINISH
     }
 
@@ -36,7 +38,8 @@ class MainActivityViewModel
 
     var shouldShowAds = true
     var myRewardedAd: MyRewardedAd? = null
-    var myInterstitialAd: MyInterstitialAd? = null
+    var myInterstitialAdForShowLove: MyInterstitialAd? = null
+    var myInterstitialAdForGame: MyInterstitialAd? = null
 
     init {
         navigateTo(MENU)
@@ -78,7 +81,8 @@ class MainActivityViewModel
 
     override fun onCleared() {
         myRewardedAd = null
-        myInterstitialAd = null
+        myInterstitialAdForShowLove = null
+        myInterstitialAdForGame = null
         super.onCleared()
     }
 

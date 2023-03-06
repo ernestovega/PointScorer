@@ -51,6 +51,7 @@ android {
             buildConfigField "String", "ADMOB_EDITOR_ID", "\"pub-2237700199215764\""
             buildConfigField "String", "ADMOB_ADUNIT_REWARDED_MAIN_MENU", "\"ca-app-pub-3940256099942544/5224354917\""
             buildConfigField "String", "ADMOB_ADUNIT_INTERSTITIAL_MAIN_MENU", "\"ca-app-pub-3940256099942544/1033173712\""
+            buildConfigField "String", "ADMOB_ADUNIT_INTERSTITIAL_GAME", "\"ca-app-pub-3940256099942544/1033173712\""
             buildConfigField "String", "ADMOB_ADUNIT_BANNER_MAIN_MENU_1", "\"ca-app-pub-3940256099942544/6300978111\""
             buildConfigField "String", "ADMOB_ADUNIT_BANNER_MAIN_MENU_2", "\"ca-app-pub-3940256099942544/6300978111\""
             buildConfigField "String", "ADMOB_ADUNIT_BANNER_MAIN_MENU_3", "\"ca-app-pub-3940256099942544/6300978111\""
@@ -70,6 +71,7 @@ android {
             buildConfigField "String", "ADMOB_EDITOR_ID", "\"pub-2237700199215764\""
             buildConfigField "String", "ADMOB_ADUNIT_REWARDED_MAIN_MENU", "\"ca-app-pub-2237700199215764/9764634754\""
             buildConfigField "String", "ADMOB_ADUNIT_INTERSTITIAL_MAIN_MENU", "\"ca-app-pub-2237700199215764/1472880063\""
+            buildConfigField "String", "ADMOB_ADUNIT_INTERSTITIAL_GAME", "\"ca-app-pub-2237700199215764/4903808864\""
             buildConfigField "String", "ADMOB_ADUNIT_BANNER_MAIN_MENU_1", "\"ca-app-pub-2237700199215764/4812679065\""
             buildConfigField "String", "ADMOB_ADUNIT_BANNER_MAIN_MENU_2", "\"ca-app-pub-2237700199215764/6063364753\""
             buildConfigField "String", "ADMOB_ADUNIT_BANNER_MAIN_MENU_3", "\"ca-app-pub-2237700199215764/2670914650\""
@@ -103,6 +105,9 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'com.google.android.material:material:1.8.0'
 
     //DAGGER
     implementation 'com.google.dagger:dagger:2.42'

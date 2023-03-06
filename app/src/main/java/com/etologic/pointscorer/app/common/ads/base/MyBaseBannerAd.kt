@@ -18,11 +18,12 @@ open class MyBaseBannerAd(private val adUnit: String, context: Context, adSize: 
     }
 
     override fun load(context: Context, onAdLoaded: () -> Unit) {
-        myAd?.adListener = object: AdListener() {
+        myAd?.adListener = object : AdListener() {
             override fun onAdLoaded() {
                 super.onAdLoaded()
                 onAdLoaded.invoke()
             }
+
             override fun onAdFailedToLoad(p0: LoadAdError) {
                 super.onAdFailedToLoad(p0)
                 throw AdCouldNotBeLoadedException()

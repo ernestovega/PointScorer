@@ -87,7 +87,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/llMainMenuAdsContainer"
+        android:id="@+id/llAdsContainer"
         style="@style/BannerAdContainer" />
 
 </LinearLayout>

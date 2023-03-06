@@ -15,7 +15,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 class MyRewardedAd(private val adUnit: String) : MyBaseInterstitialAd<RewardedAd>(adUnit) {
 
-    override fun load(context: Context, onAdLoaded: () -> Unit){
+    override fun load(context: Context, onAdLoaded: () -> Unit) {
         RewardedAd.load(
             context,
             adUnit,

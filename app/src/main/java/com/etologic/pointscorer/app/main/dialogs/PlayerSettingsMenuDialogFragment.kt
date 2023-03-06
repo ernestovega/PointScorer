@@ -1,4 +1,4 @@
-package com.etologic.pointscorer.app.main.dialogs.player_settings_menu
+package com.etologic.pointscorer.app.main.dialogs
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,13 +11,11 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.etologic.pointscorer.BuildConfig
 import com.etologic.pointscorer.R
-import com.etologic.pointscorer.app.common.ads.base.MyBaseInterstitialAd
 import com.etologic.pointscorer.app.common.ads.MyRobaAd
 import com.etologic.pointscorer.app.common.ads.base.MyBaseAd
 import com.etologic.pointscorer.app.common.utils.ViewExtensions.hideKeyboard
 import com.etologic.pointscorer.app.main.base.BaseMainDialogFragment
 import com.etologic.pointscorer.databinding.GamePlayerSettingsDialogFragmentBinding
-import com.google.android.gms.ads.AdSize
 import javax.inject.Inject
 
 class PlayerSettingsMenuDialogFragment @Inject constructor() : BaseMainDialogFragment() {

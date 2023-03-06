@@ -9,7 +9,6 @@ import androidx.viewbinding.ViewBinding
 import com.etologic.pointscorer.BuildConfig
 import com.etologic.pointscorer.app.common.ads.MyBannerAd
 import com.etologic.pointscorer.app.common.ads.base.MyBaseAd
-import com.etologic.pointscorer.app.common.ads.base.MyBaseBannerAd
 import com.etologic.pointscorer.app.common.utils.dpToPx
 import com.etologic.pointscorer.databinding.*
 import com.google.android.gms.ads.AdSize
@@ -52,56 +51,59 @@ abstract class BaseMainFragmentWithAds : BaseMainFragment() {
             return adUnitsListForThisScreen
         }
 
-
-        val adContainer = getAdContainer()
-        if (activityViewModel.shouldShowAds) {
-            getAdUnitsForThisScreen().forEach { adUnit ->
-                with (MyBannerAd(adUnit, requireContext())) {
-                    try {
-                        load(requireContext()) {
-                            adContainer?.apply {
-                                visibility = VISIBLE
-                                this@with.show(this@apply)
+        fun loadAndShowBannerAds() {
+            val adContainer = getAdContainer()
+            if (activityViewModel.shouldShowAds) {
+                getAdUnitsForThisScreen().forEach { adUnit ->
+                    with(MyBannerAd(adUnit, requireContext())) {
+                        try {
+                            load(requireContext()) {
+                                adContainer?.apply {
+                                    visibility = VISIBLE
+                                    this@with.show(this@apply)
+                                }
                             }
+                        } catch (_: MyBaseAd.AdCouldNotBeLoadedException) {
                         }
-                    } catch (_: MyBaseAd.AdCouldNotBeLoadedException) {
-                    }
 
+                    }
                 }
+            } else {
+                adContainer?.visibility = GONE
             }
-        } else {
-            adContainer?.visibility = GONE
         }
+
+        loadAndShowBannerAds()
     }
 
     private fun getAdContainer(): LinearLayout? =
         when (baseBinding) {
             is MainMenuFragmentBinding -> {
-                (baseBinding as MainMenuFragmentBinding).llMainMenuAdsContainer
+                (baseBinding as MainMenuFragmentBinding).llAdsContainer
             }
             is GameBOnePlayerFragmentBinding -> {
-                (baseBinding as GameBOnePlayerFragmentBinding).llMainMenuAdsContainer
+                (baseBinding as GameBOnePlayerFragmentBinding).llAdsContainer
             }
             is GameCTwoPlayersFragmentBinding -> {
-                (baseBinding as GameCTwoPlayersFragmentBinding).llMainMenuAdsContainer
+                (baseBinding as GameCTwoPlayersFragmentBinding).llAdsContainer
             }
             is GameDThreePlayersFragmentBinding -> {
-                (baseBinding as GameDThreePlayersFragmentBinding).llMainMenuAdsContainer
+                (baseBinding as GameDThreePlayersFragmentBinding).llAdsContainer
             }
             is GameEFourPlayersFragmentBinding -> {
-                (baseBinding as GameEFourPlayersFragmentBinding).llMainMenuAdsContainer
+                (baseBinding as GameEFourPlayersFragmentBinding).llAdsContainer
             }
             is GameFFivePlayersFragmentBinding -> {
-                (baseBinding as GameFFivePlayersFragmentBinding).llMainMenuAdsContainer
+                (baseBinding as GameFFivePlayersFragmentBinding).llAdsContainer
             }
             is GameGSixPlayersFragmentBinding -> {
-                (baseBinding as GameGSixPlayersFragmentBinding).llMainMenuAdsContainer
+                (baseBinding as GameGSixPlayersFragmentBinding).llAdsContainer
             }
             is GameHSevenPlayersFragmentBinding -> {
-                (baseBinding as GameHSevenPlayersFragmentBinding).llMainMenuAdsContainer
+                (baseBinding as GameHSevenPlayersFragmentBinding).llAdsContainer
             }
             is GameIEightPlayersFragmentBinding -> {
-                (baseBinding as GameIEightPlayersFragmentBinding).llMainMenuAdsContainer
+                (baseBinding as GameIEightPlayersFragmentBinding).llAdsContainer
             }
             else -> null
         }

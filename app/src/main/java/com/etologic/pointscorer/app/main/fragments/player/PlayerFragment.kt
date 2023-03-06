@@ -18,16 +18,16 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.ViewModelProvider
 import com.etologic.pointscorer.R
-import com.etologic.pointscorer.app.main.base.BaseMainFragment
-import com.etologic.pointscorer.app.main.dialogs.player_settings_menu.PlayerSettingsMenuDialogFragment
-import com.etologic.pointscorer.app.main.dialogs.player_settings_menu.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_COLOR
-import com.etologic.pointscorer.app.main.dialogs.player_settings_menu.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_NAME
-import com.etologic.pointscorer.app.main.dialogs.player_settings_menu.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_POINTS
-import com.etologic.pointscorer.app.main.dialogs.player_settings_menu.PlayerSettingsMenuDialogFragment.Companion.KEY_IS_ONE_PLAYER_FRAGMENT
-import com.etologic.pointscorer.app.main.dialogs.player_settings_menu.PlayerSettingsMenuDialogFragment.PlayerDialogListener
-import com.etologic.pointscorer.app.main.fragments.players.Game1PlayerFragment.Companion.GAME_1_PLAYER_1_ID
 import com.etologic.pointscorer.app.common.utils.MyAnimationUtils
 import com.etologic.pointscorer.app.common.utils.dpToPx
+import com.etologic.pointscorer.app.main.base.BaseMainFragment
+import com.etologic.pointscorer.app.main.dialogs.PlayerSettingsMenuDialogFragment
+import com.etologic.pointscorer.app.main.dialogs.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_COLOR
+import com.etologic.pointscorer.app.main.dialogs.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_NAME
+import com.etologic.pointscorer.app.main.dialogs.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_POINTS
+import com.etologic.pointscorer.app.main.dialogs.PlayerSettingsMenuDialogFragment.Companion.KEY_IS_ONE_PLAYER_FRAGMENT
+import com.etologic.pointscorer.app.main.dialogs.PlayerSettingsMenuDialogFragment.PlayerDialogListener
+import com.etologic.pointscorer.app.main.fragments.players.Game1PlayerFragment.Companion.GAME_1_PLAYER_1_ID
 import com.etologic.pointscorer.databinding.GamePlayerFragmentBinding
 import java.util.*
 import javax.inject.Inject
@@ -54,6 +54,7 @@ class PlayerFragment : BaseMainFragment() {
     private lateinit var auxPointsFadeOutAnimation: Animation
     private var auxPoints = 0
     private var isUpPressed = false
+
     /* https://stackoverflow.com/questions/7938516/continuously-increase-integer-value-as-the-button-is-pressed */
     private var isDownPressed = false
     private var playerSettingsMenuDialogFragment: PlayerSettingsMenuDialogFragment? = null
@@ -73,6 +74,12 @@ class PlayerFragment : BaseMainFragment() {
         override fun onRestoreAllPlayersPointsClicked() {
             activityViewModel.restoreOneGamePoints(viewModel.gamePlayersNum)
         }
+    }
+    private var onPointsSavedCallback: (() -> Unit)? = null
+    private var onActionDoneCancelWillShowAd: (() -> Unit)? = null
+
+    fun setOnPointsSavedCallback(callback: () -> Unit) {
+        onPointsSavedCallback = callback
     }
 
     override fun onCreateView(
@@ -125,6 +132,7 @@ class PlayerFragment : BaseMainFragment() {
             auxPointsFadeOutAnimation = MyAnimationUtils.getAuxPointsFadeOutAnimation {
                 if (auxPointsFadeOutAnimation.hasEnded()) {
                     viewModel.auxPointsAnimationEnded()
+                    onPointsSavedCallback?.invoke()
                 }
             }
             binding.tvAuxPoints.animation = auxPointsFadeOutAnimation
@@ -211,20 +219,24 @@ class PlayerFragment : BaseMainFragment() {
     private fun initListeners() {
         with(binding) {
             ibMenu.setOnClickListener {
+                onActionDoneCancelWillShowAd?.invoke()
                 showPlayerDialog()
             }
 
             btUp.setOnLongClickListener {
+                onActionDoneCancelWillShowAd?.invoke()
                 isUpPressed = true
                 upRepeatUpdateHandler.post(UpCountRepeater())
             }
 
             btDown.setOnLongClickListener {
+                onActionDoneCancelWillShowAd?.invoke()
                 isDownPressed = true
                 downRepeatUpdateHandler.post(DownCountRepeater())
             }
 
             btUp.setOnTouchListener { _, motionEvent ->
+                onActionDoneCancelWillShowAd?.invoke()
                 val isActionUp = motionEvent.action == ACTION_UP
                 val isActionCancel = motionEvent.action == ACTION_CANCEL
                 if (isUpPressed && (isActionUp || isActionCancel))
@@ -233,6 +245,7 @@ class PlayerFragment : BaseMainFragment() {
             }
 
             btDown.setOnTouchListener { _, motionEvent ->
+                onActionDoneCancelWillShowAd?.invoke()
                 val isActionUp = motionEvent.action == ACTION_UP
                 val isActionCancel = motionEvent.action == ACTION_CANCEL
                 if (isDownPressed && (isActionUp || isActionCancel))
@@ -241,10 +254,12 @@ class PlayerFragment : BaseMainFragment() {
             }
 
             btUp.setOnClickListener {
+                onActionDoneCancelWillShowAd?.invoke()
                 viewModel.upClicked()
             }
 
             btDown.setOnClickListener {
+                onActionDoneCancelWillShowAd?.invoke()
                 viewModel.downClicked()
             }
         }

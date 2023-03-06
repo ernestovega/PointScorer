@@ -63,9 +63,6 @@ class MainMenuFragment : BaseMainFragmentWithAds() {
                         binding.acbMainMenuWatchAd?.text = getString(R.string.watch_an_ad_for_love)
                         binding.pbMainMenuWatchAdButton?.visibility = GONE
                         binding.acbMainMenuWatchAd?.visibility = VISIBLE
-                        if (activityViewModel.myInterstitialAd == null) {
-                            buildMyInterstitialAd()
-                        }
                     }
                 }
             } else {
@@ -78,16 +75,6 @@ class MainMenuFragment : BaseMainFragmentWithAds() {
             binding.acbMainMenuWatchAd?.text = getString(R.string.watch_an_ad_for_love)
             binding.pbMainMenuWatchAdButton?.visibility = GONE
             binding.acbMainMenuWatchAd?.visibility = VISIBLE
-            if (activityViewModel.myInterstitialAd == null) { buildMyInterstitialAd() }
-        }
-    }
-
-    private fun buildMyInterstitialAd() {
-        with(MyInterstitialAd(BuildConfig.ADMOB_ADUNIT_INTERSTITIAL_MAIN_MENU)) {
-            try {
-                load(requireContext()) { activityViewModel.myInterstitialAd = this }
-            } catch (_: MyBaseAd.AdCouldNotBeLoadedException) {
-            }
         }
     }
 
@@ -179,51 +166,51 @@ class MainMenuFragment : BaseMainFragmentWithAds() {
             btMainMenu1Player.setOnClickListener {
                 btMainMenu1Player.visibility = GONE
                 pbMainMenu1Player.visibility = VISIBLE
-                activityViewModel.navigateTo(ONE_PLAYER)
+                activityViewModel.navigateTo(GAME_ONE_PLAYER)
             }
             btMainMenu2Player.setOnClickListener {
                 btMainMenu2Player.visibility = GONE
                 pbMainMenu2Player.visibility = VISIBLE
-                activityViewModel.navigateTo(TWO_PLAYER)
+                activityViewModel.navigateTo(GAME_TWO_PLAYERS)
             }
             btMainMenu3Player.setOnClickListener {
                 btMainMenu3Player.visibility = GONE
                 pbMainMenu3Player.visibility = VISIBLE
-                activityViewModel.navigateTo(THREE_PLAYER)
+                activityViewModel.navigateTo(GAME_THREE_PLAYERS)
             }
             btMainMenu4Player.setOnClickListener {
                 btMainMenu4Player.visibility = GONE
                 pbMainMenu4Player.visibility = VISIBLE
-                activityViewModel.navigateTo(FOUR_PLAYER)
+                activityViewModel.navigateTo(GAME_FOUR_PLAYERS)
             }
             btMainMenu5Player.setOnClickListener {
                 btMainMenu5Player.visibility = GONE
                 pbMainMenu5Player.visibility = VISIBLE
-                activityViewModel.navigateTo(FIVE_PLAYER)
+                activityViewModel.navigateTo(GAME_FIVE_PLAYERS)
             }
             btMainMenu6Player.setOnClickListener {
                 btMainMenu6Player.visibility = GONE
                 pbMainMenu6Player.visibility = VISIBLE
-                activityViewModel.navigateTo(SIX_PLAYER)
+                activityViewModel.navigateTo(GAME_SIX_PLAYERS)
             }
             btMainMenu7Player.setOnClickListener {
                 btMainMenu7Player.visibility = GONE
                 pbMainMenu7Player.visibility = VISIBLE
-                activityViewModel.navigateTo(SEVEN_PLAYER)
+                activityViewModel.navigateTo(GAME_SEVEN_PLAYERS)
             }
             btMainMenu8Player.setOnClickListener {
                 btMainMenu8Player.visibility = GONE
                 pbMainMenu8Player.visibility = VISIBLE
-                activityViewModel.navigateTo(EIGHT_PLAYER)
+                activityViewModel.navigateTo(GAME_EIGHT_PLAYERS)
             }
 
             acbMainMenuWatchAd?.setOnClickListener {
 
                 fun rewardedAdShown() {
                     activityViewModel.shouldShowAds = false
-                    binding.llMainMenuAdsContainer.visibility = GONE
+                    binding.llAdsContainer.visibility = GONE
                     binding.acbMainMenuWatchAd?.text = getString(R.string.watch_an_ad_for_love)
-                    buildMyInterstitialAd()
+                    loadNewInterstitialAdForShowLove()
                 }
 
                 if (activityViewModel.shouldShowAds && activityViewModel.myRewardedAd != null) {
@@ -238,14 +225,23 @@ class MainMenuFragment : BaseMainFragmentWithAds() {
                     }
                 } else {
                     try {
-                        activityViewModel.myInterstitialAd?.show(requireActivity()) {
-                            buildMyInterstitialAd()
+                        activityViewModel.myInterstitialAdForShowLove?.show(requireActivity()) {
+                            loadNewInterstitialAdForShowLove()
                         }
                     } catch (exception: MyBaseAd.AdCouldNotBeShownException) {
                         Toast.makeText(activity, getString(R.string.ups_but_thanks), LENGTH_SHORT)
                             .show()
                     }
                 }
+            }
+        }
+    }
+
+    private fun loadNewInterstitialAdForShowLove() {
+        with(MyInterstitialAd(BuildConfig.ADMOB_ADUNIT_INTERSTITIAL_MAIN_MENU)) {
+            try {
+                load(requireContext()) { activityViewModel.myInterstitialAdForShowLove = this }
+            } catch (_: MyBaseAd.AdCouldNotBeLoadedException) {
             }
         }
     }

@@ -12,8 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="48dp"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="32dp"
         android:gravity="center_horizontal">
 
@@ -35,10 +35,10 @@
             android:id="@+id/acetMainMenuInitialPoints"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/tvMainMenuInitialPointsTitle"
             android:layout_gravity="center"
             android:digits="-0123456789"
             android:gravity="center"
-            android:layout_below="@+id/tvMainMenuInitialPointsTitle"
             android:hint="@string/min_max_points"
             android:importantForAutofill="no"
             android:inputType="number"
@@ -51,9 +51,9 @@
             android:id="@+id/acbMainMenuResetAllPoints"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginStart="32dp"
             android:layout_toEndOf="@+id/tvMainMenuInitialPointsTitle"
-            android:layout_centerVertical="true"
             android:background="@color/colorAccent"
             android:padding="16dp"
             android:text="@string/restore_all_points"
@@ -65,9 +65,9 @@
             android:id="@+id/acbMainMenuResetAllNamesAndColors"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginStart="32dp"
             android:layout_toEndOf="@+id/acbMainMenuResetAllPoints"
-            android:layout_centerVertical="true"
             android:background="@color/colorAccent"
             android:padding="16dp"
             android:text="@string/restore_all_names_and_colors"
@@ -266,7 +266,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/llMainMenuAdsContainer"
+        android:id="@+id/llAdsContainer"
         style="@style/BannerAdContainer" />
 
 </LinearLayout>

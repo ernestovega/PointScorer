@@ -80,10 +80,10 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginTop="24dp"
-        android:background="@color/green"
         android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp">
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@color/green">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/acbMainMenuWatchAd"
@@ -293,7 +293,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/llMainMenuAdsContainer"
+        android:id="@+id/llAdsContainer"
         style="@style/BannerAdContainer" />
 
 </LinearLayout>

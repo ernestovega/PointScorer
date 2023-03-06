@@ -26,7 +26,7 @@
         android:layout_weight="1" />
 
     <LinearLayout
-        android:id="@+id/llMainMenuAdsContainer"
+        android:id="@+id/llAdsContainer"
         style="@style/BannerAdContainer" />
 
 </LinearLayout>

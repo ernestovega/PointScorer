@@ -6,19 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import com.etologic.pointscorer.R
-import com.etologic.pointscorer.app.main.base.BaseXPlayersFragment
+import com.etologic.pointscorer.app.main.base.BaseGameFragment
 import com.etologic.pointscorer.databinding.GameIEightPlayersFragmentBinding
 
-class Game8PlayersFragment : BaseXPlayersFragment() {
+class Game8PlayersFragment : BaseGameFragment() {
 
     private var _binding: GameIEightPlayersFragmentBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = GameIEightPlayersFragmentBinding.inflate(inflater, container, false)
         baseBinding = binding
         return binding.root

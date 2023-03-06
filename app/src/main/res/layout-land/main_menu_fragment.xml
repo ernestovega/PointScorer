@@ -27,9 +27,9 @@
                 android:id="@+id/tvMainMenuInitialPointsTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
                 android:drawableEnd="@drawable/ic_help_16"
                 android:drawablePadding="8dp"
-                android:layout_marginTop="48dp"
                 android:drawableTint="@color/colorAccent"
                 android:text="@string/initial_points"
                 android:textColor="@color/black"
@@ -54,9 +54,9 @@
                 android:id="@+id/acbMainMenuResetAllPoints"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 android:background="@color/colorAccent"
                 android:paddingStart="8dp"
-                android:layout_marginTop="24dp"
                 android:paddingEnd="8dp"
                 android:text="@string/restore_all_points"
                 android:textColor="@color/white"
@@ -266,7 +266,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/llMainMenuAdsContainer"
+        android:id="@+id/llAdsContainer"
         style="@style/BannerAdContainer" />
 
 </LinearLayout>

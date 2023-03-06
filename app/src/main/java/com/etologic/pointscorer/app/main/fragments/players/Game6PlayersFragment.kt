@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import com.etologic.pointscorer.R
-import com.etologic.pointscorer.app.main.base.BaseXPlayersFragment
+import com.etologic.pointscorer.app.main.base.BaseGameFragment
 import com.etologic.pointscorer.databinding.GameGSixPlayersFragmentBinding
 
-class Game6PlayersFragment : BaseXPlayersFragment() {
+class Game6PlayersFragment : BaseGameFragment() {
 
     private var _binding: GameGSixPlayersFragmentBinding? = null
     private val binding get() = _binding!!
