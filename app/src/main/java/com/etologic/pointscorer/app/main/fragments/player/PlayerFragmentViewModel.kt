@@ -7,11 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.etologic.pointscorer.bussiness.*
 import com.etologic.pointscorer.data.exceptions.MaxPointsReachedException
 import com.etologic.pointscorer.data.exceptions.MinPointsReachedException
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class PlayerFragmentViewModel
-@Inject internal constructor(
+@HiltViewModel
+class PlayerFragmentViewModel @Inject constructor(
     private val getPlayerNameUseCase: GetPlayerNameUseCase,
     private val getPlayerColorUseCase: GetPlayerColorUseCase,
     private val getPlayerPointsUseCase: GetPlayerPointsUseCase,
@@ -22,7 +23,7 @@ class PlayerFragmentViewModel
     private val getInitialPointsUseCase: GetInitialPointsUseCase,
     private val resetPlayerPointsUseCase: ResetPlayerPointsUseCase,
     private val invalidateUseCase: InvalidateUseCase,
-    ) : ViewModel() {
+) : ViewModel() {
 
     var playerId: Int = 0
     var gamePlayersNum: Int = playerId / 10

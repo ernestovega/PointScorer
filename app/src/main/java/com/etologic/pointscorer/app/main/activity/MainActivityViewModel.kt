@@ -7,16 +7,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.etologic.pointscorer.app.main.activity.MainActivityNavigator.NavigationData
 import com.etologic.pointscorer.app.common.ads.MyInterstitialAd
 import com.etologic.pointscorer.app.common.ads.MyRewardedAd
 import com.etologic.pointscorer.app.common.utils.MyAnimationUtils
-import com.etologic.pointscorer.app.main.activity.MainActivityViewModel.Screens.MENU
 import com.etologic.pointscorer.bussiness.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class MainActivityViewModel
-@Inject internal constructor(
+@HiltViewModel
+class MainActivityViewModel @Inject constructor(
     private val getInitialPointsUseCase: GetInitialPointsUseCase,
     private val saveInitialPointsUseCase: SaveInitialPointsUseCase,
     private val resetAllPlayersPointsUseCase: ResetAllPlayersPointsUseCase,
@@ -30,23 +31,8 @@ class MainActivityViewModel
         const val TOKEN_HANDLER_CAN_RESTART_GAME_AD_COUNTDOWN = "TOKEN_HANDLER_CAN_RESTART_GAME_AD_COUNTDOWN"
     }
 
-    enum class Screens {
-        MENU,
-        GAME_ONE_PLAYER,
-        GAME_TWO_PLAYERS,
-        GAME_THREE_PLAYERS,
-        GAME_FOUR_PLAYERS,
-        GAME_FIVE_PLAYERS,
-        GAME_SIX_PLAYERS,
-        GAME_SEVEN_PLAYERS,
-        GAME_EIGHT_PLAYERS,
-        GAME_INTERSTITIAL_COUNTDOWN,
-        GAME_INTERSTITIAL,
-        FINISH
-    }
-
-    private val _screen = MutableLiveData<Screens>()
-    val screenObservable: LiveData<Screens> = _screen
+    private val _screen = MutableLiveData<NavigationData>()
+    val screenObservable: LiveData<NavigationData> = _screen
     private val _initialPoints = MutableLiveData<Int>()
     val initialPointsObservable: LiveData<Int> = _initialPoints
     private val _shouldRestoreAllPoints = MutableLiveData<Int>()
@@ -56,18 +42,22 @@ class MainActivityViewModel
     var myRewardedAd: MyRewardedAd? = null
     var myInterstitialAdForShowLove: MyInterstitialAd? = null
     var myInterstitialAdForGame: MyInterstitialAd? = null
-    val gameAdHandler: Handler = Handler(Looper.getMainLooper())
+    private val gameAdHandler: Handler = Handler(Looper.getMainLooper())
     private var gameAdHandlerRunnable: Runnable? = null
-    var canRestartTheCountDownToShowAdHandler: Handler = Handler(Looper.getMainLooper())
-    var canRestartTheCountDownToShowGameAdHandlerRunnable: Runnable? = null
+    private var canRestartTheCountDownToShowAdHandler: Handler = Handler(Looper.getMainLooper())
+    private var canRestartTheCountDownToShowGameAdHandlerRunnable: Runnable? = null
     var canRestartTheCountDownToShowAd: Boolean = true
 
     init {
-        navigateTo(MENU)
+        navigateTo(NavigationData.AppScreens.MENU)
     }
 
-    fun navigateTo(screen: Screens) {
-        _screen.postValue(screen)
+    fun navigateTo(screen: NavigationData.AppScreens) {
+        _screen.postValue(NavigationData(screen))
+    }
+
+    fun navigateTo(navigationData: NavigationData) {
+        _screen.postValue(navigationData)
     }
 
     fun getInitialPoints() {
@@ -106,7 +96,7 @@ class MainActivityViewModel
             gameAdHandlerRunnable = gameAdHandler.postDelayed(
                 ONE_MINUTE_IN_MILLIS,
                 TOKEN_HANDLER_GAME_AD
-            ) { navigateTo(Screens.GAME_INTERSTITIAL_COUNTDOWN) }
+            ) { navigateTo(NavigationData.AppScreens.GAME_INTERSTITIAL_COUNTDOWN) }
         }
     }
 
@@ -134,6 +124,11 @@ class MainActivityViewModel
 
     private fun cancelCanRestartHandlerCountDownToShowGameAd() {
         canRestartTheCountDownToShowAdHandler.removeCallbacksAndMessages(TOKEN_HANDLER_CAN_RESTART_GAME_AD_COUNTDOWN)
+    }
+
+    fun cancelAdsCountDowns() {
+        cancelHandlerCountDownToShowGameAd()
+        cancelCanRestartHandlerCountDownToShowGameAd()
     }
 
 }

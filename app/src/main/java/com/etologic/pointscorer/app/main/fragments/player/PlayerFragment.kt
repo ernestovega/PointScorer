@@ -16,27 +16,26 @@ import android.widget.RelativeLayout.*
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.ImageViewCompat
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.etologic.pointscorer.R
 import com.etologic.pointscorer.app.common.utils.MyAnimationUtils
 import com.etologic.pointscorer.app.common.utils.dpToPx
+import com.etologic.pointscorer.app.main.activity.MainActivityNavigator.NavigationData
 import com.etologic.pointscorer.app.main.base.BaseMainFragment
 import com.etologic.pointscorer.app.main.dialogs.PlayerSettingsMenuDialogFragment
+import com.etologic.pointscorer.app.main.dialogs.PlayerSettingsMenuDialogFragment.Companion.INITIAL_POINTS_DEFAULT_VALUE
 import com.etologic.pointscorer.app.main.dialogs.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_COLOR
 import com.etologic.pointscorer.app.main.dialogs.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_NAME
 import com.etologic.pointscorer.app.main.dialogs.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_POINTS
 import com.etologic.pointscorer.app.main.dialogs.PlayerSettingsMenuDialogFragment.Companion.KEY_IS_ONE_PLAYER_FRAGMENT
-import com.etologic.pointscorer.app.main.dialogs.PlayerSettingsMenuDialogFragment.PlayerDialogListener
+import com.etologic.pointscorer.app.main.dialogs.PlayerSettingsMenuDialogFragment.PlayerSettingsMenuDialogListener
 import com.etologic.pointscorer.app.main.fragments.players.Game1PlayerFragment.Companion.GAME_1_PLAYER_1_ID
 import com.etologic.pointscorer.databinding.GamePlayerFragmentBinding
 import java.util.*
-import javax.inject.Inject
 
 class PlayerFragment : BaseMainFragment() {
 
-    @Inject
-    internal lateinit var viewModelFactory: PlayerFragmentViewModelFactory
-    private lateinit var viewModel: PlayerFragmentViewModel
+    private val viewModel: PlayerFragmentViewModel by viewModels()
     private var _binding: GamePlayerFragmentBinding? = null
     private val binding get() = _binding!!
     private var auxPointsMarginSize: Int? = null
@@ -53,12 +52,12 @@ class PlayerFragment : BaseMainFragment() {
     private val downRepeatUpdateHandler = Handler(Looper.getMainLooper())
     private lateinit var auxPointsFadeOutAnimation: Animation
     private var auxPoints = 0
-    private var isUpPressed = false
-
-    /* https://stackoverflow.com/questions/7938516/continuously-increase-integer-value-as-the-button-is-pressed */
+    private var isUpPressed =
+        false/* https://stackoverflow.com/questions/7938516/continuously-increase-integer-value-as-the-button-is-pressed */
     private var isDownPressed = false
-    private var playerSettingsMenuDialogFragment: PlayerSettingsMenuDialogFragment? = null
-    private val playerSettingsMenuDialogFragmentListener = object : PlayerDialogListener {
+    private var onPointsSavedCallback: (() -> Unit)? = null
+    private var onActionDoneCancelWillShowAd: (() -> Unit)? = null
+    private val playerSettingsMenuDialogFragmentListener = object : PlayerSettingsMenuDialogListener {
         override fun onColorChanged(color: Int) {
             viewModel.savePlayerColor(color)
         }
@@ -75,8 +74,6 @@ class PlayerFragment : BaseMainFragment() {
             activityViewModel.restoreOneGamePoints(viewModel.gamePlayersNum)
         }
     }
-    private var onPointsSavedCallback: (() -> Unit)? = null
-    private var onActionDoneCancelWillShowAd: (() -> Unit)? = null
 
     fun setOnPointsSavedCallback(callback: () -> Unit) {
         onPointsSavedCallback = callback
@@ -93,16 +90,11 @@ class PlayerFragment : BaseMainFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViewModel()
         initValues()
         initViews()
         initObservers()
         initListeners()
         viewModel.initScreen(arguments?.getInt(KEY_PLAYER_ID))
-    }
-
-    private fun initViewModel() {
-        viewModel = ViewModelProvider(this, viewModelFactory)[PlayerFragmentViewModel::class.java]
     }
 
     private fun initValues() {
@@ -221,6 +213,7 @@ class PlayerFragment : BaseMainFragment() {
             ibMenu.setOnClickListener {
                 onActionDoneCancelWillShowAd?.invoke()
                 showPlayerDialog()
+                activityViewModel.cancelAdsCountDowns()
             }
 
             btUp.setOnLongClickListener {
@@ -266,32 +259,18 @@ class PlayerFragment : BaseMainFragment() {
     }
 
     private fun showPlayerDialog() {
-        playerSettingsMenuDialogFragment = PlayerSettingsMenuDialogFragment()
-        val bundle = Bundle().apply { putInt(KEY_INITIAL_COLOR, binding.etName.currentTextColor) }
-        bundle.putString(
-            KEY_INITIAL_NAME,
-            (binding.etName.text ?: viewModel.livePlayerName().value).toString()
-        )
-        bundle.putInt(KEY_INITIAL_POINTS, activityViewModel.initialPointsObservable.value!!)
-        bundle.putBoolean(KEY_IS_ONE_PLAYER_FRAGMENT, viewModel.playerId == GAME_1_PLAYER_1_ID)
-        playerSettingsMenuDialogFragment?.arguments = bundle
-        playerSettingsMenuDialogFragment?.setPlayerDialogListener(
-            playerSettingsMenuDialogFragmentListener
-        )
-        playerSettingsMenuDialogFragment?.show(
-            requireActivity().supportFragmentManager,
-            PlayerSettingsMenuDialogFragment.TAG
-        )
-    }
-
-    override fun onResume() {
-        super.onResume()
-        playerSettingsMenuDialogFragment =
-            parentFragmentManager.findFragmentByTag(PlayerSettingsMenuDialogFragment.TAG)?.let {
-                it as PlayerSettingsMenuDialogFragment
-            }
-        playerSettingsMenuDialogFragment?.setPlayerDialogListener(
-            playerSettingsMenuDialogFragmentListener
+        val bundle = Bundle().apply {
+            putInt(KEY_INITIAL_COLOR, binding.etName.currentTextColor)
+            putString(KEY_INITIAL_NAME, (binding.etName.text?.toString() ?: viewModel.livePlayerName().value))
+            putInt(KEY_INITIAL_POINTS, activityViewModel.initialPointsObservable.value ?: INITIAL_POINTS_DEFAULT_VALUE)
+            putBoolean(KEY_IS_ONE_PLAYER_FRAGMENT, viewModel.playerId == GAME_1_PLAYER_1_ID)
+        }
+        activityViewModel.navigateTo(
+            NavigationData(
+                NavigationData.AppScreens.GAME_PLAYER_SETTINGS,
+                bundle,
+                playerSettingsMenuDialogFragmentListener
+            )
         )
     }
 
@@ -299,7 +278,6 @@ class PlayerFragment : BaseMainFragment() {
         _binding = null
         super.onDestroy()
     }
-
 
     internal inner class UpCountRepeater : Runnable {
 

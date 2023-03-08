@@ -48,5 +48,7 @@ class Game4PlayersFragment : BaseGameFragment() {
         private const val PLAYER_2_ID = 42
         private const val PLAYER_3_ID = 43
         private const val PLAYER_4_ID = 44
+
+        fun getNewInstance(): Game4PlayersFragment = Game4PlayersFragment()
     }
 }

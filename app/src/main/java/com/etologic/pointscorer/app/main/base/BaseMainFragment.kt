@@ -1,29 +1,13 @@
 package com.etologic.pointscorer.app.main.base
 
-import android.os.Bundle
-import android.view.View
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.etologic.pointscorer.app.main.activity.MainActivityViewModel
-import com.etologic.pointscorer.app.main.activity.MainActivityViewModelFactory
-import dagger.android.support.DaggerFragment
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
-abstract class BaseMainFragment : DaggerFragment() {
+@AndroidEntryPoint
+abstract class BaseMainFragment : Fragment() {
 
-    @Inject
-    internal lateinit var activityViewModelFactory: MainActivityViewModelFactory
-    protected lateinit var activityViewModel: MainActivityViewModel
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initActivityViewModel()
-    }
-
-    private fun initActivityViewModel() {
-        activity?.let {
-            activityViewModel =
-                ViewModelProvider(it, activityViewModelFactory)[MainActivityViewModel::class.java]
-        }
-    }
+    protected val activityViewModel: MainActivityViewModel by activityViewModels()
 
 }

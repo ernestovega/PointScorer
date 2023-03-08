@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.etologic.pointscorer.R
-import com.etologic.pointscorer.app.main.activity.MainActivityViewModel.Screens.GAME_INTERSTITIAL
+import com.etologic.pointscorer.app.main.activity.MainActivityNavigator.NavigationData
 import com.etologic.pointscorer.app.main.base.BaseMainDialogFragment
 import com.etologic.pointscorer.databinding.AdWillAppearDialogBinding
 import javax.inject.Inject
@@ -65,7 +65,7 @@ class ShowAdCountDownDialogFragment
                     tvAdWillAppearTitle.text = getString(R.string.an_ad_will_appear_in_x, 0)
                     lpiAdWillAppearSeconds.progress = 0
                     Handler(Looper.getMainLooper()).postDelayed({
-                        activityViewModel.navigateTo(GAME_INTERSTITIAL)
+                        activityViewModel.navigateTo(NavigationData.AppScreens.GAME_INTERSTITIAL)
                         dismiss()
                     }, 100)
                 }

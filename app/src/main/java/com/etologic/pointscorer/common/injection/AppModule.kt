@@ -1,16 +1,9 @@
 package com.etologic.pointscorer.common.injection
 
-import android.content.Context
 import dagger.Module
-import dagger.Provides
-import javax.inject.Singleton
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 
 @Module
-internal class AppModule {
-
-    @Provides
-    @Singleton
-    internal fun provideContext(pointsScorerApplication: PointsScorerApplication): Context =
-        pointsScorerApplication
-
-}
+@InstallIn(SingletonComponent::class)
+object AppModule

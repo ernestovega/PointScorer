@@ -2,7 +2,6 @@ package com.etologic.pointscorer.data.repositories.players.colors
 
 import com.etologic.pointscorer.data.repositories.base.DataStoreHelper
 import javax.inject.Inject
-import javax.inject.Singleton
 
 class PlayersColorsDataStoreDataSource
 @Inject constructor(private val dataStoreHelper: DataStoreHelper) {

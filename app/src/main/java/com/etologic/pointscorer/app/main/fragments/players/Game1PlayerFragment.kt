@@ -39,6 +39,9 @@ class Game1PlayerFragment : BaseGameFragment() {
     }
 
     companion object {
+
         const val GAME_1_PLAYER_1_ID = 11
+
+        fun getNewInstance(): Game1PlayerFragment = Game1PlayerFragment()
     }
 }

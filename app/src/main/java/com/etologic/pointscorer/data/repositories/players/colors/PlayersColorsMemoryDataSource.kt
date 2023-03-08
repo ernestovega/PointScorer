@@ -5,4 +5,4 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PlayersColorsMemoryDataSource @Inject constructor(): BaseMapMemoryDataSource<Int, Int>()
+class PlayersColorsMemoryDataSource @Inject constructor() : BaseMapMemoryDataSource<Int, Int>()

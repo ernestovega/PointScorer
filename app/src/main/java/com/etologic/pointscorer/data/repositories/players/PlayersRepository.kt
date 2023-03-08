@@ -12,13 +12,14 @@ import com.etologic.pointscorer.data.repositories.players.names.PlayersNamesData
 import com.etologic.pointscorer.data.repositories.players.names.PlayersNamesMemoryDataSource
 import com.etologic.pointscorer.data.repositories.players.points.PlayersPointsDataStoreDataSource
 import com.etologic.pointscorer.data.repositories.players.points.PlayersPointsMemoryDataSource
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 class PlayersRepository
 @Inject internal constructor(
-    context: Context,
+    @ApplicationContext context: Context,
     private val playersPointsMemoryDataSource: PlayersPointsMemoryDataSource,
     private val playersNamesMemoryDataSource: PlayersNamesMemoryDataSource,
     private val playersColorsMemoryDataSource: PlayersColorsMemoryDataSource,

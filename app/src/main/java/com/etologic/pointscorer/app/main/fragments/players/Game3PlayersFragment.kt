@@ -45,5 +45,7 @@ class Game3PlayersFragment : BaseGameFragment() {
         private const val PLAYER_1_ID = 31
         private const val PLAYER_2_ID = 32
         private const val PLAYER_3_ID = 33
+
+        fun getNewInstance(): Game3PlayersFragment = Game3PlayersFragment()
     }
 }

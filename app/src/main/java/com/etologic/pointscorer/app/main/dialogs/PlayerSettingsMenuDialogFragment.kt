@@ -16,19 +16,29 @@ import com.etologic.pointscorer.app.common.ads.base.MyBaseAd
 import com.etologic.pointscorer.app.common.utils.ViewExtensions.hideKeyboard
 import com.etologic.pointscorer.app.main.base.BaseMainDialogFragment
 import com.etologic.pointscorer.databinding.GamePlayerSettingsDialogFragmentBinding
+import dagger.hilt.EntryPoint
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class PlayerSettingsMenuDialogFragment @Inject constructor() : BaseMainDialogFragment() {
 
     companion object {
+        fun newInstance(data: Bundle?, listener: PlayerSettingsMenuDialogListener) =
+            PlayerSettingsMenuDialogFragment().apply {
+                arguments = data
+                playerSettingsMenuDialogListener = listener
+            }
+
         const val TAG = "PlayerSettingsDialogFragment"
         const val KEY_INITIAL_COLOR = "key_initial_color"
         const val KEY_INITIAL_NAME = "key_initial_name"
         const val KEY_INITIAL_POINTS = "key_initial_points"
+        const val INITIAL_POINTS_DEFAULT_VALUE = 0
         const val KEY_IS_ONE_PLAYER_FRAGMENT = "key_is_one_player_game"
     }
 
-    interface PlayerDialogListener {
+    interface PlayerSettingsMenuDialogListener {
         fun onColorChanged(color: Int)
         fun onNameChanged(name: String)
         fun onRestorePlayerPointsClicked()
@@ -57,10 +67,10 @@ class PlayerSettingsMenuDialogFragment @Inject constructor() : BaseMainDialogFra
     private var initialPoints: Int? = null
     private var initialColor: Int? = null
     private var initialName: String? = null
-    private var playerDialogListener: PlayerDialogListener? = null
+    private var playerSettingsMenuDialogListener: PlayerSettingsMenuDialogListener? = null
 
-    internal fun setPlayerDialogListener(playerDialogListener: PlayerDialogListener?) {
-        this.playerDialogListener = playerDialogListener
+    fun setPlayerSettingsMenuDialogListener(playerSettingsMenuDialogListener: PlayerSettingsMenuDialogListener?) {
+        this.playerSettingsMenuDialogListener = playerSettingsMenuDialogListener
     }
 
     override fun onCreateView(
@@ -93,40 +103,40 @@ class PlayerSettingsMenuDialogFragment @Inject constructor() : BaseMainDialogFra
             etSettingsMenuName.doOnTextChanged { text, _, _, _ ->
                 val name = (text ?: "").toString()
                 initialName = name
-                playerDialogListener?.onNameChanged(name)
+                playerSettingsMenuDialogListener?.onNameChanged(name)
             }
 
             vSettingsMenuColorRed.setOnClickListener {
                 selectColor(redColor)
-                redColor?.let { color -> playerDialogListener?.onColorChanged(color) }
+                redColor?.let { color -> playerSettingsMenuDialogListener?.onColorChanged(color) }
             }
             vSettingsMenuColorOrange.setOnClickListener {
                 selectColor(orangeColor)
-                orangeColor?.let { color -> playerDialogListener?.onColorChanged(color) }
+                orangeColor?.let { color -> playerSettingsMenuDialogListener?.onColorChanged(color) }
             }
             vSettingsMenuColorYellow.setOnClickListener {
                 selectColor(yellowColor)
-                yellowColor?.let { color -> playerDialogListener?.onColorChanged(color) }
+                yellowColor?.let { color -> playerSettingsMenuDialogListener?.onColorChanged(color) }
             }
             vSettingsMenuColorGreen.setOnClickListener {
                 selectColor(greenColor)
-                greenColor?.let { color -> playerDialogListener?.onColorChanged(color) }
+                greenColor?.let { color -> playerSettingsMenuDialogListener?.onColorChanged(color) }
             }
             vSettingsMenuColorBlue.setOnClickListener {
                 selectColor(blueColor)
-                blueColor?.let { color -> playerDialogListener?.onColorChanged(color) }
+                blueColor?.let { color -> playerSettingsMenuDialogListener?.onColorChanged(color) }
             }
             vSettingsMenuColorPurple.setOnClickListener {
                 selectColor(purpleColor)
-                purpleColor?.let { color -> playerDialogListener?.onColorChanged(color) }
+                purpleColor?.let { color -> playerSettingsMenuDialogListener?.onColorChanged(color) }
             }
             vSettingsMenuColorPink.setOnClickListener {
                 selectColor(pinkColor)
-                pinkColor?.let { color -> playerDialogListener?.onColorChanged(color) }
+                pinkColor?.let { color -> playerSettingsMenuDialogListener?.onColorChanged(color) }
             }
             vSettingsMenuColorWhite.setOnClickListener {
                 selectColor(whiteColor)
-                whiteColor?.let { color -> playerDialogListener?.onColorChanged(color) }
+                whiteColor?.let { color -> playerSettingsMenuDialogListener?.onColorChanged(color) }
             }
 
             btSettingMenuRestorePoints.setOnClickListener {
@@ -146,7 +156,7 @@ class PlayerSettingsMenuDialogFragment @Inject constructor() : BaseMainDialogFra
                         )
                         .setNegativeButton(R.string.cancel, null)
                         .setPositiveButton(R.string.ok) { _, _ ->
-                            playerDialogListener?.onRestorePlayerPointsClicked()
+                            playerSettingsMenuDialogListener?.onRestorePlayerPointsClicked()
                             dismiss()
                         }
                         .create()
@@ -170,7 +180,7 @@ class PlayerSettingsMenuDialogFragment @Inject constructor() : BaseMainDialogFra
                         )
                         .setNegativeButton(R.string.cancel, null)
                         .setPositiveButton(R.string.ok) { _, _ ->
-                            playerDialogListener?.onRestoreAllPlayersPointsClicked()
+                            playerSettingsMenuDialogListener?.onRestoreAllPlayersPointsClicked()
                             dismiss()
                         }
                         .create()
@@ -185,16 +195,19 @@ class PlayerSettingsMenuDialogFragment @Inject constructor() : BaseMainDialogFra
 
     private fun initAd() {
         if (activityViewModel.shouldShowAds) {
-            with(MyRobaAd(BuildConfig.ADMOB_ADUNIT_BANNER_SETTINGS_MENU, requireContext())) {
-                load(requireContext()) {
-                    binding.llSettingsMenuMediumRectangleAdContainer?.apply {
-                        visibility = try {
-                            show(this)
-                            VISIBLE
-                        } catch (_: MyBaseAd.AdCouldNotBeShownException) {
-                            GONE
+            with(MyRobaAd.getNewInstance(BuildConfig.ADMOB_ADUNIT_BANNER_SETTINGS_MENU, requireContext())) {
+                try {
+                    load(requireContext()) {
+                        with(binding.llSettingsMenuMediumRectangleAdContainer) {
+                            try {
+                                show(this)
+                                this?.visibility = VISIBLE
+                            } catch (_: MyBaseAd.AdCouldNotBeShownException) {
+                            }
                         }
                     }
+                } catch (_: MyBaseAd.AdCouldNotBeLoadedException) {
+                    binding.llSettingsMenuMediumRectangleAdContainer?.visibility = GONE
                 }
             }
         } else {
@@ -213,21 +226,18 @@ class PlayerSettingsMenuDialogFragment @Inject constructor() : BaseMainDialogFra
         whiteColor = ContextCompat.getColor(requireContext(), R.color.white)
         blackColor = ContextCompat.getColor(requireContext(), R.color.black)
         redTransparentColor = ContextCompat.getColor(requireContext(), R.color.red_transparent)
-        orangeTransparentColor =
-            ContextCompat.getColor(requireContext(), R.color.orange_transparent)
-        yellowTransparentColor =
-            ContextCompat.getColor(requireContext(), R.color.yellow_transparent)
+        orangeTransparentColor = ContextCompat.getColor(requireContext(), R.color.orange_transparent)
+        yellowTransparentColor = ContextCompat.getColor(requireContext(), R.color.yellow_transparent)
         greenTransparentColor = ContextCompat.getColor(requireContext(), R.color.green_transparent)
         blueTransparentColor = ContextCompat.getColor(requireContext(), R.color.blue_transparent)
-        purpleTransparentColor =
-            ContextCompat.getColor(requireContext(), R.color.purple_transparent)
+        purpleTransparentColor = ContextCompat.getColor(requireContext(), R.color.purple_transparent)
         pinkTransparentColor = ContextCompat.getColor(requireContext(), R.color.pink_transparent)
         blackTransparentColor = ContextCompat.getColor(requireContext(), R.color.black_transparent)
         arguments?.let { arguments ->
             with(arguments) {
                 initialColor = whiteColor?.let { getInt(KEY_INITIAL_COLOR, it) }
                 initialName = getString(KEY_INITIAL_NAME, getString(R.string.player_name))
-                initialPoints = getInt(KEY_INITIAL_POINTS, 0)
+                initialPoints = getInt(KEY_INITIAL_POINTS, INITIAL_POINTS_DEFAULT_VALUE)
                 val isOnePlayerGame = getBoolean(KEY_IS_ONE_PLAYER_FRAGMENT, false)
                 if (isOnePlayerGame) binding.btSettingMenuRestoreAllPoints.visibility = GONE
             }

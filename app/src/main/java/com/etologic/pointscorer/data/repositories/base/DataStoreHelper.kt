@@ -4,13 +4,14 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DataStoreHelper @Inject constructor(val context: Context) {
+class DataStoreHelper @Inject constructor(@ApplicationContext val context: Context) {
 
     companion object {
         const val FILE_NAME = "points_scorer_shared_prefs"

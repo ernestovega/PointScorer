@@ -55,7 +55,7 @@ abstract class BaseMainFragmentWithAds : BaseMainFragment() {
             val adContainer = getAdContainer()
             if (activityViewModel.shouldShowAds) {
                 getAdUnitsForThisScreen().forEach { adUnit ->
-                    with(MyBannerAd(adUnit, requireContext())) {
+                    with(MyBannerAd.getNewInstance(adUnit, requireContext())) {
                         try {
                             load(requireContext()) {
                                 adContainer?.apply {
@@ -65,7 +65,6 @@ abstract class BaseMainFragmentWithAds : BaseMainFragment() {
                             }
                         } catch (_: MyBaseAd.AdCouldNotBeLoadedException) {
                         }
-
                     }
                 }
             } else {

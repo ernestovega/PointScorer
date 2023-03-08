@@ -19,7 +19,7 @@ import com.etologic.pointscorer.app.common.ads.MyInterstitialAd
 import com.etologic.pointscorer.app.common.ads.MyRewardedAd
 import com.etologic.pointscorer.app.common.ads.base.MyBaseAd
 import com.etologic.pointscorer.app.common.utils.ViewExtensions.hideKeyboard
-import com.etologic.pointscorer.app.main.activity.MainActivityViewModel.Screens.*
+import com.etologic.pointscorer.app.main.activity.MainActivityNavigator.NavigationData
 import com.etologic.pointscorer.app.main.base.BaseMainFragmentWithAds
 import com.etologic.pointscorer.common.Constants.MAX_POINTS
 import com.etologic.pointscorer.common.Constants.MIN_POINTS
@@ -50,7 +50,7 @@ class MainMenuFragment : BaseMainFragmentWithAds() {
     private fun loadAds() {
         if (activityViewModel.shouldShowAds) {
             if (activityViewModel.myRewardedAd == null) {
-                with(MyRewardedAd(BuildConfig.ADMOB_ADUNIT_REWARDED_MAIN_MENU)) {
+                with(MyRewardedAd.getNewInstance(BuildConfig.ADMOB_ADUNIT_REWARDED_MAIN_MENU)) {
                     try {
                         load(requireContext()) {
                             activityViewModel.myRewardedAd = this
@@ -166,42 +166,42 @@ class MainMenuFragment : BaseMainFragmentWithAds() {
             btMainMenu1Player.setOnClickListener {
                 btMainMenu1Player.visibility = GONE
                 pbMainMenu1Player.visibility = VISIBLE
-                activityViewModel.navigateTo(GAME_ONE_PLAYER)
+                activityViewModel.navigateTo(NavigationData.AppScreens.GAME_ONE_PLAYER)
             }
             btMainMenu2Player.setOnClickListener {
                 btMainMenu2Player.visibility = GONE
                 pbMainMenu2Player.visibility = VISIBLE
-                activityViewModel.navigateTo(GAME_TWO_PLAYERS)
+                activityViewModel.navigateTo(NavigationData.AppScreens.GAME_TWO_PLAYERS)
             }
             btMainMenu3Player.setOnClickListener {
                 btMainMenu3Player.visibility = GONE
                 pbMainMenu3Player.visibility = VISIBLE
-                activityViewModel.navigateTo(GAME_THREE_PLAYERS)
+                activityViewModel.navigateTo(NavigationData.AppScreens.GAME_THREE_PLAYERS)
             }
             btMainMenu4Player.setOnClickListener {
                 btMainMenu4Player.visibility = GONE
                 pbMainMenu4Player.visibility = VISIBLE
-                activityViewModel.navigateTo(GAME_FOUR_PLAYERS)
+                activityViewModel.navigateTo(NavigationData.AppScreens.GAME_FOUR_PLAYERS)
             }
             btMainMenu5Player.setOnClickListener {
                 btMainMenu5Player.visibility = GONE
                 pbMainMenu5Player.visibility = VISIBLE
-                activityViewModel.navigateTo(GAME_FIVE_PLAYERS)
+                activityViewModel.navigateTo(NavigationData.AppScreens.GAME_FIVE_PLAYERS)
             }
             btMainMenu6Player.setOnClickListener {
                 btMainMenu6Player.visibility = GONE
                 pbMainMenu6Player.visibility = VISIBLE
-                activityViewModel.navigateTo(GAME_SIX_PLAYERS)
+                activityViewModel.navigateTo(NavigationData.AppScreens.GAME_SIX_PLAYERS)
             }
             btMainMenu7Player.setOnClickListener {
                 btMainMenu7Player.visibility = GONE
                 pbMainMenu7Player.visibility = VISIBLE
-                activityViewModel.navigateTo(GAME_SEVEN_PLAYERS)
+                activityViewModel.navigateTo(NavigationData.AppScreens.GAME_SEVEN_PLAYERS)
             }
             btMainMenu8Player.setOnClickListener {
                 btMainMenu8Player.visibility = GONE
                 pbMainMenu8Player.visibility = VISIBLE
-                activityViewModel.navigateTo(GAME_EIGHT_PLAYERS)
+                activityViewModel.navigateTo(NavigationData.AppScreens.GAME_EIGHT_PLAYERS)
             }
 
             acbMainMenuWatchAd?.setOnClickListener {
@@ -238,7 +238,7 @@ class MainMenuFragment : BaseMainFragmentWithAds() {
     }
 
     private fun loadNewInterstitialAdForShowLove() {
-        with(MyInterstitialAd(BuildConfig.ADMOB_ADUNIT_INTERSTITIAL_MAIN_MENU)) {
+        with(MyInterstitialAd.getNewInstance(BuildConfig.ADMOB_ADUNIT_INTERSTITIAL_MAIN_MENU)) {
             try {
                 load(requireContext()) { activityViewModel.myInterstitialAdForShowLove = this }
             } catch (_: MyBaseAd.AdCouldNotBeLoadedException) {
