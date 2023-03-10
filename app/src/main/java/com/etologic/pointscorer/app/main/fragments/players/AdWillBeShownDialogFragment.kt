@@ -60,11 +60,6 @@ class AdWillBeShownDialogFragment
             }
     }
 
-    override fun onPause() {
-        super.onPause()
-        dismiss()
-    }
-
     override fun onDismiss(dialog: DialogInterface) {
         activityViewModel.shouldShowGameInterstitialAd = true
         super.onDismiss(dialog)

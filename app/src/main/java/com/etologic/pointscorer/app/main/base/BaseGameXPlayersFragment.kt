@@ -9,7 +9,7 @@ import com.etologic.pointscorer.common.Constants
 abstract class BaseGameXPlayersFragment : BaseMainFragmentWithAds() {
 
     companion object {
-        private const val AD_COUNT_DOWN_DURATION = 5 * Constants.A_MINUTE_IN_MILLIS
+        private const val AD_COUNT_DOWN_DURATION = 60 * Constants.A_MINUTE_IN_MILLIS
         private const val AD_COUNT_DOWN_INTERVAL = AD_COUNT_DOWN_DURATION
     }
 

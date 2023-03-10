@@ -8,4 +8,9 @@ abstract class BaseMainDialogFragment : DialogFragment() {
 
     protected val activityViewModel: MainActivityViewModel by activityViewModels()
 
+    override fun onPause() {
+        super.onPause()
+        dismiss()
+    }
+
 }
