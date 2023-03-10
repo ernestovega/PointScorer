@@ -26,13 +26,6 @@ abstract class BaseGameXPlayersFragment : BaseMainFragmentWithAds() {
         }
     }
 
-    fun restartAdCountDown() {
-        countDownTimer.cancel()
-        if (activityViewModel.shouldShowGameInterstitialAd) {
-            countDownTimer.start()
-        }
-    }
-
     override fun onPause() {
         countDownTimer.cancel()
         super.onPause()
@@ -45,18 +38,29 @@ abstract class BaseGameXPlayersFragment : BaseMainFragmentWithAds() {
         nameMarginTop: Int,
         pointsSize: Int
     ) {
+        
+        fun restartAdCountDown() {
+            countDownTimer.cancel()
+            if (activityViewModel.shouldShowGameInterstitialAd) {
+                countDownTimer.start()
+            }
+        }
+
         val bundle = Bundle().apply {
             putInt(PlayerFragment.KEY_PLAYER_ID, playerId)
             putInt(PlayerFragment.KEY_PLAYER_NAME_SIZE, nameSize)
             putInt(PlayerFragment.KEY_PLAYER_NAME_MARGIN_TOP, nameMarginTop)
             putInt(PlayerFragment.KEY_PLAYER_POINTS_SIZE, pointsSize)
         }
+
         val playerFragmentListener = object : PlayerFragment.PlayerFragmentListener {
             override fun onPointsTouched() {
                 restartAdCountDown()
             }
         }
+
         val fragment = PlayerFragment.getNewInstance(bundle, playerFragmentListener)
+
         parentFragmentManager
             .beginTransaction()
             .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
