@@ -1,11 +1,11 @@
 package com.etologic.pointscorer.app.main.activity
 
 import android.view.WindowManager
-import androidx.fragment.app.Fragment
+import androidx.annotation.IdRes
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.NavHostFragment
 import com.etologic.pointscorer.R
 import com.etologic.pointscorer.app.main.activity.MainActivityNavigator.Screens.*
-import com.etologic.pointscorer.app.main.fragments.main_menu.MainMenuFragment
-import com.etologic.pointscorer.app.main.fragments.players.*
 import javax.inject.Inject
 
 class MainActivityNavigator @Inject constructor() {
@@ -25,28 +25,30 @@ class MainActivityNavigator @Inject constructor() {
 
     fun navigateTo(activity: MainActivity, screen: Screens) {
         when (screen) {
-            MENU -> goToFragment(activity, MainMenuFragment())
-            GAME_ONE_PLAYER -> goToGameFragment(activity, Game1PlayerXPlayersFragment.getNewInstance())
-            GAME_TWO_PLAYERS -> goToGameFragment(activity, Game2PlayersXPlayersFragment.getNewInstance())
-            GAME_THREE_PLAYERS -> goToGameFragment(activity, Game3PlayersXPlayersFragment.getNewInstance())
-            GAME_FOUR_PLAYERS -> goToGameFragment(activity, Game4PlayersXPlayersFragment.getNewInstance())
-            GAME_FIVE_PLAYERS -> goToGameFragment(activity, Game5PlayersXPlayersFragment.getNewInstance())
-            GAME_SIX_PLAYERS -> goToGameFragment(activity, Game6PlayersXPlayersFragment.getNewInstance())
-            GAME_SEVEN_PLAYERS -> goToGameFragment(activity, Game7PlayersXPlayersFragment.getNewInstance())
-            GAME_EIGHT_PLAYERS -> goToGameFragment(activity, Game8PlayersXPlayersFragment.getNewInstance())
+            MENU -> goToFragment(activity, R.id.mainMenuFragment)
+            GAME_ONE_PLAYER -> goToGameFragment(activity, R.id.game1PlayerXPlayersFragment)
+            GAME_TWO_PLAYERS -> goToGameFragment(activity, R.id.game2PlayersXPlayersFragment)
+            GAME_THREE_PLAYERS -> goToGameFragment(activity, R.id.game1PlayerXPlayersFragment)
+            GAME_FOUR_PLAYERS -> goToGameFragment(activity, R.id.game4PlayersXPlayersFragment)
+            GAME_FIVE_PLAYERS -> goToGameFragment(activity, R.id.game5PlayersXPlayersFragment)
+            GAME_SIX_PLAYERS -> goToGameFragment(activity, R.id.game6PlayersXPlayersFragment)
+            GAME_SEVEN_PLAYERS -> goToGameFragment(activity, R.id.game7PlayersXPlayersFragment)
+            GAME_EIGHT_PLAYERS -> goToGameFragment(activity, R.id.game8PlayersXPlayersFragment)
             FINISH -> activity.finish()
         }
     }
 
-    private fun goToFragment(activity: MainActivity, fragment: Fragment) {
-        activity.supportFragmentManager.beginTransaction()
-            .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
-            .replace(R.id.flMain, fragment)
-            .commit()
+    private fun goToFragment(activity: MainActivity, @IdRes fragmentId: Int) {
+        val navOptions: NavOptions = NavOptions.Builder()
+            .setEnterAnim(android.R.animator.fade_in)
+            .setExitAnim(android.R.animator.fade_out)
+            .build()
+        val navHostFragment = activity.supportFragmentManager.findFragmentById(R.id.fcvMain) as NavHostFragment
+        navHostFragment.navController.navigate(fragmentId, null, navOptions)
     }
 
-    private fun goToGameFragment(activity: MainActivity, fragment: Fragment) {
-        goToFragment(activity, fragment)
+    private fun goToGameFragment(activity: MainActivity, @IdRes fragmentId: Int) {
+        goToFragment(activity, fragmentId)
         activity.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
