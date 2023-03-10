@@ -2,16 +2,17 @@ package com.etologic.pointscorer.app.main.fragments.players
 
 import android.content.DialogInterface
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import com.etologic.pointscorer.BuildConfig
 import com.etologic.pointscorer.app.common.ads.MyInterstitialAd
 import com.etologic.pointscorer.app.main.base.BaseMainDialogFragment
 import com.etologic.pointscorer.common.Constants.A_MINUTE_IN_MILLIS
 import com.etologic.pointscorer.databinding.AdWillBeShownDialogBinding
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class AdWillBeShownDialogFragment
@@ -47,15 +48,21 @@ class AdWillBeShownDialogFragment
             .apply {
                 try {
                     load(requireContext()) {
-                        Handler(Looper.getMainLooper()).postDelayed({
-                            activityViewModel.showGameInterstitialAd(this)
+                        lifecycleScope.launch {
+                            delay(4 * A_MINUTE_IN_MILLIS)
+                            activityViewModel.showGameInterstitialAd(this@apply)
                             dismiss()
-                        }, 5 * A_MINUTE_IN_MILLIS)
+                        }
                     }
                 } catch (_: Exception) {
                     dismiss()
                 }
             }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        dismiss()
     }
 
     override fun onDismiss(dialog: DialogInterface) {
