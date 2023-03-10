@@ -1,49 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:orientation="vertical">
-
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/lpiAdWillAppearSeconds"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:indicatorColor="@color/white"
-        app:indicatorDirectionCircular="counterclockwise"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:trackColor="@android:color/transparent"
-        tools:max="100"
-        tools:progress="100" />
+    android:background="@drawable/shape_dialog_bg_dark"
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <TextView
         android:id="@+id/tvAdWillAppearTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:text="@string/an_ad_will_appear_in_few_seconds"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lpiAdWillAppearSeconds"
-        tools:text="@string/an_ad_will_appear_in_x" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/pbAdWillAppearProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:indeterminateTint="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvAdWillAppearTitle" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
         android:alpha=".8"
         android:gravity="center"
         android:text="@string/tap_anywhere_to_cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvAdWillAppearTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/pbAdWillAppearProgress" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,7 +19,8 @@ import com.etologic.pointscorer.app.common.ads.MyInterstitialAd
 import com.etologic.pointscorer.app.common.ads.MyRewardedAd
 import com.etologic.pointscorer.app.common.ads.base.MyBaseAd
 import com.etologic.pointscorer.app.common.utils.ViewExtensions.hideKeyboard
-import com.etologic.pointscorer.app.main.activity.MainActivityNavigator.NavigationData
+import com.etologic.pointscorer.app.main.activity.MainActivityNavigator.Screens
+import com.etologic.pointscorer.app.main.activity.MainActivityNavigator.Screens.*
 import com.etologic.pointscorer.app.main.base.BaseMainFragmentWithAds
 import com.etologic.pointscorer.common.Constants.MAX_POINTS
 import com.etologic.pointscorer.common.Constants.MIN_POINTS
@@ -48,7 +49,7 @@ class MainMenuFragment : BaseMainFragmentWithAds() {
     }
 
     private fun loadAds() {
-        if (activityViewModel.shouldShowAds) {
+        if (activityViewModel.shouldShowBannerAds) {
             if (activityViewModel.myRewardedAd == null) {
                 with(MyRewardedAd.getNewInstance(BuildConfig.ADMOB_ADUNIT_REWARDED_MAIN_MENU)) {
                     try {
@@ -163,57 +164,47 @@ class MainMenuFragment : BaseMainFragmentWithAds() {
                 }
             }
 
+            fun gameButtonPressed(button: View, progress: View, screen: Screens) {
+                button.visibility = GONE
+                progress.visibility = VISIBLE
+                activityViewModel.navigateTo(screen)
+            }
+
             btMainMenu1Player.setOnClickListener {
-                btMainMenu1Player.visibility = GONE
-                pbMainMenu1Player.visibility = VISIBLE
-                activityViewModel.navigateTo(NavigationData.AppScreens.GAME_ONE_PLAYER)
+                gameButtonPressed(btMainMenu1Player, pbMainMenu1Player, GAME_ONE_PLAYER)
             }
             btMainMenu2Player.setOnClickListener {
-                btMainMenu2Player.visibility = GONE
-                pbMainMenu2Player.visibility = VISIBLE
-                activityViewModel.navigateTo(NavigationData.AppScreens.GAME_TWO_PLAYERS)
+                gameButtonPressed(btMainMenu2Player, pbMainMenu2Player, GAME_TWO_PLAYERS)
             }
             btMainMenu3Player.setOnClickListener {
-                btMainMenu3Player.visibility = GONE
-                pbMainMenu3Player.visibility = VISIBLE
-                activityViewModel.navigateTo(NavigationData.AppScreens.GAME_THREE_PLAYERS)
+                gameButtonPressed(btMainMenu3Player, pbMainMenu3Player, GAME_THREE_PLAYERS)
             }
             btMainMenu4Player.setOnClickListener {
-                btMainMenu4Player.visibility = GONE
-                pbMainMenu4Player.visibility = VISIBLE
-                activityViewModel.navigateTo(NavigationData.AppScreens.GAME_FOUR_PLAYERS)
+                gameButtonPressed(btMainMenu4Player, pbMainMenu4Player, GAME_FOUR_PLAYERS)
             }
             btMainMenu5Player.setOnClickListener {
-                btMainMenu5Player.visibility = GONE
-                pbMainMenu5Player.visibility = VISIBLE
-                activityViewModel.navigateTo(NavigationData.AppScreens.GAME_FIVE_PLAYERS)
+                gameButtonPressed(btMainMenu5Player, btMainMenu5Player, GAME_FIVE_PLAYERS)
             }
             btMainMenu6Player.setOnClickListener {
-                btMainMenu6Player.visibility = GONE
-                pbMainMenu6Player.visibility = VISIBLE
-                activityViewModel.navigateTo(NavigationData.AppScreens.GAME_SIX_PLAYERS)
+                gameButtonPressed(btMainMenu6Player, pbMainMenu6Player, GAME_SIX_PLAYERS)
             }
             btMainMenu7Player.setOnClickListener {
-                btMainMenu7Player.visibility = GONE
-                pbMainMenu7Player.visibility = VISIBLE
-                activityViewModel.navigateTo(NavigationData.AppScreens.GAME_SEVEN_PLAYERS)
+                gameButtonPressed(btMainMenu7Player, pbMainMenu7Player, GAME_SEVEN_PLAYERS)
             }
             btMainMenu8Player.setOnClickListener {
-                btMainMenu8Player.visibility = GONE
-                pbMainMenu8Player.visibility = VISIBLE
-                activityViewModel.navigateTo(NavigationData.AppScreens.GAME_EIGHT_PLAYERS)
+                gameButtonPressed(btMainMenu8Player, pbMainMenu8Player, GAME_EIGHT_PLAYERS)
             }
 
             acbMainMenuWatchAd?.setOnClickListener {
 
                 fun rewardedAdShown() {
-                    activityViewModel.shouldShowAds = false
+                    activityViewModel.shouldShowBannerAds = false
                     binding.llAdsContainer.visibility = GONE
                     binding.acbMainMenuWatchAd?.text = getString(R.string.watch_an_ad_for_love)
                     loadNewInterstitialAdForShowLove()
                 }
 
-                if (activityViewModel.shouldShowAds && activityViewModel.myRewardedAd != null) {
+                if (activityViewModel.shouldShowBannerAds && activityViewModel.myRewardedAd != null) {
                     try {
                         activityViewModel.myRewardedAd!!.show(requireActivity()) {
                             Handler(Looper.getMainLooper()).postDelayed({ rewardedAdShown() }, 1000)

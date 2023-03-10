@@ -6,8 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
-import android.view.MotionEvent.ACTION_CANCEL
-import android.view.MotionEvent.ACTION_UP
+import android.view.MotionEvent.*
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
@@ -20,24 +19,45 @@ import androidx.fragment.app.viewModels
 import com.etologic.pointscorer.R
 import com.etologic.pointscorer.app.common.utils.MyAnimationUtils
 import com.etologic.pointscorer.app.common.utils.dpToPx
-import com.etologic.pointscorer.app.main.activity.MainActivityNavigator.NavigationData
 import com.etologic.pointscorer.app.main.base.BaseMainFragment
-import com.etologic.pointscorer.app.main.dialogs.PlayerSettingsMenuDialogFragment
-import com.etologic.pointscorer.app.main.dialogs.PlayerSettingsMenuDialogFragment.Companion.INITIAL_POINTS_DEFAULT_VALUE
-import com.etologic.pointscorer.app.main.dialogs.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_COLOR
-import com.etologic.pointscorer.app.main.dialogs.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_NAME
-import com.etologic.pointscorer.app.main.dialogs.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_POINTS
-import com.etologic.pointscorer.app.main.dialogs.PlayerSettingsMenuDialogFragment.Companion.KEY_IS_ONE_PLAYER_FRAGMENT
-import com.etologic.pointscorer.app.main.dialogs.PlayerSettingsMenuDialogFragment.PlayerSettingsMenuDialogListener
-import com.etologic.pointscorer.app.main.fragments.players.Game1PlayerFragment.Companion.GAME_1_PLAYER_1_ID
+import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsMenuDialogFragment.Companion.INITIAL_POINTS_DEFAULT_VALUE
+import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_COLOR
+import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_NAME
+import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_POINTS
+import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsMenuDialogFragment.Companion.KEY_IS_ONE_PLAYER_FRAGMENT
+import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsMenuDialogFragment.PlayerSettingsMenuDialogListener
+import com.etologic.pointscorer.app.main.fragments.players.Game1PlayerXPlayersFragment.Companion.GAME_1_PLAYER_1_ID
 import com.etologic.pointscorer.databinding.GamePlayerFragmentBinding
 import java.util.*
 
 class PlayerFragment : BaseMainFragment() {
 
+    interface PlayerFragmentListener {
+        fun onPointsTouched()
+    }
+
+    companion object {
+        fun getNewInstance(data: Bundle, listener: PlayerFragmentListener) =
+            PlayerFragment().apply {
+                arguments = data
+                playerFragmentListener = listener
+            }
+
+        const val KEY_PLAYER_ID = "key_player_id"
+        const val KEY_PLAYER_NAME_SIZE = "key_player_name_size"
+        const val KEY_PLAYER_NAME_MARGIN_TOP = "key_player_name_margin_top"
+        const val KEY_PLAYER_POINTS_SIZE = "key_player_points_size"
+        const val REP_DELAY = 100
+        private const val DEFAULT_PLAYER_NAME_SIZE = 16
+        private const val DEFAULT_PLAYER_NAME_MARGIN_TOP = 0
+        private const val DEFAULT_PLAYER_POINTS_SIZE = 48
+        private const val DEFAULT_PLAYER_POINTS_MARGIN_TOP = 0
+    }
+
     private val viewModel: PlayerFragmentViewModel by viewModels()
     private var _binding: GamePlayerFragmentBinding? = null
     private val binding get() = _binding!!
+    private var playerFragmentListener: PlayerFragmentListener? = null
     private var auxPointsMarginSize: Int? = null
     private var auxPointsPositiveRotation: Float? = null
     private var auxPointsNegativeRotation: Float? = null
@@ -55,8 +75,7 @@ class PlayerFragment : BaseMainFragment() {
     private var isUpPressed =
         false/* https://stackoverflow.com/questions/7938516/continuously-increase-integer-value-as-the-button-is-pressed */
     private var isDownPressed = false
-    private var onPointsSavedCallback: (() -> Unit)? = null
-    private var onActionDoneCancelWillShowAd: (() -> Unit)? = null
+    private var playerSettingsMenuDialogFragment: PlayerSettingsMenuDialogFragment? = null
     private val playerSettingsMenuDialogFragmentListener = object : PlayerSettingsMenuDialogListener {
         override fun onColorChanged(color: Int) {
             viewModel.savePlayerColor(color)
@@ -73,10 +92,6 @@ class PlayerFragment : BaseMainFragment() {
         override fun onRestoreAllPlayersPointsClicked() {
             activityViewModel.restoreOneGamePoints(viewModel.gamePlayersNum)
         }
-    }
-
-    fun setOnPointsSavedCallback(callback: () -> Unit) {
-        onPointsSavedCallback = callback
     }
 
     override fun onCreateView(
@@ -98,12 +113,9 @@ class PlayerFragment : BaseMainFragment() {
     }
 
     private fun initValues() {
-        auxPointsMarginSize =
-            ResourcesCompat.getFloat(resources, R.dimen.auxPointsMargin).toInt().dpToPx(resources)
-        auxPointsPositiveRotation =
-            ResourcesCompat.getFloat(resources, R.dimen.auxPointsPositiveRotationDegrees)
-        auxPointsNegativeRotation =
-            ResourcesCompat.getFloat(resources, R.dimen.auxPointsNegativeRotationDegrees)
+        auxPointsMarginSize = ResourcesCompat.getFloat(resources, R.dimen.auxPointsMargin).toInt().dpToPx(resources)
+        auxPointsPositiveRotation = ResourcesCompat.getFloat(resources, R.dimen.auxPointsPositiveRotationDegrees)
+        auxPointsNegativeRotation = ResourcesCompat.getFloat(resources, R.dimen.auxPointsNegativeRotationDegrees)
         greenColor = ContextCompat.getColor(requireContext(), R.color.green)
         redColor = ContextCompat.getColor(requireContext(), R.color.red)
         defaultPlayerColor = ContextCompat.getColor(requireContext(), R.color.white)
@@ -124,7 +136,6 @@ class PlayerFragment : BaseMainFragment() {
             auxPointsFadeOutAnimation = MyAnimationUtils.getAuxPointsFadeOutAnimation {
                 if (auxPointsFadeOutAnimation.hasEnded()) {
                     viewModel.auxPointsAnimationEnded()
-                    onPointsSavedCallback?.invoke()
                 }
             }
             binding.tvAuxPoints.animation = auxPointsFadeOutAnimation
@@ -211,25 +222,23 @@ class PlayerFragment : BaseMainFragment() {
     private fun initListeners() {
         with(binding) {
             ibMenu.setOnClickListener {
-                onActionDoneCancelWillShowAd?.invoke()
-                showPlayerDialog()
-                activityViewModel.cancelAdsCountDowns()
+                showPlayerSettingsMenuDialog()
             }
 
             btUp.setOnLongClickListener {
-                onActionDoneCancelWillShowAd?.invoke()
                 isUpPressed = true
                 upRepeatUpdateHandler.post(UpCountRepeater())
             }
 
             btDown.setOnLongClickListener {
-                onActionDoneCancelWillShowAd?.invoke()
                 isDownPressed = true
                 downRepeatUpdateHandler.post(DownCountRepeater())
             }
 
             btUp.setOnTouchListener { _, motionEvent ->
-                onActionDoneCancelWillShowAd?.invoke()
+                if (motionEvent.action == ACTION_DOWN) {
+                    playerFragmentListener?.onPointsTouched()
+                }
                 val isActionUp = motionEvent.action == ACTION_UP
                 val isActionCancel = motionEvent.action == ACTION_CANCEL
                 if (isUpPressed && (isActionUp || isActionCancel))
@@ -238,7 +247,9 @@ class PlayerFragment : BaseMainFragment() {
             }
 
             btDown.setOnTouchListener { _, motionEvent ->
-                onActionDoneCancelWillShowAd?.invoke()
+                if (motionEvent.action == ACTION_DOWN) {
+                    playerFragmentListener?.onPointsTouched()
+                }
                 val isActionUp = motionEvent.action == ACTION_UP
                 val isActionCancel = motionEvent.action == ACTION_CANCEL
                 if (isDownPressed && (isActionUp || isActionCancel))
@@ -247,31 +258,41 @@ class PlayerFragment : BaseMainFragment() {
             }
 
             btUp.setOnClickListener {
-                onActionDoneCancelWillShowAd?.invoke()
                 viewModel.upClicked()
             }
 
             btDown.setOnClickListener {
-                onActionDoneCancelWillShowAd?.invoke()
                 viewModel.downClicked()
             }
         }
     }
 
-    private fun showPlayerDialog() {
-        val bundle = Bundle().apply {
-            putInt(KEY_INITIAL_COLOR, binding.etName.currentTextColor)
-            putString(KEY_INITIAL_NAME, (binding.etName.text?.toString() ?: viewModel.livePlayerName().value))
-            putInt(KEY_INITIAL_POINTS, activityViewModel.initialPointsObservable.value ?: INITIAL_POINTS_DEFAULT_VALUE)
-            putBoolean(KEY_IS_ONE_PLAYER_FRAGMENT, viewModel.playerId == GAME_1_PLAYER_1_ID)
+    private fun showPlayerSettingsMenuDialog() {
+        activityViewModel.shouldShowGameInterstitialAd = false
+        if (playerSettingsMenuDialogFragment == null) {
+            val bundle = Bundle().apply {
+                putInt(KEY_INITIAL_COLOR, binding.etName.currentTextColor)
+                putString(KEY_INITIAL_NAME, (binding.etName.text?.toString() ?: viewModel.livePlayerName().value))
+                putInt(
+                    KEY_INITIAL_POINTS,
+                    activityViewModel.initialPointsObservable.value ?: INITIAL_POINTS_DEFAULT_VALUE
+                )
+                putBoolean(KEY_IS_ONE_PLAYER_FRAGMENT, viewModel.playerId == GAME_1_PLAYER_1_ID)
+            }
+            playerSettingsMenuDialogFragment = PlayerSettingsMenuDialogFragment
+                .newInstance(bundle, playerSettingsMenuDialogFragmentListener)
         }
-        activityViewModel.navigateTo(
-            NavigationData(
-                NavigationData.AppScreens.GAME_PLAYER_SETTINGS,
-                bundle,
-                playerSettingsMenuDialogFragmentListener
-            )
+        playerSettingsMenuDialogFragment!!.show(
+            requireActivity().supportFragmentManager,
+            PlayerSettingsMenuDialogFragment.TAG
         )
+    }
+
+    override fun onResume() {
+        super.onResume()
+        playerSettingsMenuDialogFragment = parentFragmentManager.findFragmentByTag(PlayerSettingsMenuDialogFragment.TAG)
+                as? PlayerSettingsMenuDialogFragment
+        playerSettingsMenuDialogFragment?.setListener(playerSettingsMenuDialogFragmentListener)
     }
 
     override fun onDestroy() {
@@ -279,8 +300,7 @@ class PlayerFragment : BaseMainFragment() {
         super.onDestroy()
     }
 
-    internal inner class UpCountRepeater : Runnable {
-
+    private inner class UpCountRepeater : Runnable {
         override fun run() {
             if (isUpPressed) {
                 viewModel.upClicked()
@@ -289,28 +309,13 @@ class PlayerFragment : BaseMainFragment() {
         }
     }
 
-    internal inner class DownCountRepeater : Runnable {
-
+    private inner class DownCountRepeater : Runnable {
         override fun run() {
             if (isDownPressed) {
                 viewModel.downClicked()
                 downRepeatUpdateHandler.postDelayed(DownCountRepeater(), REP_DELAY.toLong())
             }
         }
-    }
-
-
-    companion object {
-
-        const val KEY_PLAYER_ID = "key_player_id"
-        const val KEY_PLAYER_NAME_SIZE = "key_player_name_size"
-        const val KEY_PLAYER_NAME_MARGIN_TOP = "key_player_name_margin_top"
-        const val KEY_PLAYER_POINTS_SIZE = "key_player_points_size"
-        const val REP_DELAY = 100
-        private const val DEFAULT_PLAYER_NAME_SIZE = 16
-        private const val DEFAULT_PLAYER_NAME_MARGIN_TOP = 0
-        private const val DEFAULT_PLAYER_POINTS_SIZE = 48
-        private const val DEFAULT_PLAYER_POINTS_MARGIN_TOP = 0
     }
 
 }

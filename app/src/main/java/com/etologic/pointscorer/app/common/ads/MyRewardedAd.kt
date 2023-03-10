@@ -13,8 +13,7 @@ import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 
-class MyRewardedAd private constructor(private val adUnit: String)
-    : MyBaseInterstitialAd<RewardedAd>(adUnit) {
+class MyRewardedAd private constructor(private val adUnit: String) : MyBaseInterstitialAd<RewardedAd>(adUnit) {
 
     companion object {
         fun getNewInstance(adUnit: String): MyRewardedAd = MyRewardedAd(adUnit)

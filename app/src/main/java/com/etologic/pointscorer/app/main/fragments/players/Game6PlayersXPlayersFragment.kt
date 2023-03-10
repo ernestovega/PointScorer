@@ -6,23 +6,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import com.etologic.pointscorer.R
-import com.etologic.pointscorer.app.main.base.BaseGameFragment
+import com.etologic.pointscorer.app.main.base.BaseGameXPlayersFragment
 import com.etologic.pointscorer.databinding.GameGSixPlayersFragmentBinding
 
-class Game6PlayersFragment : BaseGameFragment() {
+class Game6PlayersXPlayersFragment : BaseGameXPlayersFragment() {
+
+    companion object {
+        private const val PLAYER_1_ID = 61
+        private const val PLAYER_2_ID = 62
+        private const val PLAYER_3_ID = 63
+        private const val PLAYER_4_ID = 64
+        private const val PLAYER_5_ID = 65
+        private const val PLAYER_6_ID = 66
+
+        fun getNewInstance(): Game6PlayersXPlayersFragment = Game6PlayersXPlayersFragment()
+    }
 
     private var _binding: GameGSixPlayersFragmentBinding? = null
     private val binding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = GameGSixPlayersFragmentBinding.inflate(inflater, container, false)
-        baseBinding = binding
-        return binding.root
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,20 +39,15 @@ class Game6PlayersFragment : BaseGameFragment() {
         initPlayerFragment(PLAYER_6_ID, R.id.flPlayer66, nameSize, nameMarginTop, pointsSize)
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = GameGSixPlayersFragmentBinding.inflate(inflater, container, false)
+        baseBinding = binding
+        return binding.root
+    }
+
     override fun onDestroy() {
         _binding = null
         super.onDestroy()
     }
 
-    companion object {
-
-        private const val PLAYER_1_ID = 61
-        private const val PLAYER_2_ID = 62
-        private const val PLAYER_3_ID = 63
-        private const val PLAYER_4_ID = 64
-        private const val PLAYER_5_ID = 65
-        private const val PLAYER_6_ID = 66
-
-        fun getNewInstance(): Game6PlayersFragment = Game6PlayersFragment()
-    }
 }

@@ -1,5 +1,6 @@
-package com.etologic.pointscorer.app.main.dialogs
+package com.etologic.pointscorer.app.main.fragments.player
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,33 +17,32 @@ import com.etologic.pointscorer.app.common.ads.base.MyBaseAd
 import com.etologic.pointscorer.app.common.utils.ViewExtensions.hideKeyboard
 import com.etologic.pointscorer.app.main.base.BaseMainDialogFragment
 import com.etologic.pointscorer.databinding.GamePlayerSettingsDialogFragmentBinding
-import dagger.hilt.EntryPoint
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class PlayerSettingsMenuDialogFragment @Inject constructor() : BaseMainDialogFragment() {
 
-    companion object {
-        fun newInstance(data: Bundle?, listener: PlayerSettingsMenuDialogListener) =
-            PlayerSettingsMenuDialogFragment().apply {
-                arguments = data
-                playerSettingsMenuDialogListener = listener
-            }
-
-        const val TAG = "PlayerSettingsDialogFragment"
-        const val KEY_INITIAL_COLOR = "key_initial_color"
-        const val KEY_INITIAL_NAME = "key_initial_name"
-        const val KEY_INITIAL_POINTS = "key_initial_points"
-        const val INITIAL_POINTS_DEFAULT_VALUE = 0
-        const val KEY_IS_ONE_PLAYER_FRAGMENT = "key_is_one_player_game"
-    }
-
     interface PlayerSettingsMenuDialogListener {
         fun onColorChanged(color: Int)
         fun onNameChanged(name: String)
         fun onRestorePlayerPointsClicked()
         fun onRestoreAllPlayersPointsClicked()
+    }
+
+    companion object {
+        fun newInstance(data: Bundle?, dialogListener: PlayerSettingsMenuDialogListener) =
+            PlayerSettingsMenuDialogFragment().apply {
+                arguments = data
+                playerSettingsMenuDialogListener = dialogListener
+            }
+
+        const val TAG = "PlayerSettingsMenuDialogFragment"
+        const val KEY_INITIAL_COLOR = "key_initial_color"
+        const val KEY_INITIAL_NAME = "key_initial_name"
+        const val KEY_INITIAL_POINTS = "key_initial_points"
+        const val INITIAL_POINTS_DEFAULT_VALUE = 0
+        const val KEY_IS_ONE_PLAYER_FRAGMENT = "key_is_one_player_game"
     }
 
     private var redColor: Int? = null
@@ -69,8 +69,8 @@ class PlayerSettingsMenuDialogFragment @Inject constructor() : BaseMainDialogFra
     private var initialName: String? = null
     private var playerSettingsMenuDialogListener: PlayerSettingsMenuDialogListener? = null
 
-    fun setPlayerSettingsMenuDialogListener(playerSettingsMenuDialogListener: PlayerSettingsMenuDialogListener?) {
-        this.playerSettingsMenuDialogListener = playerSettingsMenuDialogListener
+    fun setListener(listener: PlayerSettingsMenuDialogListener) {
+        playerSettingsMenuDialogListener = listener
     }
 
     override fun onCreateView(
@@ -194,7 +194,7 @@ class PlayerSettingsMenuDialogFragment @Inject constructor() : BaseMainDialogFra
     }
 
     private fun initAd() {
-        if (activityViewModel.shouldShowAds) {
+        if (activityViewModel.shouldShowGameInterstitialAd) {
             with(MyRobaAd.getNewInstance(BuildConfig.ADMOB_ADUNIT_BANNER_SETTINGS_MENU, requireContext())) {
                 try {
                     load(requireContext()) {
@@ -303,13 +303,14 @@ class PlayerSettingsMenuDialogFragment @Inject constructor() : BaseMainDialogFra
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (!isAdded) dismiss()
+    override fun onDismiss(dialog: DialogInterface) {
+        activityViewModel.shouldShowGameInterstitialAd = true
+        super.onDismiss(dialog)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
 }

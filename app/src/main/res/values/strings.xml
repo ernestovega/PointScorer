@@ -57,7 +57,7 @@
     <string name="watch_an_ad_for_love">Show some love watching an Ad</string>
     <string name="ups">Ups! Something went wrong, sorry!</string>
     <string name="ups_but_thanks">Ups! Something went wrong, but your intention is what matters, thanks!</string>
-    <string name="an_ad_will_appear_in_x">An ad will appear in %d</string>
+    <string name="an_ad_will_appear_in_few_seconds">An ad will appear in few seconds</string>
     <string name="tap_anywhere_to_cancel">Tap anywhere to cancel</string>
 
 </resources>

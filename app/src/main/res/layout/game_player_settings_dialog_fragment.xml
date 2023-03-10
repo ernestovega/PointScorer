@@ -107,14 +107,14 @@
         android:id="@+id/btSettingMenuClose"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:background="@color/white"
         android:contentDescription="@string/close"
         android:src="@drawable/ic_close"
-        app:tint="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/colorAccent" />
 
     <LinearLayout
         android:id="@+id/llSettingsMenuMediumRectangleAdContainer"
@@ -124,9 +124,9 @@
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/llSettingsMenuFieldsContainer" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

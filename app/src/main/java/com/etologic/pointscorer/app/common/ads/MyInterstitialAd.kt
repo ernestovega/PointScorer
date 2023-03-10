@@ -11,8 +11,7 @@ import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 
-class MyInterstitialAd private constructor(private val adUnit: String)
-    : MyBaseInterstitialAd<InterstitialAd>(adUnit) {
+class MyInterstitialAd private constructor(private val adUnit: String) : MyBaseInterstitialAd<InterstitialAd>(adUnit) {
 
     companion object {
         fun getNewInstance(adUnit: String): MyInterstitialAd = MyInterstitialAd(adUnit)

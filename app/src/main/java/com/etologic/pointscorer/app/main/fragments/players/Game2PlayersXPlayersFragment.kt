@@ -6,23 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import com.etologic.pointscorer.R
-import com.etologic.pointscorer.app.main.base.BaseGameFragment
+import com.etologic.pointscorer.app.main.base.BaseGameXPlayersFragment
 import com.etologic.pointscorer.databinding.GameCTwoPlayersFragmentBinding
 
-class Game2PlayersFragment : BaseGameFragment() {
+class Game2PlayersXPlayersFragment : BaseGameXPlayersFragment() {
+
+    companion object {
+        const val GAME_2_PLAYER_1_ID = 21
+        const val GAME_2_PLAYER_2_ID = 22
+
+        fun getNewInstance(): Game2PlayersXPlayersFragment = Game2PlayersXPlayersFragment()
+    }
 
     private var _binding: GameCTwoPlayersFragmentBinding? = null
     private val binding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = GameCTwoPlayersFragmentBinding.inflate(inflater, container, false)
-        baseBinding = binding
-        return binding.root
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,16 +31,15 @@ class Game2PlayersFragment : BaseGameFragment() {
         initPlayerFragment(GAME_2_PLAYER_2_ID, R.id.flPlayer22, nameSize, nameMarginTop, pointsSize)
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = GameCTwoPlayersFragmentBinding.inflate(inflater, container, false)
+        baseBinding = binding
+        return binding.root
+    }
+
     override fun onDestroy() {
         _binding = null
         super.onDestroy()
     }
 
-    companion object {
-
-        const val GAME_2_PLAYER_1_ID = 21
-        const val GAME_2_PLAYER_2_ID = 22
-
-        fun getNewInstance(): Game2PlayersFragment = Game2PlayersFragment()
-    }
 }

@@ -6,23 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import com.etologic.pointscorer.R
-import com.etologic.pointscorer.app.main.base.BaseGameFragment
+import com.etologic.pointscorer.app.main.base.BaseGameXPlayersFragment
 import com.etologic.pointscorer.databinding.GameDThreePlayersFragmentBinding
 
-class Game3PlayersFragment : BaseGameFragment() {
+class Game3PlayersXPlayersFragment : BaseGameXPlayersFragment() {
+
+    companion object {
+        private const val PLAYER_1_ID = 31
+        private const val PLAYER_2_ID = 32
+        private const val PLAYER_3_ID = 33
+
+        fun getNewInstance(): Game3PlayersXPlayersFragment = Game3PlayersXPlayersFragment()
+    }
 
     private var _binding: GameDThreePlayersFragmentBinding? = null
     private val binding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = GameDThreePlayersFragmentBinding.inflate(inflater, container, false)
-        baseBinding = binding
-        return binding.root
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,17 +33,15 @@ class Game3PlayersFragment : BaseGameFragment() {
         initPlayerFragment(PLAYER_3_ID, R.id.flPlayer33, nameSize, nameMarginTop, pointsSize)
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = GameDThreePlayersFragmentBinding.inflate(inflater, container, false)
+        baseBinding = binding
+        return binding.root
+    }
+
     override fun onDestroy() {
         _binding = null
         super.onDestroy()
     }
 
-    companion object {
-
-        private const val PLAYER_1_ID = 31
-        private const val PLAYER_2_ID = 32
-        private const val PLAYER_3_ID = 33
-
-        fun getNewInstance(): Game3PlayersFragment = Game3PlayersFragment()
-    }
 }
