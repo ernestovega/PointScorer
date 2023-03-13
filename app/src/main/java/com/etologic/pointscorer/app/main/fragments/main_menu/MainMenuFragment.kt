@@ -25,6 +25,7 @@ import com.etologic.pointscorer.app.main.base.BaseMainFragmentWithAds
 import com.etologic.pointscorer.common.Constants.MAX_POINTS
 import com.etologic.pointscorer.common.Constants.MIN_POINTS
 import com.etologic.pointscorer.databinding.MainMenuFragmentBinding
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 class MainMenuFragment : BaseMainFragmentWithAds() {
 
@@ -61,6 +62,7 @@ class MainMenuFragment : BaseMainFragmentWithAds() {
                             binding.acbMainMenuWatchAd?.visibility = VISIBLE
                         }
                     } catch (exception: MyBaseAd.AdCouldNotBeLoadedException) {
+                        FirebaseCrashlytics.getInstance().recordException(exception)
                         binding.acbMainMenuWatchAd?.text = getString(R.string.watch_an_ad_for_love)
                         binding.pbMainMenuWatchAdButton?.visibility = GONE
                         binding.acbMainMenuWatchAd?.visibility = VISIBLE
@@ -104,6 +106,7 @@ class MainMenuFragment : BaseMainFragmentWithAds() {
                         var points = try {
                             p0.toString().toInt()
                         } catch (nfe: NumberFormatException) {
+                            FirebaseCrashlytics.getInstance().recordException(nfe)
                             etMainMenuInitialPoints.error = getString(R.string.error_initial_points)
                             return
                         }
@@ -210,6 +213,7 @@ class MainMenuFragment : BaseMainFragmentWithAds() {
                             Handler(Looper.getMainLooper()).postDelayed({ rewardedAdShown() }, 1000)
                         }
                     } catch (exception: MyBaseAd.AdCouldNotBeShownException) {
+                        FirebaseCrashlytics.getInstance().recordException(exception)
                         Toast.makeText(activity, getString(R.string.ups_but_thanks), LENGTH_SHORT)
                             .show()
                         rewardedAdShown()
@@ -220,6 +224,7 @@ class MainMenuFragment : BaseMainFragmentWithAds() {
                             loadNewInterstitialAdForShowLove()
                         }
                     } catch (exception: MyBaseAd.AdCouldNotBeShownException) {
+                        FirebaseCrashlytics.getInstance().recordException(exception)
                         Toast.makeText(activity, getString(R.string.ups_but_thanks), LENGTH_SHORT)
                             .show()
                     }
@@ -232,7 +237,8 @@ class MainMenuFragment : BaseMainFragmentWithAds() {
         with(MyInterstitialAd.getNewInstance(BuildConfig.ADMOB_ADUNIT_INTERSTITIAL_MAIN_MENU)) {
             try {
                 load(requireContext()) { activityViewModel.myInterstitialAdForShowLove = this }
-            } catch (_: MyBaseAd.AdCouldNotBeLoadedException) {
+            } catch (e: MyBaseAd.AdCouldNotBeLoadedException) {
+                FirebaseCrashlytics.getInstance().recordException(e)
             }
         }
     }

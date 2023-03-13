@@ -7,7 +7,7 @@ class SavePlayerColorUseCase @Inject constructor(
     private val playersRepository: PlayersRepository
 ) {
 
-    suspend fun invoke(playerId: Int, newColor: Int) =
+    suspend fun invoke(playerId: Int, newColor: Int): Int =
         playersRepository.savePlayerColor(playerId, newColor)
 
 }

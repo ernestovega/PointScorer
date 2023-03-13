@@ -12,4 +12,7 @@ abstract class BaseMapMemoryDataSource<K, V> : BaseMemoryDataSource<MutableMap<K
         return get()!![key]!!
     }
 
+    open fun clear(key: K) {
+        get()!!.remove(key)
+    }
 }

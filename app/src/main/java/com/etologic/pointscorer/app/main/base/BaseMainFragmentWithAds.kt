@@ -63,7 +63,8 @@ abstract class BaseMainFragmentWithAds : BaseMainFragment() {
                                     this@with.show(this@apply)
                                 }
                             }
-                        } catch (_: MyBaseAd.AdCouldNotBeLoadedException) {
+                        } catch (e: MyBaseAd.AdCouldNotBeLoadedException) {
+                            FirebaseCrashlytics.getInstance().recordException(e)
                         }
                     }
                 }

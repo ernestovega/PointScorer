@@ -11,6 +11,7 @@ import com.etologic.pointscorer.app.common.ads.MyInterstitialAd
 import com.etologic.pointscorer.app.main.base.BaseMainDialogFragment
 import com.etologic.pointscorer.common.Constants.A_MINUTE_IN_MILLIS
 import com.etologic.pointscorer.databinding.AdWillBeShownDialogBinding
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -54,7 +55,8 @@ class AdWillBeShownDialogFragment
                             dismiss()
                         }
                     }
-                } catch (_: Exception) {
+                } catch (e: Exception) {
+                    FirebaseCrashlytics.getInstance().recordException(e)
                     dismiss()
                 }
             }

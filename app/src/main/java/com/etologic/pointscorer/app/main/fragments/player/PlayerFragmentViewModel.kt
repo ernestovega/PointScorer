@@ -1,5 +1,6 @@
 package com.etologic.pointscorer.app.main.fragments.player
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,12 +17,14 @@ class PlayerFragmentViewModel @Inject constructor(
     private val getPlayerNameUseCase: GetPlayerNameUseCase,
     private val getPlayerColorUseCase: GetPlayerColorUseCase,
     private val getPlayerPointsUseCase: GetPlayerPointsUseCase,
+    private val getPlayerBackgroundUseCase: GetPlayerBackgroundUseCase,
     private val savePlayerNameUseCase: SavePlayerNameUseCase,
     private val savePlayerColorUseCase: SavePlayerColorUseCase,
     private val add1PointToAPlayerUseCase: Add1PointToAPlayerUseCase,
     private val substract1PointToAPlayerUseCase: Substract1PointToAPlayerUseCase,
     private val getInitialPointsUseCase: GetInitialPointsUseCase,
     private val resetPlayerPointsUseCase: ResetPlayerPointsUseCase,
+    private val saveNewBackgroundUseCase: SaveNewBackgroundUseCase,
     private val invalidateUseCase: InvalidateUseCase,
 ) : ViewModel() {
 
@@ -36,6 +39,8 @@ class PlayerFragmentViewModel @Inject constructor(
     fun livePlayerName(): LiveData<String> = _playerName
     private val _playerColor = MutableLiveData<Int>()
     fun livePlayerColor(): LiveData<Int> = _playerColor
+    private val _playerBackground = MutableLiveData<Uri?>()
+    fun livePlayerBackground(): LiveData<Uri?> = _playerBackground
 
     fun initScreen(playerId: Int?) {
         playerId?.let {
@@ -43,6 +48,7 @@ class PlayerFragmentViewModel @Inject constructor(
             viewModelScope.launch {
                 _playerName.postValue(getPlayerNameUseCase.invoke(playerId))
                 _playerColor.postValue(getPlayerColorUseCase.invoke(playerId))
+                _playerBackground.postValue(getPlayerBackgroundUseCase.invoke(playerId))
                 _playerPoints.postValue(getPlayerPointsUseCase.invoke(playerId))
             }
         }
@@ -80,15 +86,21 @@ class PlayerFragmentViewModel @Inject constructor(
 
     fun savePlayerName(newName: String) {
         viewModelScope.launch {
-            savePlayerNameUseCase.invoke(playerId, newName)
-            _playerName.postValue(newName)
+            _playerName.postValue(savePlayerNameUseCase.invoke(playerId, newName))
         }
     }
 
     fun savePlayerColor(newColor: Int) {
         viewModelScope.launch {
-            savePlayerColorUseCase.invoke(playerId, newColor)
-            _playerColor.postValue(newColor)
+            _playerColor.postValue(savePlayerColorUseCase.invoke(playerId, newColor))
+        }
+    }
+
+    fun saveNewBackground(newBackgroundUri: Uri?) {
+        viewModelScope.launch {
+            _playerBackground.postValue(
+                saveNewBackgroundUseCase.invoke(playerId, newBackgroundUri)
+            )
         }
     }
 

@@ -7,7 +7,7 @@ class GetPlayerColorUseCase @Inject constructor(
     private val playersRepository: PlayersRepository
 ) {
 
-    suspend fun invoke(playerId: Int) =
+    suspend fun invoke(playerId: Int): Int =
         playersRepository.getPlayerColor(playerId)
 
 }

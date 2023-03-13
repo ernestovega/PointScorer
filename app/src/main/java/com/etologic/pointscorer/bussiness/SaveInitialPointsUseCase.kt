@@ -7,7 +7,8 @@ class SaveInitialPointsUseCase @Inject constructor(
     private val initialPointsRepository: InitialPointsRepository
 ) {
 
-    suspend fun invoke(newInitialPoints: Int) =
+    suspend fun invoke(newInitialPoints: Int) {
         initialPointsRepository.saveInitialPoints(newInitialPoints)
+    }
 
 }

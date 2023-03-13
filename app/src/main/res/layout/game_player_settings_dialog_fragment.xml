@@ -104,7 +104,7 @@
             android:id="@+id/btSettingMenuChangeBackground"
             style="@style/SettingsMenuButton"
             android:layout_marginBottom="16dp"
-            android:text="@string/change_background" />
+            tools:text="@string/change_background" />
 
     </LinearLayout>
 

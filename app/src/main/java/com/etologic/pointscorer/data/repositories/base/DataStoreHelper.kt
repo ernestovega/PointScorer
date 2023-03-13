@@ -52,4 +52,10 @@ class DataStoreHelper @Inject constructor(@ApplicationContext val context: Conte
         }
     }
 
+    suspend fun clear(keyName: String) {
+        context.dataStore.edit { preferences ->
+            preferences.remove(stringPreferencesKey(keyName))
+        }
+    }
+
 }

@@ -17,6 +17,7 @@ import com.etologic.pointscorer.app.common.ads.base.MyBaseAd
 import com.etologic.pointscorer.app.common.utils.ViewExtensions.hideKeyboard
 import com.etologic.pointscorer.app.main.base.BaseMainDialogFragment
 import com.etologic.pointscorer.databinding.GamePlayerSettingsDialogFragmentBinding
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -29,6 +30,7 @@ class PlayerSettingsMenuDialogFragment @Inject constructor() : BaseMainDialogFra
         fun onRestorePlayerPointsClicked()
         fun onRestoreAllPlayersPointsClicked()
         fun onChangeBackgroundClicked()
+        fun onRestoreBackgroundClicked()
     }
 
     companion object {
@@ -39,11 +41,12 @@ class PlayerSettingsMenuDialogFragment @Inject constructor() : BaseMainDialogFra
             }
 
         const val TAG = "PlayerSettingsMenuDialogFragment"
-        const val KEY_INITIAL_COLOR = "key_initial_color"
-        const val KEY_INITIAL_NAME = "key_initial_name"
-        const val KEY_INITIAL_POINTS = "key_initial_points"
-        const val INITIAL_POINTS_DEFAULT_VALUE = 0
-        const val KEY_IS_ONE_PLAYER_FRAGMENT = "key_is_one_player_game"
+        const val KEY_INITIAL_COLOR = "KEY_INITIAL_COLOR"
+        const val KEY_INITIAL_NAME = "KEY_INITIAL_NAME"
+        const val KEY_INITIAL_POINTS = "KEY_INITIAL_POINTS"
+        const val DEAFULT_INITIAL_POINTS = 0
+        const val KEY_SHOULD_HIDE_RESTORE_ALL_POINTS = "KEY_SHOULD_HIDE_RESTORE_ALL_POINTS"
+        const val KEY_SHOULD_SHOW_RESTORE_BACKGROUND = "KEY_SHOULD_SHOW_RESTORE_BACKGROUND"
     }
 
     private var redColor: Int? = null
@@ -191,10 +194,6 @@ class PlayerSettingsMenuDialogFragment @Inject constructor() : BaseMainDialogFra
                 etSettingsMenuName.hideKeyboard()
                 askConfirmRestoreAllPlayersPoints()
             }
-
-            btSettingMenuChangeBackground.setOnClickListener {
-                playerSettingsMenuDialogListener?.onChangeBackgroundClicked()
-            }
         }
     }
 
@@ -207,11 +206,13 @@ class PlayerSettingsMenuDialogFragment @Inject constructor() : BaseMainDialogFra
                             try {
                                 show(this)
                                 this?.visibility = VISIBLE
-                            } catch (_: MyBaseAd.AdCouldNotBeShownException) {
+                            } catch (e: MyBaseAd.AdCouldNotBeShownException) {
+                                FirebaseCrashlytics.getInstance().recordException(e)
                             }
                         }
                     }
-                } catch (_: MyBaseAd.AdCouldNotBeLoadedException) {
+                } catch (e: MyBaseAd.AdCouldNotBeLoadedException) {
+                    FirebaseCrashlytics.getInstance().recordException(e)
                     binding.llSettingsMenuMediumRectangleAdContainer?.visibility = GONE
                 }
             }
@@ -242,9 +243,27 @@ class PlayerSettingsMenuDialogFragment @Inject constructor() : BaseMainDialogFra
             with(arguments) {
                 initialColor = whiteColor?.let { getInt(KEY_INITIAL_COLOR, it) }
                 initialName = getString(KEY_INITIAL_NAME, getString(R.string.player_name))
-                initialPoints = getInt(KEY_INITIAL_POINTS, INITIAL_POINTS_DEFAULT_VALUE)
-                val isOnePlayerGame = getBoolean(KEY_IS_ONE_PLAYER_FRAGMENT, false)
-                if (isOnePlayerGame) binding.btSettingMenuRestoreAllPoints.visibility = GONE
+                initialPoints = getInt(KEY_INITIAL_POINTS, DEAFULT_INITIAL_POINTS)
+
+                val shouldHideRestoreAllPoints = getBoolean(KEY_SHOULD_HIDE_RESTORE_ALL_POINTS, false)
+                if (shouldHideRestoreAllPoints) { binding.btSettingMenuRestoreAllPoints.visibility = GONE }
+
+                val shouldShowRestoreBackground = getBoolean(KEY_SHOULD_SHOW_RESTORE_BACKGROUND, false)
+                with (binding.btSettingMenuChangeBackground) {
+                    if (shouldShowRestoreBackground) {
+                        text = getString(R.string.restore_background)
+                        setOnClickListener {
+                            playerSettingsMenuDialogListener?.onRestoreBackgroundClicked()
+                            dismiss()
+                        }
+                    } else {
+                        text = getString(R.string.change_background)
+                        setOnClickListener {
+                            playerSettingsMenuDialogListener?.onChangeBackgroundClicked()
+                            dismiss()
+                        }
+                    }
+                }
             }
         }
     }

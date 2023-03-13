@@ -7,7 +7,8 @@ class ResetAllPlayersNamesAndColorsUseCase @Inject constructor(
     private val playersRepository: PlayersRepository
 ) {
 
-    suspend fun invoke() =
+    suspend fun invoke() {
         playersRepository.resetAllPlayersNamesAndColors()
+    }
 
 }

@@ -7,7 +7,7 @@ class GetPlayerNameUseCase @Inject constructor(
     private val playersRepository: PlayersRepository
 ) {
 
-    suspend fun invoke(playerId: Int) =
+    suspend fun invoke(playerId: Int): String =
         playersRepository.getPlayerName(playerId)
 
 }

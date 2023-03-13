@@ -2,6 +2,8 @@ package com.etologic.pointscorer.app.main.fragments.player
 
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -12,7 +14,7 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.animation.Animation
 import android.widget.RelativeLayout.*
-import androidx.core.app.ActivityOptionsCompat
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.ImageViewCompat
@@ -26,15 +28,19 @@ import com.etologic.pointscorer.app.common.utils.dpToPx
 import com.etologic.pointscorer.app.main.activity.MainActivityNavigator
 import com.etologic.pointscorer.app.main.activity.MainActivityNavigator.Screens.CHANGE_BACKGROUND
 import com.etologic.pointscorer.app.main.base.BaseMainFragment
-import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsMenuDialogFragment.Companion.INITIAL_POINTS_DEFAULT_VALUE
+import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsMenuDialogFragment.Companion.DEAFULT_INITIAL_POINTS
 import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_COLOR
 import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_NAME
 import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_POINTS
-import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsMenuDialogFragment.Companion.KEY_IS_ONE_PLAYER_FRAGMENT
+import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsMenuDialogFragment.Companion.KEY_SHOULD_HIDE_RESTORE_ALL_POINTS
+import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsMenuDialogFragment.Companion.KEY_SHOULD_SHOW_RESTORE_BACKGROUND
 import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsMenuDialogFragment.PlayerSettingsMenuDialogListener
 import com.etologic.pointscorer.app.main.fragments.players.Game1PlayerXPlayersFragment.Companion.GAME_1_PLAYER_1_ID
 import com.etologic.pointscorer.databinding.GamePlayerFragmentBinding
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import java.io.FileNotFoundException
 import java.util.*
+
 
 class PlayerFragment : BaseMainFragment() {
 
@@ -105,21 +111,24 @@ class PlayerFragment : BaseMainFragment() {
                     screen = CHANGE_BACKGROUND,
                     activityResultLauncher = cropImageActivityResultLauncher,
                     activityResultToLaunchOptions = options {
-                        setImageSource(includeGallery = true, includeCamera = true)
+                        setImageSource(includeGallery = true, includeCamera = false)
                         setGuidelines(CropImageView.Guidelines.ON)
                     }
                 )
             )
         }
+
+        override fun onRestoreBackgroundClicked() {
+            viewModel.saveNewBackground(null)
+        }
+
     }
     private val cropImageActivityResultLauncher = registerForActivityResult(CropImageContract()) { result ->
-        if (result.isSuccessful) {
-            // Use the returned uri.
-            val uriContent = result.uriContent
-            val uriFilePath = result.getUriFilePath(requireContext()) // optional usage
+        if (result.isSuccessful && result.uriContent != null) {
+            viewModel.saveNewBackground(result.uriContent!!)
         } else {
-            // An error occurred.
-            val exception = result.error
+            FirebaseCrashlytics.getInstance().recordException(Throwable(result.error))
+            Toast.makeText(requireContext(), getString(R.string.ups), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -168,36 +177,20 @@ class PlayerFragment : BaseMainFragment() {
                 }
             }
             binding.tvAuxPoints.animation = auxPointsFadeOutAnimation
-            ivShield.startAnimation(MyAnimationUtils.getShieldAnimation())
         }
     }
 
     private fun initObservers() {
-        viewModel.livePlayerPoints().observe(viewLifecycleOwner) { updateShieldPoints(it) }
+        viewModel.livePlayerPoints().observe(viewLifecycleOwner) { updatePoints(it) }
         viewModel.livePlayerAuxPoints().observe(viewLifecycleOwner) { updateCountPoints(it) }
         viewModel.livePlayerName().observe(viewLifecycleOwner) { updateName(it) }
         viewModel.livePlayerColor().observe(viewLifecycleOwner) { setTextsColor(it) }
-        activityViewModel.shouldRestoreAllPointsObservable.observe(viewLifecycleOwner) {
-            restorePlayerPoints(it)
-        }
+        viewModel.livePlayerBackground().observe(viewLifecycleOwner) { setBackground(it) }
+        activityViewModel.shouldRestoreAllPointsObservable.observe(viewLifecycleOwner) { restorePlayerPoints(it) }
     }
 
-    private fun updateShieldPoints(points: Int) {
+    private fun updatePoints(points: Int) {
         binding.tvPointsPlayer.text = String.format(Locale.getDefault(), "%d", points)
-    }
-
-    private fun updateName(it: String) {
-        binding.etName.setText(it)
-    }
-
-    private fun setTextsColor(color: Int) {
-        with(binding) {
-            etName.setTextColor(color)
-            etName.setHintTextColor(color)
-            tvPointsPlayer.setTextColor(color)
-            ImageViewCompat.setImageTintList(ibMenu, ColorStateList.valueOf(color))
-            ImageViewCompat.setImageTintList(ivShield, ColorStateList.valueOf(color))
-        }
     }
 
     private fun updateCountPoints(count: Int) {
@@ -239,6 +232,49 @@ class PlayerFragment : BaseMainFragment() {
             }
             binding.tvAuxPoints.text = if (count == 0) "0" else String.format("%+d", count)
             auxPointsFadeOutAnimation.start()
+        }
+    }
+
+    private fun updateName(it: String) {
+        binding.etName.setText(it)
+    }
+
+    private fun setTextsColor(color: Int) {
+        with(binding) {
+            etName.setTextColor(color)
+            etName.setHintTextColor(color)
+            tvPointsPlayer.setTextColor(color)
+            ImageViewCompat.setImageTintList(ibMenu, ColorStateList.valueOf(color))
+            ImageViewCompat.setImageTintList(ivShield, ColorStateList.valueOf(color))
+        }
+    }
+
+    private fun setBackground(bgUri: Uri?) {
+        with(binding) {
+
+            fun showDefaultBackground() {
+                with (binding) {
+                    ivCustomBackground.visibility = GONE
+                    ivShield.visibility = VISIBLE
+                }
+            }
+
+            fun showCustomBackground(customBgUri: Uri) {
+                try {
+                    val newBackgroundDrawable = Drawable.createFromStream(
+                        requireContext().contentResolver.openInputStream(customBgUri),
+                        bgUri.toString()
+                    )
+                    ivCustomBackground.setImageDrawable(newBackgroundDrawable)
+                    ivShield.visibility = GONE
+                    ivCustomBackground.visibility = VISIBLE
+                } catch (e: FileNotFoundException) {
+                    FirebaseCrashlytics.getInstance().recordException(e)
+                    showDefaultBackground()
+                }
+            }
+
+            bgUri?.let { showCustomBackground(it) } ?: showDefaultBackground()
         }
     }
 
@@ -298,23 +334,15 @@ class PlayerFragment : BaseMainFragment() {
 
     private fun showPlayerSettingsMenuDialog() {
         activityViewModel.shouldShowGameInterstitialAd = false
-        if (playerSettingsMenuDialogFragment == null) {
-            val bundle = Bundle().apply {
-                putInt(KEY_INITIAL_COLOR, binding.etName.currentTextColor)
-                putString(KEY_INITIAL_NAME, (binding.etName.text?.toString() ?: viewModel.livePlayerName().value))
-                putInt(
-                    KEY_INITIAL_POINTS,
-                    activityViewModel.initialPointsObservable.value ?: INITIAL_POINTS_DEFAULT_VALUE
-                )
-                putBoolean(KEY_IS_ONE_PLAYER_FRAGMENT, viewModel.playerId == GAME_1_PLAYER_1_ID)
-            }
-            playerSettingsMenuDialogFragment = PlayerSettingsMenuDialogFragment
-                .newInstance(bundle, playerSettingsMenuDialogFragmentListener)
+        val bundle = Bundle().apply {
+            putInt(KEY_INITIAL_COLOR, binding.etName.currentTextColor)
+            putString(KEY_INITIAL_NAME, (binding.etName.text?.toString() ?: viewModel.livePlayerName().value))
+            putInt(KEY_INITIAL_POINTS, activityViewModel.initialPointsObservable.value ?: DEAFULT_INITIAL_POINTS)
+            putBoolean(KEY_SHOULD_HIDE_RESTORE_ALL_POINTS, viewModel.playerId == GAME_1_PLAYER_1_ID)
+            putBoolean(KEY_SHOULD_SHOW_RESTORE_BACKGROUND, viewModel.livePlayerBackground().value != null)
         }
-        playerSettingsMenuDialogFragment!!.show(
-            requireActivity().supportFragmentManager,
-            PlayerSettingsMenuDialogFragment.TAG
-        )
+        playerSettingsMenuDialogFragment = PlayerSettingsMenuDialogFragment.newInstance(bundle, playerSettingsMenuDialogFragmentListener)
+        playerSettingsMenuDialogFragment?.show(requireActivity().supportFragmentManager, PlayerSettingsMenuDialogFragment.TAG)
     }
 
     override fun onResume() {

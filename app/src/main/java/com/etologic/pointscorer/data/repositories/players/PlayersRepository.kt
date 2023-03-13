@@ -1,10 +1,13 @@
 package com.etologic.pointscorer.data.repositories.players
 
 import android.content.Context
+import android.net.Uri
 import androidx.core.content.ContextCompat
 import com.etologic.pointscorer.R
 import com.etologic.pointscorer.common.Constants.MAX_PLAYERS
 import com.etologic.pointscorer.data.repositories.initial_points.InitialPointsRepository
+import com.etologic.pointscorer.data.repositories.players.backgrounds.PlayersBackgroundsDataStoreDataSource
+import com.etologic.pointscorer.data.repositories.players.backgrounds.PlayersBackgroundsMemoryDataSource
 import com.etologic.pointscorer.data.repositories.players.colors.PlayersColorsDataStoreDataSource
 import com.etologic.pointscorer.data.repositories.players.colors.PlayersColorsMemoryDataSource
 import com.etologic.pointscorer.data.repositories.players.initial_check.InitialCheckDataStoreDataSource
@@ -23,9 +26,11 @@ class PlayersRepository
     private val playersPointsMemoryDataSource: PlayersPointsMemoryDataSource,
     private val playersNamesMemoryDataSource: PlayersNamesMemoryDataSource,
     private val playersColorsMemoryDataSource: PlayersColorsMemoryDataSource,
+    private val playersBackgroundsMemoryDataSource: PlayersBackgroundsMemoryDataSource,
     private val playersPointsDataStoreDataSource: PlayersPointsDataStoreDataSource,
     private val playersNamesDataStoreDataSource: PlayersNamesDataStoreDataSource,
     private val playersColorsDataStoreDataSource: PlayersColorsDataStoreDataSource,
+    private val playersBackgroundsDataStoreDataSource: PlayersBackgroundsDataStoreDataSource,
     private val initialCheckDataStoreDataSource: InitialCheckDataStoreDataSource,
     private val initialPointsRepository: InitialPointsRepository
 ) : CoroutineScope {
@@ -94,22 +99,40 @@ class PlayersRepository
 
     suspend fun getPlayerName(playerId: Int): String =
         playersNamesMemoryDataSource.get(playerId)
-            ?: (playersNamesDataStoreDataSource.get(playerId) ?: defaultPlayerName)
-                .also { playersNamesMemoryDataSource.save(playerId, it) }
+            ?: ((playersNamesDataStoreDataSource.get(playerId) ?: defaultPlayerName)
+                .also { playersNamesMemoryDataSource.save(playerId, it) })
 
-    suspend fun savePlayerName(playerId: Int, newName: String) {
+    suspend fun savePlayerName(playerId: Int, newName: String): String {
         playersNamesMemoryDataSource.save(playerId, newName)
         playersNamesDataStoreDataSource.save(playerId, newName)
+        return getPlayerName(playerId)
     }
 
     suspend fun getPlayerColor(playerId: Int): Int =
         playersColorsMemoryDataSource.get(playerId)
-            ?: (playersColorsDataStoreDataSource.get(playerId) ?: defaultPlayerColor)
-                .also { playersColorsMemoryDataSource.save(playerId, it) }
+            ?: ((playersColorsDataStoreDataSource.get(playerId) ?: defaultPlayerColor)
+                .also { playersColorsMemoryDataSource.save(playerId, it) })
 
-    suspend fun savePlayerColor(playerId: Int, newColor: Int) {
+    suspend fun savePlayerColor(playerId: Int, newColor: Int): Int {
         playersColorsMemoryDataSource.save(playerId, newColor)
         playersColorsDataStoreDataSource.save(playerId, newColor)
+        return getPlayerColor(playerId)
+    }
+
+    suspend fun getPlayerBackground(playerId: Int): Uri? =
+        playersBackgroundsMemoryDataSource.get(playerId)
+            ?: (playersBackgroundsDataStoreDataSource.get(playerId)
+                .also { if (it != null) { playersBackgroundsMemoryDataSource.save(playerId, it) } })
+
+    suspend fun savePlayerBackground(playerId: Int, newBackground: Uri?): Uri? {
+        if (newBackground == null) {
+            playersBackgroundsMemoryDataSource.clear(playerId)
+            playersBackgroundsDataStoreDataSource.clear(playerId)
+        } else {
+            playersBackgroundsMemoryDataSource.save(playerId, newBackground)
+            playersBackgroundsDataStoreDataSource.save(playerId, newBackground)
+        }
+        return getPlayerBackground(playerId)
     }
 
     fun invalidate() {

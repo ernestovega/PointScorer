@@ -7,7 +7,7 @@ class GetInitialPointsUseCase @Inject constructor(
     private val initialPointsRepository: InitialPointsRepository
 ) {
 
-    suspend fun invoke() =
+    suspend fun invoke(): Int =
         initialPointsRepository.getInitialPoints()
 
 }

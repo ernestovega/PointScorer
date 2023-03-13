@@ -60,5 +60,6 @@
     <string name="an_ad_will_appear_in_few_seconds">An ad will appear in few seconds</string>
     <string name="tap_anywhere_to_cancel">Tap anywhere to cancel</string>
     <string name="change_background">Change background</string>
+    <string name="restore_background">Restore background</string>
 
 </resources>

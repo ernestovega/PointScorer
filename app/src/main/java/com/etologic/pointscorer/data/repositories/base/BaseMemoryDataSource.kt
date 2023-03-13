@@ -10,4 +10,8 @@ abstract class BaseMemoryDataSource<T> {
         value = newValue
     }
 
+    open fun clear() {
+        value = null
+    }
+
 }
