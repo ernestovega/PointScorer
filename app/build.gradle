@@ -90,7 +90,7 @@ kapt {
 dependencies {
 
     //ANDROID
-    implementation 'androidx.multidex:multidex:2.0.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
 
     //KOTLIN
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.21'
@@ -137,4 +137,7 @@ dependencies {
 
     //ADS
     implementation 'com.google.android.gms:play-services-ads:21.5.0'
+
+    //IMAGE CROPPER
+    implementation 'com.vanniktech:android-image-cropper:4.3.3'
 }

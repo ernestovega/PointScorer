@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.etologic.pointscorer.app.common.ads.MyInterstitialAd
 import com.etologic.pointscorer.app.common.ads.MyRewardedAd
+import com.etologic.pointscorer.app.main.activity.MainActivityNavigator.NavigationData
 import com.etologic.pointscorer.app.main.activity.MainActivityNavigator.Screens
 import com.etologic.pointscorer.app.main.activity.MainActivityNavigator.Screens.MENU
 import com.etologic.pointscorer.bussiness.*
@@ -22,8 +23,8 @@ class MainActivityViewModel @Inject constructor(
     private val invalidateUseCase: InvalidateUseCase,
 ) : ViewModel() {
 
-    private val _navigationData = MutableLiveData<Screens>()
-    val screenObservable: LiveData<Screens> = _navigationData
+    private val _navigationData = MutableLiveData<NavigationData>()
+    val navigationDataObservable: LiveData<NavigationData> = _navigationData
     private val _initialPoints = MutableLiveData<Int>()
     val initialPointsObservable: LiveData<Int> = _initialPoints
     private val _shouldRestoreAllPoints = MutableLiveData<Int>()
@@ -41,7 +42,11 @@ class MainActivityViewModel @Inject constructor(
     }
 
     fun navigateTo(screen: Screens) {
-        _navigationData.postValue(screen)
+        _navigationData.postValue(NavigationData(screen))
+    }
+
+    fun navigateTo(navigationData: NavigationData) {
+        _navigationData.postValue(navigationData)
     }
 
     fun getInitialPoints() {
@@ -74,15 +79,15 @@ class MainActivityViewModel @Inject constructor(
         _shouldRestoreAllPoints.value = 0 //To avoid execution on reloads
     }
 
+    fun showGameInterstitialAd(myInterstitialAd: MyInterstitialAd?) {
+        _gameInterstitialAd.postValue(myInterstitialAd)
+    }
+
     override fun onCleared() {
         myRewardedAd = null
         myInterstitialAdForShowLove = null
         invalidateUseCase.invoke()
         super.onCleared()
-    }
-
-    fun showGameInterstitialAd(myInterstitialAd: MyInterstitialAd?) {
-        _gameInterstitialAd.postValue(myInterstitialAd)
     }
 
 }

@@ -28,6 +28,7 @@ class PlayerSettingsMenuDialogFragment @Inject constructor() : BaseMainDialogFra
         fun onNameChanged(name: String)
         fun onRestorePlayerPointsClicked()
         fun onRestoreAllPlayersPointsClicked()
+        fun onChangeBackgroundClicked()
     }
 
     companion object {
@@ -189,6 +190,10 @@ class PlayerSettingsMenuDialogFragment @Inject constructor() : BaseMainDialogFra
 
                 etSettingsMenuName.hideKeyboard()
                 askConfirmRestoreAllPlayersPoints()
+            }
+
+            btSettingMenuChangeBackground.setOnClickListener {
+                playerSettingsMenuDialogListener?.onChangeBackgroundClicked()
             }
         }
     }

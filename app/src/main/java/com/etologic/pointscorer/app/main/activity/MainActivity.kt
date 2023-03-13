@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() {
-        viewModel.screenObservable.observe(this) { navigator.navigateTo(this, it) }
+        viewModel.navigationDataObservable.observe(this) { navigator.navigateTo(this, it) }
         viewModel.gameInterstitialAdObservable.observe(this) { gameInterstitialAdObserver(it) }
     }
 
@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupOnBackPressed() {
         onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (viewModel.screenObservable.value == MENU) {
+                if (viewModel.navigationDataObservable.value?.screen == MENU) {
                     viewModel.navigateTo(FINISH)
                 } else {
                     viewModel.navigateTo(MENU)

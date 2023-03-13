@@ -12,13 +12,19 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.animation.Animation
 import android.widget.RelativeLayout.*
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.viewModels
+import com.canhub.cropper.CropImageContract
+import com.canhub.cropper.CropImageView
+import com.canhub.cropper.options
 import com.etologic.pointscorer.R
 import com.etologic.pointscorer.app.common.utils.MyAnimationUtils
 import com.etologic.pointscorer.app.common.utils.dpToPx
+import com.etologic.pointscorer.app.main.activity.MainActivityNavigator
+import com.etologic.pointscorer.app.main.activity.MainActivityNavigator.Screens.CHANGE_BACKGROUND
 import com.etologic.pointscorer.app.main.base.BaseMainFragment
 import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsMenuDialogFragment.Companion.INITIAL_POINTS_DEFAULT_VALUE
 import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_COLOR
@@ -91,6 +97,29 @@ class PlayerFragment : BaseMainFragment() {
 
         override fun onRestoreAllPlayersPointsClicked() {
             activityViewModel.restoreOneGamePoints(viewModel.gamePlayersNum)
+        }
+
+        override fun onChangeBackgroundClicked() {
+            activityViewModel.navigateTo(
+                MainActivityNavigator.NavigationData(
+                    screen = CHANGE_BACKGROUND,
+                    activityResultLauncher = cropImageActivityResultLauncher,
+                    activityResultToLaunchOptions = options {
+                        setImageSource(includeGallery = true, includeCamera = true)
+                        setGuidelines(CropImageView.Guidelines.ON)
+                    }
+                )
+            )
+        }
+    }
+    private val cropImageActivityResultLauncher = registerForActivityResult(CropImageContract()) { result ->
+        if (result.isSuccessful) {
+            // Use the returned uri.
+            val uriContent = result.uriContent
+            val uriFilePath = result.getUriFilePath(requireContext()) // optional usage
+        } else {
+            // An error occurred.
+            val exception = result.error
         }
     }
 
