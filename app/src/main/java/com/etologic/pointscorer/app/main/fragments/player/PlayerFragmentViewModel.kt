@@ -23,8 +23,8 @@ class PlayerFragmentViewModel @Inject constructor(
     private val add1PointToAPlayerUseCase: Add1PointToAPlayerUseCase,
     private val substract1PointToAPlayerUseCase: Substract1PointToAPlayerUseCase,
     private val getInitialPointsUseCase: GetInitialPointsUseCase,
-    private val resetPlayerPointsUseCase: ResetPlayerPointsUseCase,
-    private val saveNewBackgroundUseCase: SaveNewBackgroundUseCase,
+    private val restoreOnePlayerPointsUseCase: RestoreOnePlayerPointsUseCase,
+    private val savePlayerBackgroundUseCase: SavePlayerBackgroundUseCase,
     private val invalidateUseCase: InvalidateUseCase,
 ) : ViewModel() {
 
@@ -99,7 +99,7 @@ class PlayerFragmentViewModel @Inject constructor(
     fun saveNewBackground(newBackgroundUri: Uri?) {
         viewModelScope.launch {
             _playerBackground.postValue(
-                saveNewBackgroundUseCase.invoke(playerId, newBackgroundUri)
+                savePlayerBackgroundUseCase.invoke(playerId, newBackgroundUri)
             )
         }
     }
@@ -113,7 +113,7 @@ class PlayerFragmentViewModel @Inject constructor(
     fun restorePlayerPoints() {
         viewModelScope.launch {
             val initialPoints = getInitialPointsUseCase.invoke()
-            resetPlayerPointsUseCase.invoke(playerId)
+            restoreOnePlayerPointsUseCase.invoke(playerId)
             _playerPoints.postValue(initialPoints)
         }
     }

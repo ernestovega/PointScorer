@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@color/white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/llMainSettingsMenuFieldsContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="48dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvMainSettingsMenuInitialPointsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_help_16"
+            android:drawablePadding="8dp"
+            android:drawableTint="@color/colorAccent"
+            android:text="@string/initial_points"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:theme="@style/MyTextInputLayout" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etMainSettingsMenuInitialPoints"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="-8dp"
+            android:digits="-0123456789"
+            android:gravity="center"
+            android:hint="@string/min_max_points"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:maxLength="5"
+            android:textColor="@color/colorPrimaryDark"
+            android:textColorHint="@color/black_transparent"
+            android:theme="@style/MyTextInputLayout"
+            app:backgroundTint="@color/colorAccent" />
+
+        <Button
+            android:id="@+id/btMainSettingMenuRestoreAllPoints"
+            style="@style/SettingsMenuButton"
+            android:layout_marginTop="16dp"
+            android:text="@string/restore_all_points" />
+
+        <Button
+            android:id="@+id/btMainSettingMenuRestoreAllNames"
+            style="@style/SettingsMenuButton"
+            android:text="@string/restore_all_names" />
+
+        <Button
+            android:id="@+id/btMainSettingMenuRestoreAllColors"
+            style="@style/SettingsMenuButton"
+            android:text="@string/restore_all_colors" />
+
+        <Button
+            android:id="@+id/btMainSettingMenuRestoreAllBackgrounds"
+            style="@style/SettingsMenuButton"
+            android:text="@string/restore_all_backgrounds" />
+
+        <Button
+            android:id="@+id/btMainSettingMenuRestoreEverything"
+            style="@style/SettingsMenuButton"
+            android:textColor="@color/red"
+            android:layout_marginBottom="16dp"
+            android:text="@string/restore_everything" />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btMainSettingsMenuClose"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/white"
+        android:contentDescription="@string/close"
+        android:src="@drawable/ic_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/colorAccent" />
+
+    <LinearLayout
+        android:id="@+id/llMainSettingsMenuMediumRectangleAdContainer"
+        android:layout_width="300dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/llMainSettingsMenuFieldsContainer" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

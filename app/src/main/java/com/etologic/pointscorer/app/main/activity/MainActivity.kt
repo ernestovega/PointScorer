@@ -15,6 +15,7 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: MainActivityViewModel by viewModels()
+
     @Inject
     lateinit var navigator: MainActivityNavigator
     private lateinit var binding: MainActivityBinding
@@ -42,7 +43,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupOnBackPressed() {
-        onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (viewModel.navigationDataObservable.value?.screen == MENU) {
                     viewModel.navigateTo(FINISH)

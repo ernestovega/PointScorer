@@ -8,102 +8,6 @@
     android:orientation="vertical"
     tools:context=".app.main.fragments.main_menu.MainMenuFragment">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:gravity="center_horizontal">
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvMainMenuInitialPointsTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:drawableEnd="@drawable/ic_help_16"
-            android:drawablePadding="8dp"
-            android:drawableTint="@color/colorAccent"
-            android:text="@string/initial_points"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:theme="@style/MyTextInputLayout" />
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/etMainMenuInitialPoints"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvMainMenuInitialPointsTitle"
-            android:layout_gravity="center"
-            android:layout_marginTop="-8dp"
-            android:digits="-0123456789"
-            android:gravity="center"
-            android:hint="@string/min_max_points"
-            android:importantForAutofill="no"
-            android:inputType="number"
-            android:maxLength="5"
-            android:theme="@style/MyTextInputLayout"
-            tools:text="9999" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/acbMainMenuResetAllPoints"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="16dp"
-            android:layout_toEndOf="@+id/tvMainMenuInitialPointsTitle"
-            android:background="@color/colorAccent"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:text="@string/restore_all_points"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/acbMainMenuResetAllNamesAndColors"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="16dp"
-            android:layout_toEndOf="@+id/acbMainMenuResetAllPoints"
-            android:background="@color/colorAccent"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:text="@string/restore_all_names_and_colors"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-
-    </RelativeLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:background="@color/green">
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/acbMainMenuWatchAd"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/green"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:visibility="gone"
-            tools:text="@string/remove_ads_watching_a_big_one" />
-
-        <androidx.core.widget.ContentLoadingProgressBar
-            android:id="@+id/pbMainMenuWatchAdButton"
-            style="@style/MainMenuWatchAdButtonProgress" />
-
-    </FrameLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -293,7 +197,45 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/llAdsContainer"
-        style="@style/BannerAdContainer" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:background="@color/green">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/acbMainMenuWatchAd"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/green"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:text="@string/watch_an_ad_for_love"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <androidx.core.widget.ContentLoadingProgressBar
+                android:id="@+id/pbMainMenuWatchAdButton"
+                style="@style/MainMenuWatchAdButtonProgress" />
+
+        </FrameLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabMainMenuSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:contentDescription="@string/settings"
+            android:src="@drawable/ic_settings" />
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -1,8 +1,8 @@
 package com.etologic.pointscorer.app.common.utils
 
-import android.view.animation.*
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
 import android.view.animation.Animation.AnimationListener
-import android.view.animation.Animation.RELATIVE_TO_SELF
 
 object MyAnimationUtils {
 

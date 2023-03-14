@@ -9,7 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import com.etologic.pointscorer.BuildConfig
 import com.etologic.pointscorer.app.common.ads.MyInterstitialAd
 import com.etologic.pointscorer.app.main.base.BaseMainDialogFragment
-import com.etologic.pointscorer.common.Constants.A_MINUTE_IN_MILLIS
+import com.etologic.pointscorer.common.Constants.A_SECOND_IN_MILLIS
 import com.etologic.pointscorer.databinding.AdWillBeShownDialogBinding
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.delay
@@ -45,12 +45,12 @@ class AdWillBeShownDialogFragment
     }
 
     private fun loadAndShowAd() {
-        MyInterstitialAd.getNewInstance(BuildConfig.ADMOB_ADUNIT_INTERSTITIAL_GAME)
+        MyInterstitialAd.getNewInstance(BuildConfig.ADMOB_ADUNIT_GAME_INTERSTITIAL)
             .apply {
                 try {
                     load(requireContext()) {
                         lifecycleScope.launch {
-                            delay(4 * A_MINUTE_IN_MILLIS)
+                            delay(4 * A_SECOND_IN_MILLIS)
                             activityViewModel.showGameInterstitialAd(this@apply)
                             dismiss()
                         }

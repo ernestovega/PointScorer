@@ -28,13 +28,13 @@ import com.etologic.pointscorer.app.common.utils.dpToPx
 import com.etologic.pointscorer.app.main.activity.MainActivityNavigator
 import com.etologic.pointscorer.app.main.activity.MainActivityNavigator.Screens.CHANGE_BACKGROUND
 import com.etologic.pointscorer.app.main.base.BaseMainFragment
-import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsMenuDialogFragment.Companion.DEAFULT_INITIAL_POINTS
-import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_COLOR
-import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_NAME
-import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_POINTS
-import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsMenuDialogFragment.Companion.KEY_SHOULD_HIDE_RESTORE_ALL_POINTS
-import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsMenuDialogFragment.Companion.KEY_SHOULD_SHOW_RESTORE_BACKGROUND
-import com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsMenuDialogFragment.PlayerSettingsMenuDialogListener
+import com.etologic.pointscorer.app.main.fragments.player.player_settings.PlayerSettingsMenuDialogFragment
+import com.etologic.pointscorer.app.main.fragments.player.player_settings.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_COLOR
+import com.etologic.pointscorer.app.main.fragments.player.player_settings.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_NAME
+import com.etologic.pointscorer.app.main.fragments.player.player_settings.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_POINTS
+import com.etologic.pointscorer.app.main.fragments.player.player_settings.PlayerSettingsMenuDialogFragment.Companion.KEY_SHOULD_HIDE_RESTORE_ALL_POINTS
+import com.etologic.pointscorer.app.main.fragments.player.player_settings.PlayerSettingsMenuDialogFragment.Companion.KEY_SHOULD_SHOW_RESTORE_BACKGROUND
+import com.etologic.pointscorer.app.main.fragments.player.player_settings.PlayerSettingsMenuDialogFragment.PlayerSettingsMenuDialogListener
 import com.etologic.pointscorer.app.main.fragments.players.Game1PlayerXPlayersFragment.Companion.GAME_1_PLAYER_1_ID
 import com.etologic.pointscorer.databinding.GamePlayerFragmentBinding
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -253,7 +253,7 @@ class PlayerFragment : BaseMainFragment() {
         with(binding) {
 
             fun showDefaultBackground() {
-                with (binding) {
+                with(binding) {
                     ivCustomBackground.visibility = GONE
                     ivShield.visibility = VISIBLE
                 }
@@ -337,12 +337,16 @@ class PlayerFragment : BaseMainFragment() {
         val bundle = Bundle().apply {
             putInt(KEY_INITIAL_COLOR, binding.etName.currentTextColor)
             putString(KEY_INITIAL_NAME, (binding.etName.text?.toString() ?: viewModel.livePlayerName().value))
-            putInt(KEY_INITIAL_POINTS, activityViewModel.initialPointsObservable.value ?: DEAFULT_INITIAL_POINTS)
+            putInt(KEY_INITIAL_POINTS, activityViewModel.initialPoints)
             putBoolean(KEY_SHOULD_HIDE_RESTORE_ALL_POINTS, viewModel.playerId == GAME_1_PLAYER_1_ID)
             putBoolean(KEY_SHOULD_SHOW_RESTORE_BACKGROUND, viewModel.livePlayerBackground().value != null)
         }
-        playerSettingsMenuDialogFragment = PlayerSettingsMenuDialogFragment.newInstance(bundle, playerSettingsMenuDialogFragmentListener)
-        playerSettingsMenuDialogFragment?.show(requireActivity().supportFragmentManager, PlayerSettingsMenuDialogFragment.TAG)
+        playerSettingsMenuDialogFragment =
+            PlayerSettingsMenuDialogFragment.newInstance(bundle, playerSettingsMenuDialogFragmentListener)
+        playerSettingsMenuDialogFragment?.show(
+            requireActivity().supportFragmentManager,
+            PlayerSettingsMenuDialogFragment.TAG
+        )
     }
 
     override fun onResume() {

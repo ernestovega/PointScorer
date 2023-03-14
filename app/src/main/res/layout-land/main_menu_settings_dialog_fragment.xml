@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@color/white"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/llMainSettingsMenuMediumRectangleAdContainer"
+        android:layout_width="300dp"
+        android:layout_height="250dp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvMainSettingsMenuInitialPointsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:drawableEnd="@drawable/ic_help_16"
+            android:drawablePadding="8dp"
+            android:drawableTint="@color/colorAccent"
+            android:text="@string/initial_points"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:theme="@style/MyTextInputLayout" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etMainSettingsMenuInitialPoints"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="-8dp"
+            android:digits="-0123456789"
+            android:gravity="center"
+            android:hint="@string/min_max_points"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:maxLength="5"
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/colorPrimary"
+            android:theme="@style/MyTextInputLayout"
+            app:backgroundTint="@color/colorAccent" />
+
+        <Button
+            android:id="@+id/btMainSettingMenuRestoreAllPoints"
+            style="@style/SettingsMenuButton"
+            android:layout_marginTop="16dp"
+            android:text="@string/restore_all_points" />
+
+        <Button
+            android:id="@+id/btMainSettingMenuRestoreAllNames"
+            style="@style/SettingsMenuButton"
+            android:text="@string/restore_all_names" />
+
+        <Button
+            android:id="@+id/btMainSettingMenuRestoreAllColors"
+            style="@style/SettingsMenuButton"
+            android:text="@string/restore_all_colors" />
+
+        <Button
+            android:id="@+id/btMainSettingMenuRestoreAllBackgrounds"
+            style="@style/SettingsMenuButton"
+            android:text="@string/restore_all_backgrounds" />
+
+        <Button
+            android:id="@+id/btMainSettingMenuRestoreEverything"
+            style="@style/SettingsMenuButton"
+            android:layout_marginBottom="16dp"
+            android:text="@string/restore_everything"
+            android:textColor="@color/red" />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btMainSettingsMenuClose"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="@color/white"
+        android:contentDescription="@string/close"
+        android:src="@drawable/ic_close"
+        app:tint="@color/colorAccent" />
+
+</LinearLayout>

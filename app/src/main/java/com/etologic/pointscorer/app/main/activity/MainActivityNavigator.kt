@@ -38,7 +38,7 @@ class MainActivityNavigator @Inject constructor() {
             MENU -> goToFragment(activity, R.id.mainMenuFragment)
             GAME_ONE_PLAYER -> goToGameFragment(activity, R.id.game1PlayerXPlayersFragment)
             GAME_TWO_PLAYERS -> goToGameFragment(activity, R.id.game2PlayersXPlayersFragment)
-            GAME_THREE_PLAYERS -> goToGameFragment(activity, R.id.game1PlayerXPlayersFragment)
+            GAME_THREE_PLAYERS -> goToGameFragment(activity, R.id.game3PlayersXPlayersFragment)
             GAME_FOUR_PLAYERS -> goToGameFragment(activity, R.id.game4PlayersXPlayersFragment)
             GAME_FIVE_PLAYERS -> goToGameFragment(activity, R.id.game5PlayersXPlayersFragment)
             GAME_SIX_PLAYERS -> goToGameFragment(activity, R.id.game6PlayersXPlayersFragment)

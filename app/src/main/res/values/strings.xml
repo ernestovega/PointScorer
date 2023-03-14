@@ -35,15 +35,19 @@
 
     <string name="animate_points">Animate points</string>
     <string name="restore_points">Restore points</string>
-    <string name="restore_all_points">Restore all points</string>
     <string name="error_initial_points">Please enter a number between -9999 and 9999</string>
     <string name="error_min_points">Must be higher than -10.000</string>
     <string name="error_max_points">Must be lower than 10.000</string>
-    <string name="restore_all_names_and_colors">Restore all\nnames &amp; colors</string>
-    <string name="this_will_restore_all_points_to_">This will restore every players points on every screen to %d.\n\nIf you want to restore just the points in one screen press cancel and go to the \"Restore all\" option in that screen.</string>
-    <string name="this_will_restore_all_names_and_colors_to">This will restore every names and colors of every player on every screen to the default values.</string>
-    <string name="all_players_points_were_restored">All players points were restored</string>
-    <string name="all_players_names_and_colors_were_restored">All players names and colors were restored</string>
+    <string name="restore_all_points">Restore all points</string>
+    <string name="restore_all_names">Restore all names</string>
+    <string name="restore_all_colors">Restore all colors</string>
+    <string name="restore_all_backgrounds">Restore all backgrounds</string>
+    <string name="restore_everything">Restore everything</string>
+    <string name="all_players_points_restored">All players points restored</string>
+    <string name="all_players_names_restored">All players names restored</string>
+    <string name="all_players_colors_restored">All players colors restored</string>
+    <string name="all_players_backgrounds_restored">All players backgrounds restored</string>
+    <string name="everything_restored">Everything restored</string>
     <string name="close">Close</string>
     <string name="are_you_sure">Are you sure?</string>
     <string name="this_will_restore_all_points_in_this_screen_to_">This will restore everybody\'s points in this screen to %d.</string>
@@ -53,7 +57,6 @@
     <string name="cancel">Cancel</string>
     <string name="accept">Accept</string>
     <string name="initial_points_help">Are the default points for each player.\n\nThe \"Restore all points\" button will restore every player on every screen to this value.</string>
-    <string name="remove_ads_watching_a_big_one">Remove ads watching a big one</string>
     <string name="watch_an_ad_for_love">Show some love watching an Ad</string>
     <string name="ups">Ups! Something went wrong, sorry!</string>
     <string name="ups_but_thanks">Ups! Something went wrong, but your intention is what matters, thanks!</string>
@@ -61,5 +64,6 @@
     <string name="tap_anywhere_to_cancel">Tap anywhere to cancel</string>
     <string name="change_background">Change background</string>
     <string name="restore_background">Restore background</string>
+    <string name="settings">Settings</string>
 
 </resources>

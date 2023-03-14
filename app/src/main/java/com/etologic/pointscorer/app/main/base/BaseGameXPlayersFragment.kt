@@ -38,7 +38,7 @@ abstract class BaseGameXPlayersFragment : BaseMainFragmentWithAds() {
         nameMarginTop: Int,
         pointsSize: Int
     ) {
-        
+
         fun restartAdCountDown() {
             countDownTimer.cancel()
             if (activityViewModel.shouldShowGameInterstitialAd) {

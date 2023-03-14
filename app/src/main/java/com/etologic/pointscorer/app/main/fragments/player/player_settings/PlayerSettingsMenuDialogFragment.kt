@@ -1,4 +1,4 @@
-package com.etologic.pointscorer.app.main.fragments.player
+package com.etologic.pointscorer.app.main.fragments.player.player_settings
 
 import android.content.DialogInterface
 import android.os.Bundle
@@ -16,13 +16,13 @@ import com.etologic.pointscorer.app.common.ads.MyRobaAd
 import com.etologic.pointscorer.app.common.ads.base.MyBaseAd
 import com.etologic.pointscorer.app.common.utils.ViewExtensions.hideKeyboard
 import com.etologic.pointscorer.app.main.base.BaseMainDialogFragment
+import com.etologic.pointscorer.common.Constants.DEFAULT_INITIAL_POINTS
 import com.etologic.pointscorer.databinding.GamePlayerSettingsDialogFragmentBinding
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-@AndroidEntryPoint
-class PlayerSettingsMenuDialogFragment @Inject constructor() : BaseMainDialogFragment() {
+class PlayerSettingsMenuDialogFragment
+@Inject constructor() : BaseMainDialogFragment() {
 
     interface PlayerSettingsMenuDialogListener {
         fun onColorChanged(color: Int)
@@ -44,7 +44,6 @@ class PlayerSettingsMenuDialogFragment @Inject constructor() : BaseMainDialogFra
         const val KEY_INITIAL_COLOR = "KEY_INITIAL_COLOR"
         const val KEY_INITIAL_NAME = "KEY_INITIAL_NAME"
         const val KEY_INITIAL_POINTS = "KEY_INITIAL_POINTS"
-        const val DEAFULT_INITIAL_POINTS = 0
         const val KEY_SHOULD_HIDE_RESTORE_ALL_POINTS = "KEY_SHOULD_HIDE_RESTORE_ALL_POINTS"
         const val KEY_SHOULD_SHOW_RESTORE_BACKGROUND = "KEY_SHOULD_SHOW_RESTORE_BACKGROUND"
     }
@@ -77,11 +76,7 @@ class PlayerSettingsMenuDialogFragment @Inject constructor() : BaseMainDialogFra
         playerSettingsMenuDialogListener = listener
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = GamePlayerSettingsDialogFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -198,26 +193,23 @@ class PlayerSettingsMenuDialogFragment @Inject constructor() : BaseMainDialogFra
     }
 
     private fun initAd() {
-        if (activityViewModel.shouldShowGameInterstitialAd) {
-            with(MyRobaAd.getNewInstance(BuildConfig.ADMOB_ADUNIT_BANNER_SETTINGS_MENU, requireContext())) {
-                try {
-                    load(requireContext()) {
-                        with(binding.llSettingsMenuMediumRectangleAdContainer) {
-                            try {
-                                show(this)
-                                this?.visibility = VISIBLE
-                            } catch (e: MyBaseAd.AdCouldNotBeShownException) {
-                                FirebaseCrashlytics.getInstance().recordException(e)
-                            }
+        with(MyRobaAd.getNewInstance(BuildConfig.ADMOB_ADUNIT_ROBA, requireContext())) {
+            try {
+                load(requireContext()) {
+                    with(binding.llSettingsMenuMediumRectangleAdContainer) {
+                        visibility = try {
+                            show(this)
+                            VISIBLE
+                        } catch (e: MyBaseAd.AdCouldNotBeShownException) {
+                            FirebaseCrashlytics.getInstance().recordException(e)
+                            GONE
                         }
                     }
-                } catch (e: MyBaseAd.AdCouldNotBeLoadedException) {
-                    FirebaseCrashlytics.getInstance().recordException(e)
-                    binding.llSettingsMenuMediumRectangleAdContainer?.visibility = GONE
                 }
+            } catch (e: MyBaseAd.AdCouldNotBeLoadedException) {
+                FirebaseCrashlytics.getInstance().recordException(e)
+                binding.llSettingsMenuMediumRectangleAdContainer.visibility = GONE
             }
-        } else {
-            binding.llSettingsMenuMediumRectangleAdContainer?.visibility = GONE
         }
     }
 
@@ -243,13 +235,15 @@ class PlayerSettingsMenuDialogFragment @Inject constructor() : BaseMainDialogFra
             with(arguments) {
                 initialColor = whiteColor?.let { getInt(KEY_INITIAL_COLOR, it) }
                 initialName = getString(KEY_INITIAL_NAME, getString(R.string.player_name))
-                initialPoints = getInt(KEY_INITIAL_POINTS, DEAFULT_INITIAL_POINTS)
+                initialPoints = getInt(KEY_INITIAL_POINTS, DEFAULT_INITIAL_POINTS)
 
                 val shouldHideRestoreAllPoints = getBoolean(KEY_SHOULD_HIDE_RESTORE_ALL_POINTS, false)
-                if (shouldHideRestoreAllPoints) { binding.btSettingMenuRestoreAllPoints.visibility = GONE }
+                if (shouldHideRestoreAllPoints) {
+                    binding.btSettingMenuRestoreAllPoints.visibility = GONE
+                }
 
                 val shouldShowRestoreBackground = getBoolean(KEY_SHOULD_SHOW_RESTORE_BACKGROUND, false)
-                with (binding.btSettingMenuChangeBackground) {
+                with(binding.btSettingMenuChangeBackground) {
                     if (shouldShowRestoreBackground) {
                         text = getString(R.string.restore_background)
                         setOnClickListener {

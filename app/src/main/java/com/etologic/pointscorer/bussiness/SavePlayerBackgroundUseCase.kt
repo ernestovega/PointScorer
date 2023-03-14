@@ -4,7 +4,7 @@ import android.net.Uri
 import com.etologic.pointscorer.data.repositories.players.PlayersRepository
 import javax.inject.Inject
 
-class SaveNewBackgroundUseCase @Inject constructor(
+class SavePlayerBackgroundUseCase @Inject constructor(
     private val playersRepository: PlayersRepository
 ) {
 

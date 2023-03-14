@@ -9,7 +9,7 @@
         android:id="@+id/mainMenuFragment"
         android:name="com.etologic.pointscorer.app.main.fragments.main_menu.MainMenuFragment"
         android:label="main_menu_fragment"
-        tools:layout="@layout/main_menu_fragment" >
+        tools:layout="@layout/main_menu_fragment">
         <action
             android:id="@+id/action_mainMenuFragment_to_game1PlayerXPlayersFragment"
             app:destination="@id/game1PlayerXPlayersFragment" />
@@ -39,7 +39,7 @@
         android:id="@+id/game1PlayerXPlayersFragment"
         android:name="com.etologic.pointscorer.app.main.fragments.players.Game1PlayerXPlayersFragment"
         android:label="game_b_one_player_fragment"
-        tools:layout="@layout/game_b_one_player_fragment" >
+        tools:layout="@layout/game_b_one_player_fragment">
         <action
             android:id="@+id/action_game1PlayerXPlayersFragment_to_playerSettingsMenuDialogFragment"
             app:destination="@id/playerSettingsMenuDialogFragment" />
@@ -51,7 +51,7 @@
         android:id="@+id/game2PlayersXPlayersFragment"
         android:name="com.etologic.pointscorer.app.main.fragments.players.Game2PlayersXPlayersFragment"
         android:label="game_c_two_players_fragment"
-        tools:layout="@layout/game_c_two_players_fragment" >
+        tools:layout="@layout/game_c_two_players_fragment">
         <action
             android:id="@+id/action_game2PlayersXPlayersFragment_to_playerSettingsMenuDialogFragment"
             app:destination="@id/playerSettingsMenuDialogFragment" />
@@ -63,7 +63,7 @@
         android:id="@+id/game3PlayersXPlayersFragment"
         android:name="com.etologic.pointscorer.app.main.fragments.players.Game3PlayersXPlayersFragment"
         android:label="game_d_three_players_fragment"
-        tools:layout="@layout/game_d_three_players_fragment" >
+        tools:layout="@layout/game_d_three_players_fragment">
         <action
             android:id="@+id/action_game3PlayersXPlayersFragment_to_playerSettingsMenuDialogFragment"
             app:destination="@id/playerSettingsMenuDialogFragment" />
@@ -75,7 +75,7 @@
         android:id="@+id/game4PlayersXPlayersFragment"
         android:name="com.etologic.pointscorer.app.main.fragments.players.Game4PlayersXPlayersFragment"
         android:label="game_e_four_players_fragment"
-        tools:layout="@layout/game_e_four_players_fragment" >
+        tools:layout="@layout/game_e_four_players_fragment">
         <action
             android:id="@+id/action_game4PlayersXPlayersFragment_to_playerSettingsMenuDialogFragment"
             app:destination="@id/playerSettingsMenuDialogFragment" />
@@ -87,7 +87,7 @@
         android:id="@+id/game5PlayersXPlayersFragment"
         android:name="com.etologic.pointscorer.app.main.fragments.players.Game5PlayersXPlayersFragment"
         android:label="game_f_five_players_fragment"
-        tools:layout="@layout/game_f_five_players_fragment" >
+        tools:layout="@layout/game_f_five_players_fragment">
         <action
             android:id="@+id/action_game5PlayersXPlayersFragment_to_adWillBeShownDialogFragment"
             app:destination="@id/adWillBeShownDialogFragment" />
@@ -99,7 +99,7 @@
         android:id="@+id/game6PlayersXPlayersFragment"
         android:name="com.etologic.pointscorer.app.main.fragments.players.Game6PlayersXPlayersFragment"
         android:label="game_g_six_players_fragment"
-        tools:layout="@layout/game_g_six_players_fragment" >
+        tools:layout="@layout/game_g_six_players_fragment">
         <action
             android:id="@+id/action_game6PlayersXPlayersFragment_to_adWillBeShownDialogFragment"
             app:destination="@id/adWillBeShownDialogFragment" />
@@ -111,7 +111,7 @@
         android:id="@+id/game7PlayersXPlayersFragment"
         android:name="com.etologic.pointscorer.app.main.fragments.players.Game7PlayersXPlayersFragment"
         android:label="game_h_seven_players_fragment"
-        tools:layout="@layout/game_h_seven_players_fragment" >
+        tools:layout="@layout/game_h_seven_players_fragment">
         <action
             android:id="@+id/action_game7PlayersXPlayersFragment_to_adWillBeShownDialogFragment"
             app:destination="@id/adWillBeShownDialogFragment" />
@@ -123,7 +123,7 @@
         android:id="@+id/game8PlayersXPlayersFragment"
         android:name="com.etologic.pointscorer.app.main.fragments.players.Game8PlayersXPlayersFragment"
         android:label="game_i_eight_players_fragment"
-        tools:layout="@layout/game_i_eight_players_fragment" >
+        tools:layout="@layout/game_i_eight_players_fragment">
         <action
             android:id="@+id/action_game8PlayersXPlayersFragment_to_adWillBeShownDialogFragment"
             app:destination="@id/adWillBeShownDialogFragment" />
@@ -133,7 +133,7 @@
     </fragment>
     <dialog
         android:id="@+id/playerSettingsMenuDialogFragment"
-        android:name="com.etologic.pointscorer.app.main.fragments.player.PlayerSettingsMenuDialogFragment"
+        android:name="com.etologic.pointscorer.app.main.fragments.player.player_settings.PlayerSettingsMenuDialogFragment"
         android:label="PlayerSettingsMenuDialogFragment" />
     <dialog
         android:id="@+id/adWillBeShownDialogFragment"

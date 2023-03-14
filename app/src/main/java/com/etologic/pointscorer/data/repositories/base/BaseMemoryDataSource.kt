@@ -4,13 +4,13 @@ abstract class BaseMemoryDataSource<T> {
 
     private var value: T? = null
 
-    open fun get(): T? = value
+    open suspend fun get(): T? = value
 
-    open fun save(newValue: T) {
+    open suspend fun save(newValue: T) {
         value = newValue
     }
 
-    open fun clear() {
+    open suspend fun clear() {
         value = null
     }
 

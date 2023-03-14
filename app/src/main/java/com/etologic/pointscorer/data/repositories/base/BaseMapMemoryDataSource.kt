@@ -2,9 +2,9 @@ package com.etologic.pointscorer.data.repositories.base
 
 abstract class BaseMapMemoryDataSource<K, V> : BaseMemoryDataSource<MutableMap<K, V>>() {
 
-    open fun get(key: K): V? = get()?.let { it[key] }
+    open suspend fun get(key: K): V? = get()?.let { it[key] }
 
-    open fun save(key: K, newValue: V): V {
+    open suspend fun save(key: K, newValue: V): V {
         if (get() == null) {
             save(mutableMapOf())
         }
@@ -12,7 +12,7 @@ abstract class BaseMapMemoryDataSource<K, V> : BaseMemoryDataSource<MutableMap<K
         return get()!![key]!!
     }
 
-    open fun clear(key: K) {
-        get()!!.remove(key)
+    open suspend fun clear(key: K) {
+        get()?.remove(key)
     }
 }

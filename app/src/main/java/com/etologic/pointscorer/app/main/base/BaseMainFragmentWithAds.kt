@@ -18,12 +18,12 @@ abstract class BaseMainFragmentWithAds : BaseMainFragment() {
 
     companion object {
         val adUnitsList = listOf(
-            BuildConfig.ADMOB_ADUNIT_BANNER_MAIN_MENU_1,
-            BuildConfig.ADMOB_ADUNIT_BANNER_MAIN_MENU_2,
-            BuildConfig.ADMOB_ADUNIT_BANNER_MAIN_MENU_3,
-            BuildConfig.ADMOB_ADUNIT_BANNER_MAIN_MENU_4,
-            BuildConfig.ADMOB_ADUNIT_BANNER_MAIN_MENU_5,
-            BuildConfig.ADMOB_ADUNIT_BANNER_MAIN_MENU_6,
+            BuildConfig.ADMOB_ADUNIT_BANNER_1,
+            BuildConfig.ADMOB_ADUNIT_BANNER_2,
+            BuildConfig.ADMOB_ADUNIT_BANNER_3,
+            BuildConfig.ADMOB_ADUNIT_BANNER_4,
+            BuildConfig.ADMOB_ADUNIT_BANNER_5,
+            BuildConfig.ADMOB_ADUNIT_BANNER_6,
         )
     }
 
@@ -78,9 +78,6 @@ abstract class BaseMainFragmentWithAds : BaseMainFragment() {
 
     private fun getAdContainer(): LinearLayout? =
         when (baseBinding) {
-            is MainMenuFragmentBinding -> {
-                (baseBinding as MainMenuFragmentBinding).llAdsContainer
-            }
             is GameBOnePlayerFragmentBinding -> {
                 (baseBinding as GameBOnePlayerFragmentBinding).llAdsContainer
             }

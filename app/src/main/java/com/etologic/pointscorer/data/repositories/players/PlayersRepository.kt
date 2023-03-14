@@ -64,7 +64,7 @@ class PlayersRepository
         }
     }
 
-    suspend fun resetPlayerPoints(playerId: Int) {
+    suspend fun restoreOnePlayerPoints(playerId: Int) {
         savePlayerPoints(playerId, initialPointsRepository.getInitialPoints())
     }
 
@@ -86,11 +86,26 @@ class PlayersRepository
         }
     }
 
-    suspend fun resetAllPlayersNamesAndColors() {
+    suspend fun resetAllPlayersNames() {
+        for (i in 1..MAX_PLAYERS) {
+            for (x in 1..i) {
+                savePlayerName(buildPlayerId(i, x), defaultPlayerName)
+            }
+        }
+    }
+
+    suspend fun resetAllPlayersColors() {
         for (i in 1..MAX_PLAYERS) {
             for (x in 1..i) {
                 savePlayerColor(buildPlayerId(i, x), defaultPlayerColor)
-                savePlayerName(buildPlayerId(i, x), defaultPlayerName)
+            }
+        }
+    }
+
+    suspend fun resetAllPlayersBackgrounds() {
+        for (i in 1..MAX_PLAYERS) {
+            for (x in 1..i) {
+                savePlayerBackground(buildPlayerId(i, x), null)
             }
         }
     }
@@ -122,7 +137,11 @@ class PlayersRepository
     suspend fun getPlayerBackground(playerId: Int): Uri? =
         playersBackgroundsMemoryDataSource.get(playerId)
             ?: (playersBackgroundsDataStoreDataSource.get(playerId)
-                .also { if (it != null) { playersBackgroundsMemoryDataSource.save(playerId, it) } })
+                .also {
+                    if (it != null) {
+                        playersBackgroundsMemoryDataSource.save(playerId, it)
+                    }
+                })
 
     suspend fun savePlayerBackground(playerId: Int, newBackground: Uri?): Uri? {
         if (newBackground == null) {
