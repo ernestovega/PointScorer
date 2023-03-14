@@ -7,8 +7,7 @@ class RestoreOnePlayerPointsUseCase @Inject constructor(
     private val playersRepository: PlayersRepository
 ) {
 
-    suspend fun invoke(playerId: Int) {
+    suspend fun invoke(playerId: Int): Int =
         playersRepository.restoreOnePlayerPoints(playerId)
-    }
 
 }

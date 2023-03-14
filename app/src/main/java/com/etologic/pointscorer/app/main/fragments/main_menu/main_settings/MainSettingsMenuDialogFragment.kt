@@ -17,6 +17,8 @@ import com.etologic.pointscorer.BuildConfig
 import com.etologic.pointscorer.R
 import com.etologic.pointscorer.app.common.ads.MyRobaAd
 import com.etologic.pointscorer.app.common.ads.base.MyBaseAd
+import com.etologic.pointscorer.app.common.exceptions.AdCouldNotBeLoadedException
+import com.etologic.pointscorer.app.common.exceptions.AdCouldNotBeShownException
 import com.etologic.pointscorer.app.common.utils.ViewExtensions.hideKeyboard
 import com.etologic.pointscorer.app.main.base.BaseMainDialogFragment
 import com.etologic.pointscorer.common.Constants
@@ -26,12 +28,6 @@ import javax.inject.Inject
 
 class MainSettingsMenuDialogFragment
 @Inject constructor() : BaseMainDialogFragment() {
-
-    companion object {
-        fun newInstance() = MainSettingsMenuDialogFragment()
-
-        const val TAG = "MainSettingsMenuDialogListener"
-    }
 
     private var _binding: MainMenuSettingsDialogFragmentBinding? = null
     private val binding get() = _binding!!
@@ -145,13 +141,13 @@ class MainSettingsMenuDialogFragment
                         visibility = try {
                             show(this)
                             VISIBLE
-                        } catch (e: MyBaseAd.AdCouldNotBeShownException) {
+                        } catch (e: AdCouldNotBeShownException) {
                             FirebaseCrashlytics.getInstance().recordException(e)
                             GONE
                         }
                     }
                 }
-            } catch (e: MyBaseAd.AdCouldNotBeLoadedException) {
+            } catch (e: AdCouldNotBeLoadedException) {
                 FirebaseCrashlytics.getInstance().recordException(e)
                 binding.llMainSettingsMenuMediumRectangleAdContainer.visibility = GONE
             }
@@ -164,8 +160,8 @@ class MainSettingsMenuDialogFragment
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         _binding = null
+        super.onDestroyView()
     }
 
 }

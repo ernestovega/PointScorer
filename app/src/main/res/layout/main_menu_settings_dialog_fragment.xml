@@ -2,7 +2,6 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
@@ -14,9 +13,9 @@
         android:id="@+id/llMainSettingsMenuFieldsContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
+        android:layout_marginStart="36dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="48dp"
+        android:layout_marginEnd="36dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -76,9 +75,9 @@
         <Button
             android:id="@+id/btMainSettingMenuRestoreEverything"
             style="@style/SettingsMenuButton"
-            android:textColor="@color/red"
             android:layout_marginBottom="16dp"
-            android:text="@string/restore_everything" />
+            android:text="@string/restore_everything"
+            android:textColor="@color/red" />
 
     </LinearLayout>
 

@@ -2,6 +2,8 @@ package com.etologic.pointscorer.app.common.ads.base
 
 import android.content.Context
 import android.widget.LinearLayout
+import com.etologic.pointscorer.app.common.exceptions.AdCouldNotBeLoadedException
+import com.etologic.pointscorer.app.common.exceptions.AdCouldNotBeShownException
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView

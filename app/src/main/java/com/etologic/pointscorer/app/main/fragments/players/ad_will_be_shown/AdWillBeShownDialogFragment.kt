@@ -1,4 +1,4 @@
-package com.etologic.pointscorer.app.main.fragments.players
+package com.etologic.pointscorer.app.main.fragments.players.ad_will_be_shown
 
 import android.content.DialogInterface
 import android.os.Bundle
@@ -18,12 +18,6 @@ import javax.inject.Inject
 
 class AdWillBeShownDialogFragment
 @Inject constructor() : BaseMainDialogFragment() {
-
-    companion object {
-        fun newInstance() = AdWillBeShownDialogFragment()
-
-        const val TAG = "AdWillBeShownDialogFragment"
-    }
 
     private var _binding: AdWillBeShownDialogBinding? = null
     private val binding get() = _binding!!
@@ -51,7 +45,7 @@ class AdWillBeShownDialogFragment
                     load(requireContext()) {
                         lifecycleScope.launch {
                             delay(4 * A_SECOND_IN_MILLIS)
-                            activityViewModel.showGameInterstitialAd(this@apply)
+                            show(requireActivity())
                             dismiss()
                         }
                     }
@@ -68,8 +62,8 @@ class AdWillBeShownDialogFragment
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         _binding = null
+        super.onDestroyView()
     }
 
 }

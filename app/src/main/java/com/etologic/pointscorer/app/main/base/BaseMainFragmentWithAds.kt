@@ -9,6 +9,7 @@ import androidx.viewbinding.ViewBinding
 import com.etologic.pointscorer.BuildConfig
 import com.etologic.pointscorer.app.common.ads.MyBannerAd
 import com.etologic.pointscorer.app.common.ads.base.MyBaseAd
+import com.etologic.pointscorer.app.common.exceptions.AdCouldNotBeLoadedException
 import com.etologic.pointscorer.app.common.utils.dpToPx
 import com.etologic.pointscorer.databinding.*
 import com.google.android.gms.ads.AdSize
@@ -63,7 +64,7 @@ abstract class BaseMainFragmentWithAds : BaseMainFragment() {
                                     this@with.show(this@apply)
                                 }
                             }
-                        } catch (e: MyBaseAd.AdCouldNotBeLoadedException) {
+                        } catch (e: AdCouldNotBeLoadedException) {
                             FirebaseCrashlytics.getInstance().recordException(e)
                         }
                     }

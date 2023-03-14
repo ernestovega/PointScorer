@@ -219,7 +219,7 @@
                 android:background="@color/green"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
-                android:text="@string/watch_an_ad_for_love"
+                android:text="@string/watch_an_ad"
                 android:textColor="@color/white"
                 android:textSize="12sp"
                 android:textStyle="bold" />
@@ -239,7 +239,8 @@
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="16dp"
             android:contentDescription="@string/settings"
-            android:src="@drawable/ic_settings" />
+            android:src="@drawable/ic_settings"
+            app:backgroundTint="@color/colorAccent" />
 
     </LinearLayout>
 

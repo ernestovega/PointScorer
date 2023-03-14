@@ -64,8 +64,11 @@ class PlayersRepository
         }
     }
 
-    suspend fun restoreOnePlayerPoints(playerId: Int) {
-        savePlayerPoints(playerId, initialPointsRepository.getInitialPoints())
+    suspend fun restoreOnePlayerPoints(playerId: Int): Int {
+        initialPointsRepository.getInitialPoints().let { initialPoints ->
+            savePlayerPoints(playerId, initialPoints)
+            return initialPoints
+        }
     }
 
     suspend fun savePlayerPoints(playerId: Int, newPoints: Int) {
@@ -152,10 +155,6 @@ class PlayersRepository
             playersBackgroundsDataStoreDataSource.save(playerId, newBackground)
         }
         return getPlayerBackground(playerId)
-    }
-
-    fun invalidate() {
-        coroutineContext.job.cancel()
     }
 
 }

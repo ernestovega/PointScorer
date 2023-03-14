@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.util.Log
 import com.etologic.pointscorer.app.common.ads.base.MyBaseInterstitialAd
+import com.etologic.pointscorer.app.common.exceptions.AdCouldNotBeLoadedException
+import com.etologic.pointscorer.app.common.exceptions.AdCouldNotBeShownException
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError

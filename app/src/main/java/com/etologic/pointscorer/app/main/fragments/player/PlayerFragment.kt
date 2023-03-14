@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -19,23 +20,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.viewModels
-import com.canhub.cropper.CropImageContract
-import com.canhub.cropper.CropImageView
-import com.canhub.cropper.options
+import androidx.navigation.fragment.findNavController
 import com.etologic.pointscorer.R
+import com.etologic.pointscorer.app.common.exceptions.PlayerIdNotFoundException
 import com.etologic.pointscorer.app.common.utils.MyAnimationUtils
 import com.etologic.pointscorer.app.common.utils.dpToPx
-import com.etologic.pointscorer.app.main.activity.MainActivityNavigator
-import com.etologic.pointscorer.app.main.activity.MainActivityNavigator.Screens.CHANGE_BACKGROUND
 import com.etologic.pointscorer.app.main.base.BaseMainFragment
 import com.etologic.pointscorer.app.main.fragments.player.player_settings.PlayerSettingsMenuDialogFragment
-import com.etologic.pointscorer.app.main.fragments.player.player_settings.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_COLOR
-import com.etologic.pointscorer.app.main.fragments.player.player_settings.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_NAME
-import com.etologic.pointscorer.app.main.fragments.player.player_settings.PlayerSettingsMenuDialogFragment.Companion.KEY_INITIAL_POINTS
-import com.etologic.pointscorer.app.main.fragments.player.player_settings.PlayerSettingsMenuDialogFragment.Companion.KEY_SHOULD_HIDE_RESTORE_ALL_POINTS
-import com.etologic.pointscorer.app.main.fragments.player.player_settings.PlayerSettingsMenuDialogFragment.Companion.KEY_SHOULD_SHOW_RESTORE_BACKGROUND
-import com.etologic.pointscorer.app.main.fragments.player.player_settings.PlayerSettingsMenuDialogFragment.PlayerSettingsMenuDialogListener
-import com.etologic.pointscorer.app.main.fragments.players.Game1PlayerXPlayersFragment.Companion.GAME_1_PLAYER_1_ID
 import com.etologic.pointscorer.databinding.GamePlayerFragmentBinding
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import java.io.FileNotFoundException
@@ -56,6 +47,7 @@ class PlayerFragment : BaseMainFragment() {
             }
 
         const val KEY_PLAYER_ID = "key_player_id"
+        const val KEY_GAME_NUM_PLAYERS = "key_game_num_players"
         const val KEY_PLAYER_NAME_SIZE = "key_player_name_size"
         const val KEY_PLAYER_NAME_MARGIN_TOP = "key_player_name_margin_top"
         const val KEY_PLAYER_POINTS_SIZE = "key_player_points_size"
@@ -87,50 +79,6 @@ class PlayerFragment : BaseMainFragment() {
     private var isUpPressed =
         false/* https://stackoverflow.com/questions/7938516/continuously-increase-integer-value-as-the-button-is-pressed */
     private var isDownPressed = false
-    private var playerSettingsMenuDialogFragment: PlayerSettingsMenuDialogFragment? = null
-    private val playerSettingsMenuDialogFragmentListener = object : PlayerSettingsMenuDialogListener {
-        override fun onColorChanged(color: Int) {
-            viewModel.savePlayerColor(color)
-        }
-
-        override fun onNameChanged(name: String) {
-            viewModel.savePlayerName(name)
-        }
-
-        override fun onRestorePlayerPointsClicked() {
-            viewModel.restorePlayerPoints()
-        }
-
-        override fun onRestoreAllPlayersPointsClicked() {
-            activityViewModel.restoreOneGamePoints(viewModel.gamePlayersNum)
-        }
-
-        override fun onChangeBackgroundClicked() {
-            activityViewModel.navigateTo(
-                MainActivityNavigator.NavigationData(
-                    screen = CHANGE_BACKGROUND,
-                    activityResultLauncher = cropImageActivityResultLauncher,
-                    activityResultToLaunchOptions = options {
-                        setImageSource(includeGallery = true, includeCamera = false)
-                        setGuidelines(CropImageView.Guidelines.ON)
-                    }
-                )
-            )
-        }
-
-        override fun onRestoreBackgroundClicked() {
-            viewModel.saveNewBackground(null)
-        }
-
-    }
-    private val cropImageActivityResultLauncher = registerForActivityResult(CropImageContract()) { result ->
-        if (result.isSuccessful && result.uriContent != null) {
-            viewModel.saveNewBackground(result.uriContent!!)
-        } else {
-            FirebaseCrashlytics.getInstance().recordException(Throwable(result.error))
-            Toast.makeText(requireContext(), getString(R.string.ups), Toast.LENGTH_SHORT).show()
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -147,7 +95,28 @@ class PlayerFragment : BaseMainFragment() {
         initViews()
         initObservers()
         initListeners()
-        viewModel.initScreen(arguments?.getInt(KEY_PLAYER_ID))
+        loadScreen()
+    }
+
+    private fun loadScreen() {
+        val playerId = arguments?.getInt(KEY_PLAYER_ID)
+        val gamePlayersNum = arguments?.getInt(KEY_GAME_NUM_PLAYERS)
+        if (playerId == null || gamePlayersNum == null) {
+            FirebaseCrashlytics.getInstance().recordException(PlayerIdNotFoundException())
+            Toast.makeText(requireContext(), getString(R.string.ups), Toast.LENGTH_SHORT).apply {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    addCallback(object : Toast.Callback() {
+                        override fun onToastShown() {}
+                        override fun onToastHidden() {
+                            findNavController().navigateUp()
+                        }
+                    })
+                }
+                show()
+            }
+        } else {
+            viewModel.initScreen(playerId, gamePlayersNum)
+        }
     }
 
     private fun initValues() {
@@ -186,7 +155,8 @@ class PlayerFragment : BaseMainFragment() {
         viewModel.livePlayerName().observe(viewLifecycleOwner) { updateName(it) }
         viewModel.livePlayerColor().observe(viewLifecycleOwner) { setTextsColor(it) }
         viewModel.livePlayerBackground().observe(viewLifecycleOwner) { setBackground(it) }
-        activityViewModel.shouldRestoreAllPointsObservable.observe(viewLifecycleOwner) { restorePlayerPoints(it) }
+        activityViewModel.gamePlayersPointsRestoredObservable()
+            .observe(viewLifecycleOwner) { gamePlayersPointsRestoredObserver(it) }
     }
 
     private fun updatePoints(points: Int) {
@@ -278,9 +248,10 @@ class PlayerFragment : BaseMainFragment() {
         }
     }
 
-    private fun restorePlayerPoints(playersNum: Int?) {
-        if (playersNum == viewModel.gamePlayersNum)
-            viewModel.restorePlayerPoints()
+    private fun gamePlayersPointsRestoredObserver(playersNum: Int) {
+        if (playersNum == viewModel.gamePlayersNum) {
+            viewModel.loadPlayerPoints()
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -334,26 +305,8 @@ class PlayerFragment : BaseMainFragment() {
 
     private fun showPlayerSettingsMenuDialog() {
         activityViewModel.shouldShowGameInterstitialAd = false
-        val bundle = Bundle().apply {
-            putInt(KEY_INITIAL_COLOR, binding.etName.currentTextColor)
-            putString(KEY_INITIAL_NAME, (binding.etName.text?.toString() ?: viewModel.livePlayerName().value))
-            putInt(KEY_INITIAL_POINTS, activityViewModel.initialPoints)
-            putBoolean(KEY_SHOULD_HIDE_RESTORE_ALL_POINTS, viewModel.playerId == GAME_1_PLAYER_1_ID)
-            putBoolean(KEY_SHOULD_SHOW_RESTORE_BACKGROUND, viewModel.livePlayerBackground().value != null)
-        }
-        playerSettingsMenuDialogFragment =
-            PlayerSettingsMenuDialogFragment.newInstance(bundle, playerSettingsMenuDialogFragmentListener)
-        playerSettingsMenuDialogFragment?.show(
-            requireActivity().supportFragmentManager,
-            PlayerSettingsMenuDialogFragment.TAG
-        )
-    }
-
-    override fun onResume() {
-        super.onResume()
-        playerSettingsMenuDialogFragment = parentFragmentManager.findFragmentByTag(PlayerSettingsMenuDialogFragment.TAG)
-                as? PlayerSettingsMenuDialogFragment
-        playerSettingsMenuDialogFragment?.setListener(playerSettingsMenuDialogFragmentListener)
+        val bundle = Bundle().apply { putInt(PlayerSettingsMenuDialogFragment.KEY_PLAYER_ID, viewModel.playerId) }
+        findNavController().navigate(R.id.playerSettingsMenuDialogFragment, bundle)
     }
 
     override fun onDestroy() {

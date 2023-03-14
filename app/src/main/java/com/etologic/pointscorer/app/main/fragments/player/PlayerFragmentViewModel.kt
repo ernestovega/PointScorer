@@ -9,6 +9,7 @@ import com.etologic.pointscorer.bussiness.*
 import com.etologic.pointscorer.data.exceptions.MaxPointsReachedException
 import com.etologic.pointscorer.data.exceptions.MinPointsReachedException
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,18 +19,12 @@ class PlayerFragmentViewModel @Inject constructor(
     private val getPlayerColorUseCase: GetPlayerColorUseCase,
     private val getPlayerPointsUseCase: GetPlayerPointsUseCase,
     private val getPlayerBackgroundUseCase: GetPlayerBackgroundUseCase,
-    private val savePlayerNameUseCase: SavePlayerNameUseCase,
-    private val savePlayerColorUseCase: SavePlayerColorUseCase,
     private val add1PointToAPlayerUseCase: Add1PointToAPlayerUseCase,
     private val substract1PointToAPlayerUseCase: Substract1PointToAPlayerUseCase,
-    private val getInitialPointsUseCase: GetInitialPointsUseCase,
-    private val restoreOnePlayerPointsUseCase: RestoreOnePlayerPointsUseCase,
-    private val savePlayerBackgroundUseCase: SavePlayerBackgroundUseCase,
-    private val invalidateUseCase: InvalidateUseCase,
 ) : ViewModel() {
 
     var playerId: Int = 0
-    var gamePlayersNum: Int = playerId / 10
+    var gamePlayersNum: Int = 0
     var playerAuxPointsEnabled = false
     private val _playerPoints = MutableLiveData<Int>()
     fun livePlayerPoints(): LiveData<Int> = _playerPoints
@@ -42,15 +37,44 @@ class PlayerFragmentViewModel @Inject constructor(
     private val _playerBackground = MutableLiveData<Uri?>()
     fun livePlayerBackground(): LiveData<Uri?> = _playerBackground
 
-    fun initScreen(playerId: Int?) {
-        playerId?.let {
-            this.playerId = it
-            viewModelScope.launch {
-                _playerName.postValue(getPlayerNameUseCase.invoke(playerId))
-                _playerColor.postValue(getPlayerColorUseCase.invoke(playerId))
-                _playerBackground.postValue(getPlayerBackgroundUseCase.invoke(playerId))
-                _playerPoints.postValue(getPlayerPointsUseCase.invoke(playerId))
-            }
+    fun initScreen(playerId: Int, gamePlayersNum: Int) {
+        this.playerId = playerId
+        this.gamePlayersNum = gamePlayersNum
+        loadPlayerName()
+        loadPlayerColor()
+        loadPlayerBackground()
+        loadPlayerPoints()
+    }
+
+    fun loadPlayerName() {
+        viewModelScope.launch {
+            _playerName.postValue(
+                getPlayerNameUseCase.invoke(playerId)
+            )
+        }
+    }
+
+    fun loadPlayerColor() {
+        viewModelScope.launch {
+            _playerColor.postValue(
+                getPlayerColorUseCase.invoke(playerId)
+            )
+        }
+    }
+
+    fun loadPlayerBackground() {
+        viewModelScope.launch {
+            _playerBackground.postValue(
+                getPlayerBackgroundUseCase.invoke(playerId)
+            )
+        }
+    }
+
+    fun loadPlayerPoints() {
+        viewModelScope.launch {
+            _playerPoints.postValue(
+                getPlayerPointsUseCase.invoke(playerId)
+            )
         }
     }
 
@@ -84,42 +108,13 @@ class PlayerFragmentViewModel @Inject constructor(
         }
     }
 
-    fun savePlayerName(newName: String) {
-        viewModelScope.launch {
-            _playerName.postValue(savePlayerNameUseCase.invoke(playerId, newName))
-        }
-    }
-
-    fun savePlayerColor(newColor: Int) {
-        viewModelScope.launch {
-            _playerColor.postValue(savePlayerColorUseCase.invoke(playerId, newColor))
-        }
-    }
-
-    fun saveNewBackground(newBackgroundUri: Uri?) {
-        viewModelScope.launch {
-            _playerBackground.postValue(
-                savePlayerBackgroundUseCase.invoke(playerId, newBackgroundUri)
-            )
-        }
-    }
-
     fun auxPointsAnimationEnded() {
         playerAuxPointsEnabled = false
         _playerAuxPoints.postValue(0)
     }
 
-
-    fun restorePlayerPoints() {
-        viewModelScope.launch {
-            val initialPoints = getInitialPointsUseCase.invoke()
-            restoreOnePlayerPointsUseCase.invoke(playerId)
-            _playerPoints.postValue(initialPoints)
-        }
-    }
-
     override fun onCleared() {
-        invalidateUseCase.invoke()
+        viewModelScope.coroutineContext.cancel()
         super.onCleared()
     }
 

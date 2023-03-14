@@ -215,12 +215,12 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/acbMainMenuWatchAd"
-                    android:layout_width="96dp"
+                    android:layout_width="80dp"
                     android:layout_height="match_parent"
                     android:background="@color/green"
                     android:lineSpacingMultiplier="2"
                     android:padding="16dp"
-                    android:text="@string/watch_an_ad_for_love"
+                    android:text="@string/watch_an_ad"
                     android:textColor="@color/white"
                     android:textSize="12sp"
                     android:textStyle="bold" />
@@ -239,7 +239,8 @@
                 android:layout_marginEnd="24dp"
                 android:layout_marginBottom="24dp"
                 android:contentDescription="@string/settings"
-                android:src="@drawable/ic_settings" />
+                android:src="@drawable/ic_settings"
+                app:backgroundTint="@color/colorAccent" />
 
         </LinearLayout>
 

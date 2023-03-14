@@ -25,6 +25,8 @@ class Game6PlayersXPlayersFragment : BaseGameXPlayersFragment() {
     private var _binding: GameGSixPlayersFragmentBinding? = null
     private val binding get() = _binding!!
 
+    override val gamePlayersNum = 6
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val nameSize = ResourcesCompat.getFloat(resources, R.dimen.nameSize6P).toInt()//16

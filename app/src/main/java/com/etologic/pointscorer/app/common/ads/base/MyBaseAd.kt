@@ -2,6 +2,7 @@ package com.etologic.pointscorer.app.common.ads.base
 
 import android.content.Context
 import android.os.Bundle
+import com.etologic.pointscorer.app.common.exceptions.AdCouldNotBeLoadedException
 import com.google.ads.mediation.admob.AdMobAdapter
 import com.google.android.gms.ads.AdRequest
 
@@ -18,8 +19,5 @@ abstract class MyBaseAd<T>(adUnit: String) {
 
     @Throws(AdCouldNotBeLoadedException::class)
     abstract fun load(context: Context, onAdLoaded: () -> Unit)
-
-    class AdCouldNotBeLoadedException : Throwable()
-    class AdCouldNotBeShownException : Throwable()
 
 }

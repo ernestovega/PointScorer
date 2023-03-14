@@ -50,14 +50,14 @@
     <string name="everything_restored">Everything restored</string>
     <string name="close">Close</string>
     <string name="are_you_sure">Are you sure?</string>
-    <string name="this_will_restore_all_points_in_this_screen_to_">This will restore everybody\'s points in this screen to %d.</string>
+    <string name="this_will_restore_everyone_points_in_this_screen_to_">This will restore everyone\'s points in this screen to %d.</string>
     <string name="restart_x_points_to_y">This will restore %s points to %d</string>
     <string name="your">your</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="accept">Accept</string>
     <string name="initial_points_help">Are the default points for each player.\n\nThe \"Restore all points\" button will restore every player on every screen to this value.</string>
-    <string name="watch_an_ad_for_love">Show some love watching an Ad</string>
+    <string name="watch_an_ad">❤️  Watch an Ad  ❤️</string>
     <string name="ups">Ups! Something went wrong, sorry!</string>
     <string name="ups_but_thanks">Ups! Something went wrong, but your intention is what matters, thanks!</string>
     <string name="an_ad_will_appear_in_few_seconds">An ad will appear in few seconds</string>

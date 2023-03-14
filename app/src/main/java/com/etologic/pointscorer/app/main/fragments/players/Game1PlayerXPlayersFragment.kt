@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
 import com.etologic.pointscorer.R
 import com.etologic.pointscorer.app.main.base.BaseGameXPlayersFragment
@@ -20,6 +21,8 @@ class Game1PlayerXPlayersFragment : BaseGameXPlayersFragment() {
     private var _binding: GameBOnePlayerFragmentBinding? = null
     private val binding get() = _binding!!
 
+    override val gamePlayersNum = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val nameSize = ResourcesCompat.getFloat(resources, R.dimen.nameSize1P).toInt()//36
@@ -33,6 +36,17 @@ class Game1PlayerXPlayersFragment : BaseGameXPlayersFragment() {
         _binding = GameBOnePlayerFragmentBinding.inflate(inflater, container, false)
         baseBinding = binding
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initFab()
+    }
+
+    private fun initFab() {
+        binding.fabGame1PlayerSettings.setOnClickListener {
+            askConfirmRestoreAllPlayersPoints()
+        }
     }
 
     override fun onDestroy() {

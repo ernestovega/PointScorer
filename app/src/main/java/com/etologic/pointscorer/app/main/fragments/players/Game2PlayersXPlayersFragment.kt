@@ -21,6 +21,8 @@ class Game2PlayersXPlayersFragment : BaseGameXPlayersFragment() {
     private var _binding: GameCTwoPlayersFragmentBinding? = null
     private val binding get() = _binding!!
 
+    override val gamePlayersNum = 2
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val nameSize = ResourcesCompat.getFloat(resources, R.dimen.nameSize2P).toInt()

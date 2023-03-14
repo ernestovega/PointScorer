@@ -93,21 +93,15 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/btSettingMenuRestorePoints"
-            style="@style/SettingsMenuButton"
-            android:layout_marginTop="16dp"
-            android:text="@string/restore_points" />
-
-        <Button
-            android:id="@+id/btSettingMenuRestoreAllPoints"
-            style="@style/SettingsMenuButton"
-            android:text="@string/restore_all_points" />
-
-        <Button
             android:id="@+id/btSettingMenuChangeBackground"
             style="@style/SettingsMenuButton"
-            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
             android:text="@string/change_background" />
+
+        <Button
+            android:id="@+id/btSettingMenuRestorePoints"
+            style="@style/SettingsMenuButton"
+            android:text="@string/restore_points" />
 
     </LinearLayout>
 

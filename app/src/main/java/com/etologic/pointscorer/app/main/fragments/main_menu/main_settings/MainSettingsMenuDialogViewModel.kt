@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.etologic.pointscorer.R
 import com.etologic.pointscorer.bussiness.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,7 +20,6 @@ class MainSettingsMenuDialogViewModel @Inject constructor(
     private val restoreAllPlayersColorsUseCase: RestoreAllPlayersColorsUseCase,
     private val restoreAllPlayersBackgroundsUseCase: RestoreAllPlayersBackgroundsUseCase,
     private val restoreAllPlayersUseCase: RestoreAllPlayersUseCase,
-    private val invalidateUseCase: InvalidateUseCase,
 ) : ViewModel() {
 
     private val _initialPoints = MutableLiveData<Int>()
@@ -77,7 +77,7 @@ class MainSettingsMenuDialogViewModel @Inject constructor(
     }
 
     override fun onCleared() {
-        invalidateUseCase.invoke()
+        viewModelScope.coroutineContext.cancel()
         super.onCleared()
     }
 

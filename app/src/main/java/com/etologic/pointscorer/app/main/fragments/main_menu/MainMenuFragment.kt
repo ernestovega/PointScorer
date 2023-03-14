@@ -8,14 +8,14 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
+import androidx.annotation.IdRes
+import androidx.navigation.fragment.findNavController
 import com.etologic.pointscorer.BuildConfig
 import com.etologic.pointscorer.R
 import com.etologic.pointscorer.app.common.ads.MyInterstitialAd
 import com.etologic.pointscorer.app.common.ads.base.MyBaseAd
-import com.etologic.pointscorer.app.main.activity.MainActivityNavigator.Screens
-import com.etologic.pointscorer.app.main.activity.MainActivityNavigator.Screens.*
+import com.etologic.pointscorer.app.common.exceptions.AdCouldNotBeLoadedException
 import com.etologic.pointscorer.app.main.base.BaseMainFragment
-import com.etologic.pointscorer.app.main.fragments.main_menu.main_settings.MainSettingsMenuDialogFragment
 import com.etologic.pointscorer.databinding.MainMenuFragmentBinding
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 
@@ -41,35 +41,35 @@ class MainMenuFragment : BaseMainFragment() {
     private fun initListeners() {
         with(binding) {
 
-            fun gameButtonPressed(button: View, progress: View, screen: Screens) {
+            fun gameButtonPressed(button: View, progress: View, @IdRes fragmentId: Int) {
                 button.visibility = GONE
                 progress.visibility = VISIBLE
-                activityViewModel.navigateTo(screen)
+                findNavController().navigate(fragmentId)
             }
 
             btMainMenu1Player.setOnClickListener {
-                gameButtonPressed(btMainMenu1Player, pbMainMenu1Player, GAME_ONE_PLAYER)
+                gameButtonPressed(btMainMenu1Player, pbMainMenu1Player, R.id.game1PlayerXPlayersFragment)
             }
             btMainMenu2Player.setOnClickListener {
-                gameButtonPressed(btMainMenu2Player, pbMainMenu2Player, GAME_TWO_PLAYERS)
+                gameButtonPressed(btMainMenu2Player, pbMainMenu2Player, R.id.game2PlayersXPlayersFragment)
             }
             btMainMenu3Player.setOnClickListener {
-                gameButtonPressed(btMainMenu3Player, pbMainMenu3Player, GAME_THREE_PLAYERS)
+                gameButtonPressed(btMainMenu3Player, pbMainMenu3Player, R.id.game3PlayersXPlayersFragment)
             }
             btMainMenu4Player.setOnClickListener {
-                gameButtonPressed(btMainMenu4Player, pbMainMenu4Player, GAME_FOUR_PLAYERS)
+                gameButtonPressed(btMainMenu4Player, pbMainMenu4Player, R.id.game4PlayersXPlayersFragment)
             }
             btMainMenu5Player.setOnClickListener {
-                gameButtonPressed(btMainMenu5Player, btMainMenu5Player, GAME_FIVE_PLAYERS)
+                gameButtonPressed(btMainMenu5Player, btMainMenu5Player, R.id.game5PlayersXPlayersFragment)
             }
             btMainMenu6Player.setOnClickListener {
-                gameButtonPressed(btMainMenu6Player, pbMainMenu6Player, GAME_SIX_PLAYERS)
+                gameButtonPressed(btMainMenu6Player, pbMainMenu6Player, R.id.game6PlayersXPlayersFragment)
             }
             btMainMenu7Player.setOnClickListener {
-                gameButtonPressed(btMainMenu7Player, pbMainMenu7Player, GAME_SEVEN_PLAYERS)
+                gameButtonPressed(btMainMenu7Player, pbMainMenu7Player, R.id.game7PlayersXPlayersFragment)
             }
             btMainMenu8Player.setOnClickListener {
-                gameButtonPressed(btMainMenu8Player, pbMainMenu8Player, GAME_EIGHT_PLAYERS)
+                gameButtonPressed(btMainMenu8Player, pbMainMenu8Player, R.id.game8PlayersXPlayersFragment)
             }
 
             acbMainMenuWatchAd.setOnClickListener {
@@ -83,7 +83,7 @@ class MainMenuFragment : BaseMainFragment() {
                                 binding.acbMainMenuWatchAd.visibility = VISIBLE
                             }
                         }
-                    } catch (e: MyBaseAd.AdCouldNotBeLoadedException) {
+                    } catch (e: AdCouldNotBeLoadedException) {
                         binding.pbMainMenuWatchAdButton.visibility = GONE
                         binding.acbMainMenuWatchAd.visibility = VISIBLE
                         FirebaseCrashlytics.getInstance().recordException(e)
@@ -93,8 +93,7 @@ class MainMenuFragment : BaseMainFragment() {
             }
 
             fabMainMenuSettings.setOnClickListener {
-                MainSettingsMenuDialogFragment.newInstance()
-                    .show(requireActivity().supportFragmentManager, MainSettingsMenuDialogFragment.TAG)
+                findNavController().navigate(R.id.mainSettingsMenuDialogFragment)
             }
         }
     }
