@@ -16,13 +16,17 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.animation.Animation
 import android.widget.RelativeLayout.*
 import android.widget.Toast
+import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.ImageViewCompat
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
+import com.canhub.cropper.CropImageContract
+import com.canhub.cropper.CropImageView
+import com.canhub.cropper.options
 import com.etologic.pointscorer.R
-import com.etologic.pointscorer.app.common.exceptions.PlayerIdNotFoundException
+import com.etologic.pointscorer.app.common.exceptions.ArgumentNotFoundException
 import com.etologic.pointscorer.app.common.utils.MyAnimationUtils
 import com.etologic.pointscorer.app.common.utils.dpToPx
 import com.etologic.pointscorer.app.main.base.BaseMainFragment
@@ -47,6 +51,7 @@ class PlayerFragment : BaseMainFragment() {
             }
 
         const val KEY_PLAYER_ID = "key_player_id"
+        const val KEY_FRAGMENT_ID = "key_fragment_id"
         const val KEY_GAME_NUM_PLAYERS = "key_game_num_players"
         const val KEY_PLAYER_NAME_SIZE = "key_player_name_size"
         const val KEY_PLAYER_NAME_MARGIN_TOP = "key_player_name_margin_top"
@@ -58,9 +63,9 @@ class PlayerFragment : BaseMainFragment() {
         private const val DEFAULT_PLAYER_POINTS_MARGIN_TOP = 0
     }
 
-    private val viewModel: PlayerFragmentViewModel by viewModels()
     private var _binding: GamePlayerFragmentBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: PlayerFragmentViewModel by navGraphViewModels(R.id.game1PlayerXPlayersFragment) { defaultViewModelProviderFactory }
     private var playerFragmentListener: PlayerFragmentListener? = null
     private var auxPointsMarginSize: Int? = null
     private var auxPointsPositiveRotation: Float? = null
@@ -79,6 +84,15 @@ class PlayerFragment : BaseMainFragment() {
     private var isUpPressed =
         false/* https://stackoverflow.com/questions/7938516/continuously-increase-integer-value-as-the-button-is-pressed */
     private var isDownPressed = false
+
+    private val cropImageActivityResultLauncher = registerForActivityResult(CropImageContract()) { result ->
+        if (result.isSuccessful && result.uriContent != null) {
+            viewModel.savePlayerBackground(result.uriContent!!)
+        } else {
+            FirebaseCrashlytics.getInstance().recordException(Throwable(result.error))
+            Toast.makeText(requireContext(), getString(R.string.ups), Toast.LENGTH_SHORT).show()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -100,9 +114,10 @@ class PlayerFragment : BaseMainFragment() {
 
     private fun loadScreen() {
         val playerId = arguments?.getInt(KEY_PLAYER_ID)
+        @IdRes val fragmentId = arguments?.getInt(KEY_FRAGMENT_ID)
         val gamePlayersNum = arguments?.getInt(KEY_GAME_NUM_PLAYERS)
-        if (playerId == null || gamePlayersNum == null) {
-            FirebaseCrashlytics.getInstance().recordException(PlayerIdNotFoundException())
+        if (playerId == null || fragmentId == null || gamePlayersNum == null) {
+            FirebaseCrashlytics.getInstance().recordException(ArgumentNotFoundException())
             Toast.makeText(requireContext(), getString(R.string.ups), Toast.LENGTH_SHORT).apply {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                     addCallback(object : Toast.Callback() {
@@ -115,7 +130,7 @@ class PlayerFragment : BaseMainFragment() {
                 show()
             }
         } else {
-            viewModel.initScreen(playerId, gamePlayersNum)
+            viewModel.loadScreen(playerId, fragmentId, gamePlayersNum)
         }
     }
 
@@ -150,13 +165,24 @@ class PlayerFragment : BaseMainFragment() {
     }
 
     private fun initObservers() {
-        viewModel.livePlayerPoints().observe(viewLifecycleOwner) { updatePoints(it) }
-        viewModel.livePlayerAuxPoints().observe(viewLifecycleOwner) { updateCountPoints(it) }
-        viewModel.livePlayerName().observe(viewLifecycleOwner) { updateName(it) }
-        viewModel.livePlayerColor().observe(viewLifecycleOwner) { setTextsColor(it) }
-        viewModel.livePlayerBackground().observe(viewLifecycleOwner) { setBackground(it) }
-        activityViewModel.gamePlayersPointsRestoredObservable()
-            .observe(viewLifecycleOwner) { gamePlayersPointsRestoredObserver(it) }
+        viewModel.playerPointsObservable().observe(viewLifecycleOwner) { updatePoints(it) }
+        viewModel.playerAuxPointsObservable().observe(viewLifecycleOwner) { updateCountPoints(it) }
+        viewModel.playerNameObservable().observe(viewLifecycleOwner) { updateName(it) }
+        viewModel.playerColorObservable().observe(viewLifecycleOwner) { setTextsColor(it) }
+        viewModel.playerBackgroundObservable().observe(viewLifecycleOwner) { setBackground(it) }
+        viewModel.changeBackgroundRequestedObservable().observe(viewLifecycleOwner) { navigateToCropImageActivity() }
+        activityViewModel.gamePlayersPointsRestoredObservable().observe(viewLifecycleOwner) {
+            gamePlayersPointsRestoredObserver(it)
+        }
+    }
+
+    private fun navigateToCropImageActivity() {
+        cropImageActivityResultLauncher.launch(
+            options {
+                setImageSource(includeGallery = true, includeCamera = false)
+                setGuidelines(CropImageView.Guidelines.ON)
+            }
+        )
     }
 
     private fun updatePoints(points: Int) {
@@ -305,7 +331,10 @@ class PlayerFragment : BaseMainFragment() {
 
     private fun showPlayerSettingsMenuDialog() {
         activityViewModel.shouldShowGameInterstitialAd = false
-        val bundle = Bundle().apply { putInt(PlayerSettingsMenuDialogFragment.KEY_PLAYER_ID, viewModel.playerId) }
+        val bundle = Bundle().apply {
+            putInt(PlayerSettingsMenuDialogFragment.KEY_PLAYER_ID, viewModel.playerId)
+            putInt(PlayerSettingsMenuDialogFragment.KEY_PARENT_FRAGMENT_ID, viewModel.fragmentId)
+        }
         findNavController().navigate(R.id.playerSettingsMenuDialogFragment, bundle)
     }
 

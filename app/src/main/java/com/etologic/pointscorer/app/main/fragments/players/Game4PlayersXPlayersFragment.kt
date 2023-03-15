@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import com.etologic.pointscorer.R
-import com.etologic.pointscorer.app.main.base.BaseGameXPlayersFragment
+import com.etologic.pointscorer.app.main.fragments.players.base.BaseGameXPlayersFragment
 import com.etologic.pointscorer.databinding.GameEFourPlayersFragmentBinding
 
 class Game4PlayersXPlayersFragment : BaseGameXPlayersFragment() {
@@ -24,13 +24,13 @@ class Game4PlayersXPlayersFragment : BaseGameXPlayersFragment() {
     private val binding get() = _binding!!
 
     override val gamePlayersNum = 4
+    override val fragmentId = R.id.game4PlayersXPlayersFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val nameSize = ResourcesCompat.getFloat(resources, R.dimen.nameSize4P).toInt()//16
-        val nameMarginTop =
-            ResourcesCompat.getFloat(resources, R.dimen.nameMarginTop4P).toInt()//Portrait=40 Landscape=4
-        val pointsSize = ResourcesCompat.getFloat(resources, R.dimen.pointsSize4P).toInt()//48
+        nameSize = ResourcesCompat.getFloat(resources, R.dimen.nameSize4P).toInt()//16
+        nameMarginTop = ResourcesCompat.getFloat(resources, R.dimen.nameMarginTop4P).toInt()//Portrait=40 Landscape=4
+        pointsSize = ResourcesCompat.getFloat(resources, R.dimen.pointsSize4P).toInt()//48
 
         initPlayerFragment(PLAYER_1_ID, R.id.flPlayer41, nameSize, nameMarginTop, pointsSize)
         initPlayerFragment(PLAYER_2_ID, R.id.flPlayer42, nameSize, nameMarginTop, pointsSize)

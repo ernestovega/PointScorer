@@ -1,6 +1,7 @@
 package com.etologic.pointscorer.app.main.fragments.player
 
 import android.net.Uri
+import androidx.annotation.IdRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,24 +22,30 @@ class PlayerFragmentViewModel @Inject constructor(
     private val getPlayerBackgroundUseCase: GetPlayerBackgroundUseCase,
     private val add1PointToAPlayerUseCase: Add1PointToAPlayerUseCase,
     private val substract1PointToAPlayerUseCase: Substract1PointToAPlayerUseCase,
+    private val savePlayerBackgroundUseCase: SavePlayerBackgroundUseCase,
 ) : ViewModel() {
 
     var playerId: Int = 0
     var gamePlayersNum: Int = 0
+    @IdRes
+    var fragmentId: Int = 0
     var playerAuxPointsEnabled = false
     private val _playerPoints = MutableLiveData<Int>()
-    fun livePlayerPoints(): LiveData<Int> = _playerPoints
+    fun playerPointsObservable(): LiveData<Int> = _playerPoints
     private val _playerAuxPoints = MutableLiveData<Int>()
-    fun livePlayerAuxPoints(): LiveData<Int> = _playerAuxPoints
+    fun playerAuxPointsObservable(): LiveData<Int> = _playerAuxPoints
     private val _playerName = MutableLiveData<String>()
-    fun livePlayerName(): LiveData<String> = _playerName
+    fun playerNameObservable(): LiveData<String> = _playerName
     private val _playerColor = MutableLiveData<Int>()
-    fun livePlayerColor(): LiveData<Int> = _playerColor
+    fun playerColorObservable(): LiveData<Int> = _playerColor
     private val _playerBackground = MutableLiveData<Uri?>()
-    fun livePlayerBackground(): LiveData<Uri?> = _playerBackground
+    fun playerBackgroundObservable(): LiveData<Uri?> = _playerBackground
+    private val _changeBackgroundRequested = MutableLiveData<Boolean?>()
+    fun changeBackgroundRequestedObservable(): LiveData<Boolean?> = _changeBackgroundRequested
 
-    fun initScreen(playerId: Int, gamePlayersNum: Int) {
+    fun loadScreen(playerId: Int, @IdRes fragmentId: Int, gamePlayersNum: Int) {
         this.playerId = playerId
+        this.fragmentId = fragmentId
         this.gamePlayersNum = gamePlayersNum
         loadPlayerName()
         loadPlayerColor()
@@ -75,6 +82,13 @@ class PlayerFragmentViewModel @Inject constructor(
             _playerPoints.postValue(
                 getPlayerPointsUseCase.invoke(playerId)
             )
+        }
+    }
+
+    fun savePlayerBackground(newBackgroundUri: Uri?) {
+        viewModelScope.launch {
+            savePlayerBackgroundUseCase.invoke(playerId, newBackgroundUri)
+            loadPlayerBackground()
         }
     }
 
@@ -116,6 +130,11 @@ class PlayerFragmentViewModel @Inject constructor(
     override fun onCleared() {
         viewModelScope.coroutineContext.cancel()
         super.onCleared()
+    }
+
+    fun changeBackgroundRequested() {
+        _changeBackgroundRequested.postValue(true)
+        _changeBackgroundRequested.postValue(null)
     }
 
 }

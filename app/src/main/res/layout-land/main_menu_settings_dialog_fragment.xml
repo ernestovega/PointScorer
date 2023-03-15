@@ -28,6 +28,7 @@
             android:id="@+id/tvMainSettingsMenuInitialPointsTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="16dp"
             android:drawableEnd="@drawable/ic_help_16"
             android:drawablePadding="8dp"

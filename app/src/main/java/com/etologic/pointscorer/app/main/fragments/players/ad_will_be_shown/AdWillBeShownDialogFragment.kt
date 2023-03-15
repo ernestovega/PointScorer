@@ -44,7 +44,9 @@ class AdWillBeShownDialogFragment
                 try {
                     load(requireContext()) {
                         lifecycleScope.launch {
-                            delay(4 * A_SECOND_IN_MILLIS)
+                            if (BuildConfig.DEBUG) {
+                                delay(4 * A_SECOND_IN_MILLIS)
+                            }
                             show(requireActivity())
                             dismiss()
                         }

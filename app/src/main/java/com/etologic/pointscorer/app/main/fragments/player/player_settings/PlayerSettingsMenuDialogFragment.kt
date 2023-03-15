@@ -8,21 +8,20 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
+import androidx.annotation.IdRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import androidx.core.widget.doOnTextChanged
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
-import com.canhub.cropper.CropImageContract
-import com.canhub.cropper.CropImageView
-import com.canhub.cropper.options
+import androidx.navigation.navGraphViewModels
 import com.etologic.pointscorer.BuildConfig
 import com.etologic.pointscorer.R
 import com.etologic.pointscorer.app.common.ads.MyRobaAd
-import com.etologic.pointscorer.app.common.ads.base.MyBaseAd
 import com.etologic.pointscorer.app.common.exceptions.AdCouldNotBeLoadedException
 import com.etologic.pointscorer.app.common.exceptions.AdCouldNotBeShownException
-import com.etologic.pointscorer.app.common.exceptions.PlayerIdNotFoundException
+import com.etologic.pointscorer.app.common.exceptions.ArgumentNotFoundException
 import com.etologic.pointscorer.app.common.utils.ViewExtensions.hideKeyboard
 import com.etologic.pointscorer.app.main.base.BaseMainDialogFragment
 import com.etologic.pointscorer.app.main.fragments.player.PlayerFragmentViewModel
@@ -35,6 +34,7 @@ class PlayerSettingsMenuDialogFragment
 
     companion object {
         const val KEY_PLAYER_ID = "KEY_PLAYER_ID"
+        const val KEY_PARENT_FRAGMENT_ID = "KEY_PARENT_FRAGMENT_ID"
     }
 
     private var redColor: Int? = null
@@ -58,16 +58,7 @@ class PlayerSettingsMenuDialogFragment
     private var _binding: GamePlayerSettingsDialogFragmentBinding? = null
     private val binding get() = _binding!!
     private val viewModel: PlayerSettingsMenuDialogViewModel by viewModels()
-    private val parentViewModel: PlayerFragmentViewModel by viewModels()
-
-    private val cropImageActivityResultLauncher = registerForActivityResult(CropImageContract()) { result ->
-        if (result.isSuccessful && result.uriContent != null) {
-            viewModel.savePlayerBackground(result.uriContent!!)
-        } else {
-            FirebaseCrashlytics.getInstance().recordException(Throwable(result.error))
-            Toast.makeText(requireContext(), getString(R.string.ups), Toast.LENGTH_SHORT).show()
-        }
-    }
+    private lateinit var parentViewModel: PlayerFragmentViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = GamePlayerSettingsDialogFragmentBinding.inflate(inflater, container, false)
@@ -77,13 +68,24 @@ class PlayerSettingsMenuDialogFragment
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initValues()
-        initViewModel()
-        loadScreen()
+        initObservers()
         initListeners()
         initAd()
     }
 
     private fun initValues() {
+        val playerId = arguments?.getInt(KEY_PLAYER_ID)
+        @IdRes val parentFragmentId = arguments?.getInt(KEY_PARENT_FRAGMENT_ID)
+        if (playerId == null || parentFragmentId == null) {
+            FirebaseCrashlytics.getInstance().recordException(ArgumentNotFoundException())
+            Toast.makeText(requireContext(), getString(R.string.ups), Toast.LENGTH_SHORT).show()
+            dismiss()
+        } else {
+            val delegatedParentViewModel: PlayerFragmentViewModel by navGraphViewModels(parentFragmentId)
+            parentViewModel = delegatedParentViewModel
+            viewModel.playerId = playerId
+        }
+
         redColor = ContextCompat.getColor(requireContext(), R.color.red)
         orangeColor = ContextCompat.getColor(requireContext(), R.color.orange)
         yellowColor = ContextCompat.getColor(requireContext(), R.color.yellow)
@@ -103,174 +105,71 @@ class PlayerSettingsMenuDialogFragment
         blackTransparentColor = ContextCompat.getColor(requireContext(), R.color.black_transparent)
     }
 
-    private fun initViewModel() {
-        viewModel.playerNameObservable().observe(viewLifecycleOwner) { playerNameObserver(it) }
-        viewModel.playerColorObservable().observe(viewLifecycleOwner) { playerColorObserver(it) }
-        viewModel.playerBackgroundObservable().observe(viewLifecycleOwner) { playerBackgroundObserver(it) }
-        viewModel.playerNameChangedObservable().observe(viewLifecycleOwner) { playerNameChangedObserver(it) }
-        viewModel.playerColorChangedObservable().observe(viewLifecycleOwner) { playerColorChangedObserver(it) }
-        viewModel.playerBackgroundChangedObservable()
-            .observe(viewLifecycleOwner) { playerBackgroundChangedObserver(it) }
+    private fun initObservers() {
+        parentViewModel.playerNameObservable().observe(viewLifecycleOwner) { playerNameObserver(it) }
+        parentViewModel.playerColorObservable().observe(viewLifecycleOwner) { playerColorObserver(it) }
+        parentViewModel.playerBackgroundObservable().observe(viewLifecycleOwner) { playerBackgroundObserver(it) }
+
+        viewModel.playerNameChangedObservable().observe(viewLifecycleOwner) { playerNameChangedObserver() }
+        viewModel.playerColorChangedObservable().observe(viewLifecycleOwner) { playerColorChangedObserver() }
         viewModel.playerPointsRestoredObservable().observe(viewLifecycleOwner) { playerPointsRestoredObserver() }
     }
 
     private fun playerNameObserver(name: String) {
         binding.etSettingsMenuName.setText(name)
+        parentViewModel.playerNameObservable().removeObservers(viewLifecycleOwner)
     }
 
     private fun playerColorObserver(color: Int) {
         selectColor(color)
     }
 
-    private fun selectColor(selectedColor: Int?) {
-        with(binding) {
-            vSettingsMenuColorRed.isSelected = false
-            vSettingsMenuColorOrange.isSelected = false
-            vSettingsMenuColorYellow.isSelected = false
-            vSettingsMenuColorGreen.isSelected = false
-            vSettingsMenuColorBlue.isSelected = false
-            vSettingsMenuColorPurple.isSelected = false
-            vSettingsMenuColorPink.isSelected = false
-            vSettingsMenuColorWhite.isSelected = false
-
-            fun setSettingsMenuNameColor(textColor: Int?, hintColor: Int?) {
-                binding.etSettingsMenuName.apply {
-                    textColor?.let { setTextColor(it) }
-                    hintColor?.let { setHintTextColor(it) }
-                }
-            }
-
-            when (selectedColor) {
-                redColor -> {
-                    vSettingsMenuColorRed.isSelected = true
-                    setSettingsMenuNameColor(redColor, redTransparentColor)
-                }
-                orangeColor -> {
-                    vSettingsMenuColorOrange.isSelected = true
-                    setSettingsMenuNameColor(orangeColor, orangeTransparentColor)
-                }
-                yellowColor -> {
-                    vSettingsMenuColorYellow.isSelected = true
-                    setSettingsMenuNameColor(yellowColor, yellowTransparentColor)
-                }
-                greenColor -> {
-                    vSettingsMenuColorGreen.isSelected = true
-                    setSettingsMenuNameColor(greenColor, greenTransparentColor)
-                }
-                blueColor -> {
-                    vSettingsMenuColorBlue.isSelected = true
-                    setSettingsMenuNameColor(blueColor, blueTransparentColor)
-                }
-                purpleColor -> {
-                    vSettingsMenuColorPurple.isSelected = true
-                    setSettingsMenuNameColor(purpleColor, purpleTransparentColor)
-                }
-                pinkColor -> {
-                    vSettingsMenuColorPink.isSelected = true
-                    setSettingsMenuNameColor(pinkColor, pinkTransparentColor)
-                }
-                else -> {
-                    vSettingsMenuColorWhite.isSelected = true
-                    setSettingsMenuNameColor(blackColor, blackTransparentColor)
-                }
-            }
-        }
-    }
-
     private fun playerBackgroundObserver(bgUri: Uri?) {
-        binding.btSettingMenuChangeBackground.apply {
-            if (bgUri == null) {
-                text = getString(R.string.change_background)
+        with(binding) {
+            btSettingMenuChangeBackground.apply {
+                text = getString(if (bgUri == null) R.string.change_background else R.string.restore_background)
                 setOnClickListener {
-                    cropImageActivityResultLauncher.launch(
-                        options {
-                            setImageSource(includeGallery = true, includeCamera = false)
-                            setGuidelines(CropImageView.Guidelines.ON)
-                        }
-                    )
-                }
-            } else {
-                text = getString(R.string.restore_background)
-                setOnClickListener {
-                    viewModel.savePlayerBackground(null)
+                    etSettingsMenuName.hideKeyboard()
+                    if (bgUri == null) {
+                        parentViewModel.changeBackgroundRequested()
+                    } else {
+                        etSettingsMenuName.hideKeyboard()
+                        parentViewModel.savePlayerBackground(null)
+                    }
                 }
             }
         }
     }
 
-    private fun playerNameChangedObserver(name: String) {
-        playerNameObserver(name)
+    private fun playerNameChangedObserver() {
         parentViewModel.loadPlayerName()
     }
 
-    private fun playerColorChangedObserver(color: Int) {
-        playerColorObserver(color)
+    private fun playerColorChangedObserver() {
         parentViewModel.loadPlayerColor()
-    }
-
-    private fun playerBackgroundChangedObserver(bgUri: Uri?) {
-        playerBackgroundObserver(bgUri)
-        parentViewModel.loadPlayerBackground()
     }
 
     private fun playerPointsRestoredObserver() {
         parentViewModel.loadPlayerPoints()
     }
 
-    private fun loadScreen() {
-        arguments?.getInt(KEY_PLAYER_ID)
-            ?.let { viewModel.loadScreen(it) }
-            ?: run {
-                FirebaseCrashlytics.getInstance().recordException(PlayerIdNotFoundException())
-                Toast.makeText(requireContext(), getString(R.string.ups), Toast.LENGTH_SHORT).show()
-                dismiss()
-            }
-    }
-
     private fun initListeners() {
         with(binding) {
 
             btSettingMenuClose.setOnClickListener {
-                etSettingsMenuName.hideKeyboard()
                 dismiss()
             }
 
-            etSettingsMenuName.doOnTextChanged { text, _, _, _ ->
-                viewModel.savePlayerName((text ?: "").toString())
-            }
+            etSettingsMenuName.doAfterTextChanged { text -> viewModel.savePlayerName((text ?: "").toString()) }
 
-            vSettingsMenuColorRed.setOnClickListener {
-                selectColor(redColor)
-                redColor?.let { color -> viewModel.savePlayerColor(color) }
-            }
-            vSettingsMenuColorOrange.setOnClickListener {
-                selectColor(orangeColor)
-                orangeColor?.let { color -> viewModel.savePlayerColor(color) }
-            }
-            vSettingsMenuColorYellow.setOnClickListener {
-                selectColor(yellowColor)
-                yellowColor?.let { color -> viewModel.savePlayerColor(color) }
-            }
-            vSettingsMenuColorGreen.setOnClickListener {
-                selectColor(greenColor)
-                greenColor?.let { color -> viewModel.savePlayerColor(color) }
-            }
-            vSettingsMenuColorBlue.setOnClickListener {
-                selectColor(blueColor)
-                blueColor?.let { color -> viewModel.savePlayerColor(color) }
-            }
-            vSettingsMenuColorPurple.setOnClickListener {
-                selectColor(purpleColor)
-                purpleColor?.let { color -> viewModel.savePlayerColor(color) }
-            }
-            vSettingsMenuColorPink.setOnClickListener {
-                selectColor(pinkColor)
-                pinkColor?.let { color -> viewModel.savePlayerColor(color) }
-            }
-            vSettingsMenuColorWhite.setOnClickListener {
-                selectColor(whiteColor)
-                whiteColor?.let { color -> viewModel.savePlayerColor(color) }
-            }
+            vSettingsMenuColorRed.setOnClickListener { viewModel.savePlayerColor(redColor!!) }
+            vSettingsMenuColorOrange.setOnClickListener { viewModel.savePlayerColor(orangeColor!!) }
+            vSettingsMenuColorYellow.setOnClickListener { viewModel.savePlayerColor(yellowColor!!) }
+            vSettingsMenuColorGreen.setOnClickListener { viewModel.savePlayerColor(greenColor!!) }
+            vSettingsMenuColorBlue.setOnClickListener { viewModel.savePlayerColor(blueColor!!) }
+            vSettingsMenuColorPurple.setOnClickListener { viewModel.savePlayerColor(purpleColor!!) }
+            vSettingsMenuColorPink.setOnClickListener { viewModel.savePlayerColor(pinkColor!!) }
+            vSettingsMenuColorWhite.setOnClickListener { viewModel.savePlayerColor(whiteColor!!) }
 
             btSettingMenuRestorePoints.setOnClickListener {
 
@@ -281,18 +180,9 @@ class PlayerSettingsMenuDialogFragment
                     }
                     AlertDialog.Builder(requireContext(), R.style.Theme_AppCompat_Light_Dialog)
                         .setTitle(R.string.are_you_sure)
-                        .setMessage(
-                            String.format(
-                                getString(R.string.restart_x_points_to_y),
-                                name,
-                                viewModel.initialPoints
-                            )
-                        )
+                        .setMessage(getString(R.string.restart_x_points_to_y, name, viewModel.initialPoints))
                         .setNegativeButton(R.string.cancel, null)
-                        .setPositiveButton(R.string.ok) { _, _ ->
-                            viewModel.restorePlayerPoints()
-                            dismiss()
-                        }
+                        .setPositiveButton(R.string.ok) { _, _ -> viewModel.restorePlayerPoints() }
                         .create()
                         .show()
                 }
@@ -325,7 +215,62 @@ class PlayerSettingsMenuDialogFragment
         }
     }
 
+    private fun selectColor(selectedColor: Int?) {
+        with(binding) {
+            etSettingsMenuName.hideKeyboard()
+            vSettingsMenuColorRed.isSelected = false
+            vSettingsMenuColorOrange.isSelected = false
+            vSettingsMenuColorYellow.isSelected = false
+            vSettingsMenuColorGreen.isSelected = false
+            vSettingsMenuColorBlue.isSelected = false
+            vSettingsMenuColorPurple.isSelected = false
+            vSettingsMenuColorPink.isSelected = false
+            vSettingsMenuColorWhite.isSelected = false
+
+            fun EditText.setTextsColors(textColor: Int, hintColor: Int) {
+                setTextColor(textColor)
+                setHintTextColor(hintColor)
+            }
+
+            when (selectedColor) {
+                redColor -> {
+                    vSettingsMenuColorRed.isSelected = true
+                    etSettingsMenuName.setTextsColors(redColor!!, redTransparentColor!!)
+                }
+                orangeColor -> {
+                    vSettingsMenuColorOrange.isSelected = true
+                    etSettingsMenuName.setTextsColors(orangeColor!!, orangeTransparentColor!!)
+                }
+                yellowColor -> {
+                    vSettingsMenuColorYellow.isSelected = true
+                    etSettingsMenuName.setTextsColors(yellowColor!!, yellowTransparentColor!!)
+                }
+                greenColor -> {
+                    vSettingsMenuColorGreen.isSelected = true
+                    etSettingsMenuName.setTextsColors(greenColor!!, greenTransparentColor!!)
+                }
+                blueColor -> {
+                    vSettingsMenuColorBlue.isSelected = true
+                    etSettingsMenuName.setTextsColors(blueColor!!, blueTransparentColor!!)
+                }
+                purpleColor -> {
+                    vSettingsMenuColorPurple.isSelected = true
+                    etSettingsMenuName.setTextsColors(purpleColor!!, purpleTransparentColor!!)
+                }
+                pinkColor -> {
+                    vSettingsMenuColorPink.isSelected = true
+                    etSettingsMenuName.setTextsColors(pinkColor!!, pinkTransparentColor!!)
+                }
+                else -> {
+                    vSettingsMenuColorWhite.isSelected = true
+                    etSettingsMenuName.setTextsColors(blackColor!!, blackTransparentColor!!)
+                }
+            }
+        }
+    }
+
     override fun onDismiss(dialog: DialogInterface) {
+        binding.etSettingsMenuName.hideKeyboard()
         activityViewModel.shouldShowGameInterstitialAd = true
         super.onDismiss(dialog)
     }
