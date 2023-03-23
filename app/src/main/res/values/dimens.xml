@@ -28,7 +28,25 @@
     <dimen name="pointsSize8P">48</dimen>
     <dimen name="colorButtonSize">24dp</dimen>
 
-    <dimen name="auxPointsMargin">32</dimen>
+    <dimen name="auxPointsMargin">16</dimen>
     <dimen name="auxPointsPositiveRotationDegrees">-15</dimen>
     <dimen name="auxPointsNegativeRotationDegrees">15</dimen>
+
+    <dimen name="positiveAuxPointsMarginTop1P">8dp</dimen>
+    <dimen name="positiveAuxPointsMarginTop2P">0dp</dimen>
+    <dimen name="positiveAuxPointsMarginTop3P">0dp</dimen>
+    <dimen name="positiveAuxPointsMarginTop4P">0dp</dimen>
+    <dimen name="positiveAuxPointsMarginTop5P">0dp</dimen>
+    <dimen name="positiveAuxPointsMarginTop6P">0dp</dimen>
+    <dimen name="positiveAuxPointsMarginTop7P">0dp</dimen>
+    <dimen name="positiveAuxPointsMarginTop8P">0dp</dimen>
+
+    <dimen name="auxPointsMargin1P">32dp</dimen>
+    <dimen name="auxPointsMargin2P">24dp</dimen>
+    <dimen name="auxPointsMargin3P">24dp</dimen>
+    <dimen name="auxPointsMargin4P">20dp</dimen>
+    <dimen name="auxPointsMargin5P">16dp</dimen>
+    <dimen name="auxPointsMargin6P">16dp</dimen>
+    <dimen name="auxPointsMargin7P">12dp</dimen>
+    <dimen name="auxPointsMargin8P">12dp</dimen>
 </resources>

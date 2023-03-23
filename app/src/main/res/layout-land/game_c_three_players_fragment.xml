@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".app.games.Game3PlayersFragment">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fcvPlayer31"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/llAdsContainer"
+        app:layout_constraintEnd_toStartOf="@+id/fcvPlayer32"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth="percent"
+        app:layout_constraintWidth_percent=".333"
+        tools:layout="@layout/player_fragment" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fcvPlayer32"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/llAdsContainer"
+        app:layout_constraintEnd_toStartOf="@+id/fcvPlayer33"
+        app:layout_constraintStart_toEndOf="@+id/fcvPlayer31"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth="percent"
+        app:layout_constraintWidth_percent=".333"
+        tools:layout="@layout/player_fragment" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fcvPlayer33"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/llAdsContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/fcvPlayer32"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth="percent"
+        app:layout_constraintWidth_percent=".333"
+        tools:layout="@layout/player_fragment" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabGamePlayerSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/settings"
+        android:src="@drawable/ic_settings"
+        app:backgroundTint="@color/colorAccent"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toTopOf="@+id/llAdsContainer"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/llAdsContainer"
+        style="@style/BannerAdContainerConstrained"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_default="percent"
+        app:layout_constraintHeight_percent=".052"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

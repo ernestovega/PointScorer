@@ -33,16 +33,16 @@
     <style name="PointsTextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_centerInParent">true</item>
         <item name="android:gravity">center</item>
         <item name="android:lines">1</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
         <item name="android:textColor">@color/white</item>
         <item name="fontFamily">@font/rock_on</item>
     </style>
 
     <style name="PointsTextView1Player" parent="PointsTextView">
         <item name="android:textSize">100sp</item>
-        <item name="android:paddingBottom">48dp</item>
     </style>
 
     <style name="PointsTextView2Player" parent="PointsTextView">
@@ -74,7 +74,7 @@
     </style>
 
     <style name="NameEditText">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
         <item name="android:lines">1</item>
@@ -83,8 +83,8 @@
         <item name="android:hint">@string/player_name</item>
         <item name="android:maxLength">20</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:layout_marginLeft">16dp</item>
-        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
         <item name="fontFamily">@font/rock_on</item>
     </style>
 
@@ -128,7 +128,7 @@
         <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="MainMenuButton" parent="Widget.AppCompat.Button.Borderless">
+    <style name="MainMenuButton" parent="ThemeOverlay.Material3.Button.ElevatedButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:padding">16dp</item>
@@ -153,18 +153,12 @@
         <item name="android:theme">@style/WatchButtonAdProgressBar</item>
     </style>
 
-    <style name="SettingsMenuColorButton">
+    <style name="PlayerSettingsMenuColorButton">
         <item name="android:layout_width">@dimen/colorButtonSize</item>
         <item name="android:layout_height">@dimen/colorButtonSize</item>
+        <item name="android:layout_marginTop">24dp</item>
         <item name="android:layout_marginStart">8dp</item>
         <item name="android:layout_marginEnd">8dp</item>
-    </style>
-
-    <style name="SettingsMenuColorsRowContainer">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">16dp</item>
-        <item name="android:orientation">horizontal</item>
     </style>
 
     <style name="SettingsMenuButton" parent="android:Widget.Material.Button.Borderless">
@@ -184,6 +178,16 @@
         <item name="android:minHeight">50dp</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:layout_gravity">center</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="BannerAdContainerConstrained">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minHeight">50dp</item>
+        <item name="android:orientation">horizontal</item>
         <item name="android:visibility">gone</item>
     </style>
 

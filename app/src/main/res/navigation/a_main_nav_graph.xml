@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/a_main_nav_graph"
+    app:startDestination="@id/mainMenuFragment">
+    <fragment
+        android:id="@+id/mainMenuFragment"
+        android:name="com.etologic.pointscorer.app.menu.MainMenuFragment"
+        android:label="main_menu_fragment"
+        app:launchSingleTop="true"
+        tools:layout="@layout/main_menu_fragment">
+        <action
+            android:id="@+id/action_mainMenuFragment_to_mainSettingsMenuDialogFragment"
+            app:destination="@id/mainSettingsMenuDialogFragment" />
+        <action
+            android:id="@+id/action_mainMenuFragment_self"
+            app:destination="@id/mainMenuFragment" />
+        <action
+            android:id="@+id/action_mainMenuFragment_to_game1PlayersFragment"
+            app:destination="@id/game1PlayersFragment" />
+        <action
+            android:id="@+id/action_mainMenuFragment_to_game2PlayersFragment"
+            app:destination="@id/game2PlayersFragment" />
+        <action
+            android:id="@+id/action_mainMenuFragment_to_game3PlayersFragment"
+            app:destination="@id/game3PlayersFragment" />
+        <action
+            android:id="@+id/action_mainMenuFragment_to_game4PlayersFragment"
+            app:destination="@id/game4PlayersFragment" />
+        <action
+            android:id="@+id/action_mainMenuFragment_to_game5PlayersFragment"
+            app:destination="@id/game5PlayersFragment" />
+        <action
+            android:id="@+id/action_mainMenuFragment_to_game6PlayersFragment"
+            app:destination="@id/game6PlayersFragment" />
+        <action
+            android:id="@+id/action_mainMenuFragment_to_game7PlayersFragment"
+            app:destination="@id/game7PlayersFragment" />
+        <action
+            android:id="@+id/action_mainMenuFragment_to_game8PlayersFragment"
+            app:destination="@id/game8PlayersFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/mainSettingsMenuDialogFragment"
+        android:name="com.etologic.pointscorer.app.menu.main_settings.MainSettingsMenuDialogFragment"
+        android:label="MainSettingsMenuDialogFragment" />
+    <fragment
+        android:id="@+id/game1PlayersFragment"
+        android:name="com.etologic.pointscorer.app.games.Game1PlayersFragment"
+        android:label="game_a_one_player_fragment"
+        tools:layout="@layout/game_a_one_player_fragment" >
+        <action
+            android:id="@+id/action_game1PlayersFragment_to_adWillBeShownDialogFragment"
+            app:destination="@id/adWillBeShownDialogFragment" />
+        <action
+            android:id="@+id/action_game1PlayersFragment_to_playerSettingsMenuDialogFragment"
+            app:destination="@id/playerSettingsMenuDialogFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/game2PlayersFragment"
+        android:name="com.etologic.pointscorer.app.games.Game2PlayersFragment"
+        android:label="game_b_two_players_fragment"
+        tools:layout="@layout/game_b_two_players_fragment" >
+        <action
+            android:id="@+id/action_game2PlayersFragment_to_adWillBeShownDialogFragment"
+            app:destination="@id/adWillBeShownDialogFragment" />
+        <action
+            android:id="@+id/action_game2PlayersFragment_to_playerSettingsMenuDialogFragment"
+            app:destination="@id/playerSettingsMenuDialogFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/game3PlayersFragment"
+        android:name="com.etologic.pointscorer.app.games.Game3PlayersFragment"
+        android:label="game_c_three_players_fragment"
+        tools:layout="@layout/game_c_three_players_fragment" >
+        <action
+            android:id="@+id/action_game3PlayersFragment_to_adWillBeShownDialogFragment"
+            app:destination="@id/adWillBeShownDialogFragment" />
+        <action
+            android:id="@+id/action_game3PlayersFragment_to_playerSettingsMenuDialogFragment"
+            app:destination="@id/playerSettingsMenuDialogFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/game4PlayersFragment"
+        android:name="com.etologic.pointscorer.app.games.Game4PlayersFragment"
+        android:label="game_d_four_players_fragment"
+        tools:layout="@layout/game_d_four_players_fragment" >
+        <action
+            android:id="@+id/action_game4PlayersFragment_to_adWillBeShownDialogFragment"
+            app:destination="@id/adWillBeShownDialogFragment" />
+        <action
+            android:id="@+id/action_game4PlayersFragment_to_playerSettingsMenuDialogFragment"
+            app:destination="@id/playerSettingsMenuDialogFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/game5PlayersFragment"
+        android:name="com.etologic.pointscorer.app.games.Game5PlayersFragment"
+        android:label="game_e_five_players_fragment"
+        tools:layout="@layout/game_e_five_players_fragment" >
+        <action
+            android:id="@+id/action_game5PlayersFragment_to_adWillBeShownDialogFragment"
+            app:destination="@id/adWillBeShownDialogFragment" />
+        <action
+            android:id="@+id/action_game5PlayersFragment_to_playerSettingsMenuDialogFragment"
+            app:destination="@id/playerSettingsMenuDialogFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/game6PlayersFragment"
+        android:name="com.etologic.pointscorer.app.games.Game6PlayersFragment"
+        android:label="game_f_six_players_fragment"
+        tools:layout="@layout/game_f_six_players_fragment" >
+        <action
+            android:id="@+id/action_game6PlayersFragment_to_adWillBeShownDialogFragment"
+            app:destination="@id/adWillBeShownDialogFragment" />
+        <action
+            android:id="@+id/action_game6PlayersFragment_to_playerSettingsMenuDialogFragment"
+            app:destination="@id/playerSettingsMenuDialogFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/game7PlayersFragment"
+        android:name="com.etologic.pointscorer.app.games.Game7PlayersFragment"
+        android:label="game_g_seven_players_fragment"
+        tools:layout="@layout/game_g_seven_players_fragment" >
+        <action
+            android:id="@+id/action_game7PlayersFragment_to_adWillBeShownDialogFragment"
+            app:destination="@id/adWillBeShownDialogFragment" />
+        <action
+            android:id="@+id/action_game7PlayersFragment_to_playerSettingsMenuDialogFragment"
+            app:destination="@id/playerSettingsMenuDialogFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/game8PlayersFragment"
+        android:name="com.etologic.pointscorer.app.games.Game8PlayersFragment"
+        android:label="game_h_eight_players_fragment"
+        tools:layout="@layout/game_h_eight_players_fragment" >
+        <action
+            android:id="@+id/action_game8PlayersFragment_to_adWillBeShownDialogFragment"
+            app:destination="@id/adWillBeShownDialogFragment" />
+        <action
+            android:id="@+id/action_game8PlayersFragment_to_playerSettingsMenuDialogFragment"
+            app:destination="@id/playerSettingsMenuDialogFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/playerSettingsMenuDialogFragment"
+        android:name="com.etologic.pointscorer.app.games.base.player.PlayerSettingsMenuDialogFragment"
+        android:label="playerSettingsMenuDialogFragment" >
+        <argument
+            android:name="playerInitialName"
+            app:argType="string" />
+        <argument
+            android:name="playerInitialColor"
+            app:argType="integer" />
+        <argument android:name="playerHasCustomBackground"
+            app:argType="boolean" />
+        <argument
+            android:name="playerId"
+            app:argType="integer" />
+    </dialog>
+    <dialog
+        android:id="@+id/adWillBeShownDialogFragment"
+        android:name="com.etologic.pointscorer.app.games.base.game.AdWillBeShownDialogFragment"
+        android:label="AdWillBeShownDialogFragment" />
+</navigation>

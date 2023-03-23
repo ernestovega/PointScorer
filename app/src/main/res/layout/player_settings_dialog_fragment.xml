@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@color/white">
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/etPlayerSettingsMenuName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/rock_on"
+        android:gravity="center_horizontal"
+        android:hint="@string/player_name"
+        android:inputType="textPersonName"
+        android:lines="1"
+        android:maxLength="20"
+        android:selectAllOnFocus="true"
+        android:textColor="@color/colorPrimary"
+        android:textColorHint="@color/colorPrimary"
+        android:textSize="16sp"
+        app:backgroundTint="@color/colorAccent"
+        app:layout_constraintBottom_toTopOf="@+id/vPlayerSettingsMenuColorRed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:hint="@string/player_name"
+        tools:text="@string/player_name" />
+
+    <View
+        android:id="@+id/vPlayerSettingsMenuColorRed"
+        style="@style/PlayerSettingsMenuColorButton"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/shape_button_red"
+        app:layout_constraintEnd_toStartOf="@+id/vPlayerSettingsMenuColorGreen"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPlayerSettingsMenuName" />
+
+    <View
+        android:id="@+id/vPlayerSettingsMenuColorGreen"
+        style="@style/PlayerSettingsMenuColorButton"
+        android:background="@drawable/shape_button_green"
+        app:layout_constraintEnd_toStartOf="@+id/vPlayerSettingsMenuColorOrange"
+        app:layout_constraintStart_toEndOf="@+id/vPlayerSettingsMenuColorRed"
+        app:layout_constraintTop_toBottomOf="@+id/etPlayerSettingsMenuName" />
+
+    <View
+        android:id="@+id/vPlayerSettingsMenuColorOrange"
+        style="@style/PlayerSettingsMenuColorButton"
+        android:background="@drawable/shape_button_orange"
+        app:layout_constraintEnd_toStartOf="@+id/vPlayerSettingsMenuColorPurple"
+        app:layout_constraintStart_toEndOf="@+id/vPlayerSettingsMenuColorGreen"
+        app:layout_constraintTop_toBottomOf="@+id/etPlayerSettingsMenuName" />
+
+    <View
+        android:id="@+id/vPlayerSettingsMenuColorPurple"
+        style="@style/PlayerSettingsMenuColorButton"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/shape_button_purple"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/vPlayerSettingsMenuColorOrange"
+        app:layout_constraintTop_toBottomOf="@+id/etPlayerSettingsMenuName" />
+
+    <View
+        android:id="@+id/vPlayerSettingsMenuColorYellow"
+        style="@style/PlayerSettingsMenuColorButton"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/shape_button_yellow"
+        app:layout_constraintEnd_toStartOf="@+id/vPlayerSettingsMenuColorPink"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vPlayerSettingsMenuColorRed" />
+
+    <View
+        android:id="@+id/vPlayerSettingsMenuColorPink"
+        style="@style/PlayerSettingsMenuColorButton"
+        android:background="@drawable/shape_button_pink"
+        app:layout_constraintEnd_toStartOf="@+id/vPlayerSettingsMenuColorBlue"
+        app:layout_constraintStart_toEndOf="@+id/vPlayerSettingsMenuColorYellow"
+        app:layout_constraintTop_toBottomOf="@+id/vPlayerSettingsMenuColorGreen" />
+
+    <View
+        android:id="@+id/vPlayerSettingsMenuColorBlue"
+        style="@style/PlayerSettingsMenuColorButton"
+        android:background="@drawable/shape_button_blue"
+        app:layout_constraintEnd_toStartOf="@+id/vPlayerSettingsMenuColorWhite"
+        app:layout_constraintStart_toEndOf="@+id/vPlayerSettingsMenuColorPink"
+        app:layout_constraintTop_toBottomOf="@+id/vPlayerSettingsMenuColorOrange" />
+
+    <View
+        android:id="@+id/vPlayerSettingsMenuColorWhite"
+        style="@style/PlayerSettingsMenuColorButton"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/shape_button_white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/vPlayerSettingsMenuColorBlue"
+        app:layout_constraintTop_toBottomOf="@+id/vPlayerSettingsMenuColorPurple" />
+
+    <Button
+        android:id="@+id/btSettingMenuChangeBackground"
+        style="@style/SettingsMenuButton"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vPlayerSettingsMenuColorYellow"
+        tools:text="@string/change_background" />
+
+    <Button
+        android:id="@+id/btPlayerSettingsMenuRestorePoints"
+        style="@style/SettingsMenuButton"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/restore_points"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btSettingMenuChangeBackground" />
+
+    <View
+        android:id="@+id/vPlayerSettingsMenuBottomSpacing"
+        android:layout_width="0dp"
+        android:layout_height="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btPlayerSettingsMenuRestorePoints" />
+
+    <ImageButton
+        android:id="@+id/btPlayerSettingsMenuClose"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/white"
+        android:contentDescription="@string/close"
+        android:src="@drawable/ic_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/colorAccent" />
+
+    <LinearLayout
+        android:id="@+id/llPlayerSettingsMenuMediumRectangleAdContainer"
+        android:layout_width="300dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btPlayerSettingsMenuRestorePoints"
+        tools:visibility="visible" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -52,6 +52,7 @@ class MyInterstitialAd private constructor(private val adUnit: String) : MyBaseI
                     // Called when ad is dismissed.
                     Log.d(logTag, "Interstitial Ad dismissed fullscreen content.")
                     myAd = null
+                    onAdShown.invoke()
                 }
 
                 override fun onAdFailedToShowFullScreenContent(adError: AdError) {
@@ -69,7 +70,6 @@ class MyInterstitialAd private constructor(private val adUnit: String) : MyBaseI
                 override fun onAdShowedFullScreenContent() {
                     // Called when ad is shown.
                     Log.d(logTag, "Interstitial Ad showed fullscreen content.")
-                    onAdShown.invoke()
                 }
             }
         myAd?.show(activity)

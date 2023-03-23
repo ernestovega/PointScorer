@@ -3,21 +3,19 @@ package com.etologic.pointscorer.app.common.utils
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.Animation.AnimationListener
+import com.etologic.pointscorer.common.Constants.A_SECOND_IN_MILLIS
 
 object MyAnimationUtils {
 
-    private const val AUX_POINTS_FADE_OUT_ANIMATION_DURATION = 5000L
-
-    fun getAuxPointsFadeOutAnimation(endAction: Runnable?): Animation {
+    fun getAuxPointsFadeOutAnimation(endAction: (() -> Unit)?): Animation {
         val alphaAnimation = AlphaAnimation(1f, 0f)
-        alphaAnimation.duration = AUX_POINTS_FADE_OUT_ANIMATION_DURATION
+        alphaAnimation.duration = 5 * A_SECOND_IN_MILLIS
         alphaAnimation.fillAfter = true
         alphaAnimation.setAnimationListener(object : AnimationListener {
             override fun onAnimationStart(animation: Animation) {}
             override fun onAnimationEnd(animation: Animation) {
-                endAction?.run()
+                endAction?.invoke()
             }
-
             override fun onAnimationRepeat(animation: Animation) {}
         })
         return alphaAnimation

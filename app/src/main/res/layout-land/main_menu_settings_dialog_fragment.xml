@@ -1,96 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="@color/white"
-    android:orientation="horizontal">
+    android:background="@color/white">
 
     <LinearLayout
         android:id="@+id/llMainSettingsMenuMediumRectangleAdContainer"
         android:layout_width="300dp"
         android:layout_height="250dp"
-        android:layout_gravity="center_vertical"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="gone" />
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btMainSettingMenuRestoreAllBackgrounds"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
-    <LinearLayout
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvMainSettingsMenuInitialPointsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
         android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:text="@string/initial_points"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:theme="@style/MyTextInputLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/llMainSettingsMenuMediumRectangleAdContainer"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvMainSettingsMenuInitialPointsTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="16dp"
-            android:drawableEnd="@drawable/ic_help_16"
-            android:drawablePadding="8dp"
-            android:drawableTint="@color/colorAccent"
-            android:text="@string/initial_points"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:theme="@style/MyTextInputLayout" />
+    <ImageView
+        android:id="@+id/ivMainSettingsMenuInitialPointsHelp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:foregroundTint="@color/colorAccent"
+        android:src="@drawable/ic_help_16"
+        app:layout_constraintEnd_toStartOf="@+id/tvMainSettingsMenuInitialPointsTitle"
+        app:layout_constraintTop_toTopOf="@+id/tvMainSettingsMenuInitialPointsTitle"
+        app:tint="@color/colorAccent"
+        android:contentDescription="@string/info" />
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/etMainSettingsMenuInitialPoints"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="-8dp"
-            android:digits="-0123456789"
-            android:gravity="center"
-            android:hint="@string/min_max_points"
-            android:importantForAutofill="no"
-            android:inputType="number"
-            android:maxLength="5"
-            android:textColor="@color/colorPrimary"
-            android:textColorHint="@color/colorPrimary"
-            android:theme="@style/MyTextInputLayout"
-            app:backgroundTint="@color/colorAccent" />
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/etMainSettingsMenuInitialPoints"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="-8dp"
+        android:layout_marginEnd="16dp"
+        android:digits="-0123456789"
+        android:gravity="center"
+        android:hint="@string/min_max_points"
+        android:importantForAutofill="no"
+        android:inputType="number"
+        android:maxLength="5"
+        android:textColor="@color/colorPrimaryDark"
+        android:textColorHint="@color/black_transparent"
+        android:theme="@style/MyTextInputLayout"
+        app:backgroundTint="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/llMainSettingsMenuMediumRectangleAdContainer"
+        app:layout_constraintTop_toBottomOf="@+id/tvMainSettingsMenuInitialPointsTitle" />
 
-        <Button
-            android:id="@+id/btMainSettingMenuRestoreAllPoints"
-            style="@style/SettingsMenuButton"
-            android:text="@string/restore_all_points" />
+    <Button
+        android:id="@+id/btMainSettingMenuRestoreAllPoints"
+        style="@style/SettingsMenuButton"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/restore_all_points"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/llMainSettingsMenuMediumRectangleAdContainer"
+        app:layout_constraintTop_toBottomOf="@+id/etMainSettingsMenuInitialPoints" />
 
-        <Button
-            android:id="@+id/btMainSettingMenuRestoreAllNames"
-            style="@style/SettingsMenuButton"
-            android:text="@string/restore_all_names" />
+    <Button
+        android:id="@+id/btMainSettingMenuRestoreAllNames"
+        style="@style/SettingsMenuButton"
+        android:layout_marginEnd="16dp"
+        android:text="@string/restore_all_names"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/llMainSettingsMenuMediumRectangleAdContainer"
+        app:layout_constraintTop_toBottomOf="@+id/btMainSettingMenuRestoreAllPoints" />
 
-        <Button
-            android:id="@+id/btMainSettingMenuRestoreAllColors"
-            style="@style/SettingsMenuButton"
-            android:text="@string/restore_all_colors" />
+    <Button
+        android:id="@+id/btMainSettingMenuRestoreAllColors"
+        style="@style/SettingsMenuButton"
+        android:layout_marginEnd="16dp"
+        android:text="@string/restore_all_colors"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/llMainSettingsMenuMediumRectangleAdContainer"
+        app:layout_constraintTop_toBottomOf="@+id/btMainSettingMenuRestoreAllNames" />
 
-        <Button
-            android:id="@+id/btMainSettingMenuRestoreAllBackgrounds"
-            style="@style/SettingsMenuButton"
-            android:text="@string/restore_all_backgrounds" />
+    <Button
+        android:id="@+id/btMainSettingMenuRestoreAllBackgrounds"
+        style="@style/SettingsMenuButton"
+        android:layout_marginEnd="16dp"
+        android:text="@string/restore_all_backgrounds"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/llMainSettingsMenuMediumRectangleAdContainer"
+        app:layout_constraintTop_toBottomOf="@+id/btMainSettingMenuRestoreAllColors" />
 
-        <Button
-            android:id="@+id/btMainSettingMenuRestoreEverything"
-            style="@style/SettingsMenuButton"
-            android:layout_marginBottom="16dp"
-            android:text="@string/restore_everything"
-            android:textColor="@color/red" />
+    <Button
+        android:id="@+id/btMainSettingMenuRestoreEverything"
+        style="@style/SettingsMenuButton"
+        android:layout_marginEnd="16dp"
+        android:text="@string/restore_everything"
+        android:textColor="@color/red"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/llMainSettingsMenuMediumRectangleAdContainer"
+        app:layout_constraintTop_toBottomOf="@+id/btMainSettingMenuRestoreAllBackgrounds" />
 
-    </LinearLayout>
+    <View
+        android:id="@+id/vMainSettingMenuBottomSpacing"
+        android:layout_width="0dp"
+        android:layout_height="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/llMainSettingsMenuMediumRectangleAdContainer"
+        app:layout_constraintTop_toBottomOf="@+id/btMainSettingMenuRestoreEverything" />
 
     <ImageButton
         android:id="@+id/btMainSettingsMenuClose"
         android:layout_width="32dp"
         android:layout_height="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:background="@color/white"
         android:contentDescription="@string/close"
         android:src="@drawable/ic_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/colorAccent" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
