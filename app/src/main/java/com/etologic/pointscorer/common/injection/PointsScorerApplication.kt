@@ -11,7 +11,7 @@ import dagger.hilt.android.HiltAndroidApp
 class PointsScorerApplication : Application() {
 
     companion object {
-        private const val TEST_ADS_DEVICE_ID_HUAWEI_P20 = "712C0F78415783A418DE51CD38EC03C6"
+        //ToDo: private const val TEST_ADS_DEVICE_ID_POCO_M3 = ""
     }
 
     override fun onCreate() {
@@ -30,7 +30,7 @@ class PointsScorerApplication : Application() {
         MobileAds.setAppMuted(true)
         MobileAds.setRequestConfiguration(
             RequestConfiguration.Builder()
-                .setTestDeviceIds(listOf(TEST_ADS_DEVICE_ID_HUAWEI_P20))
+                //ToDo: .setTestDeviceIds(listOf(TEST_ADS_DEVICE_ID_POCO_M3))
                 .build()
         )
     }

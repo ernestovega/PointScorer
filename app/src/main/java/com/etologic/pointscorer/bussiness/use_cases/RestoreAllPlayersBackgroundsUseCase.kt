@@ -8,7 +8,7 @@ class RestoreAllPlayersBackgroundsUseCase @Inject constructor(
 ) {
 
     suspend fun invoke() {
-        playersRepository.resetAllPlayersBackgrounds()
+        playersRepository.restoreAllPlayersBackgrounds()
     }
 
 }

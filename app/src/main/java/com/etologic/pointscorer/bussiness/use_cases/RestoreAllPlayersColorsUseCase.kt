@@ -8,7 +8,7 @@ class RestoreAllPlayersColorsUseCase @Inject constructor(
 ) {
 
     suspend fun invoke() {
-        playersRepository.resetAllPlayersColors()
+        playersRepository.restoreAllPlayersColors()
     }
 
 }

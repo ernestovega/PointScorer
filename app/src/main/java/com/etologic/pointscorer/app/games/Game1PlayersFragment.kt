@@ -10,7 +10,6 @@ import com.etologic.pointscorer.R
 import com.etologic.pointscorer.app.games.base.game.GameFragment
 import com.etologic.pointscorer.app.games.base.game.GameViewModel
 import com.etologic.pointscorer.app.games.base.player.PlayerFragment
-import com.etologic.pointscorer.app.games.game_a_one_players.Game1PlayersFragmentDirections
 import com.etologic.pointscorer.databinding.GameAOnePlayerFragmentBinding
 
 class Game1PlayersFragment : GameFragment<GameAOnePlayerFragmentBinding>() {

@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.etologic.pointscorer.bussiness.use_cases.Add1PointToAPlayerUseCase
 import com.etologic.pointscorer.bussiness.use_cases.GetPlayerUseCase
-import com.etologic.pointscorer.bussiness.use_cases.Substract1PointToAPlayerUseCase
+import com.etologic.pointscorer.bussiness.use_cases.Subtract1PointToAPPlayerUseCase
 import com.etologic.pointscorer.data.exceptions.MaxPointsReachedException
 import com.etologic.pointscorer.data.exceptions.MinPointsReachedException
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +19,7 @@ import javax.inject.Inject
 class PlayerViewModel @Inject constructor(
     private val getPlayerUseCase: GetPlayerUseCase,
     private val add1PointToAPlayerUseCase: Add1PointToAPlayerUseCase,
-    private val substract1PointToAPlayerUseCase: Substract1PointToAPlayerUseCase,
+    private val subtract1PointToAPPlayerUseCase: Subtract1PointToAPPlayerUseCase,
 ) : ViewModel() {
 
     var playerId: Int = 0
@@ -96,7 +96,7 @@ class PlayerViewModel @Inject constructor(
     fun downClicked() {
         viewModelScope.launch {
             try {
-                val newPoints = substract1PointToAPlayerUseCase.invoke(playerId)
+                val newPoints = subtract1PointToAPPlayerUseCase.invoke(playerId)
                 playerAuxPointsEnabled = true
                 _playerPoints.postValue(newPoints)
                 _playerAuxPoints.postValue((_playerAuxPoints.value ?: 0).minus(1))

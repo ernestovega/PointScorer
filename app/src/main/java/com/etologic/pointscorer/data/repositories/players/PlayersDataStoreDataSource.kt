@@ -7,6 +7,8 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
+@Suppress("unused")
+@Deprecated("Alternative to Room PlayersDataBaseDataSource")
 class PlayersDataStoreDataSource
 @Inject constructor(private val dataStoreHelper: DataStoreHelper) {
 

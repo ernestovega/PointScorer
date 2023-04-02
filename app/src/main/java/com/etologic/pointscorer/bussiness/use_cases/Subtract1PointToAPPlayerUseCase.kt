@@ -5,7 +5,7 @@ import com.etologic.pointscorer.data.exceptions.MinPointsReachedException
 import com.etologic.pointscorer.data.repositories.players.PlayersRepository
 import javax.inject.Inject
 
-class Substract1PointToAPlayerUseCase @Inject constructor(
+class Subtract1PointToAPPlayerUseCase @Inject constructor(
     private val playersRepository: PlayersRepository
 ) {
 
@@ -14,8 +14,7 @@ class Substract1PointToAPlayerUseCase @Inject constructor(
         val oldPoints = playersRepository.getPlayer(playerId).points
         val newPoints = oldPoints - 1
         if (oldPoints > Constants.MIN_POINTS) {
-            playersRepository.savePlayerPoints(playerId, newPoints)
-            return playersRepository.getPlayer(playerId).points
+            return playersRepository.savePlayerPoints(playerId, newPoints).points
         } else {
             throw MinPointsReachedException()
         }

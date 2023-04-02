@@ -19,7 +19,7 @@ class PlayersRepository
     @ApplicationContext context: Context,
     private val initialPointsRepository: InitialPointsRepository,
     private val playersMemoryDataSource: PlayersMemoryDataSource,
-    private val playersDataStoreDataSource: PlayersDataStoreDataSource,
+    private val playersDataBaseDataSource: PlayersDataBaseDataSource,
 ) : CoroutineScope {
 
     private val defaultName: String = context.getString(R.string.player_name)
@@ -27,72 +27,59 @@ class PlayersRepository
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Default + Job()
 
-    private fun buildPlayerId(i: Int, x: Int) = Integer.valueOf("$i$x")
+    suspend fun getPlayer(playerId: Int): Player {
 
-    suspend fun getPlayer(playerId: Int): Player =
-        playersMemoryDataSource.get(playerId)
-            ?: (playersDataStoreDataSource.get(playerId)
-                ?.also { playersMemoryDataSource.save(it.id, it) })
-            ?: (Player(playerId, defaultName, defaultColor, null, initialPointsRepository.getInitialPoints())
-                .also { savePlayer(it) })
+        suspend fun createPlayer(playerId: Int): Player {
+            val newPlayer = Player(
+                playerId,
+                defaultName,
+                defaultColor,
+                null,
+                initialPointsRepository.getInitialPoints()
+            )
+            playersDataBaseDataSource.insert(newPlayer)
+            return playersMemoryDataSource.save(newPlayer.id, newPlayer)
+        }
 
-    private suspend fun savePlayer(player: Player) {
-        playersMemoryDataSource.save(player.id, player)
-        playersDataStoreDataSource.save(player.id, player)
+        return playersMemoryDataSource.get(playerId)
+            ?: playersDataBaseDataSource.get(playerId)
+                ?.also { playersMemoryDataSource.save(it.id, it) }
+            ?: createPlayer(playerId)
     }
 
     suspend fun savePlayerName(playerId: Int, newName: String): Player {
-        getPlayer(playerId)
-            .let {
-                val updatedPlayer = Player(it.id, newName, it.color, it.background, it.points)
-                savePlayer(updatedPlayer)
-                return updatedPlayer
-            }
+        playersDataBaseDataSource.updateName(playerId, newName)
+        return getPlayer(playerId)
     }
 
     suspend fun savePlayerColor(playerId: Int, newColor: Int): Player {
-        getPlayer(playerId)
-            .let {
-                val updatedPlayer = Player(it.id, it.name, newColor, it.background, it.points)
-                savePlayer(updatedPlayer)
-                return updatedPlayer
-            }
+        playersDataBaseDataSource.updateColor(playerId, newColor)
+        return getPlayer(playerId)
     }
 
     suspend fun savePlayerBackground(playerId: Int, newBackground: Uri?): Player {
-        getPlayer(playerId)
-            .let {
-                val updatedPlayer = Player(it.id, it.name, it.color, newBackground, it.points)
-                savePlayer(updatedPlayer)
-                return updatedPlayer
-            }
+        playersDataBaseDataSource.updateBackground(playerId, newBackground.toString())
+        return getPlayer(playerId)
     }
 
     suspend fun savePlayerPoints(playerId: Int, newPoints: Int): Player {
-        getPlayer(playerId)
-            .let {
-                val updatedPlayer = Player(it.id, it.name, it.color, it.background, newPoints)
-                savePlayer(updatedPlayer)
-                return updatedPlayer
-            }
+        playersDataBaseDataSource.updatePoints(playerId, newPoints)
+        return getPlayer(playerId)
     }
 
     suspend fun restoreOnePlayerPoints(playerId: Int): Player {
-        initialPointsRepository.getInitialPoints().let { initialPoints ->
-            savePlayerPoints(playerId, initialPoints)
-            return getPlayer(playerId)
-        }
+        playersDataBaseDataSource.updatePoints(playerId, initialPointsRepository.getInitialPoints())
+        return getPlayer(playerId)
     }
 
-    suspend fun resetAllPlayersPoints() {
-        for (i in 1..MAX_PLAYERS) {
-            for (x in 1..i) {
-                savePlayerPoints(buildPlayerId(i, x), initialPointsRepository.getInitialPoints())
-            }
-        }
+    suspend fun restoreAllPlayers() {
+        restoreAllPlayersNames()
+        restoreAllPlayersColors()
+        restoreAllPlayersBackgrounds()
+        restoreAllPlayersPoints()
     }
 
-    suspend fun resetAllPlayersNames() {
+    suspend fun restoreAllPlayersNames() {
         for (i in 1..MAX_PLAYERS) {
             for (x in 1..i) {
                 savePlayerName(buildPlayerId(i, x), defaultName)
@@ -100,7 +87,7 @@ class PlayersRepository
         }
     }
 
-    suspend fun resetAllPlayersColors() {
+    suspend fun restoreAllPlayersColors() {
         for (i in 1..MAX_PLAYERS) {
             for (x in 1..i) {
                 savePlayerColor(buildPlayerId(i, x), defaultColor)
@@ -108,11 +95,24 @@ class PlayersRepository
         }
     }
 
-    suspend fun resetAllPlayersBackgrounds() {
+    suspend fun restoreAllPlayersBackgrounds() {
         for (i in 1..MAX_PLAYERS) {
             for (x in 1..i) {
                 savePlayerBackground(buildPlayerId(i, x), null)
             }
         }
     }
+
+    suspend fun restoreAllPlayersPoints() {
+        val initialPoints = initialPointsRepository.getInitialPoints()
+        for (i in 1..MAX_PLAYERS) {
+            for (x in 1..i) {
+                savePlayerPoints(buildPlayerId(i, x), initialPoints)
+            }
+        }
+    }
+
+    private fun buildPlayerId(i: Int, x: Int) =
+        Integer.valueOf("$i$x")
+
 }

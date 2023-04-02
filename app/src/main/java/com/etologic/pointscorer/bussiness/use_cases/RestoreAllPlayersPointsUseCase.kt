@@ -4,10 +4,10 @@ import com.etologic.pointscorer.data.repositories.players.PlayersRepository
 import javax.inject.Inject
 
 class RestoreAllPlayersPointsUseCase @Inject constructor(
-    private val playersRepository: PlayersRepository
+    private val playersRepository: PlayersRepository,
 ) {
 
     suspend fun invoke() {
-        playersRepository.resetAllPlayersPoints()
+        playersRepository.restoreAllPlayersPoints()
     }
 }
