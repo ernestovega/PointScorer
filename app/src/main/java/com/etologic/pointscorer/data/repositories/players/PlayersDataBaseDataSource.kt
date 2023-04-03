@@ -3,7 +3,7 @@ package com.etologic.pointscorer.data.repositories.players
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.etologic.pointscorer.bussiness.model.Player
+import com.etologic.pointscorer.bussiness.model.entities.Player
 
 @Dao
 interface PlayersDataBaseDataSource {

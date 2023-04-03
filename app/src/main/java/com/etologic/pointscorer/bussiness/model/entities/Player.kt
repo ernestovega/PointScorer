@@ -1,4 +1,4 @@
-package com.etologic.pointscorer.bussiness.model
+package com.etologic.pointscorer.bussiness.model.entities
 
 import android.net.Uri
 import androidx.room.Entity

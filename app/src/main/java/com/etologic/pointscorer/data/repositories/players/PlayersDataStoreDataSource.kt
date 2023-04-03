@@ -1,6 +1,6 @@
 package com.etologic.pointscorer.data.repositories.players
 
-import com.etologic.pointscorer.bussiness.model.Player
+import com.etologic.pointscorer.bussiness.model.entities.Player
 import com.etologic.pointscorer.data.repositories.base.DataStoreHelper
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString

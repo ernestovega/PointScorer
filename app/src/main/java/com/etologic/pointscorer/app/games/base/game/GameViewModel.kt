@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.etologic.pointscorer.BuildConfig
-import com.etologic.pointscorer.bussiness.model.Player
+import com.etologic.pointscorer.bussiness.model.entities.Player
 import com.etologic.pointscorer.bussiness.use_cases.*
 import com.etologic.pointscorer.common.Constants.A_MINUTE_IN_MILLIS
 import com.etologic.pointscorer.common.Constants.A_SECOND_IN_MILLIS

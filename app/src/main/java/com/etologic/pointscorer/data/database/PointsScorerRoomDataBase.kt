@@ -3,7 +3,7 @@ package com.etologic.pointscorer.data.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.etologic.pointscorer.bussiness.model.Player
+import com.etologic.pointscorer.bussiness.model.entities.Player
 import com.etologic.pointscorer.data.repositories.players.PlayersDataBaseDataSource
 
 @Database(

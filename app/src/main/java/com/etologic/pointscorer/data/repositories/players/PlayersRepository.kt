@@ -4,7 +4,7 @@ import android.content.Context
 import android.net.Uri
 import androidx.core.content.ContextCompat
 import com.etologic.pointscorer.R
-import com.etologic.pointscorer.bussiness.model.Player
+import com.etologic.pointscorer.bussiness.model.entities.Player
 import com.etologic.pointscorer.common.Constants.MAX_PLAYERS
 import com.etologic.pointscorer.data.repositories.initial_points.InitialPointsRepository
 import dagger.hilt.android.qualifiers.ApplicationContext

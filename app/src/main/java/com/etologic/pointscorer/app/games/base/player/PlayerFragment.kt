@@ -21,16 +21,14 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.viewModels
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
-import com.canhub.cropper.CropImageContract
-import com.canhub.cropper.CropImageView
-import com.canhub.cropper.options
+import com.canhub.cropper.*
 import com.etologic.pointscorer.R
 import com.etologic.pointscorer.app.base.BaseMainFragment
 import com.etologic.pointscorer.app.common.utils.MyAnimationUtils
 import com.etologic.pointscorer.app.common.utils.dpToPx
 import com.etologic.pointscorer.app.games.base.game.GameViewModel
 import com.etologic.pointscorer.app.games.base.player.PlayerFragment.*
-import com.etologic.pointscorer.bussiness.model.Player
+import com.etologic.pointscorer.bussiness.model.entities.Player
 import com.etologic.pointscorer.databinding.PlayerFragmentBinding
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import java.io.FileNotFoundException
@@ -47,13 +45,18 @@ class PlayerFragment : BaseMainFragment() {
     )
 
     companion object {
-        fun newInstance(playerId: Int, playerFragmentInitialData: PlayerFragmentInitialData? = null) =
+        fun newInstance(
+            playerId: Int,
+            playerFragmentInitialData: PlayerFragmentInitialData? = null
+        ) =
             PlayerFragment().apply {
                 this.playerId = playerId
                 playerFragmentInitialData?.nameSize?.let { this.playerNameSize = it }
                 playerFragmentInitialData?.nameMarginTop?.let { this.playerNameMarginTop = it }
                 playerFragmentInitialData?.pointsSize?.let { this.playerPointsSize = it }
-                playerFragmentInitialData?.positiveAuxPointsMarginTop?.let { this.positiveAuxPointsMarginTop = it }
+                playerFragmentInitialData?.positiveAuxPointsMarginTop?.let {
+                    this.positiveAuxPointsMarginTop = it
+                }
                 playerFragmentInitialData?.auxPointsMargin?.let { this.auxPointsMargin = it }
             }
 
@@ -88,16 +91,21 @@ class PlayerFragment : BaseMainFragment() {
     private var isUpPressed = false
     private var isDownPressed = false
 
-    private val cropImageActivityResultLauncher = registerForActivityResult(CropImageContract()) { result ->
-        if (result.isSuccessful && result.uriContent != null) {
-            gameViewModel.savePlayerBackground(playerId!!, result.uriContent!!)
-        } else {
-            FirebaseCrashlytics.getInstance().recordException(Throwable(result.error))
-            Toast.makeText(requireContext(), getString(R.string.ups), Toast.LENGTH_SHORT).show()
+    private val cropImageActivityResultLauncher =
+        registerForActivityResult(CropImageContract()) { result ->
+            if (result.isSuccessful && result.uriContent != null) {
+                gameViewModel.savePlayerBackground(playerId!!, result.uriContent!!)
+            } else {
+                FirebaseCrashlytics.getInstance().recordException(Throwable(result.error))
+                Toast.makeText(requireContext(), getString(R.string.ups), Toast.LENGTH_SHORT).show()
+            }
         }
-    }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = PlayerFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -113,8 +121,10 @@ class PlayerFragment : BaseMainFragment() {
     }
 
     private fun initValues() {
-        auxPointsPositiveRotation = ResourcesCompat.getFloat(resources, R.dimen.auxPointsPositiveRotationDegrees)
-        auxPointsNegativeRotation = ResourcesCompat.getFloat(resources, R.dimen.auxPointsNegativeRotationDegrees)
+        auxPointsPositiveRotation =
+            ResourcesCompat.getFloat(resources, R.dimen.auxPointsPositiveRotationDegrees)
+        auxPointsNegativeRotation =
+            ResourcesCompat.getFloat(resources, R.dimen.auxPointsNegativeRotationDegrees)
         greenColor = ContextCompat.getColor(requireContext(), R.color.green)
         redColor = ContextCompat.getColor(requireContext(), R.color.red)
         defaultPlayerColor = ContextCompat.getColor(requireContext(), R.color.white)
@@ -146,11 +156,14 @@ class PlayerFragment : BaseMainFragment() {
             .observe(viewLifecycleOwner) { changeBackgroundRequestedObserver(it) }
         gameViewModel.restorePlayerPointsRequestedObservable()
             .observe(viewLifecycleOwner) { restorePlayerPointsObserver(it) }
-        gameViewModel.playerNameChangedObservable().observe(viewLifecycleOwner) { playerNameChangedObserver(it) }
-        gameViewModel.playerColorChangedObservable().observe(viewLifecycleOwner) { playerColorChangedObserver(it) }
+        gameViewModel.playerNameChangedObservable()
+            .observe(viewLifecycleOwner) { playerNameChangedObserver(it) }
+        gameViewModel.playerColorChangedObservable()
+            .observe(viewLifecycleOwner) { playerColorChangedObserver(it) }
         gameViewModel.playerBackgroundChangedObservable()
             .observe(viewLifecycleOwner) { playerBackgroundChangedObserver(it) }
-        gameViewModel.playerPointsRestoredObservable().observe(viewLifecycleOwner) { playerPointsRestoredObserver(it) }
+        gameViewModel.playerPointsRestoredObservable()
+            .observe(viewLifecycleOwner) { playerPointsRestoredObserver(it) }
     }
 
     private fun restorePlayerPointsObserver(playerIdToChange: Boolean?) {
@@ -254,10 +267,13 @@ class PlayerFragment : BaseMainFragment() {
     private fun changeBackgroundRequestedObserver(playerIdToChange: Int?) {
         if (playerIdToChange == playerId) {
             cropImageActivityResultLauncher.launch(
-                options {
-                    setImageSource(includeGallery = true, includeCamera = false)
-                    setGuidelines(CropImageView.Guidelines.ON)
-                }
+                CropImageContractOptions(
+                    null, CropImageOptions(
+                        imageSourceIncludeGallery = true,
+                        imageSourceIncludeCamera = false,
+                        guidelines = CropImageView.Guidelines.ON
+                    )
+                )
             )
         }
     }
@@ -294,8 +310,10 @@ class PlayerFragment : BaseMainFragment() {
                 gameViewModel.showPlayerSettingsMenuRequested(
                     GameViewModel.PlayerSettingsMenuInitialData(
                         playerId = playerId!!,
-                        playerInitialName = viewModel.playerNameObservable().value ?: getString(R.string.player_name),
-                        playerInitialColor = viewModel.playerColorObservable().value ?: defaultPlayerColor!!,
+                        playerInitialName = viewModel.playerNameObservable().value
+                            ?: getString(R.string.player_name),
+                        playerInitialColor = viewModel.playerColorObservable().value
+                            ?: defaultPlayerColor!!,
                         playerHasCustomBackground = viewModel.playerBackgroundObservable().value != null,
                     )
                 )

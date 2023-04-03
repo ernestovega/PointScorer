@@ -8,8 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.etologic.pointscorer.bussiness.use_cases.Add1PointToAPlayerUseCase
 import com.etologic.pointscorer.bussiness.use_cases.GetPlayerUseCase
 import com.etologic.pointscorer.bussiness.use_cases.Subtract1PointToAPPlayerUseCase
-import com.etologic.pointscorer.data.exceptions.MaxPointsReachedException
-import com.etologic.pointscorer.data.exceptions.MinPointsReachedException
+import com.etologic.pointscorer.bussiness.model.exceptions.MaxPointsReachedException
+import com.etologic.pointscorer.bussiness.model.exceptions.MinPointsReachedException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch

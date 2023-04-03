@@ -1,7 +1,7 @@
 package com.etologic.pointscorer.bussiness.use_cases
 
 import com.etologic.pointscorer.common.Constants
-import com.etologic.pointscorer.data.exceptions.MaxPointsReachedException
+import com.etologic.pointscorer.bussiness.model.exceptions.MaxPointsReachedException
 import com.etologic.pointscorer.data.repositories.players.PlayersRepository
 import javax.inject.Inject
 
