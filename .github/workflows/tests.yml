@@ -6,6 +6,9 @@ on:
     branches: [ master, main ]
   workflow_dispatch:
 
+permissions:
+  contents: write  # only used to commit the first screenshot references to a PR branch
+
 concurrency:
   group: tests-${{ github.ref }}
   cancel-in-progress: true
@@ -17,6 +20,8 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref }}
       - uses: actions/setup-java@v4
         with:
           distribution: zulu
@@ -26,15 +31,23 @@ jobs:
       - name: Unit + Robolectric tests and coverage
         run: ./gradlew testDebugUnitTest createDebugUnitTestCoverageReport --stacktrace
 
-      # Compares against app/src/test/screenshots. Until reference images are committed
-      # (run the "Record screenshots" workflow) the screenshots are only recorded and uploaded.
+      # Compares against app/src/test/screenshots. If a branch has no reference images yet, they are
+      # recorded and committed to it (same-repo PRs only). Re-record later with "Record screenshots".
       - name: Screenshot tests
         run: |
           if ls app/src/test/screenshots/*.png >/dev/null 2>&1; then
             ./gradlew verifyRoborazziDebug --stacktrace
           else
-            echo "::warning::No reference screenshots committed yet, recording them instead of verifying"
+            echo "::warning::No reference screenshots committed yet, recording them"
             ./gradlew recordRoborazziDebug --stacktrace
+            if [ "${{ github.event_name }}" = "pull_request" ] && \
+               [ "${{ github.event.pull_request.head.repo.full_name }}" = "${{ github.repository }}" ]; then
+              git config user.name "github-actions[bot]"
+              git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+              git add app/src/test/screenshots/*.png
+              git commit -m "Record screenshot references"
+              git push
+            fi
           fi
 
       - name: Upload reports
