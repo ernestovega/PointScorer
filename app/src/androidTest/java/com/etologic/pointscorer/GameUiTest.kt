@@ -37,7 +37,7 @@ class GameUiTest {
     }
 
     private fun openPlayerMenu(playerFrame: Int, item: Int) {
-        inPlayer(playerFrame, R.id.ibMenu).perform(click())
+        inPlayer(playerFrame, R.id.ibMenu).perform(tap())
         onView(withText(item)).inRoot(isPlatformPopup()).perform(click())
     }
 
@@ -64,8 +64,8 @@ class GameUiTest {
         inPlayer(R.id.flPlayer21, R.id.tvPointsPlayer).hasTextEventually("100")
         inPlayer(R.id.flPlayer22, R.id.tvPointsPlayer).hasTextEventually("100")
 
-        inPlayer(R.id.flPlayer21, R.id.btUp).perform(click(), click(), click())
-        inPlayer(R.id.flPlayer22, R.id.btDown).perform(click())
+        inPlayer(R.id.flPlayer21, R.id.btUp).perform(tap(), tap(), tap())
+        inPlayer(R.id.flPlayer22, R.id.btDown).perform(tap())
 
         inPlayer(R.id.flPlayer21, R.id.tvPointsPlayer).hasTextEventually("103")
         inPlayer(R.id.flPlayer22, R.id.tvPointsPlayer).hasTextEventually("99")
@@ -92,7 +92,7 @@ class GameUiTest {
     fun pointsSurviveARotationOrRecreation() {
         openGame(R.id.btMain2Player)
         inPlayer(R.id.flPlayer21, R.id.tvPointsPlayer).hasTextEventually("100")
-        inPlayer(R.id.flPlayer21, R.id.btUp).perform(click())
+        inPlayer(R.id.flPlayer21, R.id.btUp).perform(tap())
         inPlayer(R.id.flPlayer21, R.id.tvPointsPlayer).hasTextEventually("101")
 
         activityRule.scenario.recreate()
@@ -151,8 +151,8 @@ class GameUiTest {
     fun restorePointsResetsOnlyThatPlayer() {
         openGame(R.id.btMain2Player)
         inPlayer(R.id.flPlayer21, R.id.tvPointsPlayer).hasTextEventually("100")
-        inPlayer(R.id.flPlayer21, R.id.btUp).perform(click(), click())
-        inPlayer(R.id.flPlayer22, R.id.btUp).perform(click())
+        inPlayer(R.id.flPlayer21, R.id.btUp).perform(tap(), tap())
+        inPlayer(R.id.flPlayer22, R.id.btUp).perform(tap())
         inPlayer(R.id.flPlayer21, R.id.tvPointsPlayer).hasTextEventually("102")
         inPlayer(R.id.flPlayer22, R.id.tvPointsPlayer).hasTextEventually("101")
 
@@ -168,7 +168,7 @@ class GameUiTest {
         openGame(R.id.btMain3Player)
         listOf(R.id.flPlayer31, R.id.flPlayer32, R.id.flPlayer33).forEach {
             inPlayer(it, R.id.tvPointsPlayer).hasTextEventually("100")
-            inPlayer(it, R.id.btDown).perform(click())
+            inPlayer(it, R.id.btDown).perform(tap())
             inPlayer(it, R.id.tvPointsPlayer).hasTextEventually("99")
         }
 

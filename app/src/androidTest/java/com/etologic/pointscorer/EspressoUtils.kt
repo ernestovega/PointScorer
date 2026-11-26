@@ -1,10 +1,17 @@
 package com.etologic.pointscorer
 
+import android.graphics.Rect
 import android.os.SystemClock
+import android.view.InputDevice
+import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.IdRes
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.ViewAction
 import androidx.test.espresso.ViewAssertion
+import androidx.test.espresso.action.GeneralClickAction
+import androidx.test.espresso.action.Press
+import androidx.test.espresso.action.Tap
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
@@ -42,3 +49,22 @@ fun playerView(@IdRes playerFrame: Int, @IdRes viewId: Int): Matcher<View> =
 fun waitForMenu(initialPoints: String = "100") {
     onView(withId(R.id.etMainInitialPoints)).hasTextEventually(initialPoints)
 }
+
+/**
+ * Like click(), but taps the center of the view as it is drawn. The top players of every game sit
+ * in a frame rotated 180 degrees, and Espresso's click() computes the center ignoring that
+ * rotation, so it would tap a different button.
+ */
+fun tap(): ViewAction = GeneralClickAction(
+    Tap.SINGLE,
+    { view ->
+        val visible = Rect()
+        view.getGlobalVisibleRect(visible) // applies the parents' rotation
+        val window = IntArray(2)
+        view.rootView.getLocationOnScreen(window)
+        floatArrayOf(window[0] + visible.exactCenterX(), window[1] + visible.exactCenterY())
+    },
+    Press.FINGER,
+    InputDevice.SOURCE_UNKNOWN,
+    MotionEvent.BUTTON_PRIMARY,
+)
