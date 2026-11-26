@@ -4,7 +4,6 @@ import android.view.View
 import android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
 import android.widget.EditText
 import android.widget.TextView
-import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.etologic.pointscorer.R
@@ -116,8 +115,9 @@ class MainActivityTest {
         withActivity { onBackPressedDispatcher.onBackPressed() }
         waitUntil { currentFragment() is MenuFragment }
 
+        val activity = withActivity { this }
         scenario.onActivity { it.viewModelForTest().navigateBack() }
-        waitUntil { scenario.state == Lifecycle.State.DESTROYED }
+        waitUntil { activity.isFinishing }
     }
 
     private fun MainActivity.viewModelForTest(): MainActivityViewModel =

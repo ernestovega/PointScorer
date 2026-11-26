@@ -144,18 +144,27 @@ class ScreenshotTest {
     @Test
     fun game_2_players_after_scoring() {
         launchGame(R.id.btMain2Player, 2).apply {
-            onActivity { activity ->
-                val players = activity.playerFragments().sortedBy { it.requireArguments().getInt(PlayerFragment.KEY_PLAYER_ID) }
-                repeat(3) { players[0].requireView().findViewById<View>(R.id.btUp).performClick() }
-                players[1].requireView().findViewById<View>(R.id.btDown).performClick()
-            }
-            onActivity { activity ->
-                waitUntil {
-                    activity.playerFragments().map {
-                        it.requireView().findViewById<android.widget.TextView>(R.id.tvPointsPlayer).text.toString()
-                    }.toSet() == setOf("103", "99")
+            fun player(index: Int): PlayerFragment {
+                var player: PlayerFragment? = null
+                onActivity { activity ->
+                    player = activity.playerFragments().sortedBy { it.requireArguments().getInt(PlayerFragment.KEY_PLAYER_ID) }[index]
                 }
+                return player!!
             }
+            fun PlayerFragment.points(): String {
+                var points = ""
+                onActivity { points = requireView().findViewById<android.widget.TextView>(R.id.tvPointsPlayer).text.toString() }
+                return points
+            }
+            fun PlayerFragment.click(id: Int) = onActivity { requireView().findViewById<View>(id).performClick() }
+
+            // One click at a time: each one is saved before the next is read
+            listOf("101", "102", "103").forEach { expected ->
+                player(0).click(R.id.btUp)
+                waitUntil(describe = { "points=${player(0).points()} expected=$expected" }) { player(0).points() == expected }
+            }
+            player(1).click(R.id.btDown)
+            waitUntil { player(1).points() == "99" }
         }
         // Captured before the 5 s fade out so the +3 / -1 counters are visible
         capture("game_2_players_after_scoring")
