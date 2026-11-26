@@ -11,17 +11,6 @@ class PlayersSharedPrefsDataSource
     
     private val sharedPrefs: SharedPreferences = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE)
     
-    suspend fun isInitialCheckNotDone(): Boolean =
-        withContext(Dispatchers.IO) {
-            sharedPrefs.getBoolean(KEY_INITIAL_CHECK_DONE, false)
-        }
-    
-    suspend fun saveInitialCheckDone() {
-        withContext(Dispatchers.IO) {
-            sharedPrefs.edit().putBoolean(KEY_INITIAL_CHECK_DONE, true).apply()
-        }
-    }
-    
     suspend fun getInitialPoints(defaultInitialPoints: Int) =
         withContext(Dispatchers.IO) {
             sharedPrefs.getInt(KEY_INITIAL_POINTS, defaultInitialPoints)
@@ -78,7 +67,6 @@ class PlayersSharedPrefsDataSource
         
         private const val FILE_NAME = "points_scorer_shared_prefs"
         private const val KEY_INITIAL_POINTS = "initial_points"
-        private const val KEY_INITIAL_CHECK_DONE = "initial_check_done"
         private const val KEY_NAME = "name_player_"
         private const val KEY_POINTS = "points_player_"
         private const val KEY_COLOR = "color_player_"

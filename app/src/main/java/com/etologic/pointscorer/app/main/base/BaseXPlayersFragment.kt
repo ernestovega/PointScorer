@@ -21,7 +21,8 @@ abstract class BaseXPlayersFragment : BaseMainFragment() {
         val fragment = PlayerFragment()
         fragment.arguments = bundle
         
-        parentFragmentManager
+        // Child fragments of the game, so they are removed together with it when leaving the game
+        childFragmentManager
             .beginTransaction()
             .setCustomAnimations(animator.fade_in, animator.fade_out)
             .add(frameLayout, fragment)
