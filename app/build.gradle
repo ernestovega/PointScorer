@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'org.jetbrains.kotlin.kapt'
+    id 'io.github.takahirom.roborazzi'
 }
 
 kapt {
@@ -26,12 +27,17 @@ android {
         versionCode 9
         versionName "2.1.0"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        // Every instrumented test runs in its own process with wiped app data (see testOptions).
+        testInstrumentationRunnerArguments clearPackageData: 'true'
     }
 
     buildTypes {
 
         debug {
             debuggable true
+            // ./gradlew createDebugUnitTestCoverageReport / createDebugAndroidTestCoverageReport
+            enableUnitTestCoverage true
+            enableAndroidTestCoverage true
             shrinkResources false
             minifyEnabled false
         }
@@ -45,6 +51,18 @@ android {
 
     }
 
+    testOptions {
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
+        animationsDisabled true
+        unitTests {
+            // Robolectric needs the merged resources to inflate the real layouts
+            includeAndroidResources = true
+            all {
+                maxHeapSize = '2g'
+            }
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
@@ -53,6 +71,14 @@ android {
 
 kotlin {
     jvmToolchain(17)
+}
+
+// Screenshot tests (Roborazzi + Robolectric, run on the JVM):
+//   ./gradlew recordRoborazziDebug   -> writes the reference images
+//   ./gradlew verifyRoborazziDebug   -> fails if the UI changed
+//   ./gradlew compareRoborazziDebug  -> writes *_compare.png diffs
+roborazzi {
+    outputDir.set(file('src/test/screenshots'))
 }
 
 dependencies {
@@ -75,4 +101,26 @@ dependencies {
     implementation 'com.google.dagger:dagger-android-support:2.57.2'
     kapt 'com.google.dagger:dagger-compiler:2.57.2'
     kapt 'com.google.dagger:dagger-android-processor:2.57.2'
+
+    //UNIT + ROBOLECTRIC + SCREENSHOT TESTS (src/test)
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'com.google.truth:truth:1.4.5'
+    testImplementation 'io.mockk:mockk:1.14.12'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2'
+    testImplementation 'androidx.arch.core:core-testing:2.2.0'
+    testImplementation 'org.robolectric:robolectric:4.18.1'
+    testImplementation 'androidx.test:core-ktx:1.7.0'
+    testImplementation 'androidx.test.ext:junit-ktx:1.3.0'
+    testImplementation 'androidx.test.espresso:espresso-core:3.7.0'
+    testImplementation 'io.github.takahirom.roborazzi:roborazzi:1.79.0'
+    testImplementation 'io.github.takahirom.roborazzi:roborazzi-junit-rule:1.79.0'
+
+    //INSTRUMENTED UI TESTS (src/androidTest)
+    androidTestImplementation 'androidx.test:core-ktx:1.7.0'
+    androidTestImplementation 'androidx.test:runner:1.7.0'
+    androidTestImplementation 'androidx.test:rules:1.7.0'
+    androidTestImplementation 'androidx.test.ext:junit-ktx:1.3.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.7.0'
+    androidTestImplementation 'com.google.truth:truth:1.4.5'
+    androidTestUtil 'androidx.test:orchestrator:1.6.1'
 }
