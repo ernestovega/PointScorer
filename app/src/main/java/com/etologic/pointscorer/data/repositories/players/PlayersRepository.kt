@@ -24,29 +24,6 @@ class PlayersRepository
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Default + Job()
     
-    init {
-        launch { doInitialCheck() }
-    }
-    
-    private suspend fun doInitialCheck() {
-        if (sharedPrefsDataSource.isInitialCheckNotDone()) {
-            restoreAllPlayers()
-            sharedPrefsDataSource.saveInitialCheckDone()
-        }
-    }
-    
-    private suspend fun restoreAllPlayers() {
-        for (i in 1..MAX_PLAYERS)
-            for (x in 1..i)
-                resetPlayer(buildPlayerId(i, x))
-    }
-    
-    private suspend fun resetPlayer(playerId: Int) {
-        savePlayerPoints(playerId, getInitialPoints())
-        savePlayerName(playerId, "")
-        savePlayerColor(playerId, defaultPlayerColor)
-    }
-    
     suspend fun resetPlayerPoints(playerId: Int) {
         savePlayerPoints(playerId, getInitialPoints())
     }
