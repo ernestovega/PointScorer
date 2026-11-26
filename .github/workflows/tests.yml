@@ -23,8 +23,19 @@ jobs:
           java-version: 21
       - uses: gradle/actions/setup-gradle@v4
 
-      - name: Unit tests + screenshot verification
-        run: ./gradlew testDebugUnitTest verifyRoborazziDebug createDebugUnitTestCoverageReport --stacktrace
+      - name: Unit + Robolectric tests and coverage
+        run: ./gradlew testDebugUnitTest createDebugUnitTestCoverageReport --stacktrace
+
+      # Compares against app/src/test/screenshots. Until reference images are committed
+      # (run the "Record screenshots" workflow) the screenshots are only recorded and uploaded.
+      - name: Screenshot tests
+        run: |
+          if ls app/src/test/screenshots/*.png >/dev/null 2>&1; then
+            ./gradlew verifyRoborazziDebug --stacktrace
+          else
+            echo "::warning::No reference screenshots committed yet, recording them instead of verifying"
+            ./gradlew recordRoborazziDebug --stacktrace
+          fi
 
       - name: Upload reports
         if: always()
@@ -35,8 +46,7 @@ jobs:
             app/build/reports/tests/testDebugUnitTest
             app/build/reports/coverage/test/debug
             app/build/outputs/roborazzi
-            app/src/test/screenshots/*_compare.png
-            app/src/test/screenshots/*_actual.png
+            app/src/test/screenshots
 
   instrumented:
     name: Espresso UI tests (emulator)
