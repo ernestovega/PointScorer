@@ -22,7 +22,8 @@ class MainActivityViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private val repository: PlayersRepository = mockk(relaxed = true)
-    private val viewModel = MainActivityViewModel(repository)
+    // Lazy: the constructor posts to LiveData, which needs InstantTaskExecutorRule to be active
+    private val viewModel by lazy { MainActivityViewModel(repository) }
 
     @Test
     fun `starts on the menu`() {

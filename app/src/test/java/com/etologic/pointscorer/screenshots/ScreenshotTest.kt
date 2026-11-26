@@ -15,6 +15,7 @@ import com.etologic.pointscorer.testutils.finishAnimations
 import com.etologic.pointscorer.testutils.playerFragments
 import com.etologic.pointscorer.testutils.waitForPlayersLoaded
 import com.etologic.pointscorer.testutils.waitUntil
+import com.github.takahirom.roborazzi.ExperimentalRoborazziApi
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.github.takahirom.roborazzi.captureRoboImage
 import com.github.takahirom.roborazzi.captureScreenRoboImage
@@ -160,6 +161,7 @@ class ScreenshotTest {
         capture("game_2_players_after_scoring")
     }
 
+    @OptIn(ExperimentalRoborazziApi::class)
     @Test
     fun player_settings_dialog() {
         launchGame(R.id.btMain1Player, 1).apply {

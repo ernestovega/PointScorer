@@ -77,6 +77,13 @@ kotlin {
 //   ./gradlew recordRoborazziDebug   -> writes the reference images
 //   ./gradlew verifyRoborazziDebug   -> fails if the UI changed
 //   ./gradlew compareRoborazziDebug  -> writes *_compare.png diffs
+// Robolectric needs Java 21 to emulate API 35+ (the app targets 36), so tests run on a 21 JVM.
+tasks.withType(Test).configureEach {
+    javaLauncher = javaToolchains.launcherFor {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
 roborazzi {
     outputDir.set(file('src/test/screenshots'))
 }
