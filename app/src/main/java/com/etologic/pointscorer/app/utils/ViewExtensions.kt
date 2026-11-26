@@ -14,6 +14,6 @@ object ViewExtensions {
     
     fun View.showKeyboard() {
         (rootView.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
-            .toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.RESULT_UNCHANGED_SHOWN)
+            .showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
     }
 }
