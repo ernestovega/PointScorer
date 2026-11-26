@@ -21,7 +21,7 @@ abstract class BaseXPlayersFragment : BaseMainFragment() {
         val fragment = PlayerFragment()
         fragment.arguments = bundle
         
-        requireFragmentManager()
+        parentFragmentManager
             .beginTransaction()
             .setCustomAnimations(animator.fade_in, animator.fade_out)
             .add(frameLayout, fragment)
